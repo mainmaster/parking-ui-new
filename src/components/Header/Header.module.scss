@@ -1,0 +1,35 @@
+@import '../../styles/mixins.scss';
+
+.parkingInfo{
+  display: flex;
+  gap: 10px;
+}
+
+.header {
+  &_logo {
+    display: flex;
+    align-items: center;
+
+    svg {
+      height: 60px;
+      width: 100%;
+    }
+  }
+
+  &_toggle {
+    display: block !important;
+  }
+
+
+
+  &_title {
+    margin-left: 20px;
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .parkingInfo{
+    flex-wrap: wrap;
+  }
+}

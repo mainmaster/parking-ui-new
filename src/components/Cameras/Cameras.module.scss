@@ -1,0 +1,144 @@
+@import '../../styles/mixins.scss';
+
+.wrapFormLed{
+  position: absolute;
+  top: 60px;
+  z-index: 2;
+  left: 20px;
+  @include media-sm {
+    top: 50px;
+  }
+}
+.fieldFormLed{
+  height: 20px;
+  max-width: 120px;
+  font-size: 13px !important;
+  border-radius: 2px !important;
+
+  @include media-sm {
+    height: 20px;
+    font-size: 11px !important;
+    max-width: 110px;
+  }
+  @include media-xs {
+  }
+}
+
+.cameras {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+
+  @include media-sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-xs {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.camera {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+
+  &_name {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: flex;
+    gap: 10px;
+  }
+
+  &_status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    &_item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+
+  img {
+    border-radius: 10px;
+    overflow: hidden;
+    object-fit: contain;
+    height: 300px;
+    margin: auto;
+
+    @include media-sm {
+      width: 100%;
+    }
+
+    @include media-xs {
+      height: 250px;
+    }
+  }
+
+  &_btns {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    position: relative;
+
+    button {
+      font-size: 12px;
+    }
+  }
+}
+
+.btns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+
+  @include media-xl {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-xs {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: $c-red;
+
+  &.green {
+    background-color: #1e7e35;
+  }
+
+  &.orange {
+    background-color: #977202;
+  }
+}
+
+.animate {
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  from {
+    opacity: 1; /* Непрозрачный текст */
+  }
+  to {
+    opacity: 0; /* Прозрачный текст */
+  }
+}

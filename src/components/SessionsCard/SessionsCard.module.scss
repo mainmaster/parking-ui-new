@@ -1,0 +1,27 @@
+@import '../../styles/mixins.scss';
+
+.card_body {
+  position: sticky;
+  height: 500px;
+  top: 0px;
+}
+.card {
+  width: 25%;
+
+  display: block !important;
+
+  img {
+    border-radius: 10px;
+    max-height: 200px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  &_empty {
+    padding: 0.55rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+}

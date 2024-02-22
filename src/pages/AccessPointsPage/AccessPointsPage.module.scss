@@ -1,0 +1,41 @@
+@import '../../styles/mixins.scss';
+
+.h1 {
+  margin-bottom: 30px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+
+  @include media-md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.empty {
+  font-size: 17px;
+}

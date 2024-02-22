@@ -1,0 +1,17 @@
+.dropdown-menu[data-bs-popper]{
+    left: auto !important;
+}
+
+.selected_row{
+    
+}
+
+.nav-link{
+    color: #2c2c2c !important;
+    font-size: 15px !important;
+}
+
+.selected_row:focus{
+    background: #e4e4e459;
+    filter: brightness(0.9);
+}

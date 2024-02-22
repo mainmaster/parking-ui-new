@@ -1,0 +1,24 @@
+// Color Variables
+$c-white: #fff;
+$c-black: #000;
+$c-red: #de0103;
+$c-grey: #ededee;
+$c-red-light: #fca9ab;
+
+$theme-colors: (
+  'primary': $c-red,
+  'success': #1e7e35,
+  'danger': #977202,
+  'secondary': #0B5ED7
+) !default;
+
+// Transitions Variables
+$transitionDefaultDuration: 0.3s;
+
+// Breakpoints
+$breakpointXl: 1399px;
+$breakpointLg: 1199px;
+$breakpointMd: 991px;
+$breakpointSm: 768px;
+$breakpointXs: 475px;
+$breakpointXXs: 375px;

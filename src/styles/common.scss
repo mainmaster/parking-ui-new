@@ -1,0 +1,127 @@
+@import './mixins.scss';
+@import '~rsuite/dist/rsuite.min.css';
+@import '~bootstrap/scss/bootstrap.scss';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Gilroy-Medium';
+  background-color: $c-grey;
+}
+
+.navbar-expand {
+  background-color: $c-white;
+}
+
+.rs-picker-menu {
+  z-index: 9999;
+}
+
+.rs-picker-has-value .rs-btn .rs-picker-toggle-value,
+.rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value {
+  color: #212529;
+}
+
+button.btn {
+  color: $c-white;
+
+  &:hover,
+  &:focus {
+    color: $c-white;
+  }
+}
+
+.page-item.active .page-link {
+  background-color: $c-red;
+  border-color: $c-red;
+}
+
+.page-item .page-link {
+  color: $c-red;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.25rem $c-red-light;
+  border-color: $c-red-light;
+}
+
+.btn-close:focus {
+  box-shadow: 0 0 0 0.25rem $c-red-light;
+}
+
+// Datepicker
+.rs-picker-menu
+  .rs-calendar
+  .rs-calendar-table-cell:hover
+  .rs-calendar-table-cell-content {
+  background-color: $c-red-light;
+  color: $c-white;
+}
+
+.rs-calendar-table-cell-selected .rs-calendar-table-cell-content {
+  background-color: $c-red;
+}
+
+.rs-calendar-table-cell-is-today .rs-calendar-table-cell-content {
+  box-shadow: inset 0 0 0 1px $c-red-light;
+}
+
+.rs-btn-primary:focus,
+.rs-btn-primary:hover,
+.rs-btn-primary,
+.rs-btn-primary.rs-btn-disabled,
+.rs-btn-primary:disabled,
+.rs-calendar-month-dropdown-cell-active
+  .rs-calendar-month-dropdown-cell-content {
+  background-color: $c-red;
+}
+
+.rs-picker-menu .rs-calendar .rs-calendar-month-dropdown-cell-content:hover {
+  background-color: $c-red-light;
+  color: $c-white;
+}
+
+.rs-calendar-month-dropdown-year-active,
+.rs-calendar-show-month-dropdown .rs-calendar-header-title-date {
+  color: $c-red;
+}
+
+.rs-picker-default:not(.rs-picker-disabled) .rs-btn-active,
+.rs-picker-default:not(.rs-picker-disabled) .rs-btn:focus,
+.rs-picker-default:not(.rs-picker-disabled) .rs-btn:hover,
+.rs-picker-default:not(.rs-picker-disabled) .rs-picker-toggle-active,
+.rs-picker-default:not(.rs-picker-disabled) .rs-picker-toggle:focus,
+.rs-picker-default:not(.rs-picker-disabled) .rs-picker-toggle:hover {
+  border-color: $c-red-light;
+}
+
+.rs-picker-toggle-active,
+.rs-picker.rs-picker-focused {
+  box-shadow: 0 0 0 0.25rem $c-red-light;
+}
+
+// Pagination
+.page-item.active .page-link {
+  color: $c-white;
+}
+
+// Accordion
+.accordion-button:not(.collapsed) {
+  color: $c-black;
+  background-color: $c-white;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(222, 1, 3, 0.3);
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23de0103'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.offcanvas-body {
+  overflow-y: unset;
+}

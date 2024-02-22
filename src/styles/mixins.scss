@@ -1,0 +1,38 @@
+@import './variables.scss';
+
+// Media
+@mixin media-xxs {
+  @media (max-width: $breakpointXXs) {
+    @content;
+  }
+}
+
+@mixin media-xs {
+  @media (max-width: $breakpointXs) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @media (max-width: $breakpointSm) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (max-width: $breakpointMd) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media (max-width: $breakpointLg) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @media (max-width: $breakpointXl) {
+    @content;
+  }
+}

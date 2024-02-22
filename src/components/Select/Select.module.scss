@@ -1,0 +1,11 @@
+.select {
+  position: relative;
+
+  &_error {
+    position: absolute;
+    bottom: -22px;
+    color: red;
+    font-size: 14px;
+    right: 0;
+  }
+}

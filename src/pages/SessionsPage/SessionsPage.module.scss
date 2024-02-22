@@ -1,0 +1,74 @@
+@import '../../styles/mixins.scss';
+
+.h1 {
+  margin-bottom: 30px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.error {
+  color: red;
+}
+
+.pagination {
+  margin-top: 1rem;
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-between;
+
+  &_table {
+    width: 78%;
+
+    @include media-md {
+      width: 1300px !important;
+      overflow-x: scroll;
+    }
+
+    &.active {
+      width: 100%;
+    }
+  }
+}
+
+
+.hidden {
+  display: none !important;
+}
+.card {
+  width: 30%;
+
+  &.hidden {
+    display: none !important;
+  }
+
+  @include media-sm {
+    width: 400px;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.table {
+  &_btns {
+     width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  @include media-md {
+    width: 1300px !important;
+
+  }
+}

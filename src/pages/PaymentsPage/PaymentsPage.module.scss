@@ -1,0 +1,42 @@
+@import '../../styles/mixins.scss';
+
+.h1 {
+  margin-bottom: 30px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.error {
+  color: red;
+}
+
+.pagination {
+  margin-top: 1rem;
+}
+
+.wrap {
+  @include media-sm {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  &_table {
+    @include media-sm {
+      width: 1000px;
+      overflow-x: scroll;
+    }
+  }
+}
+
+.table {
+  @include media-sm {
+    width: 1000px !important;
+    overflow-x: scroll;
+  }
+}

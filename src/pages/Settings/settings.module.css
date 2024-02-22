@@ -1,0 +1,14 @@
+.tabWrapper{
+    height: 100%;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+}
+
+.formPanels > div{
+    border: 1px solid #e8e8e8;
+}
+
+.operatorCard{
+
+}

@@ -1,0 +1,11 @@
+@import '../../../styles/mixins.scss';
+
+.modal {
+  img {
+    border-radius: 10px;
+    height: 250px;
+    margin-bottom: 20px;
+    object-fit: contain;
+    width: 100%;
+  }
+}

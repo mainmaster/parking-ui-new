@@ -1,0 +1,67 @@
+@import '../../styles/mixins.scss';
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.error {
+  color: red;
+  margin-top: 30px;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.input {
+  width: 300px;
+}
+
+.result {
+  margin-top: 30px;
+}
+
+.text {
+  font-size: 18px;
+}
+
+.green {
+  background-color: #24b846 !important;
+}
+
+.price {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  & > div {
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: $c-red;
+    color: $c-white;
+  }
+}
+
+.items {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+
+  @include media-lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-sm {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.table {
+  background-color: $c-white;
+  height: 100px !important;
+  img {
+    width: 100px;
+    border-radius: 10px;
+  }
+}

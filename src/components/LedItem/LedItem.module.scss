@@ -1,0 +1,14 @@
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &_value {
+    word-break: break-all;
+  }
+}

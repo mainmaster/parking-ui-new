@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        - REACT_APP_API_URL=https://parking-citysport.ru
+    container_name: frontend
+    ports:
+      - '8080:3000'
+    stdin_open: true
+    tty: true
+    restart: always

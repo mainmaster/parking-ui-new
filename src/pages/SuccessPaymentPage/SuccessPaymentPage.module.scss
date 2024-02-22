@@ -1,0 +1,41 @@
+@import '../../styles/mixins.scss';
+
+.success {
+  font-size: 20px;
+  color: rgb(1, 167, 1);
+  padding-top: 10px;
+  text-align: center;
+}
+
+.icon {
+  width: 200px;
+  height: 200px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  font-size: 20px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.time {
+  font-size: 40px;
+}
+
+.datenow {
+  &_title {
+    margin-top: 20px;
+    font-size: 17px;
+  }
+
+  &_text {
+    color: #1696c9;
+  }
+}

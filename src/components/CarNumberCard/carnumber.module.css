@@ -1,0 +1,65 @@
+@font-face {
+    font-family: RoadNumbers;
+    src: url("./fonts/RoadNumbers2.0.ttf");
+}
+
+.wrap{
+    font-family: Bahnschrift, serif;
+    font-size: 45px;
+    display: flex;
+    align-items: center;
+}
+.regionNumber{
+    font-size: 35px;
+    padding-top: 5px;
+    margin: 0px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.number{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.region{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    height: 50px;
+    padding:0 5px 0 5px;
+}
+
+.image{
+    object-fit: initial !important;
+    height: 12px !important;
+    margin: 0 !important;
+    width: auto !important;
+    border-radius: 0px !important;
+}
+.region > div{
+    display: flex;
+}
+.wrapRusImage{
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    display: flex;
+    gap:5px;
+    font-family: Bahnschrift, serif;
+    font-weight: 700;
+}
+.wrapRusImage > img{
+    border: 1px solid black;
+}

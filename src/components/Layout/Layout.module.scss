@@ -1,0 +1,19 @@
+@import '../../styles/mixins.scss';
+
+.layout {
+  height: 100%;
+
+  &_content {
+    background-color: $c-grey;
+    position: relative;
+
+    &_wrap {
+      background-color: $c-grey;
+      padding: 30px;
+
+      @include media-xs {
+        padding: 30px 15px 30px 15px;
+      }
+    }
+  }
+}
