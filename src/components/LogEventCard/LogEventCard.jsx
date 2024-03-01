@@ -8,83 +8,122 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import eventButtonIcon from '../../assets/svg/log_event_button_icon.svg';
 import eventCarIcon from '../../assets/svg/log_event_car_icon.svg';
+import eventPlateIcon from '../../assets/svg/log_event_plate_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import { colors } from '../../theme/colors';
 import { format, parseISO } from 'date-fns';
 import { positiveButtonStyle, secondaryButtonStyle } from '../../theme/styles';
 import TypeAuto from '../TypeAuto';
+import { paidSessionFetch } from '../../store/sessions/sessionsSlice';
+import { deleteBlackListFetch } from '../../store/blackList/blackListSlice';
+import { changeDataModal } from '../../store/events/eventsSlice';
 
 export default function LogEventCard({ event, onClickImage }) {
+  const dispatch = useDispatch();
+
   const dateString = format(
     parseISO(event.create_datetime),
     'dd.mm.yyyy HH:mm:ss'
   );
+
+  const paidHandle = (id) => {
+    dispatch(paidSessionFetch({ id, is_paid: true }));
+  };
+
+  const blackListHandle = (id) => {
+    dispatch(
+      deleteBlackListFetch({
+        // id: item.id,
+        // status: urlStatus['*']
+      })
+    );
+  };
+
+  const handleEventClick = () => {
+    dispatch(changeDataModal(event));
+  };
+
   return (
-    <Box component={'div'} sx={{ p: '1rem', width: '360px' }}>
-      <Stack
-        gap={'4px'}
-        sx={{ borderBottom: '1px solid ' + colors.outline.separator }}
-      >
+    <Box
+      component={'div'}
+      sx={{
+        p: '1rem',
+        width: '360px',
+        borderBottom: '1px solid ' + colors.outline.separator
+      }}
+    >
+      <Stack gap={'4px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
-          <Stack direction={'row'}>
+          <Stack direction={'row'} gap={'4px'}>
             <CarNumberCard carNumber={event.vehicle_plate} isTable />
             {event.car_img_path !== '' && (
-              <img
-                style={{
+              <IconButton
+                disableRipple
+                sx={{
                   width: '40px',
                   height: '40px',
                   borderRadius: '8px',
-                  cursor: 'pointer'
+                  border: `1px solid ${colors.outline.separator}`,
+                  backgroundColor: colors.button.secondary.default
                 }}
-                src={process.env.REACT_APP_API_URL + '/' + event.car_img_path}
-                alt="автомобиль"
-                onClick={() =>
-                  onClickImage(
-                    process.env.REACT_APP_API_URL + '/' + event.car_img_path
-                  )
-                }
-              />
+              >
+                <img
+                  style={{
+                    width: 20
+                  }}
+                  src={eventCarIcon}
+                  alt="автомобиль"
+                  onClick={() =>
+                    onClickImage(
+                      process.env.REACT_APP_API_URL + '/' + event.car_img_path
+                    )
+                  }
+                />
+              </IconButton>
             )}
           </Stack>
           <IconButton
             disableRipple
+            sx={[
+              secondaryButtonStyle,
+              {
+                width: '48px',
+                height: '40px'
+              }
+            ]}
+            onClick={handleEventClick}
+          >
+            <Typography sx={{ fontWeight: 500 }}>...</Typography>
+          </IconButton>
+        </Stack>
+        {event.plate_img_path !== '' && (
+          <IconButton
+            disableRipple
             sx={{
-              width: '48px',
+              width: '40px',
               height: '40px',
               borderRadius: '8px',
-              border: `1px solid ${colors.outline.default}`,
+              border: `1px solid ${colors.outline.separator}`,
               backgroundColor: colors.button.secondary.default
             }}
           >
             <img
               style={{
-                height: 17
+                width: 23.5
               }}
-              src={eventButtonIcon}
-              alt="к событию"
+              src={eventPlateIcon}
+              alt="номер"
+              onClick={() =>
+                onClickImage(
+                  process.env.REACT_APP_API_URL + '/' + event.plate_img_path
+                )
+              }
             />
           </IconButton>
-        </Stack>
-        {event.plate_img_path !== '' && (
-          <img
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '8px',
-              cursor: 'pointer'
-            }}
-            src={process.env.REACT_APP_API_URL + '/' + event.plate_img_path}
-            alt="номер"
-            onClick={() =>
-              onClickImage(
-                process.env.REACT_APP_API_URL + '/' + event.plate_img_path
-              )
-            }
-          />
         )}
         <Stack>
           <Typography sx={{ fontWeight: 500, lineHeight: '1.125rem' }}>
@@ -101,24 +140,29 @@ export default function LogEventCard({ event, onClickImage }) {
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          <IconButton
-            disableRipple
-            sx={{
-              width: '18px',
-              height: '18px',
-              borderRadius: 0,
-              cursor: 'inherit'
-            }}
-          >
-            <img
-              style={{
-                width: '14.6px'
-              }}
-              src={eventCarIcon}
-              alt="img"
-            />
-          </IconButton>
-          <Typography>{event.car_brand}</Typography>
+          {event.car_brand !== '' && (
+            <>
+              <IconButton
+                disableRipple
+                sx={{
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: 0,
+                  cursor: 'inherit'
+                }}
+              >
+                <img
+                  style={{
+                    width: '14.6px'
+                  }}
+                  src={eventCarIcon}
+                  alt="img"
+                />
+              </IconButton>
+              <Typography>{event.car_brand}</Typography>
+            </>
+          )}
+          <TypeAuto type={event.access_status_code} />
         </Stack>
         <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
           <img
@@ -129,7 +173,6 @@ export default function LogEventCard({ event, onClickImage }) {
             alt={event.access_point_description}
           />
           <Typography>{event.access_point_description}</Typography>
-          <TypeAuto type={event.access_status_code} />
         </Stack>
         <Stack
           direction={'row'}
@@ -142,7 +185,7 @@ export default function LogEventCard({ event, onClickImage }) {
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={positiveButtonStyle}
+              sx={[positiveButtonStyle, { mt: '8px' }]}
             >
               Ввести номер
             </Button>
@@ -152,7 +195,7 @@ export default function LogEventCard({ event, onClickImage }) {
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={secondaryButtonStyle}
+              sx={[secondaryButtonStyle, { mt: '8px' }]}
             >
               Убрать из Чёрного списка
             </Button>

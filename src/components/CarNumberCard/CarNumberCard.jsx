@@ -3,6 +3,11 @@ import styles from './carnumber.module.css';
 import flag from './flag.jpeg';
 import flagBlank from './flag_blank.png';
 import { useSnackbar } from 'notistack';
+import { colors } from '../../theme/colors';
+
+const numberTextStyle = {
+  padding: '0 6px'
+};
 
 export const CarNumberCard = ({
   carNumber,
@@ -11,14 +16,14 @@ export const CarNumberCard = ({
   handleClick
 }) => {
   const { enqueueSnackbar } = useSnackbar();
-  if (carNumber) {
+  if (carNumber && carNumber.number !== '') {
     return (
       <div
         style={
           isTable
             ? {
                 display: 'flex',
-                width: '170px',
+                //width: '196px',
                 justifyContent: isEnterCard ? 'flex-start' : 'center'
               }
             : null
@@ -38,7 +43,7 @@ export const CarNumberCard = ({
           }}
           className={styles.wrap}
           style={{
-            fontSize: isTable ? '30px' : '45px'
+            fontSize: isTable ? '24px' : '45px'
           }}
         >
           {carNumber.region || carNumber.region === '' ? (
@@ -47,10 +52,29 @@ export const CarNumberCard = ({
                 className={styles.number}
                 style={{
                   border: isTable ? '1px solid black' : '2px solid black',
-                  height: isTable ? '40px' : '50px'
+                  borderRight: 0,
+                  height: isTable ? '40px' : '50px',
+                  fontSize: isTable ? '34px' : '45px',
+                  lineHeight: isTable ? '34px' : '45px'
                 }}
               >
                 {carNumber.number === '' ? '------' : carNumber.number}
+              </div>
+              <div
+                style={{
+                  height: isTable ? '40px' : '50px',
+                  borderTop: isTable ? '1px solid black' : '2px solid black',
+                  borderBottom: isTable ? '1px solid black' : '2px solid black'
+                }}
+              >
+                <div
+                  style={{
+                    width: '1px',
+                    height: isTable ? '25px' : '35px',
+                    margin: '7px 0 ',
+                    backgroundColor: colors.outline.surface
+                  }}
+                ></div>
               </div>
               <div
                 className={styles.region}
@@ -65,7 +89,8 @@ export const CarNumberCard = ({
                   <>
                     <div
                       style={{
-                        fontSize: isTable ? '23px' : '35px'
+                        fontSize: isTable ? '15px' : '35px',
+                        lineHeight: isTable ? '15px' : '35px'
                       }}
                       className={styles.regionNumber}
                     >

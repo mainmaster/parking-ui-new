@@ -35,10 +35,12 @@ import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import { EventsDashboard } from '../../components/EventsDashboard/EventsDashboard';
 import TypeAuto from '../../components/TypeAuto';
 import React from 'react';
-import { Grid, Stack } from '@mui/material';
+import { Drawer, Grid, IconButton, Stack } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
-import { listStyle } from '../../theme/styles';
+import { listStyle, secondaryButtonStyle } from '../../theme/styles';
+import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
+import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 
 const EventsPage = ({ onlyLog }) => {
   const dispatch = useDispatch();
@@ -187,7 +189,8 @@ const EventsPage = ({ onlyLog }) => {
   const content = hasData ? tableContent : null;
 
   return (
-    <Grid container sx={{ maxHeight: '100dvh' }}>
+    // <Grid container sx={{ maxHeight: '100dvh' }}>
+    <>
       {onlyLog ? (
         <>
           <FilterForm />
@@ -208,17 +211,57 @@ const EventsPage = ({ onlyLog }) => {
         </>
       ) : (
         <>
-          <Grid item xs sx={{ maxHeight: '100dvh' }}>
-            <Cameras />
-            {/* <EventsDashboard /> */}
-          </Grid>
-          <Grid item style={{ width: '360px', maxHeight: '100dvh' }}>
+          {/* <Grid item xs sx={{ maxHeight: '100dvh' }}> */}
+          <Cameras />
+          {/* <EventsDashboard /> */}
+          {/* </Grid>
+          <Grid item style={{ width: '360px', maxHeight: '100dvh' }}> */}
+          <Drawer
+            sx={{
+              width: '361px',
+              maxHeight: '100dvh',
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: '361px',
+                boxSizing: 'border-box'
+              }
+            }}
+            variant="permanent"
+            anchor="right"
+          >
             <Stack
               sx={[
                 listStyle,
                 { width: '360px', backgroundColor: colors.surface.high }
               ]}
             >
+              <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                gap={'8px'}
+                sx={{ height: '64px', width: '100%', p: '16px', pb: '8px' }}
+              >
+                <CarNumberFilter />
+                <IconButton
+                  disableRipple
+                  sx={[
+                    secondaryButtonStyle,
+                    {
+                      width: '48px',
+                      height: '40px'
+                    }
+                  ]}
+                >
+                  <img
+                    style={{
+                      width: '24px'
+                    }}
+                    src={eventTuneIcon}
+                    alt="img"
+                  />
+                </IconButton>
+              </Stack>
               {events.length > 0
                 ? events.map((item, index) => (
                     <LogEventCard
@@ -240,10 +283,12 @@ const EventsPage = ({ onlyLog }) => {
                 imagePadding={100}
               />
             )}
-          </Grid>
+          </Drawer>
+          {/* </Grid> */}
         </>
       )}
-    </Grid>
+      {/* </Grid> */}
+    </>
   );
 };
 

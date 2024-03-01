@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import css from './Cameras.module.scss';
 import Skeleton from 'react-loading-skeleton';
@@ -38,9 +38,16 @@ import {
   ArrowRightSquareFill
 } from 'react-bootstrap-icons';
 import { useParkingInfoQuery } from '../../api/settings/settings';
-import { Box } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import React from 'react';
-import { listStyle } from '../../theme/styles';
+import {
+  listStyle,
+  positiveButtonStyle,
+  secondaryButtonStyle
+} from '../../theme/styles';
+import { colors } from '../../theme/colors';
+import ParkingInfo from '../ParkingInfo/ParkingInfo';
+import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
 
 const Cameras = () => {
   const dispatch = useDispatch();
@@ -161,137 +168,188 @@ const Cameras = () => {
     }
   };
   return (
-    <Box sx={listStyle}>
-      <Box>
+    <Box
+      sx={[
+        listStyle,
+        {
+          backgroundColor: colors.surface.low,
+          width: '100%'
+        }
+      ]}
+    >
+      <Stack
+        direction={'row'}
+        gap={'16px'}
+        justifyContent={'space-between'}
+        sx={{ height: '64px', width: '100%', p: '16px', pb: '8px' }}
+      >
+        <Stack direction={'row'} gap={'16px'} minWidth={'260px'}>
+          <Button
+            disableRipple
+            variant="contained"
+            fullWidth={false}
+            sx={secondaryButtonStyle}
+            onClick={() => dispatch(openApAllFetch())}
+          >
+            Открыть все
+          </Button>
+          <Button
+            disableRipple
+            variant="contained"
+            fullWidth={false}
+            sx={secondaryButtonStyle}
+            onClick={() => dispatch(closeApAllFetch())}
+          >
+            Закрыть все
+          </Button>
+        </Stack>
+        <ParkingInfo />
+      </Stack>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          flexBasis: '360px'
+        }}
+      >
         {_.sortBy(accessPoints, ['id']).map((camera, index) => (
-          <div className={css.camera} key={index}>
-            <Tooltip id={`tooltip-${camera.id}`} />
-            <div className={css.camera_status}>
-              <div
-                className={cn(
-                  css.circle,
-                  camera.status === 'open' && css.green,
-                  camera.status === 'working_mode' && css.orange,
-                  css.animate
-                )}
-              />
-              <a
-                href
-                data-tooltip-id={`tooltip-${camera.id}`}
-                data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-                  <div>
-                    <div className={css.camera_status_item}>
-                      <div className={css.circle} />
-                      <span>- закрыт</span>
-                    </div>
-                    <div className={css.camera_status_item}>
-                      <div className={cn(css.circle, css.green)} />
-                      <span>- открыт</span>
-                    </div>
-                    <div className={css.camera_status_item}>
-                      <div className={cn(css.circle, css.orange)} />
-                      <span>- нормальный режим</span>
-                    </div>
-                  </div>
-                )}
-              >
-                <QuestionCircle />
-              </a>
-            </div>
-            <div className={css.camera_name}>
-              {camera.direction === 'in' ? (
-                <>
-                  <ArrowRightSquareFill color="#1cd80f" size={30} />
-                </>
-              ) : (
-                <>
-                  <ArrowLeftSquareFill color="#de0103" size={30} />
-                </>
-              )}
-              {camera.description}
-            </div>
-            <div>
-              <div className={css.wrapFormLed}>
-                <Formik
-                  initialValues={{
-                    line1: '',
-                    line2: ''
-                  }}
-                  onSubmit={(e) => handleCreateLedMessage(e, camera.id)}
-                >
-                  {(props) => (
-                    <form onSubmit={props.handleSubmit} id="create-camera">
-                      <Form.Control
-                        name="line1"
-                        type="text"
-                        className={css.fieldFormLed}
-                        defaultValue={null}
-                        value={
-                          titlesLed[`access_point${camera.id}`]?.line1 || ''
-                        }
-                        onChange={(e) => {
-                          props.setFieldValue('line1', e.target.value);
-                          handleSetTitles(e, camera.id, 1);
-                        }}
-                      />
-                      <Form.Control
-                        name="line2"
-                        type="text"
-                        className={css.fieldFormLed}
-                        value={
-                          titlesLed[`access_point${camera.id}`]?.line2 || ''
-                        }
-                        onChange={(e) => {
-                          props.setFieldValue('line2', e.target.value);
-                          handleSetTitles(e, camera.id, 2);
-                        }}
-                      />
-                      <div style={{ display: 'flex', gap: '3px' }}>
-                        <Button size="sm" type="submit">
-                          Ввод
-                        </Button>
-                        <Button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            clearLedBoardMessage(camera.id);
-                          }}
-                          size="sm"
-                        >
-                          Очистить
-                        </Button>
-                      </div>
-                    </form>
+          <>
+            <CameraManagementItem
+              camera={camera}
+              key={index}
+              src={cameras.find((item) => item.id === camera.cam_id)?.mjpeg_url}
+            />
+            {/* <div className={css.camera} key={index}>
+              <Tooltip id={`tooltip-${camera.id}`} />
+              <div className={css.camera_status}>
+                <div
+                  className={cn(
+                    css.circle,
+                    camera.status === 'open' && css.green,
+                    camera.status === 'working_mode' && css.orange,
+                    css.animate
                   )}
-                </Formik>
-              </div>
-              {isPreviewLenght ? (
-                <Camera
-                  id={camera.id}
-                  src={
-                    cameras.find((item) => item.id === camera.cam_id)?.mjpeg_url
-                  }
                 />
-              ) : (
-                <Skeleton height={350} />
-              )}
-            </div>
+                <a
+                  href
+                  data-tooltip-id={`tooltip-${camera.id}`}
+                  data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+                    <div>
+                      <div className={css.camera_status_item}>
+                        <div className={css.circle} />
+                        <span>- закрыт</span>
+                      </div>
+                      <div className={css.camera_status_item}>
+                        <div className={cn(css.circle, css.green)} />
+                        <span>- открыт</span>
+                      </div>
+                      <div className={css.camera_status_item}>
+                        <div className={cn(css.circle, css.orange)} />
+                        <span>- нормальный режим</span>
+                      </div>
+                    </div>
+                  )}
+                >
+                  <QuestionCircle />
+                </a>
+              </div>
+              <div className={css.camera_name}>
+                {camera.direction === 'in' ? (
+                  <>
+                    <ArrowRightSquareFill color="#1cd80f" size={30} />
+                  </>
+                ) : (
+                  <>
+                    <ArrowLeftSquareFill color="#de0103" size={30} />
+                  </>
+                )}
+                {camera.description}
+              </div>
+              <div>
+                <div className={css.wrapFormLed}>
+                  <Formik
+                    initialValues={{
+                      line1: '',
+                      line2: ''
+                    }}
+                    onSubmit={(e) => handleCreateLedMessage(e, camera.id)}
+                  >
+                    {(props) => (
+                      <form onSubmit={props.handleSubmit} id="create-camera">
+                        <Form.Control
+                          name="line1"
+                          type="text"
+                          className={css.fieldFormLed}
+                          defaultValue={null}
+                          value={
+                            titlesLed[`access_point${camera.id}`]?.line1 || ''
+                          }
+                          onChange={(e) => {
+                            props.setFieldValue('line1', e.target.value);
+                            handleSetTitles(e, camera.id, 1);
+                          }}
+                        />
+                        <Form.Control
+                          name="line2"
+                          type="text"
+                          className={css.fieldFormLed}
+                          value={
+                            titlesLed[`access_point${camera.id}`]?.line2 || ''
+                          }
+                          onChange={(e) => {
+                            props.setFieldValue('line2', e.target.value);
+                            handleSetTitles(e, camera.id, 2);
+                          }}
+                        />
+                        <div style={{ display: 'flex', gap: '3px' }}>
+                          <Button size="sm" type="submit">
+                            Ввод
+                          </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              clearLedBoardMessage(camera.id);
+                            }}
+                            size="sm"
+                          >
+                            Очистить
+                          </Button>
+                        </div>
+                      </form>
+                    )}
+                  </Formik>
+                </div> 
+                {isPreviewLenght ? (
+                  <Camera
+                    id={camera.id}
+                    src={
+                      cameras.find((item) => item.id === camera.cam_id)
+                        ?.mjpeg_url
+                    }
+                  />
+                ) : (
+                  <Skeleton height={350} />
+                )}
+              </div>
 
-            <div className={css.camera_btns}>
-              <Button onClick={() => openAp(camera)} variant="success">
-                Открыть
-              </Button>
-              <Button
-                onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
-              >
-                Открыть с подтверждением номера
-              </Button>
-              <Button onClick={() => closeAp(camera)}>Закрыть</Button>
-              <Button variant="danger" onClick={() => normalAp(camera)}>
-                Нормальный режим
-              </Button>
-            </div>
-          </div>
+              <div className={css.camera_btns}>
+                <Button onClick={() => openAp(camera)} variant="success">
+                  Открыть
+                </Button>
+                <Button
+                  onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
+                >
+                  Открыть с подтверждением номера
+                </Button>
+                <Button onClick={() => closeAp(camera)}>Закрыть</Button>
+                <Button variant="danger" onClick={() => normalAp(camera)}>
+                  Нормальный режим
+                </Button>
+              </div>
+            </div>*/}
+          </>
         ))}
         <OpenApByVehiclePlateModal
           show={isOpenApModal}
@@ -302,7 +360,7 @@ const Cameras = () => {
           handleClose={() => dispatch(changeActiveOpenApTimeModal())}
         />
       </Box>
-      <div className={css.btns}>
+      {/*       <div className={css.btns}>
         <Button variant="success" onClick={() => dispatch(openApAllFetch())}>
           Открыть все шлагбаумы
         </Button>
@@ -316,7 +374,7 @@ const Cameras = () => {
         >
           В нормальный режим все шлагбаумы
         </Button>
-      </div>
+      </div> */}
     </Box>
   );
 };

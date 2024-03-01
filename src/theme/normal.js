@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import '@fontsource-variable/onest';
 import { colors } from './colors';
+import VeranoSansSemibold from '../assets/fonts/VeranoSans-SemiBold.ttf';
 
 const theme = createTheme({
   typography: {
@@ -14,3 +15,19 @@ const theme = createTheme({
 });
 
 export default theme;
+
+export const veranoTheme = createTheme({
+  typography: {
+    fontFamily: ['VeranoSemibold', 'sans-serif'].join(',')
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '@font-face': {
+          fontFamily: 'VeranoSemibold',
+          src: `local('VeranoSans-SemiBold'), url(${VeranoSansSemibold}) format('ttf')`
+        }
+      }
+    }
+  }
+});

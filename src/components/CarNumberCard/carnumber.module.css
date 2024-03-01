@@ -1,65 +1,72 @@
 @font-face {
-    font-family: RoadNumbers;
-    src: url("./fonts/RoadNumbers2.0.ttf");
+  font-family: RoadNumbers;
+  src: url('./fonts/RoadNumbers2.0.ttf');
 }
 
-.wrap{
-    font-family: Bahnschrift, serif;
-    font-size: 45px;
-    display: flex;
-    align-items: center;
-}
-.regionNumber{
-    font-size: 35px;
-    padding-top: 5px;
-    margin: 0px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.number{
-    height: 50px;
-    display: flex;
-    align-items: center;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-.region{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    border-top: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    height: 50px;
-    padding:0 5px 0 5px;
+@font-face {
+  font-family: VeranoSansSemibold;
+  src: url('../../assets/fonts/VeranoSans-SemiBold.ttf');
 }
 
-.image{
-    object-fit: initial !important;
-    height: 12px !important;
-    margin: 0 !important;
-    width: auto !important;
-    border-radius: 0px !important;
+@font-face {
+  font-family: VeranoSansBold;
+  src: url('../../assets/fonts/VeranoSans-Bold.ttf');
 }
-.region > div{
-    display: flex;
+
+.wrap {
+  font-family: VeranoSansSemibold, RoadNumbers, serif;
+  font-size: 45px;
+  display: flex;
+  align-items: center;
 }
-.wrapRusImage{
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    display: flex;
-    gap:5px;
-    font-family: Bahnschrift, serif;
-    font-weight: 700;
+.regionNumber {
+  font-family: VeranoSansBold, RoadNumbers, serif;
+  font-size: 35px;
+  padding-top: 5px;
+  margin: 0px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.wrapRusImage > img{
-    border: 1px solid black;
+.number {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.region {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  height: 50px;
+  padding: 0 6px;
+}
+
+.image {
+  object-fit: initial !important;
+  height: 8px !important;
+  margin: 0 !important;
+  width: auto !important;
+  border-radius: 0px !important;
+}
+.region > div {
+  display: flex;
+}
+.wrapRusImage {
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  display: flex;
+  gap: 5px;
+  font-family: Bahnschrift, serif;
+  font-weight: 700;
 }

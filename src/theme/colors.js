@@ -39,10 +39,39 @@ export const colors = {
       hover: '#F2ECEC',
       active: '#EBDCDC'
     },
+    open: {
+      default: '#20DE6C',
+      hover: '#4DE589',
+      active: '#7AEBA6',
+      outline: '#138641'
+    },
     positive: {
       default: '#D2F9E2',
       hover: '#A5F3C5',
-      active: '#78EDA8'
+      active: '#78EDA8',
+      outline: '#138641'
+    },
+    close: {
+      default: '#F90606',
+      hover: '#FE3436',
+      active: '#FE6468',
+      outline: '#950303'
+    },
+    auto_mode: {
+      default: '#2D2DD2',
+      hover: '#5757DB',
+      active: '#8181E4',
+      outline: '#1B1B7E'
+    },
+    unvisited_link: {
+      default: '#2D2DD2',
+      hover: '#2424A8',
+      active: '#1B1B7E'
+    },
+    visited_link: {
+      default: '#208FDF',
+      hover: '#1973B2',
+      active: '#135686'
     }
   },
   entry: {
@@ -55,7 +84,7 @@ export const colors = {
   },
   mode: {
     auto: {
-      element: '#99959D',
+      element: '#1B1B7E',
       background: '#FFFFFF'
     },
     open: {

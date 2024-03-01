@@ -1,34 +1,34 @@
-import { $api } from '.'
-import {store} from "../store";
+import { $api } from '.';
+import { store } from '../store';
 
 export const createEventRequest = async ({
   access_point_id,
   vehicle_plate,
   img_path,
   is_recognition,
-  description,
+  description
 }) => {
   return $api.post('/events', {
     access_point_id,
     vehicle_plate,
     img_path,
     is_recognition,
-    description,
-  })
-}
+    description
+  });
+};
 
-export const getEvent = async(id) =>{
-  return $api.get(`/events/${id}`)
-}
+export const getEvent = async (id) => {
+  return $api.get(`/events/${id}`);
+};
 
 export const getEventsRequest = async ({
-  offset = 50,
-  limit = 50,
+  offset = 30,
+  limit = 30,
   vehiclePlate = undefined,
-    accessPoint,
-    createDateTo,
-    createDateFrom,
-    eventCode
+  accessPoint,
+  createDateTo,
+  createDateFrom,
+  eventCode
 }) => {
   return $api.get('/events/', {
     params: {
@@ -39,6 +39,6 @@ export const getEventsRequest = async ({
       createDateTo,
       createDateFrom,
       eventCode
-    },
-  })
-}
+    }
+  });
+};
