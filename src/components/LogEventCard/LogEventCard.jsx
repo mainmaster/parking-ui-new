@@ -21,13 +21,14 @@ import TypeAuto from '../TypeAuto';
 import { paidSessionFetch } from '../../store/sessions/sessionsSlice';
 import { deleteBlackListFetch } from '../../store/blackList/blackListSlice';
 import { changeDataModal } from '../../store/events/eventsSlice';
+import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 
 export default function LogEventCard({ event, onClickImage }) {
   const dispatch = useDispatch();
 
   const dateString = format(
     parseISO(event.create_datetime),
-    'dd.mm.yyyy HH:mm:ss'
+    'dd.MM.yyyy HH:mm:ss'
   );
 
   const paidHandle = (id) => {
@@ -70,6 +71,11 @@ export default function LogEventCard({ event, onClickImage }) {
                   border: `1px solid ${colors.outline.separator}`,
                   backgroundColor: colors.button.secondary.default
                 }}
+                onClick={() =>
+                  onClickImage(
+                    process.env.REACT_APP_API_URL + '/' + event.car_img_path
+                  )
+                }
               >
                 <img
                   style={{
@@ -77,11 +83,6 @@ export default function LogEventCard({ event, onClickImage }) {
                   }}
                   src={eventCarIcon}
                   alt="автомобиль"
-                  onClick={() =>
-                    onClickImage(
-                      process.env.REACT_APP_API_URL + '/' + event.car_img_path
-                    )
-                  }
                 />
               </IconButton>
             )}
@@ -110,6 +111,11 @@ export default function LogEventCard({ event, onClickImage }) {
               border: `1px solid ${colors.outline.separator}`,
               backgroundColor: colors.button.secondary.default
             }}
+            onClick={() =>
+              onClickImage(
+                process.env.REACT_APP_API_URL + '/' + event.plate_img_path
+              )
+            }
           >
             <img
               style={{
@@ -117,11 +123,6 @@ export default function LogEventCard({ event, onClickImage }) {
               }}
               src={eventPlateIcon}
               alt="номер"
-              onClick={() =>
-                onClickImage(
-                  process.env.REACT_APP_API_URL + '/' + event.plate_img_path
-                )
-              }
             />
           </IconButton>
         )}
@@ -186,6 +187,9 @@ export default function LogEventCard({ event, onClickImage }) {
               variant="contained"
               fullWidth={false}
               sx={[positiveButtonStyle, { mt: '8px' }]}
+              onClick={() =>
+                dispatch(changeActiveOpenApModal(event.access_point))
+              }
             >
               Ввести номер
             </Button>

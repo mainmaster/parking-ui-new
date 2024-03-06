@@ -32,7 +32,8 @@ export const colors = {
     primary: {
       default: '#FE0103',
       hover: '#FE3436',
-      active: '#FE6768'
+      active: '#FE6768',
+      outline: '#980102'
     },
     secondary: {
       default: '#FFFFFF',

@@ -12,6 +12,7 @@ const numberTextStyle = {
 export const CarNumberCard = ({
   carNumber,
   isTable,
+  small,
   isEnterCard,
   handleClick
 }) => {
@@ -20,30 +21,35 @@ export const CarNumberCard = ({
     return (
       <div
         style={
-          isTable
+          isTable || small
             ? {
                 display: 'flex',
-                //width: '196px',
-                justifyContent: isEnterCard ? 'flex-start' : 'center'
+                width: small ? '100%' : 'inherit',
+                justifyContent: small
+                  ? 'flex-end'
+                  : isEnterCard
+                  ? 'flex-start'
+                  : 'center'
               }
             : null
         }
       >
         <div
           onClick={() => {
-            if (!isEnterCard) {
+            if (handleClick) {
+              handleClick();
+            } else {
               navigator.clipboard
                 .writeText(carNumber.number + carNumber.region)
                 .then(() => {
                   enqueueSnackbar('Номер скопирован');
                 });
-            } else {
-              handleClick();
             }
           }}
           className={styles.wrap}
           style={{
-            fontSize: isTable ? '24px' : '45px'
+            fontSize: small ? '16px' : isTable ? '24px' : '45px',
+            cursor: handleClick ? 'pointer' : 'default'
           }}
         >
           {carNumber.region || carNumber.region === '' ? (
@@ -51,27 +57,47 @@ export const CarNumberCard = ({
               <div
                 className={styles.number}
                 style={{
-                  border: isTable ? '1px solid black' : '2px solid black',
+                  border: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
                   borderRight: 0,
-                  height: isTable ? '40px' : '50px',
-                  fontSize: isTable ? '34px' : '45px',
-                  lineHeight: isTable ? '34px' : '45px'
+                  height: small ? '24px' : isTable ? '40px' : '50px',
+                  fontSize: small ? '22px' : isTable ? '34px' : '45px',
+                  lineHeight: small ? '22px' : isTable ? '34px' : '45px',
+                  borderTopLeftRadius: small ? '4px' : '8px',
+                  borderBottomLeftRadius: small ? '4px' : '8px',
+                  backgroundColor: small
+                    ? 'rgba(255, 255, 255, 0.7)'
+                    : colors.surface.low
                 }}
               >
                 {carNumber.number === '' ? '------' : carNumber.number}
               </div>
               <div
                 style={{
-                  height: isTable ? '40px' : '50px',
-                  borderTop: isTable ? '1px solid black' : '2px solid black',
-                  borderBottom: isTable ? '1px solid black' : '2px solid black'
+                  height: small ? '24px' : isTable ? '40px' : '50px',
+                  borderTop: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  borderBottom: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  backgroundColor: small
+                    ? 'rgba(255, 255, 255, 0.7)'
+                    : colors.surface.low
                 }}
               >
                 <div
                   style={{
                     width: '1px',
-                    height: isTable ? '25px' : '35px',
-                    margin: '7px 0 ',
+                    height: small ? '16px' : isTable ? '25px' : '35px',
+                    margin: small ? '4px 0 ' : '7px 0 ',
                     backgroundColor: colors.outline.surface
                   }}
                 ></div>
@@ -79,18 +105,38 @@ export const CarNumberCard = ({
               <div
                 className={styles.region}
                 style={{
-                  borderTop: isTable ? '1px solid black' : '2px solid black',
-                  borderRight: isTable ? '1px solid black' : '2px solid black',
-                  borderBottom: isTable ? '1px solid black' : '2px solid black',
-                  height: isTable ? '40px' : '50px'
+                  borderTop: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  borderRight: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  borderBottom: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  height: small ? '24px' : isTable ? '40px' : '50px',
+                  borderTopRightRadius: small ? '4px' : '8px',
+                  borderBottomRightRadius: small ? '4px' : '8px',
+                  gap: small ? '3px' : '6px',
+                  backgroundColor: small
+                    ? 'rgba(255, 255, 255, 0.7)'
+                    : colors.surface.low
                 }}
               >
                 {(carNumber.region || carNumber.region === '') && (
                   <>
                     <div
                       style={{
-                        fontSize: isTable ? '15px' : '35px',
-                        lineHeight: isTable ? '15px' : '35px'
+                        fontSize: small ? '11px' : isTable ? '15px' : '35px',
+                        lineHeight: small ? '11px' : isTable ? '15px' : '35px',
+                        paddingTop: small ? '3px' : '7px',
+                        height: small ? '11px' : isTable ? '20px' : '35px'
                       }}
                       className={styles.regionNumber}
                     >
@@ -99,12 +145,16 @@ export const CarNumberCard = ({
                     <div
                       className={styles.wrapRusImage}
                       style={{
-                        gap: isTable ? '3px' : '5px'
+                        gap: small ? '3px' : isTable ? '3px' : '5px',
+                        fontSize: small ? '7px' : '11px',
+                        lineHeight: small ? '7px' : '11px',
+                        height: small ? '5px' : '8px',
+                        marginBottom: small ? '3px' : '7px'
                       }}
                     >
                       <span>{carNumber.region === '' ? '---' : 'RUS'}</span>
                       <img
-                        style={{}}
+                        style={{ height: small ? '5px' : '8px' }}
                         className={styles.image}
                         src={carNumber.region === '' ? flagBlank : flag}
                         alt=""
@@ -119,9 +169,13 @@ export const CarNumberCard = ({
               <div
                 className={styles.number}
                 style={{
-                  borderRadius: '5px',
-                  border: isTable ? '1px solid black' : '2px solid black',
-                  height: isTable ? '40px' : '50px'
+                  borderRadius: small ? '4px' : '8px',
+                  border: small
+                    ? `1px solid ${colors.outline.surface}`
+                    : isTable
+                    ? '1px solid black'
+                    : '2px solid black',
+                  height: small ? '24px' : isTable ? '40px' : '50px'
                 }}
               >
                 {carNumber.number === '' ? '------' : carNumber.number}

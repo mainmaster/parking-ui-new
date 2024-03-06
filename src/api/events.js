@@ -22,8 +22,8 @@ export const getEvent = async (id) => {
 };
 
 export const getEventsRequest = async ({
-  offset = 30,
-  limit = 30,
+  offset = 50,
+  limit = 50,
   vehiclePlate = undefined,
   accessPoint,
   createDateTo,

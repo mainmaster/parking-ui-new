@@ -22,7 +22,6 @@
 .regionNumber {
   font-family: VeranoSansBold, RoadNumbers, serif;
   font-size: 35px;
-  padding-top: 5px;
   margin: 0px;
   height: 25px;
   display: flex;
@@ -53,7 +52,6 @@
 
 .image {
   object-fit: initial !important;
-  height: 8px !important;
   margin: 0 !important;
   width: auto !important;
   border-radius: 0px !important;

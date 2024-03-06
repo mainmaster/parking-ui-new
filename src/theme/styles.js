@@ -63,6 +63,7 @@ export const openButtonStyle = {
 export const closeButtonStyle = {
   '&, &:link, &.visited': {
     height: '40px',
+    minWidth: '90px',
     py: '8px',
     px: '12px',
     textTransform: 'none',
@@ -120,6 +121,36 @@ export const autoButtonStyle = {
   }
 };
 
+export const primaryButtonStyle = {
+  '&, &:link, &.visited': {
+    height: '40px',
+    py: '8px',
+    px: '12px',
+    textTransform: 'none',
+    fontSize: '1rem',
+    backgroundColor: colors.button.primary.default,
+    border: `1px solid ${colors.button.primary.outline}`,
+    borderRadius: '20px',
+    color: colors.element.primary,
+    boxShadow: 'none',
+    whiteSpace: 'nowrap'
+  },
+  '&:hover': {
+    backgroundColor: colors.button.primary.hover,
+    boxShadow: 'none'
+  },
+  '&:active': {
+    backgroundColor: colors.button.primary.active,
+    boxShadow: 'none'
+  },
+  '&.Mui-disabled': {
+    color: colors.element.inactive,
+    borderColor: colors.element.inactive,
+    backgroundColor: 'transparent',
+    boxShadow: 'none'
+  }
+};
+
 export const secondaryButtonStyle = {
   '&, &:link, &.visited': {
     height: '40px',
@@ -127,7 +158,7 @@ export const secondaryButtonStyle = {
     px: '12px',
     textTransform: 'none',
     fontSize: '1rem',
-    backgroundColor: colors.button.secondary.default,
+    backgroundColor: `${colors.button.secondary.default} !important`,
     border: `1px solid ${colors.outline.default}`,
     borderRadius: '8px',
     color: colors.element.primary,
@@ -135,17 +166,17 @@ export const secondaryButtonStyle = {
     whiteSpace: 'nowrap'
   },
   '&:hover': {
-    backgroundColor: colors.button.secondary.hover,
+    backgroundColor: `${colors.button.secondary.hover}  !important`,
     boxShadow: 'none'
   },
   '&:active': {
-    backgroundColor: colors.button.secondary.active,
+    backgroundColor: `${colors.button.secondary.active} !important`,
     boxShadow: 'none'
   },
   '&.Mui-disabled': {
     color: colors.element.inactive,
     borderColor: colors.element.inactive,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent !important',
     boxShadow: 'none'
   }
 };

@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  IconButton,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
   styled
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Camera from '../Camera/Camera';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
@@ -15,17 +17,22 @@ import {
   autoButtonStyle,
   closeButtonStyle,
   openButtonStyle,
-  positiveButtonStyle
+  positiveButtonStyle,
+  primaryButtonStyle
 } from '../../theme/styles';
 import {
   openApFetch,
   closeApFetch,
   normalApFetch
 } from 'store/events/eventsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { postLedBoardMessage } from '../../api/access-points';
 import { useSnackbar } from 'notistack';
+import submitIcon from '../../assets/svg/camera_submit_icon.svg';
+import cameraSkeleton from '../../assets/svg/camera_skeleton.svg';
+import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
+import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 
 const CameraMessageInput = styled(TextField)(({ theme }) => ({
   width: '100%',
@@ -36,7 +43,7 @@ const CameraMessageInput = styled(TextField)(({ theme }) => ({
   justifyContent: 'center',
   '& .MuiFilledInput-root': {
     backgroundColor: 'transparent',
-    paddingRight: '12px',
+    paddingRight: 0,
     paddingLeft: '12px',
     '&:hover': { backgroundColor: 'transparent' }
   },
@@ -48,13 +55,26 @@ const CameraMessageInput = styled(TextField)(({ theme }) => ({
   }
 }));
 
-export default function CameraManagementItem({ camera, src }) {
-  const [titlesLed, setTitlesLed] = useState({});
+export default function CameraManagementItem({
+  camera,
+  src,
+  titlesLed,
+  setTitlesLed
+}) {
+  const [titlesInChange, setTitlesInChange] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState(null);
+  const events = useSelector((state) => state.events.events);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    if (events && events[0].access_point === camera.id) {
+      setCurrentEvent(events[0]);
+    }
+  }, [events]);
+
   const formik = useFormik({
-    initialValues: { line1: '' },
+    initialValues: { line2: '' },
     onSubmit: (values) => {
       handleCreateLedMessage(values);
     }
@@ -91,17 +111,24 @@ export default function CameraManagementItem({ camera, src }) {
   };
 
   const handleSetTitles = (event) => {
+    if (event.target.value !== '') {
+      setTitlesInChange(true);
+    } else {
+      setTitlesInChange(false);
+    }
     formik.handleChange(event);
     let newArr = { ...titlesLed };
     try {
-      newArr[`access_point${camera.id}`].line1 = event.target.value;
+      newArr[`access_point${camera.id}`].line1 = 'Сообщение от админа';
+      newArr[`access_point${camera.id}`].line2 = event.target.value;
       console.log(newArr);
       setTitlesLed(newArr);
     } catch (e) {
       newArr[`access_point${camera.id}`] = {
         line1: [`access_point${camera.id}`]?.line1 || '',
-        line2: ''
+        line2: [`access_point${camera.id}`]?.line2 || ''
       };
+      newArr[`access_point${camera.id}`].line1 = 'Сообщение от админа';
       newArr[`access_point${camera.id}`].line1 = event.target.value;
       setTitlesLed(newArr);
     }
@@ -119,7 +146,60 @@ export default function CameraManagementItem({ camera, src }) {
       }}
     >
       <Stack gap={'8px'}>
-        <Camera id={camera.id} src={src} />
+        <Box
+          sx={{
+            backgroundImage: `url("${cameraSkeleton}")`,
+            backgroundSize: 'cover',
+            position: 'relative',
+            lineHeight: 0
+          }}
+        >
+          <Camera id={camera.id} src={src} />
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: '4px',
+              left: '4px',
+              py: '2px',
+              px: '4px',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              border: `1px solid ${colors.outline.surface}`,
+              borderRadius: '4px'
+            }}
+          >
+            <Typography sx={{ fontWeight: 500 }}>
+              {titlesLed[`access_point${camera.id}`]?.line1 || ''}
+            </Typography>
+            <Typography sx={{ fontWeight: 500 }}>
+              {titlesLed[`access_point${camera.id}`]?.line2 || ''}
+            </Typography>
+          </Box>
+          {currentEvent && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '4px',
+                right: '4px',
+                width: '139px'
+              }}
+            >
+              <Typography
+                noWrap
+                sx={{
+                  fontWeight: 500,
+                  py: '2px',
+                  px: '4px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  border: `1px solid ${colors.outline.surface}`,
+                  borderRadius: '4px'
+                }}
+              >
+                {currentEvent.description || ''}
+              </Typography>
+              <CarNumberCard carNumber={currentEvent.vehicle_plate} small />
+            </Box>
+          )}
+        </Box>
         <Stack direction={'row'} gap={'8px'}>
           <Stack
             sx={{
@@ -190,6 +270,7 @@ export default function CameraManagementItem({ camera, src }) {
             variant="contained"
             fullWidth={false}
             sx={[positiveButtonStyle, { flexGrow: 1 }]}
+            onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
           >
             Ввести номер
           </Button>
@@ -222,19 +303,38 @@ export default function CameraManagementItem({ camera, src }) {
             sx={{ flexGrow: 2 }}
           >
             <CameraMessageInput
-              autoFocus
               fullWidth
               InputProps={{
-                disableUnderline: true
+                disableUnderline: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {titlesInChange && (
+                      <IconButton
+                        disableRipple
+                        aria-label="submit"
+                        type="submit"
+                        sx={primaryButtonStyle}
+                      >
+                        <img
+                          style={{
+                            height: 24
+                          }}
+                          src={submitIcon}
+                          alt="submit"
+                        />
+                      </IconButton>
+                    )}
+                  </InputAdornment>
+                )
               }}
               variant="filled"
-              id="line1"
-              name="line1"
+              id="line2"
+              name="line2"
               placeholder="Написать"
-              value={formik.values.line1}
+              value={formik.values.line2}
               onChange={handleSetTitles}
               onBlur={formik.handleBlur}
-              error={formik.touched.line1 && Boolean(formik.errors.line1)}
+              error={formik.touched.line2 && Boolean(formik.errors.line2)}
             />
           </Box>
         </Stack>

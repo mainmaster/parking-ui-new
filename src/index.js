@@ -22,6 +22,8 @@ import { apiSlice } from './api/apiSlice';
 import { SnackbarProvider } from 'notistack';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/normal';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -31,6 +33,7 @@ root.render(
     <ApiProvider api={apiSlice}>
       <SkeletonTheme baseColor="rgb(170, 170, 170)">
         <Provider store={store}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <SnackbarProvider
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
@@ -38,6 +41,7 @@ root.render(
               <App />
             </BrowserRouter>
           </SnackbarProvider>
+          </LocalizationProvider>
         </Provider>
       </SkeletonTheme>
     </ApiProvider>

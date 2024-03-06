@@ -8,7 +8,6 @@ export default function ParkingInfo() {
   const ocupied =
     parkingInfo?.carsOnParking.totalPlaces -
     parkingInfo?.carsOnParking.freePlaces;
-  console.log(parkingInfo);
   return (
     <Stack
       direction={'row'}

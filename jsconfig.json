@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "checkJs": true,
-    "jsx": "react"
+    "jsx": "react",
+    "strict": true,
+    "paths": {
+      "react": [ "./node_modules/@types/react" ]
+    }
   }
 }
