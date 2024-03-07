@@ -8,14 +8,16 @@ export default function ParkingInfo() {
   const ocupied =
     parkingInfo?.carsOnParking.totalPlaces -
     parkingInfo?.carsOnParking.freePlaces;
+  const isMobile = window.orientation > 1;
+
   return (
     <Stack
-      direction={'row'}
+      direction={isMobile ? 'column' : 'row'}
       justifyContent={'flex-end'}
-      gap={'16px'}
+      gap={isMobile ? '4px' : '16px'}
       sx={{ width: '100%', flexGrow: 1 }}
     >
-      <Stack>
+      <Stack direction={isMobile ? 'row' : 'column'}>
         <Typography
           sx={{ fontWeight: 500 }}
         >{`${parkingInfo?.carsOnParking.totalPlaces}`}</Typography>
@@ -27,7 +29,7 @@ export default function ParkingInfo() {
           border: `1px solid ${colors.outline.separator}`,
           borderRadius: '8px',
           width: '100%',
-          maxWidth: '566px',
+          //maxWidth: '566px',
           minWidth: '200px',
           flexGrow: 1,
           height: '40px',

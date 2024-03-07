@@ -17,12 +17,30 @@ import ParkIcon from '../../assets/svg/park_icon.svg';
 import BlackListIcon from '../../assets/svg/blacklist_icon.svg';
 import RequestsIcon from '../../assets/svg/requests_icon.svg';
 import SettingsIcon from '../../assets/svg/settings_icon.svg';
+import AccessPointIcon from '../../assets/svg/accesspoint_icon.svg';
+import CameraIcon from '../../assets/svg/camera_icon.svg';
+import LedIcon from '../../assets/svg/led_icon.svg';
+import TerminalIcon from '../../assets/svg/terminal_icon.svg';
+import LogIcon from '../../assets/svg/log_icon.svg';
+import TimeIcon from '../../assets/svg/time_icon.svg';
+import WifiIcon from '../../assets/svg/wifi_icon.svg';
+import IdIcon from '../../assets/svg/id_icon.svg';
+import UsersIcon from '../../assets/svg/users_icon.svg';
 import MainIconSelected from '../../assets/svg/main_icon_selected.svg';
 import SessionsIconSelected from '../../assets/svg/sessions_icon_selected.svg';
 import ParkIconSelected from '../../assets/svg/park_icon_selected.svg';
 import BlackListIconSelected from '../../assets/svg/blacklist_icon_selected.svg';
 import RequestsIconSelected from '../../assets/svg/requests_icon_selected.svg';
 import SettingsIconSelected from '../../assets/svg/settings_icon_selected.svg';
+import AccessPointIconSelected from '../../assets/svg/accesspoint_icon_selected.svg';
+import CameraIconSelected from '../../assets/svg/camera_icon_selected.svg';
+import LedIconSelected from '../../assets/svg/led_icon_selected.svg';
+import TerminalIconSelected from '../../assets/svg/terminal_icon_selected.svg';
+import LogIconSelected from '../../assets/svg/log_icon_selected.svg';
+import TimeIconSelected from '../../assets/svg/time_icon_selected.svg';
+import WifiIconSelected from '../../assets/svg/wifi_icon_selected.svg';
+import IdIconSelected from '../../assets/svg/id_icon_selected.svg';
+import UsersIconSelected from '../../assets/svg/users_icon_selected.svg';
 
 export const links = [
   { id: 1, name: 'События', to: '/', icon: <BarChart /> },
@@ -46,6 +64,12 @@ export const links = [
 export const icons = [
   { route: '/', icon: MainIcon, selected: MainIconSelected, height: 19 },
   { route: '/events', icon: MainIcon, selected: MainIconSelected, height: 19 },
+  {
+    route: '/events-logs',
+    icon: MainIcon,
+    selected: MainIconSelected,
+    height: 19
+  },
   {
     route: '/sessions',
     icon: SessionsIcon,
@@ -75,5 +99,59 @@ export const icons = [
     icon: SettingsIcon,
     selected: SettingsIconSelected,
     height: 27
+  },
+  {
+    route: '/access-points',
+    icon: AccessPointIcon,
+    selected: AccessPointIconSelected,
+    height: 28
+  },
+  {
+    route: '/cameras',
+    icon: CameraIcon,
+    selected: CameraIconSelected,
+    height: 22
+  },
+  {
+    route: '/led',
+    icon: LedIcon,
+    selected: LedIconSelected,
+    height: 18
+  },
+  {
+    route: '/terminals',
+    icon: TerminalIcon,
+    selected: TerminalIconSelected,
+    height: 21
+  },
+  {
+    route: '/search-logs',
+    icon: LogIcon,
+    selected: LogIconSelected,
+    height: 23
+  },
+  {
+    route: '/working-modes',
+    icon: TimeIcon,
+    selected: TimeIconSelected,
+    height: 26
+  },
+  {
+    route: '/controllers',
+    icon: WifiIcon,
+    selected: WifiIconSelected,
+    height: 21
+  },
+  {
+    route: '/operator',
+    icon: IdIcon,
+    selected: IdIconSelected,
+    height: 18
+  },
+  {
+    route: '/renters',
+    icon: UsersIcon,
+    selected: UsersIconSelected,
+    height: 22
   }
 ];

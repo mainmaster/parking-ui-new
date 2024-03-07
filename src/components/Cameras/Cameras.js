@@ -44,6 +44,8 @@ import {
 import { colors } from '../../theme/colors';
 import ParkingInfo from '../ParkingInfo/ParkingInfo';
 import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
+import HeaderSpacer from '../Header/HeaderSpacer';
+import FooterSpacer from '../Header/FooterSpacer';
 
 const Cameras = () => {
   const dispatch = useDispatch();
@@ -58,6 +60,7 @@ const Cameras = () => {
   const cameras = useSelector((state) => state.cameras.cameras);
   const wsLedMessages = useRef(null);
   const [titlesLed, setTitlesLed] = useState({});
+  const isMobile = window.orientation > 1;
 
   useEffect(() => {
     dispatch(camerasFetch());
@@ -117,17 +120,29 @@ const Cameras = () => {
         }
       ]}
     >
+      <HeaderSpacer />
+      {isMobile && (
+        <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
+          <ParkingInfo />
+        </Box>
+      )}
       <Stack
         direction={'row'}
         gap={'16px'}
         justifyContent={'space-between'}
-        sx={{ height: '64px', width: '100%', p: '16px', pb: '8px' }}
+        sx={{
+          height: isMobile ? '56px' : '64px',
+          width: '100%',
+          p: '16px',
+          pb: '8px',
+          pt: isMobile ? '8px' : '16px'
+        }}
       >
-        <Stack direction={'row'} gap={'16px'} minWidth={'260px'}>
+        <Stack direction={'row'} gap={'16px'} width={'100%'} minWidth={'260px'}>
           <Button
             disableRipple
             variant="contained"
-            fullWidth={false}
+            fullWidth={isMobile ? true : false}
             sx={secondaryButtonStyle}
             onClick={() => dispatch(openApAllFetch())}
           >
@@ -136,20 +151,21 @@ const Cameras = () => {
           <Button
             disableRipple
             variant="contained"
-            fullWidth={false}
+            fullWidth={isMobile ? true : false}
             sx={secondaryButtonStyle}
             onClick={() => dispatch(closeApAllFetch())}
           >
             Закрыть все
           </Button>
         </Stack>
-        <ParkingInfo />
+        {!isMobile && <ParkingInfo />}
       </Stack>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          gap: isMobile ? '16px' : 0
         }}
       >
         {_.sortBy(accessPoints, ['id']).map((camera, index) => (
@@ -170,6 +186,7 @@ const Cameras = () => {
           handleClose={() => dispatch(changeActiveOpenApTimeModal())}
         />
       </Box>
+      <FooterSpacer />
     </Box>
   );
 };

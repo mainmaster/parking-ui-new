@@ -13,7 +13,7 @@ const PaginationCustom = ({ pages, changePage, currentPage }) => {
       count={pages}
       onChange={changePage}
       sx={{
-        width: '360px',
+        width: '100%',
         height: '48px',
         my: '4px',
         flexWrap: 'nowrap',

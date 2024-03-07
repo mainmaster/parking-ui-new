@@ -35,7 +35,7 @@ import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import { EventsDashboard } from '../../components/EventsDashboard/EventsDashboard';
 import TypeAuto from '../../components/TypeAuto';
 import React from 'react';
-import { Box, Drawer, Grid, IconButton, Stack } from '@mui/material';
+import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
 import { listStyle, secondaryButtonStyle } from '../../theme/styles';
@@ -43,17 +43,48 @@ import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import OpenApByVehiclePlateModal from '../../components/Modals/OpenApByVehiclePlateModal';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
+import HeaderSpacer from '../../components/Header/HeaderSpacer';
+import { spacers } from '../../theme/spacers';
+import FooterSpacer from '../../components/Header/FooterSpacer';
+
+const mobileHeaderStyle = {
+  backgroundColor: colors.surface.high,
+  borderBottom: `1px solid ${colors.outline.surface}`,
+  boxShadow: 'none',
+  justifyContent: 'space-around',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '16px',
+  px: '16px',
+  width: '100%',
+  height: spacers.header
+};
+
+const mobileMenuItemStyle = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer'
+};
+
+const mobileMenuItemTextStyle = {
+  color: colors.element.secondary
+};
 
 const EventsPage = ({ onlyLog }) => {
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
+  const [mobileCameras, setMobileCameras] = useState(true);
   const events = useSelector((state) => state.events.events);
   const pages = useSelector((state) => state.events.pages);
   const currentPage = useSelector((state) => state.events.currentPage);
   const isLoading = useSelector((state) => state.events.isLoadingFetch);
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
+  const isMobile = window.orientation > 1;
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -91,118 +122,119 @@ const EventsPage = ({ onlyLog }) => {
     dispatch(eventsChangePageFetch(value));
   };
 
-  const spinnerContent = (
-    <div className={css.spinner}>
-      <Spinner animation="border" />
-    </div>
-  );
-
-  const errorContent = (
-    <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
-  );
-
-  const rowsTable =
-    events.length !== 0
-      ? events.map((item, index) => (
-          <tr
-            className="selected_row"
-            tabIndex={1}
-            key={index}
-            onClick={() => {
-              changeModal(item);
-            }}
-          >
-            <td>
-              {item.vehicle_plate.number === '' ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: '33px'
-                  }}
-                ></div>
-              ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: '40px'
-                  }}
-                >
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>№ {item.id}</Tooltip>}
-                  >
-                    <CarNumberCard carNumber={item.vehicle_plate} isTable />
-                  </OverlayTrigger>
-
-                  <span>
-                    {item.direction === 'in' && (
-                      <ArrowRightSquareFill color="#1cd80f" size={30} />
-                    )}
-                    {item.direction === null && null}
-                    {item.direction === 'out' && (
-                      <ArrowLeftSquareFill color="#de0103" size={30} />
-                    )}
-                  </span>
-
-                  <TypeAuto type={item?.access_status_code} />
-                </div>
-              )}
-            </td>
-
-            <td>{item?.car_brand}</td>
-
-            <td>{formatDate(item.create_datetime)}</td>
-            <td>{item.description}</td>
-            <td>{item.access_point_description}</td>
-          </tr>
-        ))
-      : null;
-
-  const tableContent = (
-    <div>
-      <div className={css.wrap}>
-        <div className={css.flex}>
-          <div className={cn(css.wrap_table, isActiveModal && css.active)}>
-            <Table
-              titles={titles}
-              rows={rowsTable}
-              hover
-              className={css.table}
-            />
-          </div>
-          <EventCard
-            className={cn(css.card, isActiveModal && css.hidden)}
-            onClickImage={changeActiveImageModal}
-          />
-        </div>
-      </div>
-      <PaginationCustom
-        pages={pages}
-        changePage={changePage}
-        currentPage={currentPage}
-      />
-    </div>
-  );
-
-  const hasData = !(isLoading || isError);
-  const errorMessage = isError ? errorContent : null;
-  const spinner = isLoading ? spinnerContent : null;
-  const content = hasData ? tableContent : null;
+  const handleMobileMenuItemClick = () => {
+    setMobileCameras(!mobileCameras);
+  };
 
   return (
     // <Grid container sx={{ maxHeight: '100dvh' }}>
     <>
-      {onlyLog ? (
-        <>
-          <FilterForm />
-          {errorMessage}
-          {spinner}
-          {content}
-          <CardEventModal
-            show={isActiveModalMobile}
-            handleClose={changeMobileModal}
+      {isMobile && (
+        <AppBar position="absolute" sx={mobileHeaderStyle}>
+          <Box
+            sx={[
+              mobileMenuItemStyle,
+              {
+                borderBottom: mobileCameras
+                  ? `2px solid ${colors.button.primary.default}`
+                  : 'none'
+              }
+            ]}
+            onClick={handleMobileMenuItemClick}
+          >
+            <Typography
+              sx={[
+                mobileMenuItemTextStyle,
+                {
+                  color: mobileCameras
+                    ? colors.button.primary.default
+                    : colors.element.secondary
+                }
+              ]}
+            >
+              Наблюдение
+            </Typography>
+          </Box>
+          <Box
+            sx={[
+              mobileMenuItemStyle,
+              {
+                borderBottom: !mobileCameras
+                  ? `2px solid ${colors.button.primary.default}`
+                  : 'none'
+              }
+            ]}
+            onClick={handleMobileMenuItemClick}
+          >
+            <Typography
+              sx={[
+                mobileMenuItemTextStyle,
+                {
+                  color: !mobileCameras
+                    ? colors.button.primary.default
+                    : colors.element.secondary
+                }
+              ]}
+            >
+              Отчёты
+            </Typography>
+          </Box>
+        </AppBar>
+      )}
+      {!onlyLog && ((isMobile && mobileCameras) || !isMobile) && <Cameras />}
+      {!isMobile && (
+        <Drawer
+          sx={{
+            width: '361px',
+            maxHeight: '100dvh',
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: '361px',
+              boxSizing: 'border-box',
+              zIndex: 1
+            }
+          }}
+          variant="permanent"
+          anchor="right"
+        >
+          <Stack
+            sx={[
+              listStyle,
+              { width: '360px', backgroundColor: colors.surface.high }
+            ]}
+          >
+            <HeaderSpacer />
+            <CarNumberFilter />
+
+            {events.length > 0
+              ? events.map((item, index) => (
+                  <LogEventCard
+                    key={index}
+                    event={item}
+                    onClickImage={changeActiveImageModal}
+                  />
+                ))
+              : null}
+            <Box
+              sx={{
+                height: '48px'
+              }}
+            >
+              <PaginationCustom
+                pages={pages}
+                changePage={changePage}
+                currentPage={currentPage}
+              />
+            </Box>
+            <FooterSpacer />
+          </Stack>
+          {/* <CardEventModal
+          show={isActiveModalMobile}
+          handleClose={changeMobileModal}
+        /> */}
+          <CarNumberDialog
+            show={isOpenApModal}
+            handleClose={() => dispatch(changeActiveOpenApModal())}
           />
           {imageModal.isOpen && (
             <Lightbox
@@ -211,70 +243,40 @@ const EventsPage = ({ onlyLog }) => {
               imagePadding={100}
             />
           )}
-        </>
-      ) : (
-        <>
-          <Cameras />
-          <Drawer
-            sx={{
-              width: '361px',
-              maxHeight: '100dvh',
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                width: '361px',
-                boxSizing: 'border-box',
-                zIndex: 1
-              }
-            }}
-            variant="permanent"
-            anchor="right"
-          >
-            <Stack
-              sx={[
-                listStyle,
-                { width: '360px', backgroundColor: colors.surface.high }
-              ]}
-            >
-              <CarNumberFilter />
+        </Drawer>
+      )}
+      {isMobile && !mobileCameras && (
+        <Stack
+          sx={[
+            listStyle,
+            { width: '100%', backgroundColor: colors.surface.low }
+          ]}
+        >
+          <HeaderSpacer />
+          <CarNumberFilter />
 
-              {events.length > 0
-                ? events.map((item, index) => (
-                    <LogEventCard
-                      key={index}
-                      event={item}
-                      onClickImage={changeActiveImageModal}
-                    />
-                  ))
-                : null}
-              <Box
-                sx={{
-                  height: '48px'
-                }}
-              >
-                <PaginationCustom
-                  pages={pages}
-                  changePage={changePage}
-                  currentPage={currentPage}
+          {events.length > 0
+            ? events.map((item, index) => (
+                <LogEventCard
+                  key={index}
+                  event={item}
+                  onClickImage={changeActiveImageModal}
                 />
-              </Box>
-            </Stack>
-            <CardEventModal
-              show={isActiveModalMobile}
-              handleClose={changeMobileModal}
+              ))
+            : null}
+          <Box
+            sx={{
+              height: '48px'
+            }}
+          >
+            <PaginationCustom
+              pages={pages}
+              changePage={changePage}
+              currentPage={currentPage}
             />
-            <CarNumberDialog
-              show={isOpenApModal}
-              handleClose={() => dispatch(changeActiveOpenApModal())}
-            />
-            {imageModal.isOpen && (
-              <Lightbox
-                onCloseRequest={changeActiveImageModal}
-                mainSrc={imageModal.src}
-                imagePadding={100}
-              />
-            )}
-          </Drawer>
-        </>
+          </Box>
+          <FooterSpacer />
+        </Stack>
       )}
     </>
   );

@@ -14,7 +14,7 @@ const Layout = ({ children, title, userType, isHideMenu }) => {
   const isMobile = window.orientation > 1;
   return (
     <Stack direction={'row'} justifyContent={'space-between'} sx={layoutStyle}>
-      <Header title={title} userType={userType} isHideMenu={isHideMenu} />
+      {userType && <Header title={title} userType={userType} isHideMenu={isHideMenu} />}
       {children}
     </Stack>
   );

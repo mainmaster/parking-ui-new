@@ -53,7 +53,7 @@ export default function LogEventCard({ event, onClickImage }) {
       component={'div'}
       sx={{
         p: '1rem',
-        width: '360px',
+        width: '100%',
         borderBottom: '1px solid ' + colors.outline.separator
       }}
     >

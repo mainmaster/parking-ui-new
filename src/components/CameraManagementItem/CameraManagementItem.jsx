@@ -66,6 +66,7 @@ export default function CameraManagementItem({
   const events = useSelector((state) => state.events.events);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const isMobile = window.orientation > 1;
 
   useEffect(() => {
     if (events && events[0].access_point === camera.id) {
@@ -141,7 +142,8 @@ export default function CameraManagementItem({
         minWidth: '380px',
         maxWidth: '776px',
         borderRadius: '8px',
-        p: '16px',
+        p: isMobile ? '8px' : '16px',
+        px: isMobile ? 0 : '16px',
         pb: 0
       }}
     >
@@ -265,26 +267,52 @@ export default function CameraManagementItem({
           >
             Открыть
           </Button>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth={false}
-            sx={[positiveButtonStyle, { flexGrow: 1 }]}
-            onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
-          >
-            Ввести номер
-          </Button>
+          {!isMobile && (
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={[positiveButtonStyle, { flexGrow: 1 }]}
+              onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
+            >
+              Ввести номер
+            </Button>
+          )}
         </Stack>
+        {isMobile && (
+          <Stack direction={'row'} gap={'8px'}>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={[positiveButtonStyle, { flexGrow: 1 }]}
+              onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
+            >
+              Ввести номер
+            </Button>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={closeButtonStyle}
+              onClick={closeAp}
+            >
+              Закрыть
+            </Button>
+          </Stack>
+        )}
         <Stack direction={'row'} gap={'8px'}>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth={false}
-            sx={closeButtonStyle}
-            onClick={closeAp}
-          >
-            Закрыть
-          </Button>
+          {!isMobile && (
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={closeButtonStyle}
+              onClick={closeAp}
+            >
+              Закрыть
+            </Button>
+          )}
           <Button
             disableRipple
             variant="contained"
