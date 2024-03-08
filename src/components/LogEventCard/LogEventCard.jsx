@@ -22,9 +22,11 @@ import { paidSessionFetch } from '../../store/sessions/sessionsSlice';
 import { deleteBlackListFetch } from '../../store/blackList/blackListSlice';
 import { changeDataModal } from '../../store/events/eventsSlice';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function LogEventCard({ event, onClickImage }) {
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   const dateString = format(
     parseISO(event.create_datetime),
@@ -45,7 +47,8 @@ export default function LogEventCard({ event, onClickImage }) {
   };
 
   const handleEventClick = () => {
-    dispatch(changeDataModal(event));
+    //dispatch(changeDataModal(event));
+    navigate(`${event.id}`);
   };
 
   return (

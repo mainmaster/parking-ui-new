@@ -93,32 +93,32 @@ export const Home = () => {
         let vehicle_plate =
           data.vehicle_plate.number + data.vehicle_plate?.region;
 
-        setCountToasts((prevState) => {
-          if (prevState >= 2) {
-            toast.dismiss();
-            toast.clearWaitingQueue();
-            return 1;
-          } else {
-            console.log(prevState + 1);
-            return prevState + 1;
-          }
-        });
-        toast.success(
-          <div>
-            {data.vehicle_plate.number === '' ? null : (
-              <CarNumberCard carNumber={data.vehicle_plate} isTable />
-            )}
+        // setCountToasts((prevState) => {
+        //   if (prevState >= 2) {
+        //     toast.dismiss();
+        //     toast.clearWaitingQueue();
+        //     return 1;
+        //   } else {
+        //     console.log(prevState + 1);
+        //     return prevState + 1;
+        //   }
+        // });
+        // toast.success(
+        //   <div>
+        //     {data.vehicle_plate.number === '' ? null : (
+        //       <CarNumberCard carNumber={data.vehicle_plate} isTable />
+        //     )}
 
-            <span>{data.access_point_description}</span>
-            <br />
-            <span>{data.description}</span>
-          </div>,
-          {
-            position: toast.POSITION.TOP_RIGHT,
-            containerId: 'eventsVehicle',
-            icon: false
-          }
-        );
+        //     <span>{data.access_point_description}</span>
+        //     <br />
+        //     <span>{data.description}</span>
+        //   </div>,
+        //   {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     containerId: 'eventsVehicle',
+        //     icon: false
+        //   }
+        // );
         if (localStorage.getItem('notificationsSound') === 'true') {
           if (
             fourNumbersInRow.current.length === 0 ||

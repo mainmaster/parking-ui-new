@@ -229,9 +229,9 @@ const EventsPage = ({ onlyLog }) => {
             <FooterSpacer />
           </Stack>
           {/* <CardEventModal
-          show={isActiveModalMobile}
-          handleClose={changeMobileModal}
-        /> */}
+            show={isActiveModalMobile}
+            handleClose={changeMobileModal}
+          /> */}
           <CarNumberDialog
             show={isOpenApModal}
             handleClose={() => dispatch(changeActiveOpenApModal())}

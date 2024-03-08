@@ -1,20 +1,20 @@
-import { Component } from 'react'
-import { ToastContainer } from 'react-toastify'
-import css from './App.module.scss'
+import { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import css from './App.module.scss';
 // Router
-import Router from 'router'
+import Router from 'router';
 // Components
-import Layout from 'components/Layout'
+import Layout from 'components/Layout';
 
 class App extends Component {
   state = {
-    error: false,
-  }
+    error: false
+  };
 
   componentDidCatch() {
     this.setState({
-      error: true,
-    })
+      error: true
+    });
   }
 
   render() {
@@ -23,16 +23,16 @@ class App extends Component {
         <Layout>
           <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
         </Layout>
-      )
+      );
     } else {
       return (
         <>
           <Router />
-          <ToastContainer pauseOnFocusLoss={false} autoClose={5000} limit={2} />
+          {/* <ToastContainer pauseOnFocusLoss={false} autoClose={5000} limit={2} /> */}
         </>
-      )
+      );
     }
   }
 }
 
-export default App
+export default App;
