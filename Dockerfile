@@ -1,10 +1,14 @@
-FROM node:18 as build
+FROM node:20 as build
 WORKDIR /usr/src/docker-react-sample
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
-RUN npm install
+
+RUN npm config get proxy
+RUN npm config rm proxy
+RUN npm config rm https-proxy
+RUN npm install -d
 
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
