@@ -226,28 +226,32 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               </Box>
             )}
           </Stack>
-          <Stack
-            direction={'row'}
-            justifyContent={'center'}
-            gap={'4px'}
-            sx={{ width: '100%' }}
-          >
-            <Typography sx={mobileProfileTextStyle}>
-              {userData.username}
-            </Typography>
-            <IconButton disableRipple disabled sx={{ p: 0 }}>
-              <img
-                style={{
-                  height: 10
-                }}
-                src={AddressIcon}
-                alt="Адрес"
-              />
-            </IconButton>
-            <Typography sx={mobileProfileTextStyle}>
-              {parkingData.address}
-            </Typography>
-          </Stack>
+          {userData && (
+            <Stack
+              direction={'row'}
+              justifyContent={'center'}
+              gap={'4px'}
+              sx={{ width: '100%' }}
+            >
+              {userData.username && (
+                <Typography sx={mobileProfileTextStyle}>
+                  {userData.username}
+                </Typography>
+              )}
+              <IconButton disableRipple disabled sx={{ p: 0 }}>
+                <img
+                  style={{
+                    height: 10
+                  }}
+                  src={AddressIcon}
+                  alt="Адрес"
+                />
+              </IconButton>
+              <Typography sx={mobileProfileTextStyle}>
+                {parkingData.address}
+              </Typography>
+            </Stack>
+          )}
         </AppBar>
       )}
       {!isMobile && (
@@ -354,9 +358,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           alt="Профиль"
                         />
                       </IconButton>
-                      <Typography sx={menuTextStyle}>
-                        {userData.username}
-                      </Typography>
+                      {userData.username && (
+                        <Typography sx={menuTextStyle}>
+                          {userData.username}
+                        </Typography>
+                      )}
                     </Stack>
                     <Box
                       sx={{

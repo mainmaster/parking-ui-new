@@ -37,6 +37,7 @@ import { openApByVehiclePlateRequest, openApRequest } from 'api/access-points';
 import { getAccessPointsSuccess } from '../accessPoints/accessPointsSlice';
 import { getAccessPointStatusRequest } from '../../api/access-points';
 import { store } from '../index';
+import { EVENTS_ON_PAGE } from '../../constants';
 
 function* workEvents({ payload }) {
   try {
@@ -56,7 +57,7 @@ function* workEvents({ payload }) {
 function* workEventsPage({ payload }) {
   try {
     const { data } = yield call(getEventsRequest, {
-      offset: getPageNum(payload) * 5,
+      offset: (getPageNum(payload) * EVENTS_ON_PAGE) / 10,
       ...store.getState().events.filters
     });
 

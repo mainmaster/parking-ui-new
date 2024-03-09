@@ -169,13 +169,15 @@ export default function LogEventCard({ event, onClickImage }) {
           <TypeAuto type={event.access_status_code} />
         </Stack>
         <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          <img
-            style={{
-              width: '18px'
-            }}
-            src={event.direction === 'in' ? eventInIcon : eventOutIcon}
-            alt={event.access_point_description}
-          />
+          {event.direction && (
+            <img
+              style={{
+                width: '18px'
+              }}
+              src={event.direction === 'in' ? eventInIcon : eventOutIcon}
+              alt={event.access_point_description}
+            />
+          )}
           <Typography>{event.access_point_description}</Typography>
         </Stack>
         <Stack

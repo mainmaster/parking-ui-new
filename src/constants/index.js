@@ -1,18 +1,20 @@
-export const BREAKPOINT_SM = 768
-export const BREAKPOINT_MD = 991
+export const BREAKPOINT_SM = 768;
+export const BREAKPOINT_MD = 991;
+
+export const EVENTS_ON_PAGE = 50;
 
 export const passModeOptions = [
   { name: 'Оплата по часам', value: 'pay_by_hour' },
   { name: 'Оплата за интервал', value: 'pay_by_interval' },
   { name: 'Оплата по дням', value: 'pay_by_day' },
   { name: 'Оплата по первым часам', value: 'pay_by_first_hours' },
-  { name: 'Закрыто', value: 'closed' },
-]
+  { name: 'Закрыто', value: 'closed' }
+];
 
 export const directionOptions = [
   { name: 'Въезд', value: 'in' },
-  { name: 'Выезд', value: 'out' },
-]
+  { name: 'Выезд', value: 'out' }
+];
 export const eventCodes = [
   { name: 'Номер не распознан, доступ не предоставлен', value: 1003 },
   { name: 'Авто из черного списка, доступ не предоставлен', value: 1004 },
@@ -46,69 +48,69 @@ export const eventCodes = [
   { name: 'Терминал оплаты активирован', value: 1036 },
   { name: 'Контроль устройства доступа', value: 1037 },
 
-  { name: '', value: null },
-]
+  { name: '', value: null }
+];
 
 export const relayNumberOptions = [...Array(4).keys()].map((item, index) => ({
   name: String(index + 1),
-  value: index + 1,
-}))
+  value: index + 1
+}));
 
 export const statusContactOptions = [...Array(6).keys()].map((item, index) => ({
   name: String(index + 1),
-  value: index + 1,
-}))
+  value: index + 1
+}));
 
 export const directionName = (direction) => {
-  let name
+  let name;
 
   switch (direction) {
     case 'in':
-      name = 'Въезд'
-      break
+      name = 'Въезд';
+      break;
     case 'out':
-      name = 'Выезд'
-      break
+      name = 'Выезд';
+      break;
     default:
-      name = ''
-      break
+      name = '';
+      break;
   }
 
-  return name
-}
+  return name;
+};
 
 export const statusSessionName = (status) => {
-  let name
+  let name;
 
   switch (status) {
     case 'closed':
-      name = 'Закрыта'
-      break
+      name = 'Закрыта';
+      break;
     case 'open':
-      name = 'Открыта'
-      break
+      name = 'Открыта';
+      break;
     default:
-      name = ''
-      break
+      name = '';
+      break;
   }
 
-  return name
-}
+  return name;
+};
 
 export const statusPaidName = (status) => {
-  let name
+  let name;
 
   switch (status) {
     case true:
-      name = 'Оплачен'
-      break
+      name = 'Оплачен';
+      break;
     case false:
-      name = 'Не оплачен'
-      break
+      name = 'Не оплачен';
+      break;
     default:
-      name = ''
-      break
+      name = '';
+      break;
   }
 
-  return name
-}
+  return name;
+};

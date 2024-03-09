@@ -47,6 +47,7 @@ import HeaderSpacer from '../../components/Header/HeaderSpacer';
 import { spacers } from '../../theme/spacers';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import { isMobile } from 'react-device-detect';
+import { EVENTS_ON_PAGE } from '../../constants';
 
 const mobileHeaderStyle = {
   backgroundColor: colors.surface.high,
@@ -221,7 +222,7 @@ const EventsPage = ({ onlyLog }) => {
               }}
             >
               <PaginationCustom
-                pages={pages}
+                pages={Math.ceil(pages / EVENTS_ON_PAGE)}
                 changePage={changePage}
                 currentPage={currentPage}
               />
@@ -270,7 +271,7 @@ const EventsPage = ({ onlyLog }) => {
             }}
           >
             <PaginationCustom
-              pages={pages}
+              pages={Math.ceil(pages / EVENTS_ON_PAGE)}
               changePage={changePage}
               currentPage={currentPage}
             />

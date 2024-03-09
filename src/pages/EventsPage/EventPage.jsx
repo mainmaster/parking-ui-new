@@ -294,13 +294,17 @@ export const EventPage = () => {
               >
                 <Typography sx={labelTextStyle}>Направление</Typography>
                 <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-                  <img
-                    style={{
-                      width: '18px'
-                    }}
-                    src={event.direction === 'in' ? eventInIcon : eventOutIcon}
-                    alt={event.access_point_description}
-                  />
+                  {event.direction && (
+                    <img
+                      style={{
+                        width: '18px'
+                      }}
+                      src={
+                        event.direction === 'in' ? eventInIcon : eventOutIcon
+                      }
+                      alt={event.access_point_description}
+                    />
+                  )}
                   <Typography>{event.access_point_description}</Typography>
                 </Stack>
               </Stack>
