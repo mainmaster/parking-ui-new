@@ -2,13 +2,13 @@ import { Box, Stack, Typography } from '@mui/material';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import React from 'react';
 import { colors } from '../../theme/colors';
+import { isMobile } from 'react-device-detect';
 
 export default function ParkingInfo() {
   const { data: parkingInfo } = useParkingInfoQuery();
   const ocupied =
     parkingInfo?.carsOnParking.totalPlaces -
     parkingInfo?.carsOnParking.freePlaces;
-  const isMobile = window.orientation > 1;
 
   return (
     <Stack

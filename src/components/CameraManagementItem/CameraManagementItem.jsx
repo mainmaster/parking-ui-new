@@ -33,6 +33,7 @@ import submitIcon from '../../assets/svg/camera_submit_icon.svg';
 import cameraSkeleton from '../../assets/svg/camera_skeleton.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
+import { isMobile } from 'react-device-detect';
 
 const CameraMessageInput = styled(TextField)(({ theme }) => ({
   width: '100%',
@@ -66,7 +67,6 @@ export default function CameraManagementItem({
   const events = useSelector((state) => state.events.events);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const isMobile = window.orientation > 1;
 
   useEffect(() => {
     if (events && events[0].access_point === camera.id) {

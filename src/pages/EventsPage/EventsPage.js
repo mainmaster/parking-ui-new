@@ -46,6 +46,7 @@ import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import HeaderSpacer from '../../components/Header/HeaderSpacer';
 import { spacers } from '../../theme/spacers';
 import FooterSpacer from '../../components/Header/FooterSpacer';
+import { isMobile } from 'react-device-detect';
 
 const mobileHeaderStyle = {
   backgroundColor: colors.surface.high,
@@ -84,7 +85,6 @@ const EventsPage = ({ onlyLog }) => {
   const currentPage = useSelector((state) => state.events.currentPage);
   const isLoading = useSelector((state) => state.events.isLoadingFetch);
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
-  const isMobile = window.orientation > 1;
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,

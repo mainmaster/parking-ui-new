@@ -35,6 +35,7 @@ import { adminRoutes, operatorRoutes, renterRoutes } from '../../router/routes';
 import { logout } from '../../api/auth/login';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { spacers } from '../../theme/spacers';
+import { isMobile } from 'react-device-detect';
 
 const mobileFooterStyle = {
   top: 'auto',
@@ -101,7 +102,6 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   let navigate = useNavigate();
-  const isMobile = window.orientation > 1;
 
   useEffect(() => {
     setCurrentHref(location.pathname);

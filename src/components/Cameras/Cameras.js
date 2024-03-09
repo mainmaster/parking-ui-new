@@ -46,6 +46,7 @@ import ParkingInfo from '../ParkingInfo/ParkingInfo';
 import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
 import HeaderSpacer from '../Header/HeaderSpacer';
 import FooterSpacer from '../Header/FooterSpacer';
+import { isMobile } from 'react-device-detect';
 
 const Cameras = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,6 @@ const Cameras = () => {
   const cameras = useSelector((state) => state.cameras.cameras);
   const wsLedMessages = useRef(null);
   const [titlesLed, setTitlesLed] = useState({});
-  const isMobile = window.orientation > 1;
 
   useEffect(() => {
     dispatch(camerasFetch());

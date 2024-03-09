@@ -25,6 +25,7 @@ import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import '@fontsource-variable/roboto-mono';
+import { isMobile } from 'react-device-detect';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -63,7 +64,6 @@ export const EventPage = () => {
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const isMobile = window.orientation > 1;
 
   const errorContent = <div>Нет события с ID - {id}</div>;
 

@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        - REACT_APP_API_URL=https://parking-citysport.ru
+        - REACT_APP_API_URL=https://parking-citysport.ru/api
     container_name: frontend
     ports:
       - '8080:3000'
