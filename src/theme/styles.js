@@ -192,3 +192,8 @@ export const listStyle = {
     display: 'none' // Hide the scrollbar for IE
   }
 };
+
+export const listWithScrollStyle = {
+  height: '100dvh',
+  overflowY: 'scroll'
+};

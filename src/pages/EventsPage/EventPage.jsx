@@ -123,7 +123,7 @@ export const EventPage = () => {
           }}
         >
           <Stack direction={'row'} alignItems={'center'} gap={'16px'}>
-            <Button
+            {/* <Button
               disableRipple
               variant="contained"
               fullWidth={false}
@@ -146,7 +146,7 @@ export const EventPage = () => {
               }
             >
               {isMobile ? '' : 'Назад'}
-            </Button>
+            </Button> */}
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? 0 : '0.5rem'}

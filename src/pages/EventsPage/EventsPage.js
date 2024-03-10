@@ -38,7 +38,11 @@ import React from 'react';
 import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
-import { listStyle, secondaryButtonStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  secondaryButtonStyle
+} from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import OpenApByVehiclePlateModal from '../../components/Modals/OpenApByVehiclePlateModal';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
@@ -130,7 +134,7 @@ const EventsPage = ({ onlyLog }) => {
   return (
     // <Grid container sx={{ maxHeight: '100dvh' }}>
     <>
-      {isMobile && (
+      {!onlyLog && isMobile && (
         <AppBar position="absolute" sx={mobileHeaderStyle}>
           <Box
             sx={[
@@ -200,7 +204,7 @@ const EventsPage = ({ onlyLog }) => {
         >
           <Stack
             sx={[
-              listStyle,
+              listWithScrollStyle,
               { width: '360px', backgroundColor: colors.surface.high }
             ]}
           >
@@ -246,14 +250,14 @@ const EventsPage = ({ onlyLog }) => {
           )}
         </Drawer>
       )}
-      {isMobile && !mobileCameras && (
+      {isMobile && (!mobileCameras || onlyLog) && (
         <Stack
           sx={[
-            listStyle,
+            listWithScrollStyle,
             { width: '100%', backgroundColor: colors.surface.low }
           ]}
         >
-          <HeaderSpacer />
+          {!onlyLog && <HeaderSpacer />}
           <CarNumberFilter />
 
           {events.length > 0
@@ -277,6 +281,13 @@ const EventsPage = ({ onlyLog }) => {
             />
           </Box>
           <FooterSpacer />
+          {imageModal.isOpen && (
+            <Lightbox
+              onCloseRequest={changeActiveImageModal}
+              mainSrc={imageModal.src}
+              imagePadding={100}
+            />
+          )}
         </Stack>
       )}
     </>

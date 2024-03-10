@@ -48,7 +48,7 @@ export default function LogEventCard({ event, onClickImage }) {
 
   const handleEventClick = () => {
     //dispatch(changeDataModal(event));
-    navigate(`${event.id}`);
+    window.open(`${window.location.href}/${event.id}`, '_blank', 'noreferrer');
   };
 
   return (

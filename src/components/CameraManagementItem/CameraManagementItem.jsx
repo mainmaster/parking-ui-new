@@ -30,7 +30,7 @@ import { useFormik } from 'formik';
 import { postLedBoardMessage } from '../../api/access-points';
 import { useSnackbar } from 'notistack';
 import submitIcon from '../../assets/svg/camera_submit_icon.svg';
-import cameraSkeleton from '../../assets/svg/camera_skeleton.svg';
+import cameraSkeleton from '../../assets/svg/camera_skeleton_logo.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { isMobile } from 'react-device-detect';

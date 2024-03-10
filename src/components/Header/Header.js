@@ -14,18 +14,17 @@ import React from 'react';
 import {
   AppBar,
   Box,
+  Button,
   Container,
   IconButton,
   Stack,
   Typography
 } from '@mui/material';
 import { colors } from '../../theme/colors';
-import MainIcon from '../../assets/svg/main_icon.svg';
-import SessionsIcon from '../../assets/svg/sessions_icon.svg';
-import ParkIcon from '../../assets/svg/park_icon.svg';
-import BlackListIcon from '../../assets/svg/blacklist_icon.svg';
-import RequestsIcon from '../../assets/svg/requests_icon.svg';
-import SettingsIcon from '../../assets/svg/settings_icon.svg';
+import { secondaryButtonStyle } from '../../theme/styles';
+import MoreIdIcon from '../../assets/svg/more_parking_id.svg';
+import MoreHomeIcon from '../../assets/svg/more_parking_home.svg';
+import MoreUserIcon from '../../assets/svg/more_parking_user.svg';
 import ProfileIcon from '../../assets/svg/profile_icon.svg';
 import AddressIcon from '../../assets/svg/parking_address_icon.svg';
 import IdIcon from '../../assets/svg/parking_id_icon.svg';
@@ -46,6 +45,40 @@ const mobileFooterStyle = {
   backgroundColor: colors.surface.low
 };
 
+const mobileMoreHeaderStyle = {
+  zIndex: 1200,
+  top: 0,
+  bottom: 'auto',
+  justifyContent: 'center',
+  width: '100%',
+  height: spacers.more,
+  backgroundColor: colors.surface.low,
+  p: '16px',
+  pb: '8px'
+};
+
+const mobileMoreListStyle = {
+  width: '100%',
+  height: `calc(100% - ${spacers.more} - ${spacers.footer})`,
+  maxHeight: `calc(100dvh - ${spacers.more} - ${spacers.footer})`,
+  backgroundColor: colors.surface.low,
+  position: 'absolute',
+  top: spacers.more,
+  left: 0,
+  right: 0,
+  zIndex: 1100,
+  overflowY: 'scroll',
+  scrollbarWidth: 'none', // Hide the scrollbar for firefox
+  '&::-webkit-scrollbar': {
+    display: 'none' // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+  },
+  '&-ms-overflow-style:': {
+    display: 'none' // Hide the scrollbar for IE
+  },
+  p: '16px',
+  gap: '16px'
+};
+
 const mobileMenuButtonStyle = {
   height: '56px',
   width: '100%',
@@ -61,12 +94,13 @@ const mobileMenuButtonStyle = {
 };
 
 const menuButtonStyle = {
-  height: '72px',
+  height: '80px',
   width: '72px',
+  pt: '8px',
   borderRight: `1px solid ${colors.outline.surface}`,
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
   cursor: 'pointer'
 };
@@ -87,7 +121,10 @@ const menuTextStyle = {
   lineHeight: '0.875rem',
   textAlign: 'center',
   fontWeight: 500,
-  color: colors.element.secondary
+  color: colors.element.secondary,
+  width: '100%',
+  overflowWrap: 'break-word',
+  hyphens: 'manual'
 };
 
 const selectedTextStyle = {
@@ -99,13 +136,24 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const [userData, setUserData] = useState(null);
   const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [more, setMore] = useState(false);
+  const [adminFullMenu, setAdminFullMenu] = useState(false);
+  const [firstMenuMouseOut, setFirstMenuMouseOut] = useState(true);
+  const [secondMenuMouseOut, setSecondMenuMouseOut] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   let navigate = useNavigate();
 
+  document.addEventListener('mouseleave', () => setAdminFullMenu(false));
+
   useEffect(() => {
     setCurrentHref(location.pathname);
   }, [location]);
+
+  useEffect(() => {
+    if (firstMenuMouseOut && secondMenuMouseOut) {
+      setAdminFullMenu(false);
+    }
+  }, [firstMenuMouseOut, secondMenuMouseOut]);
 
   const routeList =
     userType === 'admin'
@@ -116,6 +164,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
       ? renterRoutes
       : [];
 
+  const adminRouteList2 = userType === 'admin' ? adminRoutes.slice(6, 11) : [];
+
+  const adminRouteList3 = userType === 'admin' ? adminRoutes.slice(11) : [];
+
   const mobileRouteList =
     userType === 'admin'
       ? adminRoutes.slice(0, 3)
@@ -123,6 +175,13 @@ const Header = ({ title, userType, isHideMenu = false }) => {
       ? operatorRoutes.slice(0, 3)
       : userType === 'renter'
       ? renterRoutes
+      : [];
+
+  const mobileRouteList2 =
+    userType === 'admin'
+      ? adminRoutes.slice(3)
+      : userType === 'operator'
+      ? operatorRoutes.slice(3)
       : [];
 
   useLayoutEffect(() => {
@@ -141,118 +200,267 @@ const Header = ({ title, userType, isHideMenu = false }) => {
     setMore(true);
   };
 
+  const handleAdminMenuMouseOver = () => {
+    setAdminFullMenu(true);
+    setFirstMenuMouseOut(false);
+    setSecondMenuMouseOut(false);
+  };
+
+  const handleFirstMenuMouseOut = () => {
+    setFirstMenuMouseOut(true);
+  };
+
+  const handleSecondMenuMouseOut = () => {
+    setSecondMenuMouseOut(true);
+  };
+
+  const handleExitMoreClick = () => {
+    setMore(false);
+  };
+
   return (
     <>
       {isMobile && (
-        <AppBar position="absolute" sx={mobileFooterStyle}>
-          <Stack
-            direction={'row'}
-            justifyContent={'space-around'}
-            sx={{ width: '100%' }}
-          >
-            {mobileRouteList.map((route) => {
-              const icon = icons.find((icon) => icon.route === route.eventKey);
-              return (
+        <>
+          <AppBar position="absolute" sx={mobileFooterStyle}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-around'}
+              sx={{ width: '100%' }}
+            >
+              {mobileRouteList.map((route) => {
+                const icon = icons.find(
+                  (icon) => icon.route === route.eventKey
+                );
+                return (
+                  <Box
+                    sx={[
+                      mobileMenuButtonStyle,
+                      {
+                        borderColor:
+                          !more && icon.route === currentHref
+                            ? colors.button.primary.default
+                            : colors.outline.surface
+                      }
+                    ]}
+                    key={route.eventKey}
+                    onClick={() => {
+                      setMore(false);
+                      navigate(route.eventKey);
+                    }}
+                  >
+                    {icon && (
+                      <IconButton disableRipple sx={menuIconStyle}>
+                        <img
+                          style={{
+                            height: icon.height,
+                            color: colors.button.primary.default
+                          }}
+                          src={
+                            !more && icon.route === currentHref
+                              ? icon.selected
+                              : icon.icon
+                          }
+                          alt={route.title}
+                        />
+                      </IconButton>
+                    )}
+                    <Typography
+                      sx={[
+                        menuTextStyle,
+                        !more && icon.route === currentHref
+                          ? selectedTextStyle
+                          : {}
+                      ]}
+                    >
+                      {route.title}
+                    </Typography>
+                  </Box>
+                );
+              })}
+              {userType !== 'renter' && (
                 <Box
                   sx={[
                     mobileMenuButtonStyle,
                     {
-                      borderColor:
-                        !more && icon.route === currentHref
-                          ? colors.button.primary.default
-                          : colors.outline.surface
+                      borderColor: more
+                        ? colors.button.primary.default
+                        : colors.outline.surface
                     }
                   ]}
-                  key={route.eventKey}
-                  onClick={() => {
-                    setMore(false);
-                    navigate(route.eventKey);
-                  }}
+                  onClick={handleMoreClick}
                 >
-                  {icon && (
-                    <IconButton disableRipple sx={menuIconStyle}>
-                      <img
-                        style={{
-                          height: icon.height,
-                          color: colors.button.primary.default
-                        }}
-                        src={
-                          !more && icon.route === currentHref
-                            ? icon.selected
-                            : icon.icon
-                        }
-                        alt={route.title}
-                      />
-                    </IconButton>
-                  )}
+                  <IconButton disableRipple sx={menuIconStyle}>
+                    <img
+                      style={{
+                        height: 5,
+                        color: colors.button.primary.default
+                      }}
+                      src={more ? MoreIconSelected : MoreIcon}
+                      alt="Ещё"
+                    />
+                  </IconButton>
                   <Typography
-                    sx={[
-                      menuTextStyle,
-                      !more && icon.route === currentHref
-                        ? selectedTextStyle
-                        : {}
-                    ]}
+                    sx={[menuTextStyle, more ? selectedTextStyle : {}]}
                   >
-                    {route.title}
+                    Ещё
                   </Typography>
                 </Box>
-              );
-            })}
-            {userType !== 'renter' && (
-              <Box
-                sx={[
-                  mobileMenuButtonStyle,
-                  {
-                    borderColor: more
-                      ? colors.button.primary.default
-                      : colors.outline.surface
-                  }
-                ]}
-                onClick={handleMoreClick}
+              )}
+            </Stack>
+            {userData && (
+              <Stack
+                direction={'row'}
+                justifyContent={'center'}
+                gap={'4px'}
+                sx={{ width: '100%' }}
               >
-                <IconButton disableRipple sx={menuIconStyle}>
+                {userData.username && (
+                  <Typography sx={mobileProfileTextStyle}>
+                    {userData.username}
+                  </Typography>
+                )}
+                <IconButton disableRipple disabled sx={{ p: 0 }}>
                   <img
                     style={{
-                      height: 5,
-                      color: colors.button.primary.default
+                      height: 10
                     }}
-                    src={more ? MoreIconSelected : MoreIcon}
-                    alt="Ещё"
+                    src={AddressIcon}
+                    alt="Адрес"
                   />
                 </IconButton>
-                <Typography sx={[menuTextStyle, more ? selectedTextStyle : {}]}>
-                  Ещё
-                </Typography>
-              </Box>
-            )}
-          </Stack>
-          {userData && (
-            <Stack
-              direction={'row'}
-              justifyContent={'center'}
-              gap={'4px'}
-              sx={{ width: '100%' }}
-            >
-              {userData.username && (
                 <Typography sx={mobileProfileTextStyle}>
-                  {userData.username}
+                  {parkingData.address}
                 </Typography>
-              )}
-              <IconButton disableRipple disabled sx={{ p: 0 }}>
-                <img
-                  style={{
-                    height: 10
-                  }}
-                  src={AddressIcon}
-                  alt="Адрес"
-                />
-              </IconButton>
-              <Typography sx={mobileProfileTextStyle}>
-                {parkingData.address}
-              </Typography>
-            </Stack>
+              </Stack>
+            )}
+          </AppBar>
+          {more && (
+            <>
+              <AppBar position="absolute" sx={mobileMoreHeaderStyle}>
+                <Stack
+                  direction={'row'}
+                  justifyContent={'space-between'}
+                  sx={{ width: '100%' }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: '1.5rem',
+                      fontWeight: 500,
+                      lineHeight: '1.75rem',
+                      pt: '6px'
+                    }}
+                  >
+                    Ещё
+                  </Typography>
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    fullWidth={false}
+                    onClick={handleExitMoreClick}
+                    sx={secondaryButtonStyle}
+                  >
+                    Выход
+                  </Button>
+                </Stack>
+              </AppBar>
+              <Stack sx={mobileMoreListStyle}>
+                {parkingData && (
+                  <Stack gap={'4px'}>
+                    <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
+                      <Typography
+                        sx={{
+                          fontWeight: 500,
+                          color: colors.element.secondary,
+                          width: '24px'
+                        }}
+                      >
+                        ID:
+                      </Typography>
+                      <Typography>{parkingData.parkingID}</Typography>
+                    </Stack>
+                    <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
+                      <img
+                        style={{
+                          width: 24,
+                          color: colors.element.primary
+                        }}
+                        src={MoreIdIcon}
+                        alt="ID"
+                      />
+                      <Typography>{parkingData.name}</Typography>
+                    </Stack>
+                    <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
+                      <img
+                        style={{
+                          width: 24,
+                          color: colors.element.primary
+                        }}
+                        src={MoreHomeIcon}
+                        alt="Адрес"
+                      />
+                      <Typography>{parkingData.address}</Typography>
+                    </Stack>
+                    {userData && (
+                      <Stack
+                        direction={'row'}
+                        gap={'8px'}
+                        alignItems={'center'}
+                      >
+                        <img
+                          style={{
+                            width: 24,
+                            color: colors.element.primary
+                          }}
+                          src={MoreUserIcon}
+                          alt="Пользователь"
+                        />
+                        <Typography>{userData.username}</Typography>
+                      </Stack>
+                    )}
+                  </Stack>
+                )}
+                <Stack>
+                  {mobileRouteList2.map((route) => {
+                    const icon = icons.find(
+                      (icon) => icon.route === route.eventKey
+                    );
+                    return (
+                      <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        gap={'12px'}
+                        sx={{
+                          px: '12px',
+                          py: '8px',
+                          backgroundColor: colors.surface.high
+                        }}
+                        key={route.eventKey}
+                        onClick={() => navigate(route.eventKey)}
+                      >
+                        {icon && icon.more && (
+                          <IconButton disableRipple sx={{ p: 0 }}>
+                            <img
+                              style={{
+                                width: 24,
+                                color: colors.element.primary
+                              }}
+                              src={icon.more}
+                              alt={route.title}
+                            />
+                          </IconButton>
+                        )}
+                        <Typography sx={{ fontWeight: 500 }}>
+                          {route.title}
+                        </Typography>
+                      </Stack>
+                    );
+                  })}
+                </Stack>
+              </Stack>
+            </>
           )}
-        </AppBar>
+        </>
       )}
       {!isMobile && (
         <Stack
@@ -262,10 +470,160 @@ const Header = ({ title, userType, isHideMenu = false }) => {
             height: '100%',
             maxHeight: '100dvh',
             backgroundColor: colors.surface.high,
-            borderRight: `1px solid ${colors.outline.surface}`
+            borderRight: !adminFullMenu
+              ? `1px solid ${colors.outline.surface}`
+              : 'none',
+            position: 'relative'
           }}
+          onMouseOver={handleAdminMenuMouseOver}
+          onMouseLeave={handleFirstMenuMouseOut}
         >
-          <Stack sx={{ gap: '2px' }}>
+          <Stack>
+            {userType === 'admin' && (
+              <>
+                <Box sx={{ height: '1rem' }}>
+                  <Typography
+                    sx={{
+                      fontSize: '0.75rem',
+                      lineHeight: '0.875rem',
+                      textAlign: 'center'
+                    }}
+                  >
+                    Админ
+                  </Typography>
+                </Box>
+                {adminFullMenu && (
+                  <Stack
+                    direction={'row'}
+                    onMouseLeave={handleSecondMenuMouseOut}
+                  >
+                    <Stack
+                      sx={{
+                        width: '72px',
+                        height: '100%',
+                        maxHeight: '100dvh',
+                        backgroundColor: colors.surface.high,
+                        position: 'absolute',
+                        top: 0,
+                        right: '-73px',
+                        zIndex: 1200
+                      }}
+                    >
+                      <Box sx={{ minHeight: '1rem' }}></Box>
+                      {adminRouteList2.map((route) => {
+                        const icon = icons.find(
+                          (icon) => icon.route === route.eventKey
+                        );
+                        return (
+                          <Box
+                            sx={[
+                              menuButtonStyle,
+                              {
+                                borderColor:
+                                  icon.route === currentHref
+                                    ? colors.button.primary.default
+                                    : colors.outline.surface
+                              }
+                            ]}
+                            key={route.eventKey}
+                            onClick={() => navigate(route.eventKey)}
+                          >
+                            {icon && (
+                              <IconButton disableRipple sx={menuIconStyle}>
+                                <img
+                                  style={{
+                                    height: icon.height,
+                                    color: colors.button.primary.default
+                                  }}
+                                  src={
+                                    icon.route === currentHref
+                                      ? icon.selected
+                                      : icon.icon
+                                  }
+                                  alt={route.title}
+                                />
+                              </IconButton>
+                            )}
+                            <Typography
+                              sx={[
+                                menuTextStyle,
+                                icon.route === currentHref
+                                  ? selectedTextStyle
+                                  : {}
+                              ]}
+                            >
+                              {route.title}
+                            </Typography>
+                          </Box>
+                        );
+                      })}
+                    </Stack>
+                    <Stack
+                      sx={{
+                        width: '72px',
+                        height: '100%',
+                        maxHeight: '100dvh',
+                        backgroundColor: colors.surface.high,
+                        position: 'absolute',
+                        top: 0,
+                        right: '-145px',
+                        zIndex: 1200,
+                        borderRight: `1px solid ${colors.outline.surface}`
+                      }}
+                    >
+                      <Box sx={{ minHeight: '1rem' }}></Box>
+                      {adminRouteList3.map((route) => {
+                        const icon = icons.find(
+                          (icon) => icon.route === route.eventKey
+                        );
+                        return (
+                          <Box
+                            sx={[
+                              menuButtonStyle,
+                              {
+                                borderColor:
+                                  icon.route === currentHref
+                                    ? colors.button.primary.default
+                                    : colors.outline.surface
+                              }
+                            ]}
+                            key={route.eventKey}
+                            onClick={() => navigate(route.eventKey)}
+                          >
+                            {icon && (
+                              <IconButton disableRipple sx={menuIconStyle}>
+                                <img
+                                  style={{
+                                    height: icon.height,
+                                    color: colors.button.primary.default
+                                  }}
+                                  src={
+                                    icon.route === currentHref
+                                      ? icon.selected
+                                      : icon.icon
+                                  }
+                                  alt={route.title}
+                                />
+                              </IconButton>
+                            )}
+                            <Typography
+                              sx={[
+                                menuTextStyle,
+                                icon.route === currentHref
+                                  ? selectedTextStyle
+                                  : {}
+                              ]}
+                            >
+                              {route.title}
+                            </Typography>
+                          </Box>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
+                )}
+              </>
+            )}
             {routeList.map((route) => {
               const icon = icons.find((icon) => icon.route === route.eventKey);
               return (
