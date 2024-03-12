@@ -473,7 +473,8 @@ const Header = ({ title, userType, isHideMenu = false }) => {
             borderRight: !adminFullMenu
               ? `1px solid ${colors.outline.surface}`
               : 'none',
-            position: 'relative'
+            position: 'relative',
+            zIndex: 1200
           }}
           onMouseOver={handleAdminMenuMouseOver}
           onMouseLeave={handleFirstMenuMouseOut}

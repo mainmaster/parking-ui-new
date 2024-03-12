@@ -8,7 +8,9 @@ export const colors = {
   },
   surface: {
     high: '#F4F4F6',
-    low: '#FFFFFF'
+    low: '#FFFFFF',
+    hover: '#E8FCF0',
+    active: '#D2F9E2'
   },
   carlist: {
     bg: {

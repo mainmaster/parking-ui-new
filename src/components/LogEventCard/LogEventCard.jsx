@@ -6,7 +6,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { useDispatch, useSelector } from 'react-redux';
 import eventButtonIcon from '../../assets/svg/log_event_button_icon.svg';
@@ -24,7 +24,20 @@ import { changeDataModal } from '../../store/events/eventsSlice';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { useNavigate } from 'react-router-dom';
 
-export default function LogEventCard({ event, onClickImage }) {
+const selectedStyle = {
+  animation: 'flipBackground 400ms ease-out 200ms',
+  animationIterationCount: 2,
+  '@keyframes flipBackground': {
+    '0%': { backgroundColor: colors.surface.active },
+    '50%': { backgroundColor: colors.surface.active },
+    '100%': { backgroundColor: colors.surface.high }
+  }
+};
+
+export default forwardRef(function LogEventCard(
+  { event, onClickImage, selected },
+  ref
+) {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -53,12 +66,17 @@ export default function LogEventCard({ event, onClickImage }) {
 
   return (
     <Box
+      id={event.id}
+      ref={ref}
       component={'div'}
-      sx={{
-        p: '1rem',
-        width: '100%',
-        borderBottom: '1px solid ' + colors.outline.separator
-      }}
+      sx={[
+        {
+          p: '1rem',
+          width: '100%',
+          borderBottom: '1px solid ' + colors.outline.separator
+        },
+        selected && selectedStyle
+      ]}
     >
       <Stack gap={'4px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
@@ -144,7 +162,7 @@ export default function LogEventCard({ event, onClickImage }) {
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          {event.car_brand !== '' && (
+          {event.car_brand && event.car_brand !== '' && (
             <>
               <IconButton
                 disableRipple
@@ -186,19 +204,20 @@ export default function LogEventCard({ event, onClickImage }) {
           alignItems={'center'}
           justifyContent={'flex-start'}
         >
-          {!event.is_recognition && (
-            <Button
-              disableRipple
-              variant="contained"
-              fullWidth={false}
-              sx={[positiveButtonStyle, { mt: '8px' }]}
-              onClick={() =>
-                dispatch(changeActiveOpenApModal(event.access_point))
-              }
-            >
-              Ввести номер
-            </Button>
-          )}
+          {!event.is_recognition &&
+            (event.event_code === 1003 || event.event_code === 1033) && (
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={[positiveButtonStyle, { mt: '8px' }]}
+                onClick={() =>
+                  dispatch(changeActiveOpenApModal(event.access_point))
+                }
+              >
+                Ввести номер
+              </Button>
+            )}
           {event.access_status_code === '1004' && (
             <Button
               disableRipple
@@ -209,8 +228,18 @@ export default function LogEventCard({ event, onClickImage }) {
               Убрать из Чёрного списка
             </Button>
           )}
+          {event.debt && (
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={[secondaryButtonStyle, { mt: '8px' }]}
+            >
+              Обнулить долг
+            </Button>
+          )}
         </Stack>
       </Stack>
     </Box>
   );
-}
+});

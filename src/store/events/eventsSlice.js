@@ -1,24 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export const eventsSlice = createSlice({
   name: 'events',
   initialState: {
     events: [],
     pages: 1,
-    filters: {
-    },
+    filters: {},
     currentPage: 1,
     dataModal: {},
     isLoadingFetch: true,
     isAccessPointsFetched: false,
     isChangedStatus: false,
+    selectedEventId: null
   },
   reducers: {
     eventsFetch: (state, action) => {
       return {
         ...state,
-        isLoadingFetch: true,
-      }
+        isLoadingFetch: true
+      };
     },
     eventsChangePageFetch: (state, action) => {},
     openApFetch: (state, action) => {},
@@ -27,47 +27,47 @@ export const eventsSlice = createSlice({
       return {
         ...state,
         events: action.payload,
-        isLoadingFetch: false,
-      }
+        isLoadingFetch: false
+      };
     },
-    setAccessPoint: (state, action)=>{
-      return{
+    setAccessPoint: (state, action) => {
+      return {
         ...state,
         filters: {
           ...state.filters,
           accessPoint: action.payload
         }
-      }
+      };
     },
-    setFilters: (state, action)=>{
-      return{
+    setFilters: (state, action) => {
+      return {
         ...state,
         filters: action.payload
-      }
+      };
     },
     putEvent: (state, action) => {
       return {
         ...state,
-        events: [action.payload, ...state.events],
-      }
+        events: [action.payload, ...state.events]
+      };
     },
     changePages: (state, action) => {
       return {
         ...state,
-        pages: action.payload,
-      }
+        pages: action.payload
+      };
     },
     changeCurrentPage: (state, action) => {
       return {
         ...state,
-        currentPage: action.payload,
-      }
+        currentPage: action.payload
+      };
     },
     changeDataModal: (state, action) => {
       return {
         ...state,
-        dataModal: action.payload,
-      }
+        dataModal: action.payload
+      };
     },
     closeApFetch: (state, action) => {},
     normalApFetch: (state, action) => {},
@@ -79,17 +79,23 @@ export const eventsSlice = createSlice({
     changeAccessPointsLoading: (state, action) => {
       return {
         ...state,
-        isAccessPointsFetched: true,
-      }
+        isAccessPointsFetched: true
+      };
     },
     changeAccessPointsStatus: (state, action) => {
       return {
         ...state,
-        isChangedStatus: !state.isChangedStatus,
-      }
+        isChangedStatus: !state.isChangedStatus
+      };
     },
-  },
-})
+    setSelectedEventId: (state, action) => {
+      return {
+        ...state,
+        selectedEventId: action.payload
+      };
+    }
+  }
+});
 
 export const {
   eventsFetch,
@@ -110,7 +116,8 @@ export const {
   getStatusesAccessPointsFetch,
   changeAccessPointsLoading,
   changeAccessPointsStatus,
-  setFilters
-} = eventsSlice.actions
+  setFilters,
+  setSelectedEventId
+} = eventsSlice.actions;
 
-export default eventsSlice.reducer
+export default eventsSlice.reducer;

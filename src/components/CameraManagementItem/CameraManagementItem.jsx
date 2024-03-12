@@ -23,7 +23,8 @@ import {
 import {
   openApFetch,
   closeApFetch,
-  normalApFetch
+  normalApFetch,
+  setSelectedEventId
 } from 'store/events/eventsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -135,6 +136,10 @@ export default function CameraManagementItem({
     }
   };
 
+  const handleEventClick = () => {
+    dispatch(setSelectedEventId(currentEvent.id));
+  };
+
   return (
     <Box
       sx={{
@@ -182,8 +187,10 @@ export default function CameraManagementItem({
                 position: 'absolute',
                 top: '4px',
                 right: '4px',
-                width: '139px'
+                width: '139px',
+                cursor: 'pointer'
               }}
+              onClick={handleEventClick}
             >
               <Typography
                 noWrap

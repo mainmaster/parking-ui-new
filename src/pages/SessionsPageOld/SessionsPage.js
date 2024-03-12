@@ -1,10 +1,10 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useEffect, useState, useRef } from 'react';
-import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
-import css from './SessionsPage.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import cn from 'classnames';
-import Lightbox from 'react-18-image-lightbox';
+import { useEffect, useState } from 'react'
+import { Button, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
+import css from './SessionsPage.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import cn from 'classnames'
+import Lightbox from 'react-18-image-lightbox'
 // Store
 import {
   sessionsFetch,
@@ -12,106 +12,93 @@ import {
   changeDataModal,
   changeCurrentPage,
   statusSessionFetch,
-  paidSessionFetch
-} from 'store/sessions/sessionsSlice';
+  paidSessionFetch,
+} from 'store/sessions/sessionsSlice'
 // Components
-import SessionsCard from 'components/SessionsCard';
-import Table from 'components/Table';
-import CardSessionModal from 'components/Modals/CardSessionModal';
-import PaginationCustom from 'components/Pagination';
-import FilterForm from 'components/pages/sessions/FilterForm';
+import SessionsCard from 'components/SessionsCard'
+import Table from 'components/Table'
+import CardSessionModal from 'components/Modals/CardSessionModal'
+import PaginationCustom from 'components/Pagination'
+import FilterForm from 'components/pages/sessions/FilterForm'
 // Utils
-import { titles } from './utils';
-import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
+import { titles } from './utils'
+import { formatDate, getDayMinuteSecondsByNumber } from 'utils'
 // Constants
-import { statusSessionName, BREAKPOINT_MD } from 'constants';
-import { CheckSquareFill, XSquareFill } from 'react-bootstrap-icons';
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
-import { CloseOlderThanDateModal } from './components/CloseOlderThanDateModal';
-import { useParkingInfoQuery } from '../../api/settings/settings';
-import TypeAuto from '../../components/TypeAuto';
-import { isMobile } from 'react-device-detect';
-import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { spacers } from '../../theme/spacers';
-import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
-
-const titleTextStyle = {
-  fontSize: '1.5rem',
-  lineHeight: '1.75rem',
-  fontWeight: 500
-};
+import { statusSessionName, BREAKPOINT_MD } from 'constants'
+import { CheckSquareFill, XSquareFill } from 'react-bootstrap-icons'
+import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard'
+import { CloseOlderThanDateModal } from './components/CloseOlderThanDateModal'
+import { useParkingInfoQuery } from '../../api/settings/settings'
+import TypeAuto from '../../components/TypeAuto'
 
 const SessionsPage = () => {
-  const dispatch = useDispatch();
-  const sessions = useSelector((state) => state.sessions.sessions);
-  const pages = useSelector((state) => state.sessions.pages);
-  const currentPage = useSelector((state) => state.sessions.currentPage);
-  const isLoading = useSelector((state) => state.sessions.isLoadingFetch);
-  const isError = useSelector((state) => state.sessions.isErrorFetch);
-  const [isActiveModal, setIsActiveModal] = useState(false);
-  const [closeOlderDateModal, setCloseOlderDateModal] = useState(false);
-  const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
-  const { data: parkingInfo } = useParkingInfoQuery();
-  const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
-  const sessionsListRef = useRef(null);
+  const dispatch = useDispatch()
+  const sessions = useSelector((state) => state.sessions.sessions)
+  const pages = useSelector((state) => state.sessions.pages)
+  const currentPage = useSelector((state) => state.sessions.currentPage)
+  const isLoading = useSelector((state) => state.sessions.isLoadingFetch)
+  const isError = useSelector((state) => state.sessions.isErrorFetch)
+  const [isActiveModal, setIsActiveModal] = useState(false)
+  const [closeOlderDateModal, setCloseOlderDateModal] = useState(false)
+  const [isActiveModalMobile, setIsActiveModalMobile] = useState(false)
+  const { data: parkingInfo } = useParkingInfoQuery()
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
-    src: ''
-  });
+    src: '',
+  })
 
   const changeActiveImageModal = (src) =>
     setImageModal({
       src: src,
-      isOpen: !imageModal.isOpen
-    });
+      isOpen: !imageModal.isOpen,
+    })
 
   useEffect(() => {
-    dispatch(sessionsFetch());
-    return () => dispatch(changeCurrentPage(1));
-  }, [dispatch]);
+    dispatch(sessionsFetch())
+    return () => dispatch(changeCurrentPage(1))
+  }, [dispatch])
 
   const changePage = (index) => {
-    dispatch(sessionsChangePageFetch(index));
-  };
+    dispatch(sessionsChangePageFetch(index))
+  }
 
   const changeModal = (item) => {
-    dispatch(changeDataModal(item));
+    dispatch(changeDataModal(item))
 
     if (window.innerWidth < BREAKPOINT_MD) {
-      changeMobileModal();
-      setIsActiveModal(true);
+      changeMobileModal()
+      setIsActiveModal(true)
     }
-  };
+  }
 
   const changeMobileModal = () => {
-    setIsActiveModalMobile(!isActiveModalMobile);
-  };
+    setIsActiveModalMobile(!isActiveModalMobile)
+  }
 
   const paidHandle = (id) => {
-    dispatch(paidSessionFetch({ id, is_paid: true }));
-  };
+    dispatch(paidSessionFetch({ id, is_paid: true }))
+  }
 
   const statusHandle = (id) => {
-    dispatch(statusSessionFetch({ id, status: 'closed' }));
-  };
+    dispatch(statusSessionFetch({ id, status: 'closed' }))
+  }
 
   useEffect(() => {
     if (window.innerWidth < BREAKPOINT_MD) {
-      setIsActiveModal(true);
+      setIsActiveModal(true)
     }
-  }, []);
+  }, [])
 
   const spinnerContent = (
     <div className={css.spinner}>
       <Spinner animation="border" />
     </div>
-  );
+  )
 
   const errorContent = (
     <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
-  );
+  )
   const rowsTable =
     sessions.length !== 0
       ? sessions.map((item, index) => (
@@ -127,7 +114,7 @@ const SessionsPage = () => {
                   style={{
                     height: '100%',
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}
                 ></div>
               ) : (
@@ -135,7 +122,7 @@ const SessionsPage = () => {
                   style={{
                     height: '100%',
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}
                 >
                   <OverlayTrigger
@@ -180,7 +167,7 @@ const SessionsPage = () => {
                   <Button
                     variant="success"
                     onClick={() => {
-                      paidHandle(item?.id);
+                      paidHandle(item?.id)
                     }}
                   >
                     Обнулить долг
@@ -198,7 +185,7 @@ const SessionsPage = () => {
             </td>
           </tr>
         ))
-      : null;
+      : null
 
   const mainContent = (
     <div>
@@ -234,43 +221,15 @@ const SessionsPage = () => {
         currentPage={currentPage}
       />
     </div>
-  );
+  )
 
-  const hasData = !(isLoading || isError);
-  const errorMessage = isError ? errorContent : null;
-  const spinner = isLoading ? spinnerContent : null;
-  const content = hasData ? mainContent : null;
+  const hasData = !(isLoading || isError)
+  const errorMessage = isError ? errorContent : null
+  const spinner = isLoading ? spinnerContent : null
+  const content = hasData ? mainContent : null
 
   return (
     <>
-      {!isMobile && (
-        <AppBar
-          sx={{
-            width: 'calc(100% - 72px)',
-            position: 'absolute',
-            top: 0,
-            left: '72px',
-            backgroundColor: colors.surface.low,
-            boxShadow: !sessionsListScrolled && 'none',
-            zIndex: 1
-          }}
-        >
-          <Stack
-            direction={'row'}
-            gap={'16px'}
-            justifyContent={'space-between'}
-            sx={{
-              height: isMobile ? '56px' : '64px',
-              width: '100%',
-              p: '16px',
-              pb: '8px'
-            }}
-          >
-            <Typography sx={titleTextStyle}>Сессии</Typography>
-            <ParkingInfo />
-          </Stack>
-        </AppBar>
-      )}
       <FilterForm />
       {errorMessage}
       {spinner}
@@ -291,7 +250,7 @@ const SessionsPage = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default SessionsPage;
+export default SessionsPage

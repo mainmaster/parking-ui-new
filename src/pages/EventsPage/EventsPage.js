@@ -29,7 +29,8 @@ import {
   putEvent,
   eventsChangePageFetch,
   changeDataModal,
-  changeCurrentPage
+  changeCurrentPage,
+  setSelectedEventId
 } from 'store/events/eventsSlice';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import { EventsDashboard } from '../../components/EventsDashboard/EventsDashboard';
@@ -44,6 +45,7 @@ import {
   secondaryButtonStyle
 } from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
+import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
 import OpenApByVehiclePlateModal from '../../components/Modals/OpenApByVehiclePlateModal';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
@@ -85,11 +87,37 @@ const EventsPage = ({ onlyLog }) => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
   const [mobileCameras, setMobileCameras] = useState(true);
+  const [openForm, setOpenForm] = useState(false);
+  const [eventsListScrolled, setEventsListScrolled] = useState(false);
   const events = useSelector((state) => state.events.events);
   const pages = useSelector((state) => state.events.pages);
   const currentPage = useSelector((state) => state.events.currentPage);
   const isLoading = useSelector((state) => state.events.isLoadingFetch);
+  const selectedEventId = useSelector((state) => state.events.selectedEventId);
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
+  const eventRef = useRef([]);
+  eventRef.current = [];
+  const eventsListRef = useRef(null);
+
+  const addToRefs = (node) => {
+    if (node && !eventRef.current.includes(node)) {
+      eventRef.current.push(node);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedEventId) {
+      const item = eventRef.current.find(
+        (i) => i.id === selectedEventId.toString()
+      );
+      if (item) {
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          dispatch(setSelectedEventId(null));
+        }, 1200);
+      }
+    }
+  }, [selectedEventId, eventRef]);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -129,6 +157,17 @@ const EventsPage = ({ onlyLog }) => {
 
   const handleMobileMenuItemClick = () => {
     setMobileCameras(!mobileCameras);
+  };
+
+  const handleEventsListScroll = () => {
+    if (eventsListRef.current) {
+      const { scrollTop } = eventsListRef.current;
+      if (scrollTop > 0) {
+        setEventsListScrolled(true);
+      } else if (eventsListScrolled) {
+        setEventsListScrolled(false);
+      }
+    }
   };
 
   return (
@@ -190,11 +229,11 @@ const EventsPage = ({ onlyLog }) => {
       {!isMobile && (
         <Drawer
           sx={{
-            width: '361px',
+            width: spacers.events,
             maxHeight: '100dvh',
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: '361px',
+              width: spacers.events,
               boxSizing: 'border-box',
               zIndex: 1
             }
@@ -202,21 +241,39 @@ const EventsPage = ({ onlyLog }) => {
           variant="permanent"
           anchor="right"
         >
+          <AppBar
+            sx={{
+              width: spacers.events,
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              backgroundColor: colors.surface.high,
+              boxShadow: !eventsListScrolled && 'none',
+              zIndex: 1
+            }}
+          >
+            <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
+          </AppBar>
           <Stack
+            ref={eventsListRef}
             sx={[
               listWithScrollStyle,
-              { width: '360px', backgroundColor: colors.surface.high }
+              {
+                width: `calc(${spacers.events} - 1px)`,
+                backgroundColor: colors.surface.high
+              }
             ]}
+            onScroll={handleEventsListScroll}
           >
-            <HeaderSpacer />
-            <CarNumberFilter />
-
+            <CarNumberFilterSpacer openForm={openForm} />
             {events.length > 0
               ? events.map((item, index) => (
                   <LogEventCard
                     key={index}
                     event={item}
                     onClickImage={changeActiveImageModal}
+                    selected={item.id === selectedEventId}
+                    ref={addToRefs}
                   />
                 ))
               : null}
@@ -258,7 +315,7 @@ const EventsPage = ({ onlyLog }) => {
           ]}
         >
           {!onlyLog && <HeaderSpacer />}
-          <CarNumberFilter />
+          <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
 
           {events.length > 0
             ? events.map((item, index) => (
@@ -266,6 +323,8 @@ const EventsPage = ({ onlyLog }) => {
                   key={index}
                   event={item}
                   onClickImage={changeActiveImageModal}
+                  selected={item.id === selectedEventId}
+                  ref={addToRefs}
                 />
               ))
             : null}
@@ -281,6 +340,10 @@ const EventsPage = ({ onlyLog }) => {
             />
           </Box>
           <FooterSpacer />
+          <CarNumberDialog
+            show={isOpenApModal}
+            handleClose={() => dispatch(changeActiveOpenApModal())}
+          />
           {imageModal.isOpen && (
             <Lightbox
               onCloseRequest={changeActiveImageModal}

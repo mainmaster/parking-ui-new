@@ -121,8 +121,7 @@ const labelStyle = {
 const defaultValues = {
   vehiclePlate: ''
 };
-export default function CarNumberFilter() {
-  const [openForm, setOpenForm] = useState(false);
+export default function CarNumberFilter({ openForm, setOpenForm }) {
   const [selectedEventCode, setSelectedEventCode] = useState('');
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);

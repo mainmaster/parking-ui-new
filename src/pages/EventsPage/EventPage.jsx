@@ -344,19 +344,21 @@ export const EventPage = () => {
                   alignItems={'center'}
                   justifyContent={'flex-start'}
                 >
-                  {!event.is_recognition && (
-                    <Button
-                      disableRipple
-                      variant="contained"
-                      fullWidth={false}
-                      sx={[positiveButtonStyle, { mt: '8px' }]}
-                      onClick={() =>
-                        dispatch(changeActiveOpenApModal(event.access_point))
-                      }
-                    >
-                      Ввести номер
-                    </Button>
-                  )}
+                  {!event.is_recognition &&
+                    (event.event_code === 1003 ||
+                      event.event_code === 1033) && (
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        fullWidth={false}
+                        sx={[positiveButtonStyle, { mt: '8px' }]}
+                        onClick={() =>
+                          dispatch(changeActiveOpenApModal(event.access_point))
+                        }
+                      >
+                        Ввести номер
+                      </Button>
+                    )}
                   {event.access_status_code === '1004' && (
                     <Button
                       disableRipple
@@ -365,6 +367,16 @@ export const EventPage = () => {
                       sx={[secondaryButtonStyle, { mt: '8px' }]}
                     >
                       Убрать из Чёрного списка
+                    </Button>
+                  )}
+                  {event.debt && (
+                    <Button
+                      disableRipple
+                      variant="contained"
+                      fullWidth={false}
+                      sx={[secondaryButtonStyle, { mt: '8px' }]}
+                    >
+                      Обнулить долг
                     </Button>
                   )}
                 </Stack>

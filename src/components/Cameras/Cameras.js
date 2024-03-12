@@ -12,6 +12,7 @@ import _ from 'lodash';
 import {
   closeApAllFetch,
   openApAllFetch,
+  normalApAllFetch,
   getStatusesAccessPointsFetch
 } from 'store/events/eventsSlice';
 import {
@@ -34,7 +35,7 @@ import {
   ArrowRightSquareFill
 } from 'react-bootstrap-icons';
 import { useParkingInfoQuery } from '../../api/settings/settings';
-import { Box, Button, Stack } from '@mui/material';
+import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
 import React from 'react';
 import {
   listStyle,
@@ -42,9 +43,11 @@ import {
   secondaryButtonStyle
 } from '../../theme/styles';
 import { colors } from '../../theme/colors';
+import { spacers } from '../../theme/spacers';
 import ParkingInfo from '../ParkingInfo/ParkingInfo';
 import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
 import HeaderSpacer from '../Header/HeaderSpacer';
+import CameraSpacer from './CameraSpacer';
 import FooterSpacer from '../Header/FooterSpacer';
 import { isMobile } from 'react-device-detect';
 
@@ -61,6 +64,8 @@ const Cameras = () => {
   const cameras = useSelector((state) => state.cameras.cameras);
   const wsLedMessages = useRef(null);
   const [titlesLed, setTitlesLed] = useState({});
+  const [cameraListScrolled, setCameraListScrolled] = useState(false);
+  const camerasListRef = useRef(null);
 
   useEffect(() => {
     dispatch(camerasFetch());
@@ -110,84 +115,168 @@ const Cameras = () => {
     }
   }, [isFetched, dispatch, isChangedStatus]);
 
+  const handleCamerasListScroll = () => {
+    if (camerasListRef.current) {
+      const { scrollTop } = camerasListRef.current;
+      if (scrollTop > 0) {
+        setCameraListScrolled(true);
+      } else if (cameraListScrolled) {
+        setCameraListScrolled(false);
+      }
+    }
+  };
+
   return (
-    <Box
-      sx={[
-        listStyle,
-        {
-          backgroundColor: colors.surface.low,
-          width: '100%'
-        }
-      ]}
-    >
-      <HeaderSpacer />
-      {isMobile && (
-        <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
-          <ParkingInfo />
-        </Box>
+    <>
+      {!isMobile && (
+        <AppBar
+          sx={{
+            width: `calc(100% - 72px - ${spacers.events})`,
+            position: 'absolute',
+            top: 0,
+            left: '72px',
+            backgroundColor: colors.surface.low,
+            boxShadow: !cameraListScrolled && 'none',
+            zIndex: 1
+          }}
+        >
+          <Stack
+            direction={'row'}
+            gap={'16px'}
+            justifyContent={'space-between'}
+            sx={{
+              height: isMobile ? '56px' : '64px',
+              width: '100%',
+              p: '16px',
+              pb: '8px',
+              pt: isMobile ? '8px' : '16px'
+            }}
+          >
+            <Stack
+              direction={'row'}
+              gap={'8px'}
+              width={'100%'}
+              minWidth={'260px'}
+            >
+              <Button
+                disableRipple
+                variant="contained"
+                sx={secondaryButtonStyle}
+                onClick={() => dispatch(openApAllFetch())}
+              >
+                <Typography noWrap>Открыть все</Typography>
+              </Button>
+              <Button
+                disableRipple
+                variant="contained"
+                sx={secondaryButtonStyle}
+                onClick={() => dispatch(closeApAllFetch())}
+              >
+                <Typography noWrap>Закрыть все</Typography>
+              </Button>
+              <Button
+                disableRipple
+                variant="contained"
+                sx={secondaryButtonStyle}
+                onClick={() => dispatch(normalApAllFetch())}
+              >
+                <Typography noWrap>Авто- все</Typography>
+              </Button>
+            </Stack>
+            <ParkingInfo />
+          </Stack>
+        </AppBar>
       )}
-      <Stack
-        direction={'row'}
-        gap={'16px'}
-        justifyContent={'space-between'}
-        sx={{
-          height: isMobile ? '56px' : '64px',
-          width: '100%',
-          p: '16px',
-          pb: '8px',
-          pt: isMobile ? '8px' : '16px'
-        }}
-      >
-        <Stack direction={'row'} gap={'16px'} width={'100%'} minWidth={'260px'}>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth={isMobile ? true : false}
-            sx={secondaryButtonStyle}
-            onClick={() => dispatch(openApAllFetch())}
-          >
-            Открыть все
-          </Button>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth={isMobile ? true : false}
-            sx={secondaryButtonStyle}
-            onClick={() => dispatch(closeApAllFetch())}
-          >
-            Закрыть все
-          </Button>
-        </Stack>
-        {!isMobile && <ParkingInfo />}
-      </Stack>
+
       <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: isMobile ? '16px' : 0
-        }}
+        ref={camerasListRef}
+        sx={[
+          listStyle,
+          {
+            backgroundColor: colors.surface.low,
+            width: '100%'
+          }
+        ]}
+        onScroll={handleCamerasListScroll}
       >
-        {_.sortBy(accessPoints, ['id']).map((camera, index) => (
+        <CameraSpacer />
+        <HeaderSpacer />
+        {isMobile && (
           <>
-            <CameraManagementItem
-              camera={camera}
-              key={camera.id}
-              src={
-                cameras.find((item) => item.id === camera.cameras[0])?.mjpeg_url
-              }
-              titlesLed={titlesLed}
-              setTitlesLed={setTitlesLed}
-            />
+            <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
+              <ParkingInfo />
+            </Box>
+
+            <Stack
+              direction={'row'}
+              gap={'16px'}
+              justifyContent={'space-between'}
+              sx={{
+                height: '56px',
+                width: '100%',
+                p: '16px',
+                pb: '8px',
+                pt: '8px'
+              }}
+            >
+              <Stack
+                direction={'row'}
+                gap={'16px'}
+                width={'100%'}
+                minWidth={'260px'}
+              >
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={secondaryButtonStyle}
+                  onClick={() => dispatch(openApAllFetch())}
+                >
+                  Открыть все
+                </Button>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={secondaryButtonStyle}
+                  onClick={() => dispatch(closeApAllFetch())}
+                >
+                  Закрыть все
+                </Button>
+              </Stack>
+            </Stack>
           </>
-        ))}
-        <OpenApByTimeModal
-          show={isOpenApTimeModal}
-          handleClose={() => dispatch(changeActiveOpenApTimeModal())}
-        />
+        )}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: isMobile ? '16px' : 0
+          }}
+        >
+          {_.sortBy(accessPoints, ['id']).map((camera, index) => (
+            <>
+              <CameraManagementItem
+                camera={camera}
+                key={camera.id}
+                src={
+                  cameras.find((item) => item.id === camera.cameras[0])
+                    ?.mjpeg_url
+                }
+                titlesLed={titlesLed}
+                setTitlesLed={setTitlesLed}
+              />
+            </>
+          ))}
+          <OpenApByTimeModal
+            show={isOpenApTimeModal}
+            handleClose={() => dispatch(changeActiveOpenApTimeModal())}
+          />
+        </Box>
+        <FooterSpacer />
       </Box>
-      <FooterSpacer />
-    </Box>
+    </>
   );
 };
 
