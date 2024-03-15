@@ -1,6 +1,7 @@
 import { all, call, delay, put, select, takeEvery } from 'redux-saga/effects';
 import {
   eventsFetch,
+  eventsOnlyFetch,
   getEventsSuccess,
   changePages,
   eventsChangePageFetch,
@@ -51,6 +52,18 @@ function* workEvents({ payload }) {
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
     yield put(changeAccessPointsLoading());
+  } catch (e) {}
+}
+
+function* workOnlyEvents({ payload }) {
+  try {
+    const { data } = yield call(getEventsRequest, {
+      offset: 0,
+      ...payload
+    });
+    yield put(changePages(data.count));
+    yield put(changeDataModal(data.events[0]));
+    yield put(getEventsSuccess(data.events));
   } catch (e) {}
 }
 
@@ -211,6 +224,7 @@ function* workAccessPointsStatusesFetch() {
 
 export default function* eventsSagaWatcher() {
   yield takeEvery(eventsFetch.type, workEvents);
+  yield takeEvery(eventsOnlyFetch.type, workOnlyEvents);
   yield takeEvery(eventsChangePageFetch.type, workEventsPage);
   yield takeEvery(openApFetch.type, workOpenAp);
   yield takeEvery(

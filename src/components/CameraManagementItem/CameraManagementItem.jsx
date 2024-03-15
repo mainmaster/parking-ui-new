@@ -34,7 +34,8 @@ import submitIcon from '../../assets/svg/camera_submit_icon.svg';
 import cameraSkeleton from '../../assets/svg/camera_skeleton_logo.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
-import { isMobile } from 'react-device-detect';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const CameraMessageInput = styled(TextField)(({ theme }) => ({
   width: '100%',
@@ -65,20 +66,35 @@ export default function CameraManagementItem({
 }) {
   const [titlesInChange, setTitlesInChange] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [eventTimeout, setEventTimeout] = useState(0);
   const events = useSelector((state) => state.events.events);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    if (events && events[0].access_point === camera.id) {
+    if (events && events[0] && events[0].access_point === camera.id) {
       setCurrentEvent(events[0]);
+      setEventTimeout(5);
     }
   }, [events]);
+
+  useEffect(() => {
+    if (eventTimeout === 0) {
+      setCurrentEvent(null);
+    } else {
+      setTimeout(() => {
+        setEventTimeout(eventTimeout - 1);
+      }, 1000);
+    }
+  }, [eventTimeout]);
 
   const formik = useFormik({
     initialValues: { line2: '' },
     onSubmit: (values) => {
       handleCreateLedMessage(values);
+      formik.resetForm();
     }
   });
 
@@ -102,38 +118,27 @@ export default function CameraManagementItem({
 
   const handleCreateLedMessage = (values) => {
     console.log(values);
-    postLedBoardMessage({
-      ...titlesLed[`access_point${camera.id}`],
-      id: camera.id
-    }).then(() => {
-      enqueueSnackbar('Табло изменено', {
-        variant: 'success'
+    const { line2 } = values;
+    if (line2) {
+      postLedBoardMessage({
+        line1: 'Сообщение от админа',
+        line2: line2,
+        id: camera.id
+      }).then(() => {
+        enqueueSnackbar('Табло изменено', {
+          variant: 'success'
+        });
       });
-    });
+    }
   };
 
-  const handleSetTitles = (event) => {
+  const handleChangeTitles = (event) => {
     if (event.target.value !== '') {
       setTitlesInChange(true);
     } else {
       setTitlesInChange(false);
     }
     formik.handleChange(event);
-    let newArr = { ...titlesLed };
-    try {
-      newArr[`access_point${camera.id}`].line1 = 'Сообщение от админа';
-      newArr[`access_point${camera.id}`].line2 = event.target.value;
-      console.log(newArr);
-      setTitlesLed(newArr);
-    } catch (e) {
-      newArr[`access_point${camera.id}`] = {
-        line1: [`access_point${camera.id}`]?.line1 || '',
-        line2: [`access_point${camera.id}`]?.line2 || ''
-      };
-      newArr[`access_point${camera.id}`].line1 = 'Сообщение от админа';
-      newArr[`access_point${camera.id}`].line1 = event.target.value;
-      setTitlesLed(newArr);
-    }
   };
 
   const handleEventClick = () => {
@@ -195,9 +200,10 @@ export default function CameraManagementItem({
               <Typography
                 noWrap
                 sx={{
+                  fontSize: '0.75rem',
+                  lineHeight: '0.875rem',
                   fontWeight: 500,
-                  py: '2px',
-                  px: '4px',
+                  p: '4px',
                   backgroundColor: 'rgba(255, 255, 255, 0.7)',
                   border: `1px solid ${colors.outline.surface}`,
                   borderRadius: '4px'
@@ -367,7 +373,7 @@ export default function CameraManagementItem({
               name="line2"
               placeholder="Написать"
               value={formik.values.line2}
-              onChange={handleSetTitles}
+              onChange={handleChangeTitles}
               onBlur={formik.handleBlur}
               error={formik.touched.line2 && Boolean(formik.errors.line2)}
             />

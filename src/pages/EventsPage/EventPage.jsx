@@ -1,11 +1,12 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
-import Image from 'react-bootstrap/Image';
 import { Spinner, Accordion } from 'react-bootstrap';
 import { formatDate } from 'utils';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box, Tooltip, Typography, Button, Stack, AppBar } from '@mui/material';
 import {
   listStyle,
@@ -25,7 +26,6 @@ import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import '@fontsource-variable/roboto-mono';
-import { isMobile } from 'react-device-detect';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -61,9 +61,13 @@ export const EventPage = () => {
   const [copied, setCopied] = useState(false);
   const [detailsText, setDetailsText] = useState('');
   const [detailsCopied, setDetailsCopied] = useState(false);
+  const [eventListScrolled, setEventListScrolled] = useState(false);
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const eventListRef = useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const errorContent = <div>Нет события с ID - {id}</div>;
 
@@ -103,6 +107,17 @@ export const EventPage = () => {
     navigate(-1);
   };
 
+  const handleEventListScroll = () => {
+    if (eventListRef.current) {
+      const { scrollTop } = eventListRef.current;
+      if (scrollTop > 0) {
+        setEventListScrolled(true);
+      } else if (eventListScrolled) {
+        setEventListScrolled(false);
+      }
+    }
+  };
+
   return (
     <>
       <AppBar
@@ -111,7 +126,8 @@ export const EventPage = () => {
           position: 'absolute',
           top: 0,
           left: isMobile ? 0 : '72px',
-          backgroundColor: colors.surface.low
+          backgroundColor: colors.surface.low,
+          boxShadow: !eventListScrolled && 'none'
         }}
       >
         <Stack
@@ -191,6 +207,7 @@ export const EventPage = () => {
         </Stack>
       </AppBar>
       <Stack
+        ref={eventListRef}
         sx={[
           listStyle,
           {
@@ -200,6 +217,7 @@ export const EventPage = () => {
             backgroundColor: colors.surface.low
           }
         ]}
+        onScroll={handleEventListScroll}
       >
         {loading && <Spinner />}
         {errorEvent && errorContent}

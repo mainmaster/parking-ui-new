@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm config get proxy
 RUN npm config rm proxy
 RUN npm config rm https-proxy
-RUN npm install -d
+RUN yarn install
 
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL

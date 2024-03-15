@@ -66,6 +66,7 @@ export const CarNumberCard = ({
                   height: small ? '24px' : isTable ? '40px' : '50px',
                   fontSize: small ? '22px' : isTable ? '34px' : '45px',
                   lineHeight: small ? '22px' : isTable ? '34px' : '45px',
+                  textWrap: 'nowrap',
                   borderTopLeftRadius: small ? '4px' : '8px',
                   borderBottomLeftRadius: small ? '4px' : '8px',
                   backgroundColor: small

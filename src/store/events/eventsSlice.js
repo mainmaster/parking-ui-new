@@ -20,6 +20,12 @@ export const eventsSlice = createSlice({
         isLoadingFetch: true
       };
     },
+    eventsOnlyFetch: (state, action) => {
+      return {
+        ...state,
+        isLoadingFetch: true
+      };
+    },
     eventsChangePageFetch: (state, action) => {},
     openApFetch: (state, action) => {},
     openApByVehiclePlateFetch: (state, action) => {},
@@ -99,6 +105,7 @@ export const eventsSlice = createSlice({
 
 export const {
   eventsFetch,
+  eventsOnlyFetch,
   getEventsSuccess,
   putEvent,
   changePages,

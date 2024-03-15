@@ -49,7 +49,8 @@ import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
 import HeaderSpacer from '../Header/HeaderSpacer';
 import CameraSpacer from './CameraSpacer';
 import FooterSpacer from '../Header/FooterSpacer';
-import { isMobile } from 'react-device-detect';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Cameras = () => {
   const dispatch = useDispatch();
@@ -66,6 +67,8 @@ const Cameras = () => {
   const [titlesLed, setTitlesLed] = useState({});
   const [cameraListScrolled, setCameraListScrolled] = useState(false);
   const camerasListRef = useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     dispatch(camerasFetch());

@@ -1,23 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { OverlayTrigger, Spinner, Tab, Tabs, Tooltip } from 'react-bootstrap';
-import css from './MainPage.module.scss';
-import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from 'react-18-image-lightbox';
-// Utils
-import { titles } from './utils';
-import { formatDate } from 'utils';
 // Components
-import Table from 'components/Table';
-import EventCard from 'components/EventCard';
-import CardEventModal from 'components/Modals/CardEventModal';
 import Cameras from 'components/Cameras';
 import PaginationCustom from 'components/Pagination';
-import FilterForm from 'components/pages/main-page/FilterForm';
-import {
-  ArrowLeftSquareFill,
-  ArrowRightSquareFill
-} from 'react-bootstrap-icons';
 
 import '../../global.css';
 // Constants
@@ -32,28 +18,22 @@ import {
   changeCurrentPage,
   setSelectedEventId
 } from 'store/events/eventsSlice';
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
-import { EventsDashboard } from '../../components/EventsDashboard/EventsDashboard';
-import TypeAuto from '../../components/TypeAuto';
 import React from 'react';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  secondaryButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle } from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
-import OpenApByVehiclePlateModal from '../../components/Modals/OpenApByVehiclePlateModal';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import HeaderSpacer from '../../components/Header/HeaderSpacer';
 import { spacers } from '../../theme/spacers';
 import FooterSpacer from '../../components/Header/FooterSpacer';
-import { isMobile } from 'react-device-detect';
 import { EVENTS_ON_PAGE } from '../../constants';
+import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
 
 const mobileHeaderStyle = {
   backgroundColor: colors.surface.high,
@@ -81,6 +61,12 @@ const mobileMenuItemTextStyle = {
   color: colors.element.secondary
 };
 
+const titleTextStyle = {
+  fontSiza: '1.5rem',
+  fontWeight: 500,
+  lineSize: '1.75rem'
+};
+
 const EventsPage = ({ onlyLog }) => {
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
@@ -98,6 +84,8 @@ const EventsPage = ({ onlyLog }) => {
   const eventRef = useRef([]);
   eventRef.current = [];
   const eventsListRef = useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const addToRefs = (node) => {
     if (node && !eventRef.current.includes(node)) {
@@ -153,6 +141,10 @@ const EventsPage = ({ onlyLog }) => {
 
   const changePage = (event, value) => {
     dispatch(eventsChangePageFetch(value));
+    if (eventsListRef.current) {
+      eventsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      setEventsListScrolled(false);
+    }
   };
 
   const handleMobileMenuItemClick = () => {
@@ -266,8 +258,9 @@ const EventsPage = ({ onlyLog }) => {
             onScroll={handleEventsListScroll}
           >
             <CarNumberFilterSpacer openForm={openForm} />
-            {events.length > 0
-              ? events.map((item, index) => (
+            {events.length > 0 ? (
+              <>
+                {events.map((item, index) => (
                   <LogEventCard
                     key={index}
                     event={item}
@@ -275,19 +268,35 @@ const EventsPage = ({ onlyLog }) => {
                     selected={item.id === selectedEventId}
                     ref={addToRefs}
                   />
-                ))
-              : null}
-            <Box
-              sx={{
-                height: '48px'
-              }}
-            >
-              <PaginationCustom
-                pages={Math.ceil(pages / EVENTS_ON_PAGE)}
-                changePage={changePage}
-                currentPage={currentPage}
-              />
-            </Box>
+                ))}
+                <Box
+                  sx={{
+                    height: '48px'
+                  }}
+                >
+                  <PaginationCustom
+                    pages={Math.ceil(pages / EVENTS_ON_PAGE)}
+                    changePage={changePage}
+                    currentPage={currentPage}
+                  />
+                </Box>
+              </>
+            ) : (
+              <Stack
+                justifyContent={'center'}
+                alignItems={'center'}
+                height={'100%'}
+                gap={'16px'}
+              >
+                <img
+                  style={{ height: '40px' }}
+                  src={logEventEmptyIcon}
+                  alt="нет отчётов"
+                />
+                <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+              </Stack>
+            )}
+
             <FooterSpacer />
           </Stack>
           {/* <CardEventModal
@@ -317,8 +326,9 @@ const EventsPage = ({ onlyLog }) => {
           {!onlyLog && <HeaderSpacer />}
           <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
 
-          {events.length > 0
-            ? events.map((item, index) => (
+          {events.length > 0 ? (
+            <>
+              {events.map((item, index) => (
                 <LogEventCard
                   key={index}
                   event={item}
@@ -326,19 +336,35 @@ const EventsPage = ({ onlyLog }) => {
                   selected={item.id === selectedEventId}
                   ref={addToRefs}
                 />
-              ))
-            : null}
-          <Box
-            sx={{
-              height: '48px'
-            }}
-          >
-            <PaginationCustom
-              pages={Math.ceil(pages / EVENTS_ON_PAGE)}
-              changePage={changePage}
-              currentPage={currentPage}
-            />
-          </Box>
+              ))}
+              <Box
+                sx={{
+                  height: '48px'
+                }}
+              >
+                <PaginationCustom
+                  pages={Math.ceil(pages / EVENTS_ON_PAGE)}
+                  changePage={changePage}
+                  currentPage={currentPage}
+                />
+              </Box>
+            </>
+          ) : (
+            <Stack
+              justifyContent={'center'}
+              height={'100%'}
+              alignItems={'center'}
+              gap={'16px'}
+            >
+              <img
+                style={{ height: '40px' }}
+                src={logEventEmptyIcon}
+                alt="нет отчётов"
+              />
+              <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+            </Stack>
+          )}
+
           <FooterSpacer />
           <CarNumberDialog
             show={isOpenApModal}

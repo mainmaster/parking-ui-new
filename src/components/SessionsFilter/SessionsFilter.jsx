@@ -1,10 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeCurrentPage,
-  eventsOnlyFetch,
-  setFilters
-} from '../../store/events/eventsSlice';
-import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -12,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  Popover,
   MenuItem,
   Select,
   Stack,
@@ -21,19 +15,42 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { colors } from '../../theme/colors';
+import { closeButtonStyle, secondaryButtonStyle } from '../../theme/styles';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import { DateIcon } from './DateIcon';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  closeButtonStyle,
-  primaryButtonStyle,
-  secondaryButtonStyle
-} from '../../theme/styles';
-import { eventCodes } from '../../constants';
-import { getAccessPointsRequest } from '../../api/access-points';
+  sessionsFetch,
+  setFilters,
+  changeCurrentPage
+} from 'store/sessions/sessionsSlice';
+import { useFormik } from 'formik';
 import { formatISO } from 'date-fns';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+const desktopMenuStyle = {
+  position: 'absolute',
+  top: '64px',
+  right: '16px',
+  width: '360px',
+  p: '16px',
+  pt: '8px',
+  //borderBottom: `1px solid ${colors.outline.surface}`,
+  backgroundColor: colors.surface.low,
+  borderRadius: '16px',
+  filter: 'drop-shadow(0 4px 4px rgba(0,0,0,0.2))',
+  zIndex: 1
+};
+
+const mobileMenuStyle = {
+  p: '16px',
+  pt: '8px',
+  backgroundColor: colors.surface.low
+};
 
 const CarNumberInput = styled(TextField)(({ theme }) => ({
   width: '100%',
@@ -122,16 +139,29 @@ const labelStyle = {
 const defaultValues = {
   vehiclePlate: ''
 };
-export default function CarNumberFilter({ openForm, setOpenForm }) {
-  const [selectedEventCode, setSelectedEventCode] = useState('');
+
+const sessionStatusValues = [
+  { value: 'open', name: 'Открытые' },
+  { value: 'closed', name: 'Закрытые' }
+];
+
+const paymentStatusValues = [
+  { value: true, name: 'Оплачено' },
+  { value: false, name: 'Не оплачено' }
+];
+
+export default function SessionsFilter({ openForm, setOpenForm }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedSessionStatus, setSelectedSessionStatus] = useState('');
+  const [selectedPaymentStatus, setSelectedPaymentStatus] = useState('');
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
-  const [accessPoints, setAccessPoints] = useState([]);
-  const [selectedAccessPoint, setSelectedAccessPoint] = useState('');
   const [submited, setSubmited] = useState(true);
   const [numberInChange, setNumberInChange] = useState(false);
-  const filters = useSelector((state) => state.events.filters);
+  const filters = useSelector((state) => state.sessions.filters);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     return () => {
@@ -139,22 +169,10 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     };
   }, []);
 
-  useEffect(() => {
-    getAccessPointsRequest().then((r) => {
-      let access = r.data.map((point) => {
-        return {
-          name: point.description,
-          value: point.id
-        };
-      });
-      setAccessPoints([...access, { value: null, name: '' }]);
-    });
-  }, []);
-
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(eventsOnlyFetch(filters));
+      dispatch(sessionsFetch(filters));
       dispatch(changeCurrentPage(1));
       setSubmited(true);
     }
@@ -162,11 +180,11 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
-    setSelectedEventCode('');
-    setSelectedAccessPoint('');
-    setFromValue(null);
-    setToValue(null);
-    dispatch(eventsOnlyFetch());
+    // setSelectedEventCode('');
+    // setSelectedAccessPoint('');
+    // setFromValue(null);
+    // setToValue(null);
+    dispatch(sessionsFetch());
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     setSubmited(true);
@@ -177,7 +195,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       const values = {
         vehiclePlate: e.target.value
       };
-      dispatch(eventsOnlyFetch(values));
+      dispatch(sessionsFetch(values));
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
     } else if (openForm) {
@@ -196,14 +214,17 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     formik.handleChange(e);
   };
 
-  const handleOpenForm = () => {
+  const handleOpenForm = (event) => {
+    if (!openForm) {
+      setAnchorEl(event.currentTarget);
+    }
     setOpenForm(!openForm);
   };
 
   const handleNumberErase = () => {
     formik.values.vehiclePlate = '';
     if (!openForm) {
-      dispatch(eventsOnlyFetch());
+      dispatch(sessionsFetch());
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
     } else if (openForm) {
@@ -217,19 +238,34 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     setNumberInChange(false);
   };
 
-  const handleEventCodeChange = (event) => {
-    const eventCode = eventCodes.find(
-      (code) => code.name === event.target.value
+  const handleSessionStatusChange = (event) => {
+    const status = sessionStatusValues.find(
+      (st) => st.name === event.target.value
     );
-    if (eventCode) {
+    if (status) {
       const values = {
         ...filters,
-        eventCode: eventCode.value
+        status: status.value
       };
       dispatch(setFilters(values));
       setSubmited(false);
     }
-    setSelectedEventCode(event.target.value);
+    setSelectedSessionStatus(event.target.value);
+  };
+
+  const handlePaymentStatusChange = (event) => {
+    const status = paymentStatusValues.find(
+      (st) => st.name === event.target.value
+    );
+    if (status) {
+      const values = {
+        ...filters,
+        isPaid: status.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    }
+    setSelectedPaymentStatus(event.target.value);
   };
 
   const handleFromDateChanged = (newValue) => {
@@ -256,19 +292,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     }
   };
 
-  const handleAccessPointChange = (event) => {
-    const accessPoint = accessPoints.find(
-      (apoint) => apoint.name === event.target.value
-    );
-    if (accessPoint) {
-      const values = {
-        ...filters,
-        accessPoint: accessPoint.value
-      };
-      dispatch(setFilters(values));
-      setSubmited(false);
-    }
-    setSelectedAccessPoint(event.target.value);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -278,14 +303,16 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         noValidate
         autoComplete="off"
         onSubmit={formik.handleSubmit}
-        //sx={{ flexGrow: 2 }}
+        sx={{
+          minWidth: '360px'
+        }}
       >
         <Stack
           direction={'row'}
           justifyContent={'space-between'}
           alignItems={'center'}
           gap={'8px'}
-          sx={{ height: '64px', width: '100%', p: '16px', pb: '8px' }}
+          sx={{ width: '100%', px: '16px', pb: '8px' }}
         >
           <CarNumberInput
             autoFocus
@@ -362,23 +389,16 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
           </IconButton>
         </Stack>
         {openForm && (
-          <Stack
-            sx={{
-              p: '16px',
-              pt: '8px',
-              borderBottom: `1px solid ${colors.outline.surface}`
-            }}
-            gap={'8px'}
-          >
+          <Stack sx={isMobile ? mobileMenuStyle : desktopMenuStyle} gap={'8px'}>
             <Stack>
-              <InputLabel htmlFor="eventcode-select" sx={labelStyle}>
-                Тип события
+              <InputLabel htmlFor="session-status-select" sx={labelStyle}>
+                Статус сессии
               </InputLabel>
               <Select
-                id="eventcode-select"
+                id="session-status-select"
                 displayEmpty
-                value={selectedEventCode}
-                onChange={handleEventCodeChange}
+                value={selectedSessionStatus}
+                onChange={handleSessionStatusChange}
                 variant="filled"
                 IconComponent={(props) => (
                   <IconButton
@@ -415,19 +435,82 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 <MenuItem disabled value="">
                   <em>Выбрать</em>
                 </MenuItem>
-                {eventCodes.map((code) => (
+                {sessionStatusValues.map((st) => (
                   <MenuItem
-                    key={code.value}
-                    id={code.name}
-                    selected={code.name === selectedEventCode}
-                    value={code.name}
+                    key={st.value}
+                    id={st.name}
+                    selected={st.name === selectedSessionStatus}
+                    value={st.name}
                   >
                     <Typography
                       component={'h5'}
                       noWrap
                       sx={{ fontWeight: 500, p: 0 }}
                     >
-                      {code.name}
+                      {st.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </Stack>
+            <Stack>
+              <InputLabel htmlFor="payment-status-select" sx={labelStyle}>
+                Статус оплаты
+              </InputLabel>
+              <Select
+                id="payment-status-select"
+                displayEmpty
+                value={selectedPaymentStatus}
+                onChange={handlePaymentStatusChange}
+                variant="filled"
+                IconComponent={(props) => (
+                  <IconButton
+                    disableRipple
+                    {...props}
+                    sx={{ top: `${0} !important`, right: `4px !important` }}
+                  >
+                    <img
+                      style={{
+                        width: '24px'
+                      }}
+                      src={selectIcon}
+                      alt="select"
+                    />
+                  </IconButton>
+                )}
+                sx={selectMenuStyle}
+                renderValue={(selected) => {
+                  if (selected === '') {
+                    return <em>Выбрать</em>;
+                  } else {
+                    return (
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {selected}
+                      </Typography>
+                    );
+                  }
+                }}
+              >
+                <MenuItem disabled value="">
+                  <em>Выбрать</em>
+                </MenuItem>
+                {paymentStatusValues.map((st) => (
+                  <MenuItem
+                    key={st.name}
+                    id={st.name}
+                    selected={st.name === selectedPaymentStatus}
+                    value={st.name}
+                  >
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500, p: 0 }}
+                    >
+                      {st.name}
                     </Typography>
                   </MenuItem>
                 ))}
@@ -474,69 +557,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 />
               </Stack>
             </Stack>
-            <Stack>
-              <InputLabel htmlFor="accesspoint-select" sx={labelStyle}>
-                Точка доступа
-              </InputLabel>
-              <Select
-                id="accesspoint-select"
-                displayEmpty
-                value={selectedAccessPoint}
-                onChange={handleAccessPointChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>Выбрать</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem disabled value="">
-                  <em>Выбрать</em>
-                </MenuItem>
-                {accessPoints.map((apoint) => (
-                  <MenuItem
-                    key={apoint.value}
-                    id={apoint.name}
-                    selected={apoint.name === selectedAccessPoint}
-                    value={apoint.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {apoint.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
+
             <Stack direction={'row'} gap={'8px'} sx={{ pt: '8px' }}>
               <Button
                 disabled={submited}

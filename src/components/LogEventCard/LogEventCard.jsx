@@ -23,6 +23,7 @@ import { deleteBlackListFetch } from '../../store/blackList/blackListSlice';
 import { changeDataModal } from '../../store/events/eventsSlice';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { useNavigate } from 'react-router-dom';
+import { typeText } from '../TypeAuto/types';
 
 const selectedStyle = {
   animation: 'flipBackground 400ms ease-out 200ms',
@@ -162,7 +163,8 @@ export default forwardRef(function LogEventCard(
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          {event.car_brand && event.car_brand !== '' && (
+          {((event.car_brand && event.car_brand !== '') ||
+            typeText[event.access_status_code]) && (
             <>
               <IconButton
                 disableRipple

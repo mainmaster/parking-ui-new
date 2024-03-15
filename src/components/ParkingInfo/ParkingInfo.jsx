@@ -1,21 +1,28 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import React from 'react';
 import { colors } from '../../theme/colors';
-import { isMobile } from 'react-device-detect';
 
-export default function ParkingInfo() {
+export default function ParkingInfo({ fullWidth }) {
   const { data: parkingInfo } = useParkingInfoQuery();
   const ocupied =
     parkingInfo?.carsOnParking.totalPlaces -
     parkingInfo?.carsOnParking.freePlaces;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Stack
       direction={isMobile ? 'column' : 'row'}
       justifyContent={'flex-end'}
       gap={isMobile ? '4px' : '16px'}
-      sx={{ width: '100%', flexGrow: 1 }}
+      sx={{
+        width: '100%',
+        flexGrow: 1,
+        maxWidth: fullWidth ? '100%' : '640px'
+      }}
     >
       <Stack direction={isMobile ? 'row' : 'column'}>
         <Typography

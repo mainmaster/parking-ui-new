@@ -3,8 +3,8 @@ import { spacers } from '../../theme/spacers';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export default function FooterSpacer() {
+export default function SessionsSpacer() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  return <Box sx={{ minHeight: isMobile ? spacers.footer : 0 }}></Box>;
+  return <Box sx={{ minHeight: isMobile ? 0 : spacers.sessions }}></Box>;
 }

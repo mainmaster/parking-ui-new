@@ -1,35 +1,8 @@
 import React from 'react';
+import { typeText } from './types';
 import { colors } from '../../theme/colors';
 
 const TypeAuto = ({ type }) => {
-  const typeText = {
-    1006: {
-      label: 'Разовый',
-      color: colors.carlist.bg.once,
-      textColor: colors.carlist.text.black
-    },
-    1034: {
-      label: 'Абонемент',
-      color: '#EDBD05',
-      textColor: colors.carlist.text.black
-    },
-    1008: {
-      label: 'Белый список',
-      color: colors.carlist.bg.white,
-      textColor: colors.carlist.text.black
-    },
-    1028: {
-      label: 'Заявка',
-      color: '#3F89BA',
-      textColor: colors.carlist.text.black
-    },
-    1004: {
-      label: 'Черный список',
-      color: colors.carlist.bg.black,
-      textColor: colors.carlist.text.white
-    }
-  };
-
   return (
     <div
       style={{

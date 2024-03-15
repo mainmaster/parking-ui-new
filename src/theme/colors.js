@@ -98,5 +98,21 @@ export const colors = {
       element: '#FE0103',
       background: '#FFCCCD'
     }
+  },
+  session: {
+    payment: {
+      paid: '#138641',
+      not_paid: '#950303'
+    },
+    status: {
+      open: {
+        bg: '#FFFFFF',
+        text: '#000000'
+      },
+      close: {
+        bg: '#000000',
+        text: '#FFFFFF'
+      }
+    }
   }
 };

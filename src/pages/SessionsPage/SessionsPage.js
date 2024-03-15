@@ -30,11 +30,19 @@ import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import { CloseOlderThanDateModal } from './components/CloseOlderThanDateModal';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import TypeAuto from '../../components/TypeAuto';
-import { isMobile } from 'react-device-detect';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
 import { colors } from '../../theme/colors';
 import { spacers } from '../../theme/spacers';
+import { listStyle } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
+import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
+import FooterSpacer from '../../components/Header/FooterSpacer';
+import SessionsSpacer from './SessionsSpacer';
+import sessionsListIcon from '../../assets/svg/sessions_list_icon.svg';
+import { SESSIONS_ON_PAGE } from '../../constants';
+import LogSessionCard from '../../components/LogSessionCard/LogSessionCard';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -43,6 +51,7 @@ const titleTextStyle = {
 };
 
 const SessionsPage = () => {
+  const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions.sessions);
   const pages = useSelector((state) => state.sessions.pages);
@@ -55,6 +64,8 @@ const SessionsPage = () => {
   const { data: parkingInfo } = useParkingInfoQuery();
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -72,174 +83,32 @@ const SessionsPage = () => {
     return () => dispatch(changeCurrentPage(1));
   }, [dispatch]);
 
-  const changePage = (index) => {
-    dispatch(sessionsChangePageFetch(index));
+  // const changePage = (index) => {
+  //   dispatch(sessionsChangePageFetch(index));
+  // };
+
+  const changePage = (event, value) => {
+    dispatch(sessionsChangePageFetch(value));
+    if (sessionsListRef.current) {
+      sessionsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      setSessionsListScrolled(false);
+    }
   };
 
-  const changeModal = (item) => {
-    dispatch(changeDataModal(item));
-
-    if (window.innerWidth < BREAKPOINT_MD) {
-      changeMobileModal();
-      setIsActiveModal(true);
+  const handleSessionsListScroll = () => {
+    if (sessionsListRef.current) {
+      const { scrollTop } = sessionsListRef.current;
+      if (scrollTop > 0) {
+        setSessionsListScrolled(true);
+      } else if (sessionsListScrolled) {
+        setSessionsListScrolled(false);
+      }
     }
   };
 
   const changeMobileModal = () => {
     setIsActiveModalMobile(!isActiveModalMobile);
   };
-
-  const paidHandle = (id) => {
-    dispatch(paidSessionFetch({ id, is_paid: true }));
-  };
-
-  const statusHandle = (id) => {
-    dispatch(statusSessionFetch({ id, status: 'closed' }));
-  };
-
-  useEffect(() => {
-    if (window.innerWidth < BREAKPOINT_MD) {
-      setIsActiveModal(true);
-    }
-  }, []);
-
-  const spinnerContent = (
-    <div className={css.spinner}>
-      <Spinner animation="border" />
-    </div>
-  );
-
-  const errorContent = (
-    <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
-  );
-  const rowsTable =
-    sessions.length !== 0
-      ? sessions.map((item, index) => (
-          <tr
-            className="selected_row"
-            tabIndex={1}
-            key={index}
-            onClick={() => changeModal(item)}
-          >
-            <td>
-              {item.events[0].vehicle_plate.number === '' ? (
-                <div
-                  style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                ></div>
-              ) : (
-                <div
-                  style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>№ {item.id}</Tooltip>}
-                  >
-                    <CarNumberCard
-                      carNumber={item.events[0].vehicle_plate}
-                      isTable
-                    />
-                  </OverlayTrigger>
-
-                  <div>
-                    <TypeAuto type={item.events[0]?.access_status_code} />
-                  </div>
-                </div>
-              )}
-            </td>
-
-            <td>{statusSessionName(item.status)}</td>
-            <td>{formatDate(item.create_datetime)}</td>
-            <td>
-              {item.closed_datetime ? formatDate(item.closed_datetime) : '-'}
-            </td>
-            <td>{getDayMinuteSecondsByNumber(item.time_on_parking)}</td>
-            <td>{item.payment_amount}</td>
-            <td style={{ width: '30px' }}>
-              {item.is_paid ? (
-                <CheckSquareFill color="#1cd80f" size={30} />
-              ) : (
-                <XSquareFill color="#de0103" size={30} />
-              )}
-            </td>
-            <td>
-              {item.payment_is_valid_until
-                ? formatDate(item.payment_is_valid_until)
-                : '-'}
-            </td>
-            <td style={{ width: '20%' }}>
-              <div className={css.table_btns}>
-                {item.payment_amount > 0 && (
-                  <Button
-                    variant="success"
-                    onClick={() => {
-                      paidHandle(item?.id);
-                    }}
-                  >
-                    Обнулить долг
-                  </Button>
-                )}
-                {item.status !== 'closed' && (
-                  <Button
-                    variant="danger"
-                    onClick={() => statusHandle(item.id)}
-                  >
-                    Закрыть
-                  </Button>
-                )}
-              </div>
-            </td>
-          </tr>
-        ))
-      : null;
-
-  const mainContent = (
-    <div>
-      <div className={css.wrap}>
-        <div className={css.flex}>
-          <div className={cn(css.wrap_table, isActiveModal && css.active)}>
-            {parkingInfo?.userType === 'admin' && (
-              <Button
-                style={{ marginBottom: '10px' }}
-                onClick={() => setCloseOlderDateModal(true)}
-              >
-                Закрыть сессии старше даты
-              </Button>
-            )}
-
-            <Table
-              titles={titles}
-              rows={rowsTable}
-              hover
-              className={css.table}
-            />
-          </div>
-
-          <SessionsCard
-            className={cn(css.card, isActiveModal && css.hidden)}
-            onClickImage={changeActiveImageModal}
-          />
-        </div>
-      </div>
-      <PaginationCustom
-        pages={pages}
-        changePage={changePage}
-        currentPage={currentPage}
-      />
-    </div>
-  );
-
-  const hasData = !(isLoading || isError);
-  const errorMessage = isError ? errorContent : null;
-  const spinner = isLoading ? spinnerContent : null;
-  const content = hasData ? mainContent : null;
 
   return (
     <>
@@ -252,7 +121,7 @@ const SessionsPage = () => {
             left: '72px',
             backgroundColor: colors.surface.low,
             boxShadow: !sessionsListScrolled && 'none',
-            zIndex: 1
+            zIndex: 10
           }}
         >
           <Stack
@@ -260,21 +129,104 @@ const SessionsPage = () => {
             gap={'16px'}
             justifyContent={'space-between'}
             sx={{
-              height: isMobile ? '56px' : '64px',
+              height: '64px',
               width: '100%',
               p: '16px',
               pb: '8px'
             }}
           >
             <Typography sx={titleTextStyle}>Сессии</Typography>
-            <ParkingInfo />
+            <Stack
+              direction={'row'}
+              justifyContent={'flex-end'}
+              sx={{ width: '100%' }}
+            >
+              <ParkingInfo />
+
+              <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
+            </Stack>
           </Stack>
         </AppBar>
       )}
-      <FilterForm />
-      {errorMessage}
-      {spinner}
-      {content}
+      <Stack
+        ref={sessionsListRef}
+        sx={[
+          listStyle,
+          {
+            width: '100%',
+            backgroundColor: colors.surface.low
+          }
+        ]}
+        onScroll={handleSessionsListScroll}
+      >
+        <SessionsSpacer />
+        {isMobile && (
+          <>
+            <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
+              <ParkingInfo fullWidth />
+            </Box>
+            <Box
+              sx={{
+                height: openForm ? '327px' : '56px',
+                py: '8px',
+                borderBottom: openForm
+                  ? `1px solid ${colors.outline.surface}`
+                  : 'none'
+              }}
+            >
+              <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
+            </Box>
+          </>
+        )}
+
+        {sessions.length > 0 ? (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+              }}
+            >
+              {sessions.map((item, index) => (
+                <LogSessionCard
+                  key={index}
+                  session={item}
+                  onClickImage={changeActiveImageModal}
+                />
+              ))}
+            </Box>
+            <Box
+              sx={{
+                height: '48px'
+              }}
+            >
+              <PaginationCustom
+                pages={Math.ceil(pages / SESSIONS_ON_PAGE)}
+                changePage={changePage}
+                currentPage={currentPage}
+              />
+            </Box>
+          </>
+        ) : (
+          <Stack
+            justifyContent={'center'}
+            alignItems={'center'}
+            height={'100%'}
+            gap={'16px'}
+          >
+            <img
+              style={{ height: '40px' }}
+              src={sessionsListIcon}
+              alt="нет сессий"
+            />
+            <Typography sx={titleTextStyle}>Нет сессий</Typography>
+          </Stack>
+        )}
+
+        <FooterSpacer />
+      </Stack>
+
       <CloseOlderThanDateModal
         show={closeOlderDateModal}
         handleClose={setCloseOlderDateModal}
