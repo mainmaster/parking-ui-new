@@ -164,7 +164,7 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={secondaryButtonStyle}
+                sx={[secondaryButtonStyle, { width: '120px' }]}
                 onClick={() => dispatch(openApAllFetch())}
               >
                 <Typography noWrap>Открыть все</Typography>
@@ -172,7 +172,7 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={secondaryButtonStyle}
+                sx={[secondaryButtonStyle, { width: '120px' }]}
                 onClick={() => dispatch(closeApAllFetch())}
               >
                 <Typography noWrap>Закрыть все</Typography>
@@ -180,7 +180,7 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={secondaryButtonStyle}
+                sx={[secondaryButtonStyle, { width: '120px' }]}
                 onClick={() => dispatch(normalApAllFetch())}
               >
                 <Typography noWrap>Авто- все</Typography>

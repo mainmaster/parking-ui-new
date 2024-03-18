@@ -5,6 +5,7 @@ import css from './SessionsPage.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import Lightbox from 'react-18-image-lightbox';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
 import {
   sessionsFetch,
@@ -35,7 +36,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
 import { colors } from '../../theme/colors';
 import { spacers } from '../../theme/spacers';
-import { listStyle } from '../../theme/styles';
+import { listWithScrollStyle } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -151,7 +152,7 @@ const SessionsPage = () => {
       <Stack
         ref={sessionsListRef}
         sx={[
-          listStyle,
+          listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
@@ -215,12 +216,18 @@ const SessionsPage = () => {
             height={'100%'}
             gap={'16px'}
           >
-            <img
-              style={{ height: '40px' }}
-              src={sessionsListIcon}
-              alt="нет сессий"
-            />
-            <Typography sx={titleTextStyle}>Нет сессий</Typography>
+            {isLoading ? (
+              <SpinerLogo />
+            ) : (
+              <>
+                <img
+                  style={{ height: '40px' }}
+                  src={sessionsListIcon}
+                  alt="нет сессий"
+                />
+                <Typography sx={titleTextStyle}>Нет сессий</Typography>
+              </>
+            )}
           </Stack>
         )}
 
@@ -240,6 +247,9 @@ const SessionsPage = () => {
           onCloseRequest={changeActiveImageModal}
           mainSrc={imageModal.src}
           imagePadding={100}
+          reactModalStyle={{
+            overlay: { zIndex: 1300 }
+          }}
         />
       )}
     </>

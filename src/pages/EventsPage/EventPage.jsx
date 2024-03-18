@@ -3,11 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
+import Lightbox from 'react-18-image-lightbox';
 import { Spinner, Accordion } from 'react-bootstrap';
 import { formatDate } from 'utils';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, Tooltip, Typography, Button, Stack, AppBar } from '@mui/material';
+import {
+  IconButton,
+  Tooltip,
+  Typography,
+  Button,
+  Stack,
+  AppBar
+} from '@mui/material';
 import {
   listStyle,
   secondaryButtonStyle,
@@ -118,6 +126,17 @@ export const EventPage = () => {
     }
   };
 
+  const [imageModal, setImageModal] = useState({
+    isOpen: false,
+    src: ''
+  });
+
+  const changeActiveImageModal = (src) =>
+    setImageModal({
+      src: src,
+      isOpen: !imageModal.isOpen
+    });
+
   return (
     <>
       <AppBar
@@ -225,29 +244,47 @@ export const EventPage = () => {
           <>
             <Stack gap={'8px'} sx={{ pt: '16px' }}>
               {event.car_img_path && (
-                <img
-                  style={{
-                    maxWidth: '560px',
-                    borderRadius: '8px',
-                    width: '100%'
-                  }}
-                  src={
-                    process.env.REACT_APP_API_URL + '/' + event?.car_img_path
+                <IconButton
+                  disableRipple
+                  onClick={() =>
+                    changeActiveImageModal(
+                      process.env.REACT_APP_API_URL + '/' + event.car_img_path
+                    )
                   }
-                  alt="Фото автомобиля"
-                />
+                >
+                  <img
+                    style={{
+                      maxWidth: '560px',
+                      borderRadius: '8px',
+                      width: '100%'
+                    }}
+                    src={
+                      process.env.REACT_APP_API_URL + '/' + event.car_img_path
+                    }
+                    alt="Фото автомобиля"
+                  />{' '}
+                </IconButton>
               )}
               {event.plate_img_path && (
-                <img
-                  style={{
-                    maxWidth: '560px',
-                    borderRadius: '8px'
-                  }}
-                  src={
-                    process.env.REACT_APP_API_URL + '/' + event?.plate_img_path
+                <IconButton
+                  disableRipple
+                  onClick={() =>
+                    changeActiveImageModal(
+                      process.env.REACT_APP_API_URL + '/' + event.plate_img_path
+                    )
                   }
-                  alt="Фото номера"
-                />
+                >
+                  <img
+                    style={{
+                      maxWidth: '560px',
+                      borderRadius: '8px'
+                    }}
+                    src={
+                      process.env.REACT_APP_API_URL + '/' + event.plate_img_path
+                    }
+                    alt="Фото номера"
+                  />
+                </IconButton>
               )}
             </Stack>
             <Stack gap={'16px'} sx={{ pt: '16px' }}>
@@ -480,6 +517,16 @@ export const EventPage = () => {
           show={isOpenApModal}
           handleClose={() => dispatch(changeActiveOpenApModal())}
         />
+        {imageModal.isOpen && (
+          <Lightbox
+            onCloseRequest={changeActiveImageModal}
+            mainSrc={imageModal.src}
+            imagePadding={100}
+            reactModalStyle={{
+              overlay: { zIndex: 1300 }
+            }}
+          />
+        )}
       </Stack>
     </>
   );

@@ -4,7 +4,7 @@ import Lightbox from 'react-18-image-lightbox';
 // Components
 import Cameras from 'components/Cameras';
 import PaginationCustom from 'components/Pagination';
-
+import css from './MainPage.module.scss';
 import '../../global.css';
 // Constants
 import { BREAKPOINT_SM } from 'constants';
@@ -21,7 +21,7 @@ import {
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
+import { AppBar, Typography, Box, Drawer, Stack, Modal } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
 import { listWithScrollStyle } from '../../theme/styles';
@@ -117,6 +117,20 @@ const EventsPage = ({ onlyLog }) => {
       src: src,
       isOpen: !imageModal.isOpen
     });
+
+  const handleImageButtonHover = (src) => {
+    if (src) {
+      setImageModal({
+        src: src,
+        isOpen: true
+      });
+    } else {
+      setImageModal({
+        src: '',
+        isOpen: false
+      });
+    }
+  };
 
   const changeModal = (item) => {
     dispatch(changeDataModal(item));
@@ -265,6 +279,7 @@ const EventsPage = ({ onlyLog }) => {
                     key={index}
                     event={item}
                     onClickImage={changeActiveImageModal}
+                    onHoverImageButton={handleImageButtonHover}
                     selected={item.id === selectedEventId}
                     ref={addToRefs}
                   />
@@ -308,11 +323,45 @@ const EventsPage = ({ onlyLog }) => {
             handleClose={() => dispatch(changeActiveOpenApModal())}
           />
           {imageModal.isOpen && (
-            <Lightbox
-              onCloseRequest={changeActiveImageModal}
-              mainSrc={imageModal.src}
-              imagePadding={100}
-            />
+            <Modal
+              open={imageModal.isOpen}
+              onClose={changeActiveImageModal}
+              sx={{
+                position: 'absolute',
+                zIndex: 1000,
+                left: '72px',
+                right: spacers.events,
+                display: 'flex',
+                justifyContent: 'center'
+              }}
+              slotProps={{
+                backdrop: {
+                  sx: {
+                    backgroundColor: colors.blackout,
+                    left: '72px',
+                    right: spacers.events
+                  }
+                }
+              }}
+            >
+              <img
+                src={imageModal.src}
+                alt="car"
+                style={{ width: '100%', padding: '16px', margin: 'auto 0' }}
+              />
+            </Modal>
+
+            // <Lightbox
+            //   onCloseRequest={changeActiveImageModal}
+            //   mainSrc={imageModal.src}
+            //   reactModalStyle={{
+            //     overlay: {
+            //       position: 'absolute',
+            //       left: '72px',
+            //       right: spacers.events
+            //     },
+            //   }}
+            // />
           )}
         </Drawer>
       )}

@@ -148,8 +148,8 @@ export default function CameraManagementItem({
   return (
     <Box
       sx={{
-        flex: '1 1 380px',
-        minWidth: '380px',
+        flex: '1 1 320px',
+        minWidth: '320px',
         maxWidth: '776px',
         borderRadius: '8px',
         p: isMobile ? '8px' : '16px',
@@ -239,10 +239,9 @@ export default function CameraManagementItem({
             <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
               <Box
                 sx={{
-                  width: '10px',
-                  height: '10px',
-                  ml: '10px',
-                  borderRadius: '100%',
+                  width: '18px',
+                  height: '8px',
+                  borderRadius: '4px',
                   backgroundColor:
                     camera.status === 'open'
                       ? colors.mode.open.element

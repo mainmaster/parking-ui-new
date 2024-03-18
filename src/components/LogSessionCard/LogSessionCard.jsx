@@ -35,7 +35,7 @@ const cardContainerStyle = {
 };
 
 const imageContainerStyle = {
-  backgroundImage: `url("${sessionSkeleton}")`,
+  backgroundColor: colors.surface.high,
   backgroundSize: 'cover',
   width: '100%',
   height: '100%',
@@ -55,7 +55,8 @@ const imageStyle = {
   height: '100%',
   minHeight: '174px',
   maxHeight: '250px',
-  display: 'block'
+  display: 'block',
+  cursor: 'pointer'
 };
 
 const labelTextStyle = {
@@ -63,7 +64,7 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogSessionCard({ session }) {
+export default function LogSessionCard({ session, onClickImage }) {
   const [imgUrl, setImgUrl] = useState(null);
   const dispatch = useDispatch();
 
@@ -96,8 +97,18 @@ export default function LogSessionCard({ session }) {
   return (
     <Box sx={cardContainerStyle}>
       <Stack gap={'12px'}>
-        <Box sx={imageContainerStyle}>
-          <img style={imageStyle} src={imgUrl} alt="img" />
+        <Box
+          sx={[
+            imageContainerStyle,
+            imgUrl ? {} : { backgroundImage: `url("${sessionSkeleton}")` }
+          ]}
+        >
+          <img
+            style={imageStyle}
+            src={imgUrl}
+            alt="img"
+            onClick={() => onClickImage(imgUrl)}
+          />
         </Box>
         {session.events[0] && (
           <Stack
@@ -128,7 +139,7 @@ export default function LogSessionCard({ session }) {
           </Stack>
         )}
         <Stack direction={'row'} gap={'4px'}>
-          {session.events[0] && (
+          {session.events[0] && session.events[0].access_status_code && (
             <TypeAuto type={session.events[0].access_status_code} />
           )}
           <TypeAuto type={session.status} />
@@ -154,7 +165,7 @@ export default function LogSessionCard({ session }) {
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Оплачено до</Typography>
+            <Typography sx={labelTextStyle}>Оплата до</Typography>
             <Typography>
               {session.payment_is_valid_until
                 ? formatDate(session.payment_is_valid_until)
@@ -180,16 +191,17 @@ export default function LogSessionCard({ session }) {
           ) : (
             <Box sx={{ width: '100%' }} />
           )}
-          <Button
-            disableRipple
-            disabled={session.status === 'closed'}
-            variant="contained"
-            fullWidth
-            sx={secondaryButtonStyle}
-            onClick={handleCloseClick}
-          >
-            Закрыть
-          </Button>
+          {session.status === 'open' && (
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth
+              sx={secondaryButtonStyle}
+              onClick={handleCloseClick}
+            >
+              Закрыть
+            </Button>
+          )}
         </Stack>
       </Stack>
     </Box>

@@ -1,182 +1,406 @@
-import { useLayoutEffect } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard'
-import Image from 'react-bootstrap/Image'
-import { Spinner, Button } from 'react-bootstrap'
-import { formatDate, getDayMinuteSecondsByNumber } from 'utils'
+import { useLayoutEffect, useState, useRef } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
+import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
+import TypeAuto from '../../components/TypeAuto';
+import Lightbox from 'react-18-image-lightbox';
+import { Spinner } from 'react-bootstrap';
+import FooterSpacer from '../../components/Header/FooterSpacer';
+import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
 import {
   paidSessionSelectFetch,
   sessionSelectFetch,
-  statusSessionSelectFetch,
-} from '../../store/sessions/sessionsSlice'
-import { statusSessionName } from 'constants'
-import { useDispatch, useSelector } from 'react-redux'
+  statusSessionSelectFetch
+} from '../../store/sessions/sessionsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Tooltip,
+  Typography,
+  Button,
+  Stack,
+  AppBar,
+  IconButton
+} from '@mui/material';
+import linkIcon from '../../assets/svg/link_icon.svg';
+import { colors } from '../../theme/colors';
+import { listStyle, secondaryButtonStyle } from '../../theme/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+const titleTextStyle = {
+  fontSize: '1.5rem',
+  lineHeight: '1.75rem',
+  fontWeight: 500
+};
+
+const captionTextStyle = {
+  fontSize: '0.75rem',
+  lineHeight: '0.875rem',
+  color: colors.element.secondary
+};
+
+const labelTextStyle = {
+  width: '112px',
+  color: colors.element.secondary
+};
 
 export const SessionPage = () => {
-  const { id } = useParams()
-  const session = useSelector((state) => state.sessions.selectSession)
-  const loading = useSelector((state) => state.sessions.isLoadingSelect)
-  const errorLoad = useSelector((state) => state.sessions.isErrorSelect)
+  const { id } = useParams();
+  const session = useSelector((state) => state.sessions.selectSession);
+  const loading = useSelector((state) => state.sessions.isLoadingSelect);
+  const errorLoad = useSelector((state) => state.sessions.isErrorSelect);
+  const [copied, setCopied] = useState(false);
+  const [sessionListScrolled, setSessionListScrolled] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const sessionListRef = useRef(null);
 
-  const dispatch = useDispatch()
+  const [imageModal, setImageModal] = useState({
+    isOpen: false,
+    src: ''
+  });
 
-  const paidHandle = (id) => {
-    dispatch(paidSessionSelectFetch({ id, is_paid: true }))
-  }
+  const changeActiveImageModal = (src) =>
+    setImageModal({
+      src: src,
+      isOpen: !imageModal.isOpen
+    });
 
-  const statusHandle = (id) => {
-    dispatch(statusSessionSelectFetch({ id, status: 'closed' }))
-  }
+  const dispatch = useDispatch();
+
+  const handleCopyLinkClick = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+  };
+
+  const handleSessionListScroll = () => {
+    if (sessionListRef.current) {
+      const { scrollTop } = sessionListRef.current;
+      if (scrollTop > 0) {
+        setSessionListScrolled(true);
+      } else if (sessionListScrolled) {
+        setSessionListScrolled(false);
+      }
+    }
+  };
+
+  const handlePaidClick = () => {
+    dispatch(paidSessionSelectFetch({ id: session.id, is_paid: true }));
+  };
+
+  const handleCloseClick = () => {
+    dispatch(statusSessionSelectFetch({ id: session.id, status: 'closed' }));
+  };
 
   useLayoutEffect(() => {
-    dispatch(sessionSelectFetch(id))
-    document.title = `Сессия №${id}` || 'Загрузка'
-    return ()=>{
-      document.title = 'Parking'
-    }
-  }, [dispatch, id])
+    dispatch(sessionSelectFetch(id));
+    document.title = `Сессия №${id}` || 'Загрузка';
+    return () => {
+      document.title = 'Parking';
+    };
+  }, [dispatch, id]);
 
-  const errorContent = <h1>События с №{id} не найдено</h1>
+  const errorContent = <h1>События с №{id} не найдено</h1>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <NavLink to="/sessions">Назад</NavLink>
-      {loading && <Spinner />}
-      {errorLoad && errorContent}
-      {session && (
-        <>
-          <div style={{ marginTop: '20px' }}>
-            <h2>Сессия №{id}</h2>
-            <div
-              style={{ display: 'flex', marginTop: '20px', flexWrap: 'wrap' }}
+    <>
+      <AppBar
+        sx={{
+          width: isMobile ? '100%' : 'calc(100% - 72px)',
+          position: 'absolute',
+          top: 0,
+          left: isMobile ? 0 : '72px',
+          backgroundColor: colors.surface.low,
+          boxShadow: !sessionListScrolled && 'none'
+        }}
+      >
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          sx={{
+            p: '16px',
+            pb: isMobile ? '10px' : '8px'
+          }}
+        >
+          <Stack direction={'row'} alignItems={'center'} gap={'16px'}>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? 0 : '0.5rem'}
             >
-              <div>
-                {session?.events[0]?.car_img_path && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    {session?.events.map((event) => {
-                      return (
-                        <Image
+              <Typography sx={titleTextStyle}>Сессия </Typography>
+              <Typography sx={isMobile ? captionTextStyle : titleTextStyle}>
+                №{id}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Tooltip title={copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              onClick={handleCopyLinkClick}
+              sx={[
+                secondaryButtonStyle,
+                isMobile
+                  ? {
+                      minWidth: '48px',
+                      '& .MuiButton-endIcon': {
+                        margin: 0
+                      }
+                    }
+                  : { minWidth: '212px' }
+              ]}
+              endIcon={
+                <img
+                  src={linkIcon}
+                  alt="Скопировать ссылку"
+                  style={{
+                    width: '24px',
+                    height: '24px'
+                  }}
+                />
+              }
+            >
+              {isMobile ? '' : 'Скопировать ссылку'}
+            </Button>
+          </Tooltip>
+        </Stack>
+      </AppBar>
+      <Stack
+        gap={'16px'}
+        ref={sessionListRef}
+        sx={[
+          listStyle,
+          {
+            width: '100%',
+            p: '16px',
+            pt: isMobile ? '66px' : '64px',
+            pb: 0,
+            backgroundColor: colors.surface.low
+          }
+        ]}
+        onScroll={handleSessionListScroll}
+      >
+        {loading && <Spinner />}
+        {errorLoad && errorContent}
+        {session && session.events.length > 0 && (
+          <>
+            <Stack>
+              <Stack
+                direction={'row'}
+                flexWrap={'wrap'}
+                gap={'8px'}
+                sx={{ p: 0, pb: '8px' }}
+              >
+                {session.events.map((event) => {
+                  if (event.car_img_path && event.car_img_path !== '') {
+                    return (
+                      <IconButton
+                        disableRipple
+                        onClick={() =>
+                          changeActiveImageModal(
+                            process.env.REACT_APP_API_URL +
+                              '/' +
+                              event.car_img_path
+                          )
+                        }
+                      >
+                        <img
+                          key={event.id}
                           style={{
-                            maxWidth: '500px',
-                            borderRadius: '10px',
-                            marginBottom: '10px',
-                            marginRight: '20px',
+                            maxWidth: '560px',
+                            borderRadius: '8px',
+                            width: '100%'
                           }}
                           src={
                             process.env.REACT_APP_API_URL +
                             '/' +
                             event.car_img_path
                           }
+                          alt={`Событие № ${event.id}`}
                         />
-                      )
-                    })}
-
-                    {session?.events[0]?.plate_img_path && (
-                      <Image
-                        style={{
-                          maxWidth: '500px',
-                          marginTop: '10px',
-                          borderRadius: '10px',
-                        }}
-                        src={
-                          process.env.REACT_APP_API_URL +
+                      </IconButton>
+                    );
+                  } else {
+                    return '';
+                  }
+                })}
+              </Stack>
+              {session.events[0].plate_img_path &&
+                session.events[0].plate_img_path !== '' && (
+                  <IconButton
+                    disableRipple
+                    onClick={() =>
+                      changeActiveImageModal(
+                        process.env.REACT_APP_API_URL +
                           '/' +
-                          session?.events[0]?.plate_img_path
-                        }
-                      />
-                    )}
-                  </div>
+                          session.event[0].plate_img_path
+                      )
+                    }
+                  >
+                    <img
+                      style={{
+                        maxWidth: '560px',
+                        borderRadius: '8px'
+                      }}
+                      src={
+                        process.env.REACT_APP_API_URL +
+                        '/' +
+                        session.event[0].plate_img_path
+                      }
+                      alt="Фото номера"
+                    />
+                  </IconButton>
                 )}
-              </div>
-              <div>
-                {session?.events[0].vehicle_plate?.full_plate !== '' && (
-                  <CarNumberCard carNumber={session?.events[0].vehicle_plate} />
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Госномер</Typography>
+              {session.events[0].vehicle_plate &&
+                session.events[0].vehicle_plate.full_plate !== '' && (
+                  <Stack direction={'row'}>
+                    <CarNumberCard
+                      carNumber={session.events[0].vehicle_plate}
+                      isTable
+                    />
+                  </Stack>
                 )}
-                <h4>
-                  <strong>Времени на парковке:</strong>
-                  <br />
-                  {getDayMinuteSecondsByNumber(session.time_on_parking)}
-                </h4>
-
-                {session?.create_datetime && (
-                  <h4>
-                    <strong>Дата создания:</strong>
-                    <br />
-                    <span>{formatDate(session.create_datetime)}</span>
-                  </h4>
-                )}
-                {session?.events[0]?.description && (
-                  <h4>
-                    <strong>Описание: </strong>
-                    <br />
-                    <span>{session?.events[0]?.description}</span>
-                  </h4>
-                )}
-                <div style={{ display: 'flex', gap: '20px' }}>
-                  <h4>
-                    <strong>Статус оплаты:</strong>
-                    <br />
-                    {session.is_paid ? 'Оплачено' : 'Не оплачено'}
-                  </h4>
-                  <h4>
-                    <strong>Долг:</strong>
-                    <br />
-                    {session.payment_amount}₽
-                  </h4>
-                  <h4>
-                    <strong>Статус:</strong>
-                    <br />
-                    {statusSessionName(session.status)}
-                  </h4>
-                </div>
-                <div>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Список авто</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={session.events[0].access_status_code} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Статус</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={session.status} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Оплата</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={session.is_paid ? 'paid' : 'not_paid'} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Проведено</Typography>
+              <Typography>
+                {getDayMinuteSecondsByNumber(session.time_on_parking)}
+              </Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Создана</Typography>
+              <Typography>{formatDate(session.create_datetime)}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Закрыта</Typography>
+              <Typography>
+                {session.closed_datetime
+                  ? formatDate(session.closed_datetime)
+                  : '-'}
+              </Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Оплата до</Typography>
+              <Typography>
+                {session.payment_is_valid_until
+                  ? formatDate(session.payment_is_valid_until)
+                  : '-'}
+              </Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Долг</Typography>
+              <Typography>{`${session.payment_amount} ₽`}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Действие</Typography>
+              <Stack direction={'row'}>
+                <Stack direction={'row'} gap={'8px'}>
                   {session.payment_amount > 0 && (
                     <Button
-                      variant="success"
-                      onClick={() => {
-                        paidHandle(session?.id)
-                      }}
+                      disableRipple
+                      variant="contained"
+                      fullWidth
+                      sx={[secondaryButtonStyle, { minWidth: '141px' }]}
+                      onClick={handlePaidClick}
                     >
                       Обнулить долг
                     </Button>
                   )}
-                  {session.status !== 'closed' && (
+                  {session.status === 'open' && (
                     <Button
-                      variant="danger"
-                      onClick={() => statusHandle(session.id)}
+                      disableRipple
+                      variant="contained"
+                      fullWidth
+                      sx={secondaryButtonStyle}
+                      onClick={handleCloseClick}
                     >
                       Закрыть
                     </Button>
                   )}
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '5px',
-                  }}
-                >
-                  <h4>
-                    <strong>События:</strong>
-                  </h4>
-                  {session.events.map((ev) => {
-                    return (
-                      <NavLink to={`/events/${ev?.id}`}>
-                        Ссылка на событие №{ev.id}
-                      </NavLink>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
+                </Stack>
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>События</Typography>
+              <Stack gap={'16px'}>
+                {session.events.map((event) => (
+                  <NavLink
+                    to={`/events/${event.id}`}
+                    style={{ lineHeight: '1.125rem' }}
+                  >
+                    Событие №{event.id}
+                  </NavLink>
+                ))}
+              </Stack>
+            </Stack>
+          </>
+        )}
+        <FooterSpacer />
+        {imageModal.isOpen && (
+          <Lightbox
+            onCloseRequest={changeActiveImageModal}
+            mainSrc={imageModal.src}
+            imagePadding={100}
+            reactModalStyle={{
+              overlay: { zIndex: 1300 }
+            }}
+          />
+        )}
+      </Stack>
+    </>
+  );
+};
