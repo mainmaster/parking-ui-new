@@ -44,6 +44,7 @@ import SessionsSpacer from './SessionsSpacer';
 import sessionsListIcon from '../../assets/svg/sessions_list_icon.svg';
 import { SESSIONS_ON_PAGE } from '../../constants';
 import LogSessionCard from '../../components/LogSessionCard/LogSessionCard';
+import EventManager from '../../components/EventManager/EventManager';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -160,6 +161,7 @@ const SessionsPage = () => {
         ]}
         onScroll={handleSessionsListScroll}
       >
+        <EventManager />
         <SessionsSpacer />
         {isMobile && (
           <>

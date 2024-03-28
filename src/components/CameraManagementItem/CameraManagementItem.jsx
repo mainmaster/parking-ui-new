@@ -149,7 +149,7 @@ export default function CameraManagementItem({
     <Box
       sx={{
         flex: '1 1 320px',
-        minWidth: '320px',
+        minWidth: isMobile ? '320px' : '475px',
         maxWidth: '776px',
         borderRadius: '8px',
         p: isMobile ? '8px' : '16px',
@@ -284,7 +284,7 @@ export default function CameraManagementItem({
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={[positiveButtonStyle, { flexGrow: 1 }]}
+              sx={[positiveButtonStyle, { flexGrow: 1, minWidth: '130px' }]}
               onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
             >
               Ввести номер

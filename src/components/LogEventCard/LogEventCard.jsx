@@ -98,19 +98,19 @@ export default forwardRef(function LogEventCard(
                     process.env.REACT_APP_API_URL + '/' + event.car_img_path
                   )
                 }
-                onMouseLeave={
-                  onHoverImageButton ? () => onHoverImageButton() : () => {}
-                }
-                onMouseOver={
-                  onHoverImageButton
-                    ? () =>
-                        onHoverImageButton(
-                          process.env.REACT_APP_API_URL +
-                            '/' +
-                            event.car_img_path
-                        )
-                    : () => {}
-                }
+                // onMouseLeave={
+                //   onHoverImageButton ? () => onHoverImageButton() : () => {}
+                // }
+                // onMouseOver={
+                //   onHoverImageButton
+                //     ? () =>
+                //         onHoverImageButton(
+                //           process.env.REACT_APP_API_URL +
+                //             '/' +
+                //             event.car_img_path
+                //         )
+                //     : () => {}
+                // }
               >
                 <img
                   style={{

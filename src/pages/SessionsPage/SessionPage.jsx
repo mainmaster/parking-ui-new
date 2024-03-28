@@ -25,6 +25,7 @@ import { colors } from '../../theme/colors';
 import { listStyle, secondaryButtonStyle } from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import EventManager from '../../components/EventManager/EventManager';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -180,6 +181,7 @@ export const SessionPage = () => {
         ]}
         onScroll={handleSessionListScroll}
       >
+        <EventManager />
         {loading && <Spinner />}
         {errorLoad && errorContent}
         {session && session.events.length > 0 && (

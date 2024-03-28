@@ -279,7 +279,7 @@ const EventsPage = ({ onlyLog }) => {
                     key={index}
                     event={item}
                     onClickImage={changeActiveImageModal}
-                    onHoverImageButton={handleImageButtonHover}
+                    // onHoverImageButton={handleImageButtonHover}
                     selected={item.id === selectedEventId}
                     ref={addToRefs}
                   />
@@ -323,45 +323,41 @@ const EventsPage = ({ onlyLog }) => {
             handleClose={() => dispatch(changeActiveOpenApModal())}
           />
           {imageModal.isOpen && (
-            <Modal
-              open={imageModal.isOpen}
-              onClose={changeActiveImageModal}
-              sx={{
-                position: 'absolute',
-                zIndex: 1000,
-                left: '72px',
-                right: spacers.events,
-                display: 'flex',
-                justifyContent: 'center'
-              }}
-              slotProps={{
-                backdrop: {
-                  sx: {
-                    backgroundColor: colors.blackout,
-                    left: '72px',
-                    right: spacers.events
-                  }
-                }
-              }}
-            >
-              <img
-                src={imageModal.src}
-                alt="car"
-                style={{ width: '100%', padding: '16px', margin: 'auto 0' }}
-              />
-            </Modal>
-
-            // <Lightbox
-            //   onCloseRequest={changeActiveImageModal}
-            //   mainSrc={imageModal.src}
-            //   reactModalStyle={{
-            //     overlay: {
-            //       position: 'absolute',
-            //       left: '72px',
-            //       right: spacers.events
-            //     },
+            // <Modal
+            //   open={imageModal.isOpen}
+            //   onClose={changeActiveImageModal}
+            //   sx={{
+            //     position: 'absolute',
+            //     zIndex: 1000,
+            //     left: '72px',
+            //     right: spacers.events,
+            //     display: 'flex',
+            //     justifyContent: 'center'
             //   }}
-            // />
+            //   slotProps={{
+            //     backdrop: {
+            //       sx: {
+            //         backgroundColor: colors.blackout,
+            //         left: '72px',
+            //         right: spacers.events
+            //       }
+            //     }
+            //   }}
+            // >
+            //   <img
+            //     src={imageModal.src}
+            //     alt="car"
+            //     style={{ width: '100%', padding: '16px', margin: 'auto 0' }}
+            //   />
+            // </Modal>
+
+            <Lightbox
+              onCloseRequest={changeActiveImageModal}
+              mainSrc={imageModal.src}
+              reactModalStyle={{
+                overlay: { zIndex: 1300 }
+              }}
+            />
           )}
         </Drawer>
       )}

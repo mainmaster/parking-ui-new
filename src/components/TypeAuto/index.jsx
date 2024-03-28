@@ -12,7 +12,8 @@ const TypeAuto = ({ type }) => {
         borderRadius: '16px',
         border: typeText[type] ? `1px solid ${colors.outline.separator}` : '',
         fontSize: '0.75rem',
-        lineHeight: '0.875rem'
+        lineHeight: '0.875rem',
+        whiteSpace: 'nowrap'
       }}
     >
       {typeText[type]?.label}

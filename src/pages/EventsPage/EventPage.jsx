@@ -33,6 +33,7 @@ import { useNavigate } from 'react-router-dom';
 import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
+import EventManager from '../../components/EventManager/EventManager';
 import '@fontsource-variable/roboto-mono';
 
 const titleTextStyle = {
@@ -238,11 +239,12 @@ export const EventPage = () => {
         ]}
         onScroll={handleEventListScroll}
       >
+        <EventManager />
         {loading && <Spinner />}
         {errorEvent && errorContent}
         {event && (
           <>
-            <Stack gap={'8px'} sx={{ pt: '16px' }}>
+            <Stack gap={'8px'} sx={{ pt: '16px' }} alignItems={'flex-start'}>
               {event.car_img_path && (
                 <IconButton
                   disableRipple

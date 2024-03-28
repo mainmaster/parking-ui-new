@@ -49,7 +49,7 @@ export const CarNumberCard = ({
           className={styles.wrap}
           style={{
             fontSize: small ? '16px' : isTable ? '24px' : '45px',
-            cursor: handleClick ? 'pointer' : 'default'
+            cursor: 'pointer'
           }}
         >
           {carNumber.region || carNumber.region === '' ? (

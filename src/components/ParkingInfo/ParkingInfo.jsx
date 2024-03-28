@@ -62,7 +62,8 @@ export default function ParkingInfo({ fullWidth }) {
               position: 'absolute',
               top: '11px',
               left: '8px',
-              fontWeight: 500
+              fontWeight: 500,
+              whiteSpace: 'nowrap'
             }}
           >{`${
             parkingInfo?.carsOnParking.totalPlaces -
