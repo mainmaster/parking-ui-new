@@ -21,6 +21,7 @@ import { getPageNum } from 'utils';
 import {
   getSessionsRequest,
   paidSessionRequest,
+  resetDebtRequest,
   statusSessionRequest,
   closeOlderThanDateSessionsRequest
 } from 'api/sessions';

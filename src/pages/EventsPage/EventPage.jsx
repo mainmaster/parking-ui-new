@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
+import { resetDebtRequest } from '../../api/sessions';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import Lightbox from 'react-18-image-lightbox';
 import { Spinner, Accordion } from 'react-bootstrap';
@@ -35,6 +36,7 @@ import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import EventManager from '../../components/EventManager/EventManager';
 import '@fontsource-variable/roboto-mono';
+import { useSnackbar } from 'notistack';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -68,6 +70,7 @@ export const EventPage = () => {
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState();
   const [copied, setCopied] = useState(false);
+  const [debtPaid, setDebtPaid] = useState(false);
   const [detailsText, setDetailsText] = useState('');
   const [detailsCopied, setDetailsCopied] = useState(false);
   const [eventListScrolled, setEventListScrolled] = useState(false);
@@ -77,6 +80,7 @@ export const EventPage = () => {
   const eventListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { enqueueSnackbar } = useSnackbar();
 
   const errorContent = <div>Нет события с ID - {id}</div>;
 
@@ -137,6 +141,17 @@ export const EventPage = () => {
       src: src,
       isOpen: !imageModal.isOpen
     });
+
+  const handleResetDebtClick = () => {
+    if (event.vehicle_plate && event.vehicle_plate.full_plate) {
+      resetDebtRequest(event.vehicle_plate.full_plate).then((res) => {
+        if (res) {
+          setDebtPaid(true);
+          enqueueSnackbar('Долг обнулён');
+        }
+      });
+    }
+  };
 
   return (
     <>
@@ -429,9 +444,11 @@ export const EventPage = () => {
                   {event.debt && (
                     <Button
                       disableRipple
+                      disabled={debtPaid}
                       variant="contained"
                       fullWidth={false}
                       sx={[secondaryButtonStyle, { mt: '8px' }]}
+                      onClick={handleResetDebtClick}
                     >
                       Обнулить долг
                     </Button>

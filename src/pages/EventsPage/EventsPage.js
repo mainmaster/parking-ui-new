@@ -29,6 +29,7 @@ import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import HeaderSpacer from '../../components/Header/HeaderSpacer';
 import { spacers } from '../../theme/spacers';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -401,12 +402,18 @@ const EventsPage = ({ onlyLog }) => {
               alignItems={'center'}
               gap={'16px'}
             >
-              <img
-                style={{ height: '40px' }}
-                src={logEventEmptyIcon}
-                alt="нет отчётов"
-              />
-              <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+              {isLoading ? (
+                <SpinerLogo />
+              ) : (
+                <>
+                  <img
+                    style={{ height: '40px' }}
+                    src={logEventEmptyIcon}
+                    alt="нет отчётов"
+                  />
+                  <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+                </>
+              )}
             </Stack>
           )}
 

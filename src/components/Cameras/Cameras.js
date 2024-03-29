@@ -51,6 +51,14 @@ import CameraSpacer from './CameraSpacer';
 import FooterSpacer from '../Header/FooterSpacer';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import cameraEmptyIcon from '../../assets/svg/camera_empty_icon.svg';
+import { formatISO } from 'date-fns';
+
+const titleTextStyle = {
+  fontSiza: '1.5rem',
+  fontWeight: 500,
+  lineSize: '1.75rem'
+};
 
 const Cameras = () => {
   const dispatch = useDispatch();
@@ -164,7 +172,10 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={[secondaryButtonStyle, { width: '120px' }]}
+                sx={[
+                  secondaryButtonStyle,
+                  { width: '120px', px: '4px !important' }
+                ]}
                 onClick={() => dispatch(openApAllFetch())}
               >
                 <Typography noWrap>Открыть все</Typography>
@@ -172,7 +183,10 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={[secondaryButtonStyle, { width: '120px' }]}
+                sx={[
+                  secondaryButtonStyle,
+                  { width: '120px', px: '4px !important' }
+                ]}
                 onClick={() => dispatch(closeApAllFetch())}
               >
                 <Typography noWrap>Закрыть все</Typography>
@@ -180,7 +194,10 @@ const Cameras = () => {
               <Button
                 disableRipple
                 variant="contained"
-                sx={[secondaryButtonStyle, { width: '120px' }]}
+                sx={[
+                  secondaryButtonStyle,
+                  { width: '120px', px: '4px !important' }
+                ]}
                 onClick={() => dispatch(normalApAllFetch())}
               >
                 <Typography noWrap>Авто- все</Typography>
@@ -235,7 +252,7 @@ const Cameras = () => {
                   sx={secondaryButtonStyle}
                   onClick={() => dispatch(openApAllFetch())}
                 >
-                  Открыть все
+                  <Typography noWrap>Открыть все</Typography>
                 </Button>
                 <Button
                   disableRipple
@@ -244,7 +261,16 @@ const Cameras = () => {
                   sx={secondaryButtonStyle}
                   onClick={() => dispatch(closeApAllFetch())}
                 >
-                  Закрыть все
+                  <Typography noWrap>Закрыть все</Typography>
+                </Button>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={secondaryButtonStyle}
+                  onClick={() => dispatch(normalApAllFetch())}
+                >
+                  <Typography noWrap>Авто- все</Typography>
                 </Button>
               </Stack>
             </Stack>
@@ -271,7 +297,21 @@ const Cameras = () => {
                 setTitlesLed={setTitlesLed}
               />
             </>
-          ))}
+          )) || (
+            <Stack
+              justifyContent={'center'}
+              alignItems={'center'}
+              height={'100%'}
+              gap={'16px'}
+            >
+              <img
+                style={{ height: '40px' }}
+                src={cameraEmptyIcon}
+                alt="нет камер"
+              />
+              <Typography sx={titleTextStyle}>Нет камер</Typography>
+            </Stack>
+          )}
           <OpenApByTimeModal
             show={isOpenApTimeModal}
             handleClose={() => dispatch(changeActiveOpenApTimeModal())}
