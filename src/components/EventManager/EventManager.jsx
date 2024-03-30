@@ -45,15 +45,27 @@ export default function EventManager() {
       if (first && !isMobile) {
         if (second) {
           if (third) {
-            setForth(third);
+            if (!forth || forth.id !== third.id) {
+              setForth(third);
+              //console.log('forth: ' + third.id);
+            }
           }
-          setThird(second);
+          if (!third || third.id !== second.id) {
+            setThird(second);
+            //console.log('third: ' + second.id);
+          }
         }
-        setSecond(first);
+        if (!second || second.id !== first.id) {
+          setSecond(first);
+          //console.log('second: ' + first.id);
+        }
       }
-      setFirst(events[0]);
+      if (!first || first.id !== events[0].id) {
+        setFirst(events[0]);
+        //console.log('first: ' + events[0].id);
+      }
     }
-  }, [events, first, second, third, lastEvent]);
+  }, [events]);
 
   return (
     <>

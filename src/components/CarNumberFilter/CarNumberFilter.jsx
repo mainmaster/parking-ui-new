@@ -29,87 +29,14 @@ import { DateIcon } from './DateIcon';
 import {
   closeButtonStyle,
   primaryButtonStyle,
-  secondaryButtonStyle
+  secondaryButtonStyle,
+  CarNumberInput,
+  DateInputStyle,
+  selectMenuStyle
 } from '../../theme/styles';
 import { eventCodes } from '../../constants';
 import { getAccessPointsRequest } from '../../api/access-points';
 import { formatISO } from 'date-fns';
-
-const CarNumberInput = styled(TextField)(({ theme }) => ({
-  width: '100%',
-  backgroundColor: colors.surface.low,
-  border: '1px solid ' + colors.outline.default,
-  borderRadius: '20px',
-  height: '40px',
-  justifyContent: 'center',
-  '& .MuiFilledInput-root': {
-    backgroundColor: 'transparent !important',
-    paddingRight: '12px',
-    '&:hover': { backgroundColor: 'transparent !important' },
-    '& .Mui-focused': { backgroundColor: 'transparent !important' }
-  },
-  '& .MuiFilledInput-input': {
-    backgroundColor: colors.surface.low,
-    alignSelf: 'center',
-    padding: 0,
-    color: 'black'
-  }
-}));
-
-const selectMenuStyle = {
-  width: '100%',
-  backgroundColor: `${colors.surface.low} !important`,
-  border: '1px solid ' + colors.outline.default,
-  borderRadius: '20px',
-  height: '40px',
-  justifyContent: 'center',
-  '&:after, &:before': {
-    display: 'none'
-  },
-  '&:hover, & .Mui-focused': {
-    backgroundColor: `${colors.surface.low} !important`
-  },
-  '& .MuiFilledInput-input': {
-    backgroundColor: colors.surface.low,
-    alignSelf: 'center',
-    padding: `${0} !important`,
-    paddingRight: '28px !important',
-    marginLeft: '12px',
-    marginRight: '12px',
-    color: colors.element.primary,
-    display: 'flex',
-    alignItems: 'center',
-    '&:hover, &:focus': { backgroundColor: 'transparent !important' }
-  }
-};
-
-const DateInputStyle = {
-  width: '100%',
-  backgroundColor: `${colors.surface.low} !important`,
-  border: '1px solid ' + colors.outline.default,
-  borderRadius: '20px',
-  height: '40px',
-  justifyContent: 'center',
-  '& .MuiFilledInput-root': {
-    backgroundColor: 'transparent !important',
-    '&:hover': { backgroundColor: 'transparent !important' },
-    '& .Mui-focused': { backgroundColor: 'transparent !important' },
-    '&:after, &:before': {
-      display: 'none'
-    }
-  },
-  '& .MuiFilledInput-input': {
-    backgroundColor: colors.surface.low,
-    padding: `${0} !important`,
-    width: '100%',
-    fontWeight: 500,
-    color: colors.element.primary,
-    marginLeft: '12px'
-  },
-  '& .MuiIconButton-root': {
-    borderRadius: 0
-  }
-};
 
 const labelStyle = {
   fontSize: '0.75rem',

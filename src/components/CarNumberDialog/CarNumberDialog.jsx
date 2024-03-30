@@ -21,32 +21,11 @@ import { colors } from '../../theme/colors';
 import {
   closeButtonStyle,
   listStyle,
-  secondaryButtonStyle
+  secondaryButtonStyle,
+  CarNumberInput
 } from '../../theme/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
-
-const CarNumberInput = styled(TextField)(({ theme }) => ({
-  width: '100%',
-  backgroundColor: colors.surface.low,
-  border: '1px solid ' + colors.outline.default,
-  borderRadius: '20px',
-  height: '40px',
-  justifyContent: 'center',
-  '& .MuiFilledInput-root': {
-    backgroundColor: 'transparent !important',
-    paddingRight: '12px',
-    paddingLeft: '12px',
-    '&:hover': { backgroundColor: 'transparent !important' },
-    '& .Mui-focused': { backgroundColor: 'transparent !important' }
-  },
-  '& .MuiFilledInput-input': {
-    backgroundColor: colors.surface.low,
-    alignSelf: 'center',
-    padding: 0,
-    color: 'black'
-  }
-}));
 
 const defaultValues = {
   vehiclePlate: ''
@@ -167,7 +146,8 @@ export default function CarNumberDialog({ show, handleClose }) {
             autoFocus
             fullWidth
             InputProps={{
-              disableUnderline: true
+              disableUnderline: true,
+              sx: { paddingLeft: '12px' }
             }}
             variant="filled"
             id="vehiclePlate"

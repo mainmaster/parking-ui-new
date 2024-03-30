@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import Camera from '../Camera/Camera';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import cameraClearIcon from '../../assets/svg/camera_clear_icon.svg';
 import { colors } from '../../theme/colors';
 import {
   autoButtonStyle,
@@ -28,7 +29,10 @@ import {
 } from 'store/events/eventsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import { postLedBoardMessage } from '../../api/access-points';
+import {
+  clearLedBoardMessage,
+  postLedBoardMessage
+} from '../../api/access-points';
 import { useSnackbar } from 'notistack';
 import submitIcon from '../../assets/svg/camera_submit_icon.svg';
 import cameraSkeleton from '../../assets/svg/camera_skeleton_logo.svg';
@@ -145,6 +149,12 @@ export default function CameraManagementItem({
     dispatch(setSelectedEventId(currentEvent.id));
   };
 
+  const handleClearMessage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    clearLedBoardMessage(camera.id);
+  };
+
   return (
     <Box
       sx={{
@@ -179,12 +189,34 @@ export default function CameraManagementItem({
               borderRadius: '4px'
             }}
           >
+            <Box sx={{ width: '100%', position: 'relative' }} />
             <Typography sx={{ fontWeight: 500 }}>
               {titlesLed[`access_point${camera.id}`]?.line1 || ''}
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {titlesLed[`access_point${camera.id}`]?.line2 || ''}
             </Typography>
+            <IconButton
+              disableRipple
+              aria-label="clear"
+              onClick={handleClearMessage}
+              sx={{
+                position: 'absolute',
+                top: '-14px',
+                right: '-14px'
+              }}
+            >
+              <img
+                style={{
+                  height: 12,
+                  backgroundColor: colors.surface.low,
+                  borderRadius: '50%',
+                  border: `1px solid ${colors.outline.surface}`
+                }}
+                src={cameraClearIcon}
+                alt="Clear message"
+              />
+            </IconButton>
           </Box>
           {currentEvent && (
             <Box

@@ -3,6 +3,7 @@ export const BREAKPOINT_MD = 991;
 
 export const EVENTS_ON_PAGE = 50;
 export const SESSIONS_ON_PAGE = 50;
+export const CARS_ON_PAGE = 50;
 
 export const passModeOptions = [
   { name: 'Оплата по часам', value: 'pay_by_hour' },

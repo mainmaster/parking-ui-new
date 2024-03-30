@@ -1,41 +1,21 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useState, useRef } from 'react';
-import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
-import css from './SessionsPage.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import cn from 'classnames';
 import Lightbox from 'react-18-image-lightbox';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
 import {
   sessionsFetch,
   sessionsChangePageFetch,
-  changeDataModal,
-  changeCurrentPage,
-  statusSessionFetch,
-  paidSessionFetch
+  changeCurrentPage
 } from 'store/sessions/sessionsSlice';
 // Components
-import SessionsCard from 'components/SessionsCard';
-import Table from 'components/Table';
-import CardSessionModal from 'components/Modals/CardSessionModal';
 import PaginationCustom from 'components/Pagination';
-import FilterForm from 'components/pages/sessions/FilterForm';
-// Utils
-import { titles } from './utils';
-import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
 // Constants
-import { statusSessionName, BREAKPOINT_MD } from 'constants';
-import { CheckSquareFill, XSquareFill } from 'react-bootstrap-icons';
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
-import { CloseOlderThanDateModal } from './components/CloseOlderThanDateModal';
-import { useParkingInfoQuery } from '../../api/settings/settings';
-import TypeAuto from '../../components/TypeAuto';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
+import { AppBar, Box, Stack, Typography } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { spacers } from '../../theme/spacers';
 import { listWithScrollStyle } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
@@ -60,10 +40,6 @@ const SessionsPage = () => {
   const currentPage = useSelector((state) => state.sessions.currentPage);
   const isLoading = useSelector((state) => state.sessions.isLoadingFetch);
   const isError = useSelector((state) => state.sessions.isErrorFetch);
-  const [isActiveModal, setIsActiveModal] = useState(false);
-  const [closeOlderDateModal, setCloseOlderDateModal] = useState(false);
-  const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
-  const { data: parkingInfo } = useParkingInfoQuery();
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
   const theme = useTheme();
@@ -106,10 +82,6 @@ const SessionsPage = () => {
         setSessionsListScrolled(false);
       }
     }
-  };
-
-  const changeMobileModal = () => {
-    setIsActiveModalMobile(!isActiveModalMobile);
   };
 
   return (
@@ -236,14 +208,6 @@ const SessionsPage = () => {
         <FooterSpacer />
       </Stack>
 
-      <CloseOlderThanDateModal
-        show={closeOlderDateModal}
-        handleClose={setCloseOlderDateModal}
-      />
-      <CardSessionModal
-        show={isActiveModalMobile}
-        handleClose={changeMobileModal}
-      />
       {imageModal.isOpen && (
         <Lightbox
           onCloseRequest={changeActiveImageModal}

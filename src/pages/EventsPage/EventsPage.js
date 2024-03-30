@@ -319,10 +319,6 @@ const EventsPage = ({ onlyLog }) => {
             show={isActiveModalMobile}
             handleClose={changeMobileModal}
           /> */}
-          <CarNumberDialog
-            show={isOpenApModal}
-            handleClose={() => dispatch(changeActiveOpenApModal())}
-          />
           {imageModal.isOpen && (
             // <Modal
             //   open={imageModal.isOpen}
@@ -418,10 +414,7 @@ const EventsPage = ({ onlyLog }) => {
           )}
 
           <FooterSpacer />
-          <CarNumberDialog
-            show={isOpenApModal}
-            handleClose={() => dispatch(changeActiveOpenApModal())}
-          />
+
           {imageModal.isOpen && (
             <Lightbox
               onCloseRequest={changeActiveImageModal}
@@ -431,6 +424,10 @@ const EventsPage = ({ onlyLog }) => {
           )}
         </Stack>
       )}
+      <CarNumberDialog
+        show={isOpenApModal}
+        handleClose={() => dispatch(changeActiveOpenApModal())}
+      />
     </>
   );
 };

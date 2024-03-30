@@ -39,8 +39,9 @@ export default function EventAlertCard({ event, close, animate, fade }) {
     if (event !== lastEvent) {
       setLastEvent(event);
       setShow(true);
+      //console.log(event.id + ' ' + start);
     }
-  }, [event, lastEvent]);
+  }, [event]);
 
   useEffect(() => {
     if (progress < 100) {
@@ -87,7 +88,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
 
   return (
     <Fade in={showFade} appear={false} timeout={100}>
-      <div style={{ width: '100%' }}>
+      <div style={{ width: isMobile ? '100%' : 'inherit' }}>
         <Slide
           direction={isMobile ? 'down' : 'left'}
           in={show}

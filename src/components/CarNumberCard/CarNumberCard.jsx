@@ -153,7 +153,9 @@ export const CarNumberCard = ({
                         marginBottom: small ? '3px' : '7px'
                       }}
                     >
-                      <span>{carNumber.region === '' ? '---' : 'RUS'}</span>
+                      <span style={{ whiteSpace: 'nowrap' }}>
+                        {carNumber.region === '' ? '---' : 'RUS'}
+                      </span>
                       <img
                         style={{ height: small ? '5px' : '8px' }}
                         className={styles.image}
