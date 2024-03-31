@@ -8,31 +8,25 @@ import {
   DialogContent,
   IconButton,
   TextField,
-  Select,
   Typography,
-  MenuItem,
-  InputLabel,
-  styled
+  InputLabel
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
-import { useRentersQuery } from '../../api/renters/renters.api';
 import {
-  createCarParkFetch,
-  editCarParkFetch
-} from 'store/carPark/carParkSlice';
+  createBlackListFetch,
+  editBlackListFetch
+} from 'store/blackList/blackListSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
-import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import {
   closeButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
-  DateInputStyle,
-  selectMenuStyle
+  DateInputStyle
 } from '../../theme/styles';
 import { DateIcon } from './DateIcon';
 
@@ -51,18 +45,15 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const [date, setDate] = useState(null);
   const [carNumber, setCarNumber] = useState('');
   const [description, setDescription] = useState('');
-  const [renter, setRenter] = useState('');
   const [submited, setSubmited] = useState(true);
-  const { data: renters } = useRentersQuery();
-  const carParkEdit = useSelector((state) => state.carPark.carParkEdit);
+  const blackListEdit = useSelector((state) => state.blackList.blackListEdit);
   const urlStatus = useParams();
 
   useEffect(() => {
-    if (show && edit && carParkEdit) {
-      setDescription(carParkEdit.description);
-      setRenter(carParkEdit.renter ? carParkEdit.renter : '');
-      setCarNumber(carParkEdit.vehicle_plate.full_plate);
-      setDate(new Date(carParkEdit.valid_until));
+    if (show && edit && blackListEdit) {
+      setDescription(blackListEdit.description);
+      setCarNumber(blackListEdit.vehicle_plate.full_plate);
+      setDate(new Date(blackListEdit.valid_until));
       setSubmited(true);
     }
   }, [show, edit]);
@@ -76,15 +67,12 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         const payload = {
           valid_until: date,
           description: description,
-          vehicle_plate: vehiclePlate,
-          status: urlStatus['*'],
-          renter: renter,
-          is_active: true
+          vehicle_plate: vehiclePlate
         };
         if (edit) {
-          dispatch(editCarParkFetch(payload));
+          dispatch(editBlackListFetch(payload));
         } else {
-          dispatch(createCarParkFetch(payload));
+          dispatch(createBlackListFetch(payload));
         }
         resetHandle();
       }
@@ -120,13 +108,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     formik.handleChange(event);
   };
 
-  const handleRenterChange = (event) => {
-    if (carNumber !== '' && description !== '') {
-      setSubmited(false);
-    }
-    setRenter(event.target.value);
-  };
-
   const handleCloseDialog = () => {
     resetHandle();
     handleClose();
@@ -137,7 +118,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     setDate(null);
     setCarNumber('');
     setDescription('');
-    setRenter('');
     setSubmited(true);
   };
 
@@ -182,7 +162,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать машину' : 'Добавить машину'}
+        {edit ? 'Редактировать машину' : 'Добавить в ЧС'}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -204,7 +184,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="date" sx={labelStyle}>
-              Пропуск активен до
+              Доступ запрещён до
             </InputLabel>
             <DatePicker
               id="date"
@@ -267,70 +247,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.vehiclePlate)
               }
             />
-          </Stack>
-          <Stack>
-            <InputLabel htmlFor="renter" sx={labelStyle}>
-              Арендатор
-            </InputLabel>
-            <Select
-              id="renter"
-              displayEmpty
-              value={renter}
-              onChange={handleRenterChange}
-              variant="filled"
-              IconComponent={(props) => (
-                <IconButton
-                  disableRipple
-                  {...props}
-                  sx={{ top: `${0} !important`, right: `4px !important` }}
-                >
-                  <img
-                    style={{
-                      width: '24px'
-                    }}
-                    src={selectIcon}
-                    alt="select"
-                  />
-                </IconButton>
-              )}
-              sx={selectMenuStyle}
-              renderValue={(selected) => {
-                if (selected === '') {
-                  return <em></em>;
-                } else {
-                  return (
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500 }}
-                    >
-                      {selected}
-                    </Typography>
-                  );
-                }
-              }}
-            >
-              <MenuItem disabled value="">
-                <em> </em>
-              </MenuItem>
-              {renters &&
-                renters.map((r) => (
-                  <MenuItem
-                    key={r.company_name}
-                    id={r.company_name}
-                    selected={r.company_name === renter}
-                    value={r.company_name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {r.company_name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-            </Select>
           </Stack>
           <Button
             disableRipple

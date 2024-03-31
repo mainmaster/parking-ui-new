@@ -88,17 +88,17 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(carParkFetch(filters));
       dispatch(changeCurrentPage(1));
+      dispatch(carParkFetch(filters));
       setSubmited(true);
     }
   });
 
   const resetHandle = () => {
     formik.resetForm();
-    dispatch(carParkFetch());
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
+    dispatch(carParkFetch());
     setSubmited(true);
   };
 
@@ -107,9 +107,9 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
       const values = {
         vehiclePlate: e.target.value
       };
-      dispatch(carParkFetch(values));
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
+      dispatch(carParkFetch(values));
     } else if (openForm) {
       const values = {
         ...filters,
@@ -136,9 +136,9 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
   const handleNumberErase = () => {
     formik.values.vehiclePlate = '';
     if (!openForm) {
-      dispatch(carParkFetch());
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
+      dispatch(carParkFetch());
     } else if (openForm) {
       const values = {
         ...filters,

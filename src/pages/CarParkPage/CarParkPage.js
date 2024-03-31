@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import Lightbox from 'react-18-image-lightbox';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
 import {
