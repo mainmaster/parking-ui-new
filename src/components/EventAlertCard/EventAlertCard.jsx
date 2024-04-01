@@ -92,7 +92,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
         <Slide
           direction={isMobile ? 'down' : 'left'}
           in={show}
-          appear={animate}
+          appear={start > 0 ? false : animate}
           timeout={250}
         >
           <Card

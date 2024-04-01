@@ -6,6 +6,8 @@ export const spacers = {
   sessions: '64px',
   carpark: '106px',
   carpark_mobile: '162px',
+  applications: '64px',
+  applications_mobile: '120px',
   events: '361px',
   filter: '64px',
   filterOpen: '334px'

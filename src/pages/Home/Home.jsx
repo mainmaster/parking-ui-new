@@ -79,7 +79,7 @@ export const Home = () => {
       address = address.replace('http:', 'ws:');
     }
 
-    if (parkingData) {
+    if (parkingData && !ws.current) {
       ws.current = new WebSocket(
         address + `/wsEvents?parkingID=${parkingData.parkingID}`
       );

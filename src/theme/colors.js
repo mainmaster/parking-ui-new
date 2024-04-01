@@ -114,5 +114,8 @@ export const colors = {
         text: '#FFFFFF'
       }
     }
+  },
+  request_status: {
+    not_used: '#138641'
   }
 };

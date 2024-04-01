@@ -8,8 +8,11 @@ import {
   DialogContent,
   IconButton,
   TextField,
+  Select,
   Typography,
-  InputLabel
+  MenuItem,
+  InputLabel,
+  styled
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useSnackbar } from 'notistack';
@@ -17,22 +20,24 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
+import { useRentersQuery } from '../../api/renters/renters.api';
 import {
-  createBlackListFetch,
-  editBlackListFetch
-} from 'store/blackList/blackListSlice';
+  createApplicationsFetch,
+  editApplicationFetch
+} from 'store/applications/applicationSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
+import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import {
   closeButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
-  DateInputStyle
+  DateInputStyle,
+  selectMenuStyle
 } from '../../theme/styles';
 import { DateIcon } from './DateIcon';
 
 const defaultValues = {
-  description: '',
   vehiclePlate: ''
 };
 
@@ -41,21 +46,27 @@ const labelStyle = {
   pl: '12px'
 };
 
-export default function AddCarDialog({ show, handleClose, edit }) {
+export default function AddApplicationDialog({ show, handleClose, edit }) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
   const [carNumber, setCarNumber] = useState('');
-  const [description, setDescription] = useState('');
+  const [renter, setRenter] = useState('');
   const [submited, setSubmited] = useState(true);
-  const blackListEdit = useSelector((state) => state.blackList.blackListEdit);
-  const urlStatus = useParams();
+  const { data: renters } = useRentersQuery();
+  const applicationEdit = useSelector(
+    (state) => state.applications.editApplication
+  );
 
   useEffect(() => {
-    if (show && edit && blackListEdit) {
-      setDescription(blackListEdit.description);
-      setCarNumber(blackListEdit.vehicle_plate.full_plate);
-      setDate(new Date(blackListEdit.valid_until));
+    if (show && edit && applicationEdit) {
+      setRenter(applicationEdit.renter ? applicationEdit.renter : '');
+      setCarNumber(
+        applicationEdit.vehicle_plate?.full_plate
+          ? applicationEdit.vehicle_plate.full_plate
+          : ''
+      );
+      setDate(new Date(applicationEdit.valid_for_date));
       setSubmited(true);
     }
   }, [show, edit]);
@@ -63,20 +74,20 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      const { description, vehiclePlate } = values;
-      if (description !== '' && vehiclePlate !== '') {
+      const { vehiclePlate } = values;
+      if (vehiclePlate !== '') {
         date.setHours(23, 59, 0, 0);
         const payload = {
-          valid_until: date,
-          description: description,
-          vehicle_plate: vehiclePlate
+          valid_for_date: date,
+          vehicle_plate: vehiclePlate,
+          renter: renter
         };
         if (edit) {
-          dispatch(editBlackListFetch(payload));
-          enqueueSnackbar('Машина сохранена', { variant: 'success' });
+          dispatch(editApplicationFetch(payload));
+          enqueueSnackbar('Заявка сохранена', { variant: 'success' });
         } else {
-          dispatch(createBlackListFetch(payload));
-          enqueueSnackbar('Машина добавлена', { variant: 'success' });
+          dispatch(createApplicationsFetch(payload));
+          enqueueSnackbar('Заявка добавлена', { variant: 'success' });
         }
         resetHandle();
         handleClose();
@@ -87,7 +98,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const handleDateChange = (newValue) => {
     if (newValue) {
       setDate(newValue);
-      if (carNumber !== '' && description !== '') {
+      if (carNumber !== '') {
         setSubmited(false);
       }
     }
@@ -95,7 +106,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
 
   const handleChangeNumber = (event) => {
     setCarNumber(event.target.value);
-    if (event.target.value !== '' && description !== '') {
+    if (event.target.value !== '') {
       setSubmited(false);
     } else {
       setSubmited(true);
@@ -103,14 +114,11 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     formik.handleChange(event);
   };
 
-  const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
-    if (event.target.value !== '' && carNumber !== '') {
+  const handleRenterChange = (event) => {
+    if (carNumber !== '') {
       setSubmited(false);
-    } else {
-      setSubmited(true);
     }
-    formik.handleChange(event);
+    setRenter(event.target.value);
   };
 
   const handleCloseDialog = () => {
@@ -122,7 +130,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     formik.resetForm();
     setDate(null);
     setCarNumber('');
-    setDescription('');
+    setRenter('');
     setSubmited(true);
   };
 
@@ -167,7 +175,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать машину' : 'Добавить в ЧС'}
+        {edit ? 'Редактировать заявку' : 'Добавить заявку'}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -187,50 +195,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             maxWidth: '500px'
           }}
         >
-          <Stack>
-            <InputLabel htmlFor="date" sx={labelStyle}>
-              Доступ запрещён до
-            </InputLabel>
-            <DatePicker
-              id="date"
-              value={date}
-              format={'dd.MM.yyyy'}
-              minDate={Date.now()}
-              onChange={handleDateChange}
-              slotProps={{
-                textField: {
-                  variant: 'filled',
-                  sx: DateInputStyle,
-                  placeholder: 'Дата'
-                },
-                openPickerButton: { disableRipple: true }
-              }}
-              slots={{
-                openPickerIcon: DateIcon
-              }}
-            />
-          </Stack>
-          <Stack>
-            <InputLabel htmlFor="description" sx={labelStyle}>
-              Описание
-            </InputLabel>
-            <CarNumberInput
-              fullWidth
-              InputProps={{
-                disableUnderline: true,
-                sx: { paddingLeft: '12px' }
-              }}
-              variant="filled"
-              id="description"
-              name="description"
-              value={description}
-              onChange={handleChangeDescription}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-            />
-          </Stack>
           <Stack>
             <InputLabel htmlFor="vehiclePlate" sx={labelStyle}>
               Номер машины
@@ -252,6 +216,94 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.vehiclePlate)
               }
             />
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor="date" sx={labelStyle}>
+              Дата
+            </InputLabel>
+            <DatePicker
+              id="date"
+              value={date}
+              format={'dd.MM.yyyy'}
+              minDate={Date.now()}
+              onChange={handleDateChange}
+              slotProps={{
+                textField: {
+                  variant: 'filled',
+                  sx: DateInputStyle,
+                  placeholder: 'Дата'
+                },
+                openPickerButton: { disableRipple: true }
+              }}
+              slots={{
+                openPickerIcon: DateIcon
+              }}
+            />
+          </Stack>
+
+          <Stack>
+            <InputLabel htmlFor="renter" sx={labelStyle}>
+              Компания
+            </InputLabel>
+            <Select
+              id="renter"
+              displayEmpty
+              value={renter}
+              onChange={handleRenterChange}
+              variant="filled"
+              IconComponent={(props) => (
+                <IconButton
+                  disableRipple
+                  {...props}
+                  sx={{ top: `${0} !important`, right: `4px !important` }}
+                >
+                  <img
+                    style={{
+                      width: '24px'
+                    }}
+                    src={selectIcon}
+                    alt="select"
+                  />
+                </IconButton>
+              )}
+              sx={selectMenuStyle}
+              renderValue={(selected) => {
+                if (selected === '') {
+                  return <em></em>;
+                } else {
+                  return (
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500 }}
+                    >
+                      {selected}
+                    </Typography>
+                  );
+                }
+              }}
+            >
+              <MenuItem disabled value="">
+                <em> </em>
+              </MenuItem>
+              {renters &&
+                renters.map((r) => (
+                  <MenuItem
+                    key={r.company_name}
+                    id={r.company_name}
+                    selected={r.company_name === renter}
+                    value={r.company_name}
+                  >
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500, p: 0 }}
+                    >
+                      {r.company_name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+            </Select>
           </Stack>
           <Button
             disableRipple

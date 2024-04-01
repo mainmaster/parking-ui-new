@@ -15,6 +15,7 @@ import {
   styled
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -48,6 +49,7 @@ const labelStyle = {
 
 export default function AddCarDialog({ show, handleClose, edit }) {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
   const [carNumber, setCarNumber] = useState('');
   const [description, setDescription] = useState('');
@@ -83,10 +85,13 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         };
         if (edit) {
           dispatch(editCarParkFetch(payload));
+          enqueueSnackbar('Машина сохранена', { variant: 'success' });
         } else {
           dispatch(createCarParkFetch(payload));
+          enqueueSnackbar('Машина добавлена', { variant: 'success' });
         }
         resetHandle();
+        handleClose();
       }
     }
   });

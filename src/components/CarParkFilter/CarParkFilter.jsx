@@ -99,6 +99,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     dispatch(carParkFetch());
+    setSelectedCompany('');
     setSubmited(true);
   };
 

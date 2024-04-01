@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -14,6 +15,15 @@ import {
   styled
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import {
+  applicationsFetch,
+  changeCurrentPage,
+  setFilters
+} from '../../store/applications/applicationSlice';
+import { useRentersQuery } from '../../api/renters/renters.api';
+import { useFormik } from 'formik';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { colors } from '../../theme/colors';
 import {
   closeButtonStyle,
@@ -22,21 +32,17 @@ import {
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
+import { DateIcon } from './DateIcon';
+import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
-import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
-import { DateIcon } from './DateIcon';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  sessionsFetch,
-  setFilters,
-  changeCurrentPage
-} from 'store/sessions/sessionsSlice';
-import { useFormik } from 'formik';
 import { formatISO } from 'date-fns';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
+const defaultValues = {
+  vehiclePlate: '',
+  companyName: ''
+};
 
 const desktopMenuStyle = {
   position: 'absolute',
@@ -55,7 +61,8 @@ const desktopMenuStyle = {
 const mobileMenuStyle = {
   p: '16px',
   pt: '8px',
-  backgroundColor: colors.surface.low
+  backgroundColor: colors.surface.low,
+  borderBottom: `1px solid ${colors.outline.surface}`
 };
 
 const labelStyle = {
@@ -66,29 +73,22 @@ const labelStyle = {
   pl: '12px'
 };
 
-const defaultValues = {
-  vehiclePlate: ''
-};
-
-const sessionStatusValues = [
-  { value: 'open', name: 'Открытые' },
-  { value: 'closed', name: 'Закрытые' }
+const applicationStatusValues = [
+  { value: 'true', name: 'Использована' },
+  { value: 'false', name: 'Не использована' }
 ];
 
-const paymentStatusValues = [
-  { value: true, name: 'Оплачено' },
-  { value: false, name: 'Не оплачено' }
-];
-
-export default function SessionsFilter({ openForm, setOpenForm }) {
+export default function ApplicationFilter({ openForm, setOpenForm }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSessionStatus, setSelectedSessionStatus] = useState('');
-  const [selectedPaymentStatus, setSelectedPaymentStatus] = useState('');
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedApplicationStatus, setSelectedApplicationStatus] =
+    useState('');
   const [submited, setSubmited] = useState(true);
   const [numberInChange, setNumberInChange] = useState(false);
-  const filters = useSelector((state) => state.sessions.filters);
+  const filters = useSelector((state) => state.applications.filters);
+  const { data: renters } = useRentersQuery();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -102,21 +102,21 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(sessionsFetch(filters));
       dispatch(changeCurrentPage(1));
+      dispatch(applicationsFetch(filters));
       setSubmited(true);
     }
   });
 
   const resetHandle = () => {
     formik.resetForm();
-    dispatch(sessionsFetch());
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
-    setSelectedSessionStatus('');
-    setSelectedPaymentStatus('');
+    dispatch(applicationsFetch());
     setFromValue(null);
     setToValue(null);
+    setSelectedCompany('');
+    setSelectedApplicationStatus('');
     setSubmited(true);
   };
 
@@ -125,9 +125,9 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       const values = {
         vehiclePlate: e.target.value
       };
-      dispatch(sessionsFetch(values));
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
+      dispatch(applicationsFetch(values));
     } else if (openForm) {
       const values = {
         ...filters,
@@ -154,9 +154,9 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
   const handleNumberErase = () => {
     formik.values.vehiclePlate = '';
     if (!openForm) {
-      dispatch(sessionsFetch());
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
+      dispatch(applicationsFetch());
     } else if (openForm) {
       const values = {
         ...filters,
@@ -166,36 +166,6 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       setSubmited(false);
     }
     setNumberInChange(false);
-  };
-
-  const handleSessionStatusChange = (event) => {
-    const status = sessionStatusValues.find(
-      (st) => st.name === event.target.value
-    );
-    if (status) {
-      const values = {
-        ...filters,
-        status: status.value
-      };
-      dispatch(setFilters(values));
-      setSubmited(false);
-    }
-    setSelectedSessionStatus(event.target.value);
-  };
-
-  const handlePaymentStatusChange = (event) => {
-    const status = paymentStatusValues.find(
-      (st) => st.name === event.target.value
-    );
-    if (status) {
-      const values = {
-        ...filters,
-        isPaid: status.value
-      };
-      dispatch(setFilters(values));
-      setSubmited(false);
-    }
-    setSelectedPaymentStatus(event.target.value);
   };
 
   const handleFromDateChanged = (newValue) => {
@@ -220,6 +190,31 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       setToValue(newValue);
       setSubmited(false);
     }
+  };
+
+  const handleCompanyChange = (event) => {
+    const values = {
+      ...filters,
+      companyName: event.target.value
+    };
+    dispatch(setFilters(values));
+    setSubmited(false);
+    setSelectedCompany(event.target.value);
+  };
+
+  const handleApplicationStatusChange = (event) => {
+    const status = applicationStatusValues.find(
+      (st) => st.name === event.target.value
+    );
+    if (status) {
+      const values = {
+        ...filters,
+        status: status.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    }
+    setSelectedApplicationStatus(event.target.value);
   };
 
   const handleClose = () => {
@@ -321,132 +316,6 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         {openForm && (
           <Stack sx={isMobile ? mobileMenuStyle : desktopMenuStyle} gap={'8px'}>
             <Stack>
-              <InputLabel htmlFor="session-status-select" sx={labelStyle}>
-                Статус сессии
-              </InputLabel>
-              <Select
-                id="session-status-select"
-                displayEmpty
-                value={selectedSessionStatus}
-                onChange={handleSessionStatusChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>Выбрать</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem disabled value="">
-                  <em>Выбрать</em>
-                </MenuItem>
-                {sessionStatusValues.map((st) => (
-                  <MenuItem
-                    key={st.value}
-                    id={st.name}
-                    selected={st.name === selectedSessionStatus}
-                    value={st.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {st.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack>
-              <InputLabel htmlFor="payment-status-select" sx={labelStyle}>
-                Статус оплаты
-              </InputLabel>
-              <Select
-                id="payment-status-select"
-                displayEmpty
-                value={selectedPaymentStatus}
-                onChange={handlePaymentStatusChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>Выбрать</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem disabled value="">
-                  <em>Выбрать</em>
-                </MenuItem>
-                {paymentStatusValues.map((st) => (
-                  <MenuItem
-                    key={st.name}
-                    id={st.name}
-                    selected={st.name === selectedPaymentStatus}
-                    value={st.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {st.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack>
               <Typography sx={labelStyle}>Дата</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <DatePicker
@@ -486,6 +355,132 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   }}
                 />
               </Stack>
+            </Stack>
+            <Stack>
+              <InputLabel htmlFor="company-select" sx={labelStyle}>
+                Компания
+              </InputLabel>
+              <Select
+                id="company-select"
+                displayEmpty
+                value={selectedCompany}
+                onChange={handleCompanyChange}
+                variant="filled"
+                IconComponent={(props) => (
+                  <IconButton
+                    disableRipple
+                    {...props}
+                    sx={{ top: `${0} !important`, right: `4px !important` }}
+                  >
+                    <img
+                      style={{
+                        width: '24px'
+                      }}
+                      src={selectIcon}
+                      alt="select"
+                    />
+                  </IconButton>
+                )}
+                sx={selectMenuStyle}
+                renderValue={(selected) => {
+                  if (selected === '') {
+                    return <em>Выбрать</em>;
+                  } else {
+                    return (
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {selected}
+                      </Typography>
+                    );
+                  }
+                }}
+              >
+                <MenuItem disabled value="">
+                  <em>Выбрать</em>
+                </MenuItem>
+                {renters.map((r) => (
+                  <MenuItem
+                    key={r.company_name}
+                    id={r.company_name}
+                    selected={r.company_name === selectedCompany}
+                    value={r.company_name}
+                  >
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500, p: 0 }}
+                    >
+                      {r.company_name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </Stack>
+            <Stack>
+              <InputLabel htmlFor="application-status-select" sx={labelStyle}>
+                Статус заявки
+              </InputLabel>
+              <Select
+                id="application-status-select"
+                displayEmpty
+                value={selectedApplicationStatus}
+                onChange={handleApplicationStatusChange}
+                variant="filled"
+                IconComponent={(props) => (
+                  <IconButton
+                    disableRipple
+                    {...props}
+                    sx={{ top: `${0} !important`, right: `4px !important` }}
+                  >
+                    <img
+                      style={{
+                        width: '24px'
+                      }}
+                      src={selectIcon}
+                      alt="select"
+                    />
+                  </IconButton>
+                )}
+                sx={selectMenuStyle}
+                renderValue={(selected) => {
+                  if (selected === '') {
+                    return <em>Выбрать</em>;
+                  } else {
+                    return (
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {selected}
+                      </Typography>
+                    );
+                  }
+                }}
+              >
+                <MenuItem disabled value="">
+                  <em>Выбрать</em>
+                </MenuItem>
+                {applicationStatusValues.map((st) => (
+                  <MenuItem
+                    key={st.value}
+                    id={st.name}
+                    selected={st.name === selectedApplicationStatus}
+                    value={st.name}
+                  >
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500, p: 0 }}
+                    >
+                      {st.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Select>
             </Stack>
 
             <Stack direction={'row'} gap={'8px'} sx={{ pt: '8px' }}>

@@ -93,10 +93,10 @@ const Cameras = () => {
       address = address.replace('http:', 'ws:');
     }
     if (parkingData) {
+      wsLedMessages.current = new WebSocket(
+        address + `/wsLedMessages/?parkingID=${parkingData.parkingID}`
+      );
     }
-    wsLedMessages.current = new WebSocket(
-      address + `/wsLedMessages/?parkingID=${parkingData.parkingID}`
-    );
 
     wsLedMessages.current.onmessage = (event) => {
       let data = JSON.parse(event.data);
