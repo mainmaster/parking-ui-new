@@ -196,7 +196,7 @@ export const listStyle = {
 
 export const listWithScrollStyle = {
   height: '100dvh',
-  overflowY: 'scroll'
+  overflowY: 'auto'
 };
 
 export const CarNumberInput = styled(TextField)(({ theme }) => ({
@@ -272,5 +272,67 @@ export const selectMenuStyle = {
     display: 'flex',
     alignItems: 'center',
     '&:hover, &:focus': { backgroundColor: 'transparent !important' }
+  }
+};
+
+export const switchInputStyle = {
+  width: '48px',
+  height: '24px',
+  p: 0,
+  '& .MuiSwitch-switchBase': {
+    p: 0,
+    border: 2,
+    borderColor: colors.toggle.toggled.track.default,
+    '&:hover': {
+      borderColor: colors.toggle.toggled.track.hover,
+      '& + .MuiSwitch-track': {
+        backgroundColor: colors.toggle.toggled.track.hover
+      }
+    },
+    '&:active': {
+      borderColor: colors.toggle.toggled.track.active,
+      '& + .MuiSwitch-track': {
+        backgroundColor: colors.toggle.toggled.track.active
+      }
+    },
+    '&.Mui-checked': {
+      transform: 'translateX(24px)',
+      color: colors.toggle.toggled.thumb,
+      border: 2,
+      borderColor: colors.toggle.untoggled.track.default,
+      '&:hover': {
+        borderColor: colors.toggle.untoggled.track.hover,
+        '& + .MuiSwitch-track': {
+          backgroundColor: colors.toggle.untoggled.track.hover
+        }
+      },
+      '&:active': {
+        borderColor: colors.toggle.untoggled.track.active,
+        '& + .MuiSwitch-track': {
+          backgroundColor: colors.toggle.untoggled.track.active
+        }
+      },
+      '& + .MuiSwitch-track': {
+        backgroundColor: colors.toggle.untoggled.track.default,
+        opacity: 1,
+        border: 0,
+        borderRadius: '12 px'
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5
+      }
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      backgroundColor: colors.toggle.toggled.track.default,
+      opacity: 1,
+      border: 0,
+      borderRadius: '12px'
+    }
+  },
+  '& .MuiSwitch-track': {
+    backgroundColor: colors.toggle.toggled.track.default,
+    opacity: 1,
+    border: 0,
+    borderRadius: '12px'
   }
 };

@@ -20,6 +20,22 @@ const theme = createTheme({
       color: colors.element.primary,
       lineHeight: '1.125rem'
     }
+  },
+  components: {
+    MuiAccordionSummary: {
+      styleOverrides: {
+        content: {
+          margin: 0
+        }
+      }
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        }
+      }
+    }
   }
 });
 

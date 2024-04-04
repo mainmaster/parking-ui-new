@@ -117,5 +117,24 @@ export const colors = {
   },
   request_status: {
     not_used: '#138641'
+  },
+  toggle: {
+    toggled: {
+      thumb: '#FFFFFF',
+
+      track: {
+        default: '#CCCACE',
+        hover: '#8FD6AC',
+        active: '#B5E3C9'
+      }
+    },
+    untoggled: {
+      thumb: '#FFFFFF',
+      track: {
+        default: '#138641',
+        hover: '#0D592B',
+        active: '#169C4C'
+      }
+    }
   }
 };

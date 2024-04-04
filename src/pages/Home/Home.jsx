@@ -148,6 +148,11 @@ export const Home = () => {
         setIsError(true);
       };
     }
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
   }, [parkingData]);
 
   return (
