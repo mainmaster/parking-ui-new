@@ -10,11 +10,11 @@ import {
 import { listStyle, secondaryButtonStyle } from '../../theme/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 
-export default function SettingsConfirmDialog({ blocker }) {
+export default function SettingsConfirmDialog({ show, cancel, confirm }) {
   return (
     <Dialog
-      open={blocker.state === 'blocked'}
-      onClose={() => blocker.reset()}
+      open={show}
+      onClose={cancel}
       scroll="body"
       sx={{
         '& .MuiDialog-container': { ...listStyle, position: 'relative' }
@@ -31,7 +31,7 @@ export default function SettingsConfirmDialog({ blocker }) {
     >
       <IconButton
         disableRipple
-        onClick={() => blocker.reset()}
+        onClick={cancel}
         sx={[
           secondaryButtonStyle,
           {
@@ -56,26 +56,28 @@ export default function SettingsConfirmDialog({ blocker }) {
       >
         Выйти без сохранения?
       </DialogTitle>
-      <DialogContent>
-        <Typography>
+      <DialogContent sx={{ px: '16px', py: 0, minHeight: '37px' }}>
+        <Typography sx={{ textAlign: 'center' }}>
           Изменения не будут применены, пока не будет нажата кнопка "Сохранить"
           в верхнеи правом углу
         </Typography>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
+      <DialogActions sx={{ justifyContent: 'center', p: '16px' }}>
         <Button
           disableRipple
+          fullWidth
           variant="contained"
           sx={secondaryButtonStyle}
-          onClick={() => blocker.proceed()}
+          onClick={confirm}
         >
           Выйти
         </Button>
         <Button
           disableRipple
+          fullWidth
           variant="contained"
           sx={secondaryButtonStyle}
-          onClick={() => blocker.reset()}
+          onClick={cancel}
         >
           Остаться
         </Button>

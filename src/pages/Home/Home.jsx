@@ -1,5 +1,4 @@
 import Layout from '../../components/Layout';
-import { Tabs, Tab } from 'react-bootstrap';
 import EventsPage from '../EventsPage';
 import SessionsPage from '../SessionsPage';
 import PaymentsPage from '../PaymentsPage';
@@ -14,12 +13,14 @@ import Settings from '../Settings/Settings';
 import { Operators } from '../Operators/Operators';
 import { Terminals } from '../Terminals/Terminals';
 import {
+  Outlet,
   Route,
   Routes,
   useLocation,
   useNavigate,
   Navigate
 } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { Renters } from '../Renters/Renters';
 import { adminRoutes, operatorRoutes, renterRoutes } from '../../router/routes';
 import { useParkingInfoQuery } from '../../api/settings/settings';
@@ -48,9 +49,9 @@ export const Home = () => {
   const [isError, setIsError] = useState(false);
   const [countToasts, setCountToasts] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
-  const navigation = useNavigate();
-  const location = useLocation();
   const ws = useRef(null);
+  let location = useLocation();
+  let navigate = useNavigate();
 
   let fourNumbersInRow = useRef([]);
 
@@ -60,6 +61,14 @@ export const Home = () => {
       enqueueSnackbar('Ошибка подключения');
     });
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate(parkingData?.userType === 'renter' ? 'events-logs' : 'events', {
+        replace: true
+      });
+    }
+  }, [location]);
 
   if (parkingInfoError) {
     enqueueSnackbar('Ошибка подключения', { variant: 'error' });
@@ -159,90 +168,7 @@ export const Home = () => {
     <>
       {parkingData && (
         <Layout userType={parkingData.userType}>
-          {/* {parkingData?.userType === 'admin' && (
-            <Tabs defaultActiveKey={location.pathname}>
-              {adminRoutes.map(({ eventKey, title }) => {
-                return (
-                  <Tab
-                    onEnter={() => navigation(eventKey)}
-                    eventKey={eventKey}
-                    title={title}
-                  ></Tab>
-                );
-              })}
-            </Tabs>
-          )}
-          {parkingData?.userType === 'operator' && (
-            <Tabs defaultActiveKey={location.pathname}>
-              {operatorRoutes.map(({ eventKey, title }) => {
-                return (
-                  <Tab
-                    onEnter={() => navigation(eventKey)}
-                    eventKey={eventKey}
-                    title={title}
-                  ></Tab>
-                );
-              })}
-            </Tabs>
-          )}
-          {parkingData?.userType === 'renter' && (
-            <Tabs defaultActiveKey={location.pathname}>
-              {renterRoutes.map(({ eventKey, title }) => {
-                return (
-                  <Tab
-                    onEnter={() => navigation(eventKey)}
-                    eventKey={eventKey}
-                    title={title}
-                  ></Tab>
-                );
-              })}
-            </Tabs>
-          )} */}
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Navigate
-                  to={
-                    parkingData?.userType === 'renter'
-                      ? 'events-logs'
-                      : 'events'
-                  }
-                  replace
-                />
-              }
-            />
-            <Route path="events-logs" element={<EventsPage onlyLog />} />
-
-            <Route path="events">
-              <Route path="" element={<EventsPage onlyLog={false} />} />
-              <Route path=":id" element={<EventPage />} />
-            </Route>
-
-            <Route path="sessions">
-              <Route path="" element={<SessionsPage />} />
-              <Route path=":id" element={<SessionPage />} />
-            </Route>
-
-            <Route path="payments">
-              <Route path="" element={<PaymentsPage />} />
-              <Route path=":id" element={<PaymentPage />} />
-            </Route>
-
-            <Route path="renters" element={<Renters />} />
-            <Route path="requests" element={<Applications />} />
-            <Route path="auto-park/*" element={<CarParkPage />} />
-            <Route path="black-list/*" element={<BlackListPage />} />
-            <Route path="access-points" element={<AccessPointsPage />} />
-            <Route path="working-modes" element={<WorkingModesPage />} />
-            <Route path="cameras" element={<CamerasPage />} />
-            <Route path="controllers" element={<ControllersPage />} />
-            <Route path="led" element={<LedPage />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="operator" element={<Operators />} />
-            <Route path="terminals" element={<Terminals />} />
-            <Route path="search-logs" element={<SearchLogsPage />} />
-          </Routes>
+          <Outlet />
         </Layout>
       )}
     </>

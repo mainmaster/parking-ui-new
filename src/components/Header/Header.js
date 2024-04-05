@@ -443,7 +443,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           backgroundColor: colors.surface.high
                         }}
                         key={route.eventKey}
-                        onClick={() => navigate(route.eventKey)}
+                        onClick={() => {
+                          setMore(false);
+                          navigate(route.eventKey);
+                        }}
                       >
                         {icon && icon.more && (
                           <IconButton disableRipple sx={{ p: 0 }}>

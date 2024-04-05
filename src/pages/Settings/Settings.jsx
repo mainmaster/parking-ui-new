@@ -1,7 +1,7 @@
 import InputMask from 'react-input-mask';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { useEffect, useState, useRef } from 'react';
-//import { useBlocker } from 'react-router-dom';
+import { useBlocker, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import {
   getPersonalInfoPolicy,
@@ -204,6 +204,7 @@ const Settings = () => {
     localStorage.getItem('notificationsSound')
   );
   const [currentTab, setCurrentTab] = useState(0);
+  const [changingTab, setChangingTab] = useState(null);
   const [settingsScrolled, setSettingsScrolled] = useState(false);
   const [submited, setSubmited] = useState(true);
   const settingsRef = useRef(null);
@@ -258,10 +259,40 @@ const Settings = () => {
     terminal_payment_refund_type: 1
   });
   const [changedSettings, setChangedSettings] = useState({});
-  // let blocker = useBlocker(
-  //   ({ currentLocation, nextLocation }) =>
-  //     !submited && currentLocation.pathname !== nextLocation.pathname
-  // );
+  let location = useLocation();
+
+  let blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      !submited && currentLocation.pathname !== nextLocation.pathname
+  );
+
+  useEffect(() => {
+    if (
+      (blocker.state === 'blocked' && submited) ||
+      location.pathname !== '/settings'
+    ) {
+      blocker.reset();
+    }
+  }, [blocker, submited]);
+
+  const handleConfirmedNewLocation = () => {
+    if (changingTab !== null) {
+      setCurrentTab(changingTab);
+      setChangingTab(null);
+      setChangedSettings({});
+      setSubmited(true);
+    } else {
+      blocker.proceed();
+    }
+  };
+
+  const handleCancelNewLocation = () => {
+    if (changingTab !== null) {
+      setChangingTab(null);
+    } else {
+      blocker.reset();
+    }
+  };
 
   useEffect(() => {
     if (data && submited) {
@@ -283,7 +314,11 @@ const Settings = () => {
 
   const handleChangeTab = (event, value) => {
     if (value !== undefined) {
-      setCurrentTab(value);
+      if (!submited) {
+        setChangingTab(value);
+      } else {
+        setCurrentTab(value);
+      }
     }
   };
 
@@ -343,6 +378,7 @@ const Settings = () => {
         }
       }
     });
+    setSubmited(false);
   };
 
   const handleGlobalInLine2 = (e) => {
@@ -380,6 +416,7 @@ const Settings = () => {
         }
       }
     });
+    setSubmited(false);
   };
 
   const handleGlobalOutLine1 = (e) => {
@@ -417,6 +454,7 @@ const Settings = () => {
         }
       }
     });
+    setSubmited(false);
   };
 
   const handleGlobalOutLine2 = (e) => {
@@ -454,6 +492,7 @@ const Settings = () => {
         }
       }
     });
+    setSubmited(false);
   };
 
   const handlePaymentsPageImage = (e) => {
@@ -2136,9 +2175,9 @@ const Settings = () => {
                               Object.keys(
                                 globalSettings.led_board_message_texts.in
                               ).map((key) => (
-                                <Stack gap={'4px'} key={key}>
+                                <Stack gap={'4px'} key={`${key}_in`}>
                                   <InputLabel
-                                    htmlFor={`${key}_line1`}
+                                    htmlFor={`${key}_in_line1`}
                                     sx={labelStyle}
                                   >
                                     {key}
@@ -2150,7 +2189,7 @@ const Settings = () => {
                                       sx: { paddingLeft: '12px' }
                                     }}
                                     variant="filled"
-                                    id={`${key}_line1`}
+                                    id={`${key}_in_line1`}
                                     name={key}
                                     value={
                                       globalSettings.led_board_message_texts.in[
@@ -2166,7 +2205,7 @@ const Settings = () => {
                                       sx: { paddingLeft: '12px' }
                                     }}
                                     variant="filled"
-                                    id={`${key}_line2`}
+                                    id={`${key}_in_line2`}
                                     name={key}
                                     value={
                                       globalSettings.led_board_message_texts.in[
@@ -2198,9 +2237,9 @@ const Settings = () => {
                               Object.keys(
                                 globalSettings.led_board_message_texts.out
                               ).map((key) => (
-                                <Stack gap={'4px'} key={key}>
+                                <Stack gap={'4px'} key={`${key}_out`}>
                                   <InputLabel
-                                    htmlFor={`${key}_line1`}
+                                    htmlFor={`${key}_out_line1`}
                                     sx={labelStyle}
                                   >
                                     {key}
@@ -2212,7 +2251,7 @@ const Settings = () => {
                                       sx: { paddingLeft: '12px' }
                                     }}
                                     variant="filled"
-                                    id={`${key}_line1`}
+                                    id={`${key}_out_line1`}
                                     name={key}
                                     value={
                                       globalSettings.led_board_message_texts
@@ -2227,7 +2266,7 @@ const Settings = () => {
                                       sx: { paddingLeft: '12px' }
                                     }}
                                     variant="filled"
-                                    id={`${key}_line2`}
+                                    id={`${key}_out_line2`}
                                     name={key}
                                     value={
                                       globalSettings.led_board_message_texts
@@ -2473,7 +2512,11 @@ const Settings = () => {
           <FooterSpacer />
         </Stack>
       </Box>
-      {/* <SettingsConfirmDialog blocker={blocker} /> */}
+      <SettingsConfirmDialog
+        show={blocker.state === 'blocked' || changingTab !== null}
+        cancel={handleCancelNewLocation}
+        confirm={handleConfirmedNewLocation}
+      />
     </>
   );
 };

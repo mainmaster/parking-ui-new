@@ -33,14 +33,12 @@ root.render(
     <ApiProvider api={apiSlice}>
       <SkeletonTheme baseColor="rgb(170, 170, 170)">
         <Provider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <SnackbarProvider
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          >
-            <BrowserRouter>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <SnackbarProvider
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
               <App />
-            </BrowserRouter>
-          </SnackbarProvider>
+            </SnackbarProvider>
           </LocalizationProvider>
         </Provider>
       </SkeletonTheme>

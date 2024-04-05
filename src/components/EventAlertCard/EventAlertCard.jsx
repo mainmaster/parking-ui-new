@@ -31,12 +31,14 @@ export default function EventAlertCard({ event, close, animate, fade }) {
   const [stopped, setStopped] = useState(false);
   const [show, setShow] = useState(true);
   const [showFade, setShowFade] = useState(true);
+  const [image, setImage] = useState(null);
   const { pathname } = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (event !== lastEvent) {
+      setImage(process.env.REACT_APP_API_URL + '/' + event.car_img_path);
       setLastEvent(event);
       setShow(true);
       //console.log(event.id + ' ' + start);
@@ -128,11 +130,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
                           height: 96,
                           borderRadius: '8px'
                         }}
-                        src={
-                          process.env.REACT_APP_API_URL +
-                          '/' +
-                          event.car_img_path
-                        }
+                        src={image}
                         alt="автомобиль"
                       />
                     </IconButton>
