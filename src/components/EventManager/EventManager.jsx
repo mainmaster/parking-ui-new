@@ -5,6 +5,7 @@ import { Stack, Slide, Fade } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { formatISO } from 'date-fns';
+import { spacers } from '../../theme/spacers';
 
 export default function EventManager() {
   const dataModal = useSelector((state) => state.events.dataModal);
@@ -74,7 +75,7 @@ export default function EventManager() {
         alignItems={'flex-end'}
         sx={{
           position: 'fixed',
-          top: isMobile ? 0 : '24px',
+          top: isMobile ? 0 : `calc(24px + ${spacers.header})`,
           right: isMobile ? 0 : '24px',
           left: isMobile ? 0 : 'auto',
           zIndex: 1300

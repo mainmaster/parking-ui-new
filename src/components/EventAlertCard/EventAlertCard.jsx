@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSelectedEventId } from 'store/events/eventsSlice';
 import {
   Card,
   CardContent,
@@ -35,6 +37,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
   const { pathname } = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (event !== lastEvent) {
@@ -85,7 +88,14 @@ export default function EventAlertCard({ event, close, animate, fade }) {
   const handleEventClick = () => {
     const route = parkingData?.userType === 'renter' ? 'events-logs' : 'events';
     const baseUrl = window.location.href.replace(pathname, '');
-    window.open(`${baseUrl}/${route}`, '_blank', 'noreferrer');
+    window.open(
+      `${baseUrl}/${route}?event_id=${event.id}`,
+      '_blank',
+      'noreferrer'
+    );
+    // setTimeout(() => {
+    //   dispatch(setSelectedEventId(event.id));
+    // }, 500);
   };
 
   return (
@@ -120,11 +130,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
               >
                 <Stack direction={'row'} alignItems={'flex-start'}>
                   {event && event.car_img_path && (
-                    <IconButton
-                      disableRipple
-                      sx={{ p: 0, pr: '8px' }}
-                      onClick={handleEventClick}
-                    >
+                    <IconButton disableRipple sx={{ p: 0, pr: '8px' }}>
                       <img
                         style={{
                           height: 96,

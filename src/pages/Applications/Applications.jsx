@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import PaginationCustom from 'components/Pagination';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ import ApplicationFilter from '../../components/ApplicationFilter/ApplicationFil
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import ApplicationsSpacer from './ApplicationsSpacer';
 import parkEmptyIcon from '../../assets/svg/carpark_empty_icon.svg';
-import { CARS_ON_PAGE } from '../../constants';
+import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogApplicationCard from '../../components/LogApplicationCard/LogApplicationCard';
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
@@ -47,6 +47,27 @@ export const Applications = () => {
   const applicationsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const containerRef = useRef(null);
+  const [itemsInRow, setItemsInRow] = useState(0);
+
+  const handleResize = useCallback(() => {
+    if (containerRef?.current) {
+      const items = Math.floor(
+        containerRef.current.offsetWidth / ITEM_MIN_WIDTH
+      );
+      setItemsInRow(items - 1);
+    }
+  }, [containerRef]);
+
+  useEffect(() => {
+    window.addEventListener('load', handleResize);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('load', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [containerRef, handleResize]);
 
   useEffect(() => {
     dispatch(applicationsFetch());
@@ -203,6 +224,7 @@ export const Applications = () => {
         {applications && applications.count > 0 ? (
           <>
             <Box
+              ref={containerRef}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -225,6 +247,17 @@ export const Applications = () => {
                   currentPage={currentPage}
                 />
               )}
+              {[...Array(itemsInRow)].map((value, index) => (
+                <Box
+                  id={index + 1}
+                  key={index}
+                  sx={{
+                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                    minWidth: `${ITEM_MIN_WIDTH}px`,
+                    maxWidth: `${ITEM_MAX_WIDTH}px`
+                  }}
+                />
+              ))}
             </Box>
           </>
         ) : (

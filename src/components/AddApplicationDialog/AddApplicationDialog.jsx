@@ -19,6 +19,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useRentersQuery } from '../../api/renters/renters.api';
 import {
@@ -57,6 +58,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
   const applicationEdit = useSelector(
     (state) => state.applications.editApplication
   );
+  const isError = useSelector((state) => state.applications.isErrorFetch);
 
   useEffect(() => {
     if (show && edit && applicationEdit) {
@@ -75,23 +77,30 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
     initialValues: defaultValues,
     onSubmit: (values) => {
       const { vehiclePlate } = values;
-      if (vehiclePlate !== '') {
-        date.setHours(23, 59, 0, 0);
+      if (edit) {
         const payload = {
-          valid_for_date: date,
+          valid_for_date: format(date, 'yyyy-MM-dd'),
+          vehicle_plate: vehiclePlate || carNumber,
+          renter: renter,
+          id: applicationEdit.id
+        };
+        dispatch(editApplicationFetch(payload));
+        if (!isError) {
+          enqueueSnackbar('Заявка сохранена', { variant: 'success' });
+        }
+      } else if (vehiclePlate !== '') {
+        const payload = {
+          valid_for_date: format(date, 'yyyy-MM-dd'),
           vehicle_plate: vehiclePlate,
           renter: renter
         };
-        if (edit) {
-          dispatch(editApplicationFetch(payload));
-          enqueueSnackbar('Заявка сохранена', { variant: 'success' });
-        } else {
-          dispatch(createApplicationsFetch(payload));
+        dispatch(createApplicationsFetch(payload));
+        if (!isError) {
           enqueueSnackbar('Заявка добавлена', { variant: 'success' });
         }
-        resetHandle();
-        handleClose();
       }
+      resetHandle();
+      handleClose();
     }
   });
 

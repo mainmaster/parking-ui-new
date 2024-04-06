@@ -19,6 +19,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { formatISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useRentersQuery } from '../../api/renters/renters.api';
 import {
@@ -52,16 +53,17 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
   const [carNumber, setCarNumber] = useState('');
-  const [description, setDescription] = useState('');
+  const [carDescription, setCarDescription] = useState('');
   const [renter, setRenter] = useState('');
   const [submited, setSubmited] = useState(true);
   const { data: renters } = useRentersQuery();
   const carParkEdit = useSelector((state) => state.carPark.carParkEdit);
+  const isError = useSelector((state) => state.carPark.isErrorFetch);
   const urlStatus = useParams();
 
   useEffect(() => {
     if (show && edit && carParkEdit) {
-      setDescription(carParkEdit.description);
+      setCarDescription(carParkEdit.description);
       setRenter(carParkEdit.renter ? carParkEdit.renter : '');
       setCarNumber(carParkEdit.vehicle_plate.full_plate);
       setDate(new Date(carParkEdit.valid_until));
@@ -73,33 +75,42 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     initialValues: defaultValues,
     onSubmit: (values) => {
       const { description, vehiclePlate } = values;
-      if (description !== '' && vehiclePlate !== '') {
+      if (edit) {
+        const payload = {
+          valid_until: formatISO(date),
+          description: description || carDescription,
+          vehicle_plate: vehiclePlate || carNumber,
+          status: urlStatus['*'],
+          renter: renter,
+          id: carParkEdit.id
+        };
+        dispatch(editCarParkFetch(payload));
+        if (!isError) {
+          enqueueSnackbar('Машина сохранена', { variant: 'success' });
+        }
+      } else if (description !== '' && vehiclePlate !== '') {
         date.setHours(23, 59, 0, 0);
         const payload = {
-          valid_until: date,
+          valid_until: formatISO(date),
           description: description,
           vehicle_plate: vehiclePlate,
           status: urlStatus['*'],
           renter: renter,
           is_active: true
         };
-        if (edit) {
-          dispatch(editCarParkFetch(payload));
-          enqueueSnackbar('Машина сохранена', { variant: 'success' });
-        } else {
-          dispatch(createCarParkFetch(payload));
+        dispatch(createCarParkFetch(payload));
+        if (!isError) {
           enqueueSnackbar('Машина добавлена', { variant: 'success' });
         }
-        resetHandle();
-        handleClose();
       }
+      resetHandle();
     }
   });
 
   const handleDateChange = (newValue) => {
     if (newValue) {
       setDate(newValue);
-      if (carNumber !== '' && description !== '') {
+      if (carNumber !== '' && carDescription !== '') {
         setSubmited(false);
       }
     }
@@ -107,7 +118,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
 
   const handleChangeNumber = (event) => {
     setCarNumber(event.target.value);
-    if (event.target.value !== '' && description !== '') {
+    if (event.target.value !== '' && carDescription !== '') {
       setSubmited(false);
     } else {
       setSubmited(true);
@@ -116,7 +127,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   };
 
   const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
+    setCarDescription(event.target.value);
     if (event.target.value !== '' && carNumber !== '') {
       setSubmited(false);
     } else {
@@ -126,7 +137,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   };
 
   const handleRenterChange = (event) => {
-    if (carNumber !== '' && description !== '') {
+    if (carNumber !== '' && carDescription !== '') {
       setSubmited(false);
     }
     setRenter(event.target.value);
@@ -141,7 +152,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     formik.resetForm();
     setDate(null);
     setCarNumber('');
-    setDescription('');
+    setCarDescription('');
     setRenter('');
     setSubmited(true);
   };
@@ -243,7 +254,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               variant="filled"
               id="description"
               name="description"
-              value={description}
+              value={carDescription}
               onChange={handleChangeDescription}
               onBlur={formik.handleBlur}
               error={

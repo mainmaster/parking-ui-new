@@ -3,6 +3,7 @@ import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import { colors } from '../../theme/colors';
 import { secondaryButtonStyle } from '../../theme/styles';
+import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import TypeAuto from '../TypeAuto';
 import {
@@ -13,9 +14,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const cardContainerStyle = {
-  flex: '1 1 365px',
-  minWidth: '365px',
-  maxWidth: '466px',
+  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+  minWidth: `${ITEM_MIN_WIDTH}px`,
+  maxWidth: `${ITEM_MAX_WIDTH}px`,
   border: '1px solid ' + colors.outline.separator,
   borderTop: 'none',
   borderLeft: 'none',

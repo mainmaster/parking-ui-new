@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
 // Components
 import Cameras from 'components/Cameras';
@@ -87,6 +88,17 @@ const EventsPage = ({ onlyLog }) => {
   const eventsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [searchParams] = useSearchParams();
+  const eventId = searchParams.get('event_id');
+
+  useEffect(() => {
+    if (eventId) {
+      setTimeout(() => {
+        dispatch(setSelectedEventId(parseInt(eventId)));
+        console.log(eventId);
+      }, 1000);
+    }
+  }, [eventId]);
 
   const addToRefs = (node) => {
     if (node && !eventRef.current.includes(node)) {
@@ -96,17 +108,16 @@ const EventsPage = ({ onlyLog }) => {
 
   useEffect(() => {
     if (selectedEventId) {
-      const item = eventRef.current.find(
-        (i) => i.id === selectedEventId.toString()
-      );
+      const id = selectedEventId;
+      const item = eventRef.current.find((i) => i.id === id.toString());
       if (item) {
-        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(() => {
           dispatch(setSelectedEventId(null));
-        }, 1200);
+        }, 2200);
       }
     }
-  }, [selectedEventId, eventRef]);
+  }, [eventId, selectedEventId, eventRef]);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -277,7 +288,7 @@ const EventsPage = ({ onlyLog }) => {
               <>
                 {events.map((item, index) => (
                   <LogEventCard
-                    key={index}
+                    key={item.id}
                     event={item}
                     onClickImage={changeActiveImageModal}
                     // onHoverImageButton={handleImageButtonHover}

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export const carParkSlice = createSlice({
   name: 'carPark',
@@ -11,11 +11,11 @@ export const carParkSlice = createSlice({
     carParkEdit: {},
     filters: {},
     pages: 1,
-    currentPage: 1,
+    currentPage: 1
   },
   reducers: {
     carParkFetch: (state, action) => {
-      return { ...state, isLoadingFetch: true, isErrorFetch: false }
+      return { ...state, isLoadingFetch: true, isErrorFetch: false };
     },
     editCarParkFetch: (state, action) => {},
     createCarParkFetch: (state, action) => {},
@@ -23,48 +23,48 @@ export const carParkSlice = createSlice({
     editModalHandler: (state, action) => {
       const carPark = [...state.carParks.car_park].find(
         (item) => item.id === action.payload
-      )
+      );
       return {
         ...state,
-        isEditModal: !state.isEditModal,
-        carParkEdit: carPark,
-      }
+        isEditModal: carPark ? true : false,
+        carParkEdit: carPark
+      };
     },
-    setFilters: (state, action)=>{
-      return{
+    setFilters: (state, action) => {
+      return {
         ...state,
         filters: action.payload
-      }
+      };
     },
     carParkChangePageFetch: (state, action) => {},
     changePages: (state, action) => {
       return {
         ...state,
-        pages: action.payload,
-      }
+        pages: action.payload
+      };
     },
     changeCurrentPage: (state, action) => {
       return {
         ...state,
-        currentPage: action.payload,
-      }
+        currentPage: action.payload
+      };
     },
 
     createModalHandler: (state, action) => {
-      return { ...state, isCreateModal: !state.isCreateModal }
+      return { ...state, isCreateModal: !state.isCreateModal };
     },
     getCarParkSuccess: (state, action) => {
-      return { ...state, carParks: action.payload, isLoadingFetch: false }
+      return { ...state, carParks: action.payload, isLoadingFetch: false };
     },
     getCarParkError: (state, action) => {
       return {
         ...state,
         isLoadingFetch: false,
-        isErrorFetch: true,
-      }
-    },
-  },
-})
+        isErrorFetch: true
+      };
+    }
+  }
+});
 
 export const {
   carParkFetch,
@@ -78,7 +78,7 @@ export const {
   setFilters,
   changePages,
   changeCurrentPage,
-  getCarParkError,
-} = carParkSlice.actions
+  getCarParkError
+} = carParkSlice.actions;
 
-export default carParkSlice.reducer
+export default carParkSlice.reducer;

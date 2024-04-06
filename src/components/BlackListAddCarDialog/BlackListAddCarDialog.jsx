@@ -16,6 +16,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { formatISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import {
   createBlackListFetch,
@@ -46,14 +47,15 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
   const [carNumber, setCarNumber] = useState('');
-  const [description, setDescription] = useState('');
+  const [carDescription, setCarDescription] = useState('');
   const [submited, setSubmited] = useState(true);
   const blackListEdit = useSelector((state) => state.blackList.blackListEdit);
+  const isError = useSelector((state) => state.blackList.isErrorFetch);
   const urlStatus = useParams();
 
   useEffect(() => {
     if (show && edit && blackListEdit) {
-      setDescription(blackListEdit.description);
+      setCarDescription(blackListEdit.description);
       setCarNumber(blackListEdit.vehicle_plate.full_plate);
       setDate(new Date(blackListEdit.valid_until));
       setSubmited(true);
@@ -64,30 +66,37 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     initialValues: defaultValues,
     onSubmit: (values) => {
       const { description, vehiclePlate } = values;
-      if (description !== '' && vehiclePlate !== '') {
+      if (edit) {
+        const payload = {
+          valid_until: formatISO(date),
+          description: description || carDescription,
+          vehicle_plate: vehiclePlate || carNumber,
+          id: blackListEdit.id
+        };
+        dispatch(editBlackListFetch(payload));
+        if (!isError) {
+          enqueueSnackbar('Машина сохранена', { variant: 'success' });
+        }
+      } else if (description !== '' && vehiclePlate !== '') {
         date.setHours(23, 59, 0, 0);
         const payload = {
-          valid_until: date,
+          valid_until: formatISO(date),
           description: description,
           vehicle_plate: vehiclePlate
         };
-        if (edit) {
-          dispatch(editBlackListFetch(payload));
-          enqueueSnackbar('Машина сохранена', { variant: 'success' });
-        } else {
-          dispatch(createBlackListFetch(payload));
+        dispatch(createBlackListFetch(payload));
+        if (!isError) {
           enqueueSnackbar('Машина добавлена', { variant: 'success' });
         }
-        resetHandle();
-        handleClose();
       }
+      resetHandle();
     }
   });
 
   const handleDateChange = (newValue) => {
     if (newValue) {
       setDate(newValue);
-      if (carNumber !== '' && description !== '') {
+      if (carNumber !== '' && carDescription !== '') {
         setSubmited(false);
       }
     }
@@ -95,7 +104,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
 
   const handleChangeNumber = (event) => {
     setCarNumber(event.target.value);
-    if (event.target.value !== '' && description !== '') {
+    if (event.target.value !== '' && carDescription !== '') {
       setSubmited(false);
     } else {
       setSubmited(true);
@@ -104,7 +113,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   };
 
   const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
+    setCarDescription(event.target.value);
     if (event.target.value !== '' && carNumber !== '') {
       setSubmited(false);
     } else {
@@ -122,7 +131,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     formik.resetForm();
     setDate(null);
     setCarNumber('');
-    setDescription('');
+    setCarDescription('');
     setSubmited(true);
   };
 
@@ -223,7 +232,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               variant="filled"
               id="description"
               name="description"
-              value={description}
+              value={carDescription}
               onChange={handleChangeDescription}
               onBlur={formik.handleBlur}
               error={

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
@@ -28,12 +28,11 @@ import {
 } from '@mui/material';
 import { colors } from '../../theme/colors';
 import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
-import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import CarParkFilter from '../../components/CarParkFilter/CarParkFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import CarParkSpacer from './CarParkSpacer';
 import parkEmptyIcon from '../../assets/svg/carpark_empty_icon.svg';
-import { CARS_ON_PAGE } from '../../constants';
+import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogCarParkCard from '../../components/LogCarParkCard/LogCarParkCard';
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
@@ -74,6 +73,27 @@ const CarParkPage = () => {
   const [params] = useSearchParams();
   const [currentTab, setCurrentTab] = useState(0);
   const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const [itemsInRow, setItemsInRow] = useState(0);
+
+  const handleResize = useCallback(() => {
+    if (containerRef?.current) {
+      const items = Math.floor(
+        containerRef.current.offsetWidth / ITEM_MIN_WIDTH
+      );
+      setItemsInRow(items - 1);
+    }
+  }, [containerRef]);
+
+  useEffect(() => {
+    window.addEventListener('load', handleResize);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('load', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [containerRef, handleResize]);
 
   useEffect(() => {
     dispatch(carParkFetch());
@@ -269,6 +289,7 @@ const CarParkPage = () => {
         {carParks && carParks.car_park && carParks.car_park.length > 0 ? (
           <>
             <Box
+              ref={containerRef}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -278,13 +299,24 @@ const CarParkPage = () => {
               {carParks.car_park.map((item, index) => (
                 <LogCarParkCard key={item.id} car={item} />
               ))}
+              {[...Array(itemsInRow)].map((value, index) => (
+                <Box
+                  id={index + 1}
+                  key={index}
+                  sx={{
+                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                    minWidth: `${ITEM_MIN_WIDTH}px`,
+                    maxWidth: `${ITEM_MAX_WIDTH}px`
+                  }}
+                />
+              ))}
             </Box>
             <Box
               sx={{
                 height: '48px'
               }}
             >
-              {carParks.car_park.length > CARS_ON_PAGE && (
+              {carParks.count > CARS_ON_PAGE && (
                 <PaginationCustom
                   pages={Math.ceil(pages / CARS_ON_PAGE)}
                   changePage={changePage}

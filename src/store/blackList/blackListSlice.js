@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export const blackListSlice = createSlice({
   name: 'blackList',
@@ -11,11 +11,11 @@ export const blackListSlice = createSlice({
     blackListEdit: {},
     filters: {},
     pages: 1,
-    currentPage: 1,
+    currentPage: 1
   },
   reducers: {
     blackListFetch: (state, action) => {
-      return { ...state, isLoadingFetch: true, isErrorFetch: false }
+      return { ...state, isLoadingFetch: true, isErrorFetch: false };
     },
     editBlackListFetch: (state, action) => {},
     createBlackListFetch: (state, action) => {},
@@ -23,47 +23,47 @@ export const blackListSlice = createSlice({
     editModalHandler: (state, action) => {
       const blackList = [...state.blackList.black_list].find(
         (item) => item.id === action.payload
-      )
+      );
       return {
         ...state,
-        isEditModal: !state.isEditModal,
-        blackListEdit: blackList,
-      }
+        isEditModal: blackList ? true : false,
+        blackListEdit: blackList
+      };
     },
     createModalHandler: (state, action) => {
-      return { ...state, isCreateModal: !state.isCreateModal }
+      return { ...state, isCreateModal: !state.isCreateModal };
     },
     getBlackListSuccess: (state, action) => {
-      return { ...state, blackList: action.payload, isLoadingFetch: false }
+      return { ...state, blackList: action.payload, isLoadingFetch: false };
     },
     getBlackListError: (state, action) => {
       return {
         ...state,
         isLoadingFetch: false,
-        isErrorFetch: true,
-      }
+        isErrorFetch: true
+      };
     },
-    setFilters: (state, action)=>{
-      return{
+    setFilters: (state, action) => {
+      return {
         ...state,
         filters: action.payload
-      }
+      };
     },
     blackListChangePageFetch: (state, action) => {},
     changePages: (state, action) => {
       return {
         ...state,
-        pages: action.payload,
-      }
+        pages: action.payload
+      };
     },
     changeCurrentPage: (state, action) => {
       return {
         ...state,
-        currentPage: action.payload,
-      }
-    },
-  },
-})
+        currentPage: action.payload
+      };
+    }
+  }
+});
 
 export const {
   blackListFetch,
@@ -78,6 +78,6 @@ export const {
   getBlackListSuccess,
   getBlackListError,
   setFilters
-} = blackListSlice.actions
+} = blackListSlice.actions;
 
-export default blackListSlice.reducer
+export default blackListSlice.reducer;

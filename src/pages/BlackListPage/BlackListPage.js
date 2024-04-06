@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Components
 import PaginationCustom from 'components/Pagination';
@@ -32,7 +32,7 @@ import BlackListFilter from '../../components/BlackListFilter/BlackListFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import BlackListSpacer from './BlackListSpacer';
 import blackListEmptyIcon from '../../assets/svg/blacklist_empty_icon.svg';
-import { CARS_ON_PAGE } from '../../constants';
+import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogBlackListCard from '../../components/LogBlackListCard/LogBlackListCard';
 import EventManager from '../../components/EventManager/EventManager';
 import AddCarDialog from '../../components/BlackListAddCarDialog/BlackListAddCarDialog';
@@ -71,6 +71,27 @@ const BlackListPage = () => {
   const urlStatus = useParams();
   const [currentTab, setCurrentTab] = useState(0);
   const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const [itemsInRow, setItemsInRow] = useState(0);
+
+  const handleResize = useCallback(() => {
+    if (containerRef?.current) {
+      const items = Math.floor(
+        containerRef.current.offsetWidth / ITEM_MIN_WIDTH
+      );
+      setItemsInRow(items - 1);
+    }
+  }, [containerRef]);
+
+  useEffect(() => {
+    window.addEventListener('load', handleResize);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('load', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [containerRef, handleResize]);
 
   useEffect(() => {
     dispatch(blackListFetch());
@@ -258,6 +279,7 @@ const BlackListPage = () => {
         blackList.black_list.length > 0 ? (
           <>
             <Box
+              ref={containerRef}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -267,13 +289,25 @@ const BlackListPage = () => {
               {blackList.black_list.map((item, index) => (
                 <LogBlackListCard key={item.id} car={item} />
               ))}
+              {[...Array(itemsInRow)].map((value, index) => (
+                <Box
+                  id={index + 1}
+                  key={index}
+                  sx={{
+                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                    minWidth: `${ITEM_MIN_WIDTH}px`,
+                    maxWidth: `${ITEM_MAX_WIDTH}px`
+                  }}
+                />
+              ))}
             </Box>
+
             <Box
               sx={{
                 height: '48px'
               }}
             >
-              {blackList.length > CARS_ON_PAGE && (
+              {blackList.count > CARS_ON_PAGE && (
                 <PaginationCustom
                   pages={Math.ceil(pages / CARS_ON_PAGE)}
                   changePage={changePage}
