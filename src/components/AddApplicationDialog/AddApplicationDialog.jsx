@@ -19,7 +19,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useRentersQuery } from '../../api/renters/renters.api';
 import {
@@ -61,17 +61,35 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
   const isError = useSelector((state) => state.applications.isErrorFetch);
 
   useEffect(() => {
-    if (show && edit && applicationEdit) {
-      setRenter(applicationEdit.renter ? applicationEdit.renter : '');
+    if (show && edit && applicationEdit && applicationEdit.application) {
+      if (renters.length > 0) {
+        const currentRenter = renters.find(
+          (renter) =>
+            renter.company_name === applicationEdit.application.company_name
+        );
+        if (currentRenter) {
+          setRenter(currentRenter);
+        } else {
+          setRenter('');
+        }
+      }
       setCarNumber(
-        applicationEdit.vehicle_plate?.full_plate
-          ? applicationEdit.vehicle_plate.full_plate
+        applicationEdit.application.vehicle_plate?.full_plate
+          ? applicationEdit.application.vehicle_plate.full_plate
           : ''
       );
-      setDate(new Date(applicationEdit.valid_for_date));
+      setDate(
+        applicationEdit.application.valid_for_date
+          ? parse(
+              applicationEdit.application.valid_for_date,
+              'yyyy-MM-dd',
+              new Date()
+            )
+          : null
+      );
       setSubmited(true);
     }
-  }, [show, edit]);
+  }, [show, edit, applicationEdit]);
 
   const formik = useFormik({
     initialValues: defaultValues,
@@ -81,8 +99,8 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
         const payload = {
           valid_for_date: format(date, 'yyyy-MM-dd'),
           vehicle_plate: vehiclePlate || carNumber,
-          renter: renter,
-          id: applicationEdit.id
+          company_name: renter.company_name,
+          id: applicationEdit.application.id
         };
         dispatch(editApplicationFetch(payload));
         if (!isError) {
@@ -92,7 +110,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
         const payload = {
           valid_for_date: format(date, 'yyyy-MM-dd'),
           vehicle_plate: vehiclePlate,
-          renter: renter
+          company_id: renter.id
         };
         dispatch(createApplicationsFetch(payload));
         if (!isError) {
@@ -127,7 +145,16 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
     if (carNumber !== '') {
       setSubmited(false);
     }
-    setRenter(event.target.value);
+    if (renters.length > 0) {
+      const currentRenter = renters.find(
+        (renter) => renter.company_name === event.target.value
+      );
+      if (currentRenter) {
+        setRenter(currentRenter);
+      } else {
+        setRenter('');
+      }
+    }
   };
 
   const handleCloseDialog = () => {
@@ -257,7 +284,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
             <Select
               id="renter"
               displayEmpty
-              value={renter}
+              value={renter.company_name || ''}
               onChange={handleRenterChange}
               variant="filled"
               IconComponent={(props) => (

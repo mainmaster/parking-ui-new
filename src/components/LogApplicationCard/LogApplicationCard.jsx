@@ -48,11 +48,7 @@ export default function LogApplicationCard({ application }) {
   };
 
   const handleDeleteApplicationClick = () => {
-    dispatch(
-      deleteApplicationFetch({
-        id: application.id
-      })
-    );
+    dispatch(deleteApplicationFetch(application.id));
   };
 
   return (
