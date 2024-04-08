@@ -8,6 +8,7 @@ import './global.css';
 // Components
 import App from 'components/App';
 // Global styles
+import { styled } from '@mui/material/styles';
 import 'react-tooltip/dist/react-tooltip.css';
 import 'react-18-image-lightbox/style.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,14 +20,28 @@ import 'styles/common.scss';
 import { store } from 'store';
 // Api
 import { apiSlice } from './api/apiSlice';
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider, MaterialDesignContent } from 'notistack';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/normal';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import errorIcon from './assets/svg/login_error_icon.svg';
+import { colors } from './theme/colors';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
+  '&.notistack-MuiContent-error': {
+    backgroundColor: colors.element.error,
+    borderRadius: '8px',
+    paddingTop: '6px',
+    height: '40px',
+    '& #notistack-snackbar': {
+      padding: 0
+    }
+  }
+}));
 
 root.render(
   <ThemeProvider theme={theme}>
@@ -35,7 +50,22 @@ root.render(
         <Provider store={store}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <SnackbarProvider
-              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+              }}
+              iconVariant={{
+                error: (
+                  <img
+                    style={{ width: '24px', marginRight: '8px' }}
+                    src={errorIcon}
+                    alt="Error"
+                  />
+                )
+              }}
+              Components={{
+                error: StyledMaterialDesignContent
+              }}
             >
               <App />
             </SnackbarProvider>

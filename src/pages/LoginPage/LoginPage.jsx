@@ -1,59 +1,152 @@
-import Layout from "../../components/Layout";
-import styles from './loginPage.module.css'
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button'
+import { Box, Stack, Button, Typography, InputLabel } from '@mui/material';
+import { useFormik } from 'formik';
+import Layout from '../../components/Layout';
+import { CarNumberInput, closeButtonStyle } from '../../theme/styles';
+import { colors } from '../../theme/colors';
 
-import {useState} from "react";
-import {login} from "../../api/auth/login";
-import {useSnackbar} from "notistack";
-import getParkingData from "../../api/auth/parking-data";
+import { useState } from 'react';
+import { login } from '../../api/auth/login';
+import { useSnackbar } from 'notistack';
+import getParkingData from '../../api/auth/parking-data';
+import Logo from '../../assets/svg/login_logo.svg';
 
-    const LoginPage = () =>{
+const labelStyle = {
+  pb: '4px',
+  pl: '12px',
+  lineHeight: '1.125rem'
+};
 
-        const { enqueueSnackbar } = useSnackbar()
-        const [username, setUsername] = useState()
-        const [password, setPassword] = useState()
+const defaultValues = {
+  username: '',
+  password: ''
+};
 
-        const submitLogin =  () =>{
-            try {
-                 login({username, password})
-                     .then((res)=>{
-                         getParkingData().then(res => {
-                             const data = res.data
-                             if(data.userType === 'operator'){
-                                 localStorage.setItem('notificationsSound', 'true')
-                             }
-                         })
-                         document.location.href = "/"
-                     })
-                     .catch(()=>{
-                         enqueueSnackbar("Неверный логин или пароль", {
-                             variant: 'error',
-                         })
-                     })
-            }catch (e){
-            }
-        }
+const LoginPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-        return(
-            <Layout title="Вход">
-                <div style={{ display: 'flex', height: '40vh', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
-                    <h1>Вход</h1>
-                    <Form className={styles.wrapForm}>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Логин</Form.Label>
-                            <Form.Control onChange={(e)=> setUsername(e.target.value)}  type="email" placeholder="username" />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control  onChange={(e)=> setPassword(e.target.value)}  type="password" placeholder="Пароль" />
-                        </Form.Group>
-                        <Button color="red" onClick={submitLogin}>Войти</Button>
-                    </Form>
+  const formik = useFormik({
+    initialValues: defaultValues,
+    onSubmit: (values) => {
+      const { username, password } = values;
+      if (username && password) {
+        login({ username, password })
+          .then((res) => {
+            getParkingData().then((res) => {
+              const data = res.data;
+              if (data.userType === 'operator') {
+                localStorage.setItem('notificationsSound', 'true');
+              }
+            });
+            document.location.href = '/';
+          })
+          .catch(() => {
+            enqueueSnackbar('Неверный логин или пароль', {
+              variant: 'error',
+              iconVariant: 'warning'
+            });
+          });
+      }
+    }
+  });
 
-                </div>
-            </Layout>
-        )
-}
+  const handleUserNameChange = (event) => {
+    setUsername(event.target.value);
+    formik.handleChange(event);
+  };
 
-export default LoginPage
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    formik.handleChange(event);
+  };
+
+  return (
+    <Layout title="Вход">
+      <Stack sx={{ width: '100%', height: '100%' }}>
+        <Box
+          sx={{
+            width: '100%',
+            height: '92px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: colors.surface.low
+          }}
+        >
+          <img style={{ height: '60px' }} src={Logo} alt="logo" />
+        </Box>
+        <Box
+          component={'form'}
+          noValidate
+          onSubmit={formik.handleSubmit}
+          sx={{
+            width: '100%',
+            display: 'flex',
+            height: '100%',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '16px',
+            p: '16px'
+          }}
+        >
+          <Typography sx={{ fontSize: '2.5rem', lineHeight: '2.875rem' }}>
+            Вход
+          </Typography>
+          <Stack sx={{ width: '100%', maxWidth: '500px' }}>
+            <InputLabel htmlFor="username" sx={labelStyle}>
+              Логин
+            </InputLabel>
+            <CarNumberInput
+              fullWidth
+              InputProps={{
+                disableUnderline: true,
+                sx: { paddingLeft: '12px' }
+              }}
+              variant="filled"
+              id="username"
+              name="username"
+              placeholder="username"
+              value={username}
+              onChange={handleUserNameChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+            />
+          </Stack>
+          <Stack sx={{ width: '100%', maxWidth: '500px' }}>
+            <InputLabel htmlFor="password" sx={labelStyle}>
+              Пароль
+            </InputLabel>
+            <CarNumberInput
+              fullWidth
+              InputProps={{
+                disableUnderline: true,
+                sx: { paddingLeft: '12px' }
+              }}
+              variant="filled"
+              id="password"
+              name="password"
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={handlePasswordChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+            />
+          </Stack>
+          <Button
+            disableRipple
+            variant="filled"
+            sx={[closeButtonStyle, { width: '100%', maxWidth: '500px' }]}
+            type="submit"
+          >
+            Войти
+          </Button>
+        </Box>
+      </Stack>
+    </Layout>
+  );
+};
+
+export default LoginPage;

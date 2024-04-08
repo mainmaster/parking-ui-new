@@ -61,7 +61,7 @@ export default function EventManager() {
           //console.log('second: ' + first.id);
         }
       }
-      if (!first || first.id !== events[0].id) {
+      if ((!first || first.id !== events[0].id) && lastEvent) {
         setFirst(events[0]);
         //console.log('first: ' + events[0].id);
       }

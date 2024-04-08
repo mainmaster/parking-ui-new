@@ -28,7 +28,8 @@ export const colors = {
     primary: '#000000',
     secondary: '#7F7A84',
     inactive: '#CCCACE',
-    light: '#FFFFFF'
+    light: '#FFFFFF',
+    error: '#FE0103'
   },
   button: {
     primary: {
