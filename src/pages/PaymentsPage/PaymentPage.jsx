@@ -1,96 +1,249 @@
-import { useLayoutEffect } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard'
-import Image from 'react-bootstrap/Image'
-import { Spinner, Button } from 'react-bootstrap'
-import { formatDate } from 'utils'
-import { statusSessionName } from 'constants'
-import { useDispatch, useSelector } from 'react-redux'
-import { paymentSelectFetch } from '../../store/payments/paymentsSlice'
-import { usePostPaymentRefundMutation } from '../../api/apiSlice'
+import { useLayoutEffect, useState } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
+import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
+import TypeAuto from '../../components/TypeAuto';
+import { Spinner } from 'react-bootstrap';
+import FooterSpacer from '../../components/Header/FooterSpacer';
+import { useDispatch, useSelector } from 'react-redux';
+import { paymentSelectFetch } from '../../store/payments/paymentsSlice';
+import { usePostPaymentRefundMutation } from '../../api/apiSlice';
+import {
+  Tooltip,
+  Typography,
+  Button,
+  Stack,
+  AppBar,
+  IconButton
+} from '@mui/material';
+import linkIcon from '../../assets/svg/link_icon.svg';
+import { colors } from '../../theme/colors';
+import { listWithScrollStyle, secondaryButtonStyle } from '../../theme/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import EventManager from '../../components/EventManager/EventManager';
+import { format, parseISO } from 'date-fns';
+import { useSnackbar } from 'notistack';
+
+const titleTextStyle = {
+  fontSize: '1.5rem',
+  lineHeight: '1.75rem',
+  fontWeight: 500
+};
+
+const captionTextStyle = {
+  fontSize: '0.75rem',
+  lineHeight: '0.875rem',
+  color: colors.element.secondary
+};
+
+const labelTextStyle = {
+  width: '112px',
+  color: colors.element.secondary
+};
 
 export const PaymentPage = () => {
+  const [addRefund] = usePostPaymentRefundMutation();
+  const { id } = useParams();
+  const [copied, setCopied] = useState(false);
+  const payment = useSelector((state) => state.payments.selectPayment);
+  const loading = useSelector((state) => state.payments.isLoadingSelect);
+  const errorLoad = useSelector((state) => state.payments.isErrorSelect);
+  const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [addRefund] = usePostPaymentRefundMutation()
-  
+  let RURuble = new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'RUB'
+  });
 
-  const { id } = useParams()
+  const dateString = format(
+    parseISO(payment.create_datetime),
+    'dd.MM.yyyy HH:mm:ss'
+  );
 
-  const payment = useSelector((state) => state.payments.selectPayment)
-  const loading = useSelector((state) => state.payments.isLoadingSelect)
-  const errorLoad = useSelector((state) => state.payments.isErrorSelect)
+  const handleCopyLinkClick = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+  };
 
-  const dispatch = useDispatch()
-
-  const handleRefundPayment = (id) => {
+  const handleRefundPayment = () => {
     addRefund(id)
       .unwrap()
-      .then(() => dispatch(paymentSelectFetch()))
-  }
+      .then(() => {
+        enqueueSnackbar(`Возврат по ID - ${id}`, {
+          variant: 'success'
+        });
+        dispatch(paymentSelectFetch());
+      });
+  };
 
   useLayoutEffect(() => {
-    document.title = `Оплата №${id}` || 'Загрузка'
-    dispatch(paymentSelectFetch(id))
+    document.title = `Оплата №${id}` || 'Загрузка';
+    dispatch(paymentSelectFetch(id));
 
     return () => {
-      document.title = 'Parking'
-    }
-  }, [dispatch, id])
+      document.title = 'Parking';
+    };
+  }, [dispatch, id]);
 
-  const errorContent = <h1>Оплаты с №{id} не найдено</h1>
+  const errorContent = <h1>Оплаты с №{id} не найдено</h1>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <NavLink to="/payments">Назад</NavLink>
-      {loading && <Spinner />}
-      {errorLoad && errorContent}
-      {payment && (
-        <>
-          <div style={{ marginTop: '20px' }}>
-            <h2>Оплата №{id}</h2>
-            <div
-              style={{ display: 'flex', marginTop: '20px', flexWrap: 'wrap' }}
+    <>
+      <Stack
+        gap={'16px'}
+        sx={[
+          listWithScrollStyle,
+          {
+            width: '100%',
+            px: '16px',
+            backgroundColor: colors.surface.low
+          }
+        ]}
+      >
+        <EventManager />
+        {loading && <Spinner />}
+        {errorLoad && errorContent}
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          sx={{
+            width: '100%',
+            pt: '16px',
+            pb: isMobile ? '10px' : '8px'
+          }}
+        >
+          <Stack direction={'row'} alignItems={'center'} gap={'16px'}>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? 0 : '0.5rem'}
             >
-              <div>
-                {payment?.vehicle_plate?.full_plate !== '' && (
-                  <CarNumberCard carNumber={payment?.vehicle_plate} />
+              <Typography sx={titleTextStyle}>Оплата </Typography>
+              <Typography sx={isMobile ? captionTextStyle : titleTextStyle}>
+                №{id}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Tooltip title={copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              onClick={handleCopyLinkClick}
+              sx={[
+                secondaryButtonStyle,
+                isMobile
+                  ? {
+                      minWidth: '48px',
+                      '& .MuiButton-endIcon': {
+                        margin: 0
+                      }
+                    }
+                  : { minWidth: '212px' }
+              ]}
+              endIcon={
+                <img
+                  src={linkIcon}
+                  alt="Скопировать ссылку"
+                  style={{
+                    width: '24px',
+                    height: '24px'
+                  }}
+                />
+              }
+            >
+              {isMobile ? '' : 'Скопировать ссылку'}
+            </Button>
+          </Tooltip>
+        </Stack>
+
+        {payment && (
+          <>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Госномер</Typography>
+              {payment.vehicle_plate &&
+                payment.vehicle_plate.full_plate !== '' && (
+                  <Stack direction={'row'}>
+                    <CarNumberCard carNumber={payment.vehicle_plate} isTable />
+                  </Stack>
                 )}
-                <div style={{display: 'flex', gap: '20px', marginTop: '20px'}}>
-                    <div>
-                        <h4>
-                            <strong>Cумма оплаты</strong>
-                            <br />
-                            <span>{payment.totalPayedSum}₽</span>
-                        </h4>
-                        <h4>
-                            <strong>Способ оплаты</strong>
-                            <br />
-                            <span>{payment.paymentType}</span>
-                        </h4>
-                        {payment.isRefund ? null : (
-                            <Button style={{marginRight: '5px'}} onClick={() => handleRefundPayment(payment.id)}>
-                                Возврат
-                            </Button>
-                        )}
-                    </div>
-                    <div>
-                        <h4>
-                            <strong>Статус возврата</strong>
-                            <br />
-                            <span>{payment.isRefund ? <>Возврат</> : '-'}</span>
-                        </h4>
-                        <h4>
-                            <strong>Дата оплаты</strong>
-                            <br />
-                            <span>{formatDate(payment.create_datetime)}</span>
-                        </h4>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Способ</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={payment.paymentType} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Тип</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={payment.paymentFor} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Возврат</Typography>
+              <Stack direction={'row'}>
+                <TypeAuto type={payment.isRefund ? 'refund' : ''} />
+              </Stack>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Сумма</Typography>
+              <Typography>{RURuble.format(payment.totalPayedSum)}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Дата</Typography>
+              <Typography>{dateString}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>E-mail</Typography>
+              <Typography>{payment.email}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Действие</Typography>
+              <Stack direction={'row'}>
+                <Stack direction={'row'} gap={'8px'}>
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    fullWidth
+                    sx={secondaryButtonStyle}
+                    onClick={handleRefundPayment}
+                  >
+                    Возврат
+                  </Button>
+                </Stack>
+              </Stack>
+            </Stack>
+          </>
+        )}
+        <FooterSpacer />
+      </Stack>
+    </>
+  );
+};

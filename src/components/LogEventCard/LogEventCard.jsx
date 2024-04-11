@@ -17,6 +17,7 @@ import eventPlateIcon from '../../assets/svg/log_event_plate_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
+import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
 import { colors } from '../../theme/colors';
 import { format, parseISO } from 'date-fns';
 import { positiveButtonStyle, secondaryButtonStyle } from '../../theme/styles';
@@ -226,7 +227,7 @@ export default forwardRef(function LogEventCard(
                   width: 24,
                   height: 24
                 }}
-                src={eventMenuOpenIcon}
+                src={eventMenuCopyIcon}
                 alt={'Скопировать ссылку'}
               />
               <Typography>Коп. ссылку</Typography>

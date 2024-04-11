@@ -12,7 +12,11 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  closeButtonStyle
+} from '../../theme/styles';
 import ApplicationFilter from '../../components/ApplicationFilter/ApplicationFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import ApplicationsSpacer from './ApplicationsSpacer';
@@ -159,7 +163,7 @@ export const Applications = () => {
       <Stack
         ref={applicationsListRef}
         sx={[
-          listWithScrollStyle,
+          isMobile ? listStyle : listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
@@ -247,17 +251,18 @@ export const Applications = () => {
                   currentPage={currentPage}
                 />
               )}
-              {[...Array(itemsInRow)].map((value, index) => (
-                <Box
-                  id={index + 1}
-                  key={index}
-                  sx={{
-                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-                    minWidth: `${ITEM_MIN_WIDTH}px`,
-                    maxWidth: `${ITEM_MAX_WIDTH}px`
-                  }}
-                />
-              ))}
+              {itemsInRow > 0 &&
+                [...Array(itemsInRow)].map((value, index) => (
+                  <Box
+                    id={index + 1}
+                    key={index}
+                    sx={{
+                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                      minWidth: `${ITEM_MIN_WIDTH}px`,
+                      maxWidth: `${ITEM_MAX_WIDTH}px`
+                    }}
+                  />
+                ))}
             </Box>
           </>
         ) : (

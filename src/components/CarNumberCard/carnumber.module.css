@@ -64,9 +64,9 @@
 .wrapRusImage {
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
   display: flex;
-  gap: 5px;
-  font-family: Bahnschrift, serif;
+  gap: 2px;
+  font-family: VeranoSansSemibold, RoadNumbers, serif;
   font-weight: 700;
 }

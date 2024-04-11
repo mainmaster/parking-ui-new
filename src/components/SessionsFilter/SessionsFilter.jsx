@@ -26,7 +26,7 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
-import { DateIcon } from './DateIcon';
+import { DateIcon } from '../Icons/DateIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   sessionsFetch,
@@ -234,7 +234,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         autoComplete="off"
         onSubmit={formik.handleSubmit}
         sx={{
-          minWidth: '360px'
+          minWidth: isMobile ? '320px' : '360px'
         }}
       >
         <Stack
@@ -245,7 +245,6 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
           sx={{ width: '100%', px: '16px', pb: '8px' }}
         >
           <CarNumberInput
-            autoFocus
             fullWidth
             InputProps={{
               disableUnderline: true,

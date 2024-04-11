@@ -50,5 +50,35 @@ export const typeText = {
     label: 'Не использована',
     color: colors.request_status.not_used,
     textColor: colors.element.light
+  },
+  sber: {
+    label: 'Сбер',
+    color: colors.payment_method.sber,
+    textColor: colors.element.light
+  },
+  yookassa: {
+    label: 'Yookassa',
+    color: colors.payment_method.yookassa,
+    textColor: colors.element.light
+  },
+  pos_terminal: {
+    label: 'Пос терминал',
+    color: colors.payment_method.pos_terminal,
+    textColor: colors.element.light
+  },
+  refund: {
+    label: 'Возврат',
+    color: colors.refund,
+    textColor: colors.element.light
+  },
+  subscription: {
+    label: 'Абонемент',
+    color: colors.payment_type.subscription,
+    textColor: colors.element.light
+  },
+  session: {
+    label: 'Разовый',
+    color: colors.payment_type.session,
+    textColor: colors.element.light
   }
 };

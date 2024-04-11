@@ -142,7 +142,10 @@ export default function EventAlertCard({ event, close, animate, fade }) {
                     </IconButton>
                   )}
                   {event && (
-                    <Stack gap={'8px'} sx={{ maxWidth: '200px' }}>
+                    <Stack
+                      gap={'8px'}
+                      sx={{ width: '200px', maxWidth: '200px' }}
+                    >
                       {event.vehicle_plate && event.vehicle_plate.full_plate && (
                         <Stack
                           direction={'row'}

@@ -43,6 +43,7 @@ import {
 import { colors } from '../../theme/colors';
 import {
   listWithScrollStyle,
+  listStyle,
   closeButtonStyle,
   CarNumberInput,
   switchInputStyle,
@@ -692,7 +693,7 @@ const Settings = () => {
         <Stack
           ref={settingsRef}
           sx={[
-            listWithScrollStyle,
+            isMobile ? listStyle : listWithScrollStyle,
             {
               width: '100%',
               backgroundColor: colors.surface.low

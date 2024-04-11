@@ -1,21 +1,17 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import css from './Header.module.scss';
+import { useNavigate } from 'react-router-dom';
 //import {Offcanvas, Navbar, Container} from 'react-bootstrap'
 import PropTypes from 'prop-types';
-import NavList from 'components/NavList';
-import { icons, links } from './utils';
-import { logoIcon } from 'icons/index';
+import { icons } from './utils';
 import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { getUserData } from '../../api/auth/login';
-import { DisplayDataHeader } from './DisplayDataHeader';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import {
   AppBar,
   Box,
   Button,
-  Container,
   IconButton,
   Stack,
   Typography
@@ -32,6 +28,7 @@ import MoreIcon from '../../assets/svg/more_icon.svg';
 import MoreIconSelected from '../../assets/svg/more_icon_selected.svg';
 import { adminRoutes, operatorRoutes, renterRoutes } from '../../router/routes';
 import { logout } from '../../api/auth/login';
+import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { spacers } from '../../theme/spacers';
 import { useTheme } from '@mui/material/styles';
@@ -145,6 +142,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   let navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch();
 
   document.addEventListener('mouseleave', () => setAdminFullMenu(false));
 
@@ -219,6 +217,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
 
   const handleExitMoreClick = () => {
     setMore(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    dispatch(setParkingUserType(''));
   };
 
   return (
@@ -538,7 +541,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           }
                         ]}
                         key={route.eventKey}
-                        onClick={() => navigate(route.eventKey)}
+                        onClick={() => {
+                          setAdminFullMenu(false);
+                          navigate(route.eventKey);
+                        }}
                       >
                         {icon && (
                           <IconButton disableRipple sx={menuIconStyle}>
@@ -598,7 +604,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           }
                         ]}
                         key={route.eventKey}
-                        onClick={() => navigate(route.eventKey)}
+                        onClick={() => {
+                          setAdminFullMenu(false);
+                          navigate(route.eventKey);
+                        }}
                       >
                         {icon && (
                           <IconButton disableRipple sx={menuIconStyle}>
@@ -644,7 +653,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     }
                   ]}
                   key={route.eventKey}
-                  onClick={() => navigate(route.eventKey)}
+                  onClick={() => {
+                    setAdminFullMenu(false);
+                    navigate(route.eventKey);
+                  }}
                 >
                   {icon && (
                     <IconButton disableRipple sx={menuIconStyle}>
@@ -735,7 +747,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         textDecoration: 'underline',
                         cursor: 'pointer'
                       }}
-                      onClick={() => logout()}
+                      onClick={handleLogout}
                     >
                       <Typography
                         sx={{ color: colors.button.visited_link.default }}

@@ -10,6 +10,8 @@ import {
   deleteBlackListFetch
 } from 'store/blackList/blackListSlice';
 import { useParams } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const cardContainerStyle = {
   flex: `1 1 ${ITEM_MIN_WIDTH}px`,
@@ -31,6 +33,8 @@ export default function LogBlackListCard({ car }) {
   const dispatch = useDispatch();
   const urlStatus = useParams();
   const validDateString = format(parseISO(car.valid_until), 'dd.MM.yyyy');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleEditCarClick = () => {
     dispatch(editModalHandler(car.id));
@@ -46,7 +50,7 @@ export default function LogBlackListCard({ car }) {
   };
 
   return (
-    <Box sx={cardContainerStyle}>
+    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'12px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
           <CarNumberCard carNumber={car.vehicle_plate} isTable />

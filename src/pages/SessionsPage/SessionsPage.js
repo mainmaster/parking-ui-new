@@ -14,9 +14,13 @@ import PaginationCustom from 'components/Pagination';
 // Constants
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Box, Stack, Typography } from '@mui/material';
+import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { listWithScrollStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  closeButtonStyle
+} from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -25,6 +29,7 @@ import sessionsListIcon from '../../assets/svg/sessions_list_icon.svg';
 import { SESSIONS_ON_PAGE } from '../../constants';
 import LogSessionCard from '../../components/LogSessionCard/LogSessionCard';
 import EventManager from '../../components/EventManager/EventManager';
+import CloseSessionsDialog from '../../components/CloseSessionsDialog/CloseSessionsDialog';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -40,10 +45,12 @@ const SessionsPage = () => {
   const currentPage = useSelector((state) => state.sessions.currentPage);
   const isLoading = useSelector((state) => state.sessions.isLoadingFetch);
   const isError = useSelector((state) => state.sessions.isErrorFetch);
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [openCloseSessionsDialog, setOpenCloseSessionsDialog] = useState(false);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -84,6 +91,10 @@ const SessionsPage = () => {
     }
   };
 
+  const handleCloseSessionsClick = () => {
+    setOpenCloseSessionsDialog(true);
+  };
+
   return (
     <>
       {!isMobile && (
@@ -120,12 +131,25 @@ const SessionsPage = () => {
               <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Stack>
           </Stack>
+          {userType === 'admin' && (
+            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={closeButtonStyle}
+                onClick={handleCloseSessionsClick}
+              >
+                Закрыть сессии старше даты
+              </Button>
+            </Stack>
+          )}
         </AppBar>
       )}
       <Stack
         ref={sessionsListRef}
         sx={[
-          listWithScrollStyle,
+          isMobile ? listStyle : listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
@@ -144,13 +168,36 @@ const SessionsPage = () => {
               sx={{
                 height: openForm ? '327px' : '56px',
                 py: '8px',
-                borderBottom: openForm
-                  ? `1px solid ${colors.outline.surface}`
-                  : 'none'
+                borderBottom:
+                  openForm && userType !== 'admin'
+                    ? `1px solid ${colors.outline.surface}`
+                    : 'none'
               }}
             >
               <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Box>
+            {userType === 'admin' && (
+              <Box
+                sx={{
+                  px: '16px',
+                  py: '8px',
+                  minWidth: '288px',
+                  borderBottom: openForm
+                    ? `1px solid ${colors.outline.surface}`
+                    : 'none'
+                }}
+              >
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={closeButtonStyle}
+                  onClick={handleCloseSessionsClick}
+                >
+                  Закрыть сессии старше даты
+                </Button>
+              </Box>
+            )}
           </>
         )}
 
@@ -165,7 +212,7 @@ const SessionsPage = () => {
             >
               {sessions.map((item, index) => (
                 <LogSessionCard
-                  key={index}
+                  key={item.id}
                   session={item}
                   onClickImage={changeActiveImageModal}
                 />
@@ -207,6 +254,10 @@ const SessionsPage = () => {
 
         <FooterSpacer />
       </Stack>
+      <CloseSessionsDialog
+        show={openCloseSessionsDialog}
+        handleClose={setOpenCloseSessionsDialog}
+      />
 
       {imageModal.isOpen && (
         <Lightbox

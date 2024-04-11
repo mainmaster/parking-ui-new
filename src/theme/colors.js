@@ -119,6 +119,16 @@ export const colors = {
   request_status: {
     not_used: '#138641'
   },
+  payment_method: {
+    sber: '#21A038',
+    yookassa: '#8B3FFD',
+    pos_terminal: '#000000'
+  },
+  refund: '#FE0103',
+  payment_type: {
+    subscription: '#2D2DD2',
+    session: '#D2F9E2'
+  },
   toggle: {
     toggled: {
       thumb: '#FFFFFF',

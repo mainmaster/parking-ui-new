@@ -16,11 +16,10 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import {
-  applicationsFetch,
+  paymentsFetch,
   changeCurrentPage,
   setFilters
-} from '../../store/applications/applicationSlice';
-import { useRentersQuery } from '../../api/renters/renters.api';
+} from '../../store/payments/paymentsSlice';
 import { useFormik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -40,8 +39,7 @@ import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import { formatISO } from 'date-fns';
 
 const defaultValues = {
-  vehiclePlate: '',
-  companyName: ''
+  vehiclePlate: ''
 };
 
 const desktopMenuStyle = {
@@ -73,22 +71,32 @@ const labelStyle = {
   pl: '12px'
 };
 
-const applicationStatusValues = [
-  { value: 'true', name: 'Использована' },
-  { value: 'false', name: 'Не использована' }
+const paymentTypeValues = [
+  { value: 'sber', name: 'Сбер' },
+  { value: 'yookassa', name: 'Yookassa' },
+  { value: 'pos_terminal', name: 'Пос терминал' }
 ];
 
-export default function ApplicationFilter({ openForm, setOpenForm }) {
+const isRefundValues = [
+  { value: 'true', name: 'С возвратом' },
+  { value: 'false', name: 'Без возврата' }
+];
+
+const paymentForValues = [
+  { value: 'subscription', name: 'Абонемент' },
+  { value: 'session', name: 'Разовый' }
+];
+
+export default function PaymentFilter({ openForm, setOpenForm }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
-  const [selectedCompany, setSelectedCompany] = useState('');
-  const [selectedApplicationStatus, setSelectedApplicationStatus] =
-    useState('');
+  const [paymentType, setPaymentType] = useState('');
+  const [isRefund, setIsRefund] = useState('');
+  const [paymentFor, setPaymentFor] = useState('');
   const [submited, setSubmited] = useState(true);
   const [numberInChange, setNumberInChange] = useState(false);
-  const filters = useSelector((state) => state.applications.filters);
-  const { data: renters } = useRentersQuery();
+  const filters = useSelector((state) => state.payments.filters);
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -103,7 +111,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     initialValues: defaultValues,
     onSubmit: (values) => {
       dispatch(changeCurrentPage(1));
-      dispatch(applicationsFetch(filters));
+      dispatch(paymentsFetch(filters));
       setSubmited(true);
     }
   });
@@ -112,11 +120,12 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     formik.resetForm();
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
-    dispatch(applicationsFetch());
+    dispatch(paymentsFetch());
     setFromValue(null);
     setToValue(null);
-    setSelectedCompany('');
-    setSelectedApplicationStatus('');
+    setPaymentType('');
+    setIsRefund('');
+    setPaymentFor('');
     setSubmited(true);
   };
 
@@ -127,7 +136,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
-      dispatch(applicationsFetch(values));
+      dispatch(paymentsFetch(values));
     } else if (openForm) {
       const values = {
         ...filters,
@@ -156,7 +165,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     if (!openForm) {
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
-      dispatch(applicationsFetch());
+      dispatch(paymentsFetch());
     } else if (openForm) {
       const values = {
         ...filters,
@@ -192,29 +201,49 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     }
   };
 
-  const handleCompanyChange = (event) => {
-    const values = {
-      ...filters,
-      companyName: event.target.value
-    };
-    dispatch(setFilters(values));
-    setSubmited(false);
-    setSelectedCompany(event.target.value);
-  };
-
-  const handleApplicationStatusChange = (event) => {
-    const status = applicationStatusValues.find(
-      (st) => st.name === event.target.value
+  const handlePaymentTypeChange = (event) => {
+    const item = paymentTypeValues.find(
+      (item) => item.name === event.target.value
     );
-    if (status) {
+    if (item) {
       const values = {
         ...filters,
-        status: status.value
+        paymentType: item.value
       };
       dispatch(setFilters(values));
       setSubmited(false);
     }
-    setSelectedApplicationStatus(event.target.value);
+    setPaymentType(event.target.value);
+  };
+
+  const handleIsRefundChange = (event) => {
+    const item = isRefundValues.find(
+      (item) => item.name === event.target.value
+    );
+    if (item) {
+      const values = {
+        ...filters,
+        isRefund: item.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    }
+    setIsRefund(event.target.value);
+  };
+
+  const handlePaymentForChange = (event) => {
+    const item = paymentForValues.find(
+      (item) => item.name === event.target.value
+    );
+    if (item) {
+      const values = {
+        ...filters,
+        paymentFor: item.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    }
+    setPaymentFor(event.target.value);
   };
 
   const handleClose = () => {
@@ -356,14 +385,14 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
               </Stack>
             </Stack>
             <Stack>
-              <InputLabel htmlFor="company-select" sx={labelStyle}>
-                Компания
+              <InputLabel htmlFor="payment-type-select" sx={labelStyle}>
+                Способ оплаты
               </InputLabel>
               <Select
-                id="company-select"
+                id="payment-type-select"
                 displayEmpty
-                value={selectedCompany}
-                onChange={handleCompanyChange}
+                value={paymentType}
+                onChange={handlePaymentTypeChange}
                 variant="filled"
                 IconComponent={(props) => (
                   <IconButton
@@ -400,33 +429,33 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 <MenuItem disabled value="">
                   <em>Выбрать</em>
                 </MenuItem>
-                {renters.map((r) => (
+                {paymentTypeValues.map((item) => (
                   <MenuItem
-                    key={r.company_name}
-                    id={r.company_name}
-                    selected={r.company_name === selectedCompany}
-                    value={r.company_name}
+                    key={item.value}
+                    id={item.value}
+                    selected={item.name === paymentType}
+                    value={item.name}
                   >
                     <Typography
                       component={'h5'}
                       noWrap
                       sx={{ fontWeight: 500, p: 0 }}
                     >
-                      {r.company_name}
+                      {item.name}
                     </Typography>
                   </MenuItem>
                 ))}
               </Select>
             </Stack>
             <Stack>
-              <InputLabel htmlFor="application-status-select" sx={labelStyle}>
-                Статус заявки
+              <InputLabel htmlFor="payment-for-select" sx={labelStyle}>
+                Тип оплаты
               </InputLabel>
               <Select
-                id="application-status-select"
+                id="payment-for-select"
                 displayEmpty
-                value={selectedApplicationStatus}
-                onChange={handleApplicationStatusChange}
+                value={paymentFor}
+                onChange={handlePaymentForChange}
                 variant="filled"
                 IconComponent={(props) => (
                   <IconButton
@@ -463,19 +492,82 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 <MenuItem disabled value="">
                   <em>Выбрать</em>
                 </MenuItem>
-                {applicationStatusValues.map((st) => (
+                {paymentForValues.map((item) => (
                   <MenuItem
-                    key={st.value}
-                    id={st.name}
-                    selected={st.name === selectedApplicationStatus}
-                    value={st.name}
+                    key={item.value}
+                    id={item.value}
+                    selected={item.name === paymentFor}
+                    value={item.name}
                   >
                     <Typography
                       component={'h5'}
                       noWrap
                       sx={{ fontWeight: 500, p: 0 }}
                     >
-                      {st.name}
+                      {item.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </Stack>
+            <Stack>
+              <InputLabel htmlFor="is-refund-select" sx={labelStyle}>
+                Тип оплаты
+              </InputLabel>
+              <Select
+                id="is-refund-select"
+                displayEmpty
+                value={isRefund}
+                onChange={handleIsRefundChange}
+                variant="filled"
+                IconComponent={(props) => (
+                  <IconButton
+                    disableRipple
+                    {...props}
+                    sx={{ top: `${0} !important`, right: `4px !important` }}
+                  >
+                    <img
+                      style={{
+                        width: '24px'
+                      }}
+                      src={selectIcon}
+                      alt="select"
+                    />
+                  </IconButton>
+                )}
+                sx={selectMenuStyle}
+                renderValue={(selected) => {
+                  if (selected === '') {
+                    return <em>Выбрать</em>;
+                  } else {
+                    return (
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {selected}
+                      </Typography>
+                    );
+                  }
+                }}
+              >
+                <MenuItem disabled value="">
+                  <em>Выбрать</em>
+                </MenuItem>
+                {isRefundValues.map((item) => (
+                  <MenuItem
+                    key={item.value}
+                    id={item.value}
+                    selected={item.name === isRefund}
+                    value={item.name}
+                  >
+                    <Typography
+                      component={'h5'}
+                      noWrap
+                      sx={{ fontWeight: 500, p: 0 }}
+                    >
+                      {item.name}
                     </Typography>
                   </MenuItem>
                 ))}

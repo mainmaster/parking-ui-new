@@ -6,7 +6,9 @@ import {
   Divider,
   IconButton,
   Stack,
-  Typography
+  Typography,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import {
   sessionsFetch,
@@ -18,15 +20,21 @@ import {
 } from 'store/sessions/sessionsSlice';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import TypeAuto from '../TypeAuto';
+import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
 import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
 import { positiveButtonStyle, secondaryButtonStyle } from '../../theme/styles';
 import sessionSkeleton from '../../assets/svg/session_skeleton.svg';
+import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
+import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
 import { colors } from '../../theme/colors';
+import { useSnackbar } from 'notistack';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const cardContainerStyle = {
-  flex: '1 1 380px',
-  minWidth: '380px',
-  maxWidth: '776px',
+  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+  minWidth: `${ITEM_MIN_WIDTH}px`,
+  maxWidth: `${ITEM_MAX_WIDTH}px`,
   border: '1px solid ' + colors.outline.separator,
   borderTop: 'none',
   borderLeft: 'none',
@@ -65,8 +73,13 @@ const labelTextStyle = {
 };
 
 export default function LogSessionCard({ session, onClickImage }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (session && session.events[0] && session.events[0].car_img_path) {
@@ -78,12 +91,31 @@ export default function LogSessionCard({ session, onClickImage }) {
     }
   }, [session]);
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCopyLinkClick = () => {
+    setSelectedMenuItem('copy');
+    navigator.clipboard
+      .writeText(window.location.href + '/' + session.id)
+      .then(() => {
+        enqueueSnackbar('Ссылка скопирована');
+      });
+    setAnchorEl(null);
+  };
+
   const handleSessionClick = () => {
+    setSelectedMenuItem('session');
     window.open(
       `${window.location.href}/${session.id}`,
       '_blank',
       'noreferrer'
     );
+    setAnchorEl(null);
   };
 
   const handlePaidClick = () => {
@@ -95,7 +127,7 @@ export default function LogSessionCard({ session, onClickImage }) {
   };
 
   return (
-    <Box sx={cardContainerStyle}>
+    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'12px'}>
         <Box
           sx={[
@@ -132,10 +164,66 @@ export default function LogSessionCard({ session, onClickImage }) {
                   height: '40px'
                 }
               ]}
-              onClick={handleSessionClick}
+              onClick={handleMenuClick}
             >
               <Typography sx={{ fontWeight: 500 }}>...</Typography>
             </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              id="event-menu"
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 10,
+                sx: {
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '168px',
+                  border: `1px solid ${colors.outline.default}`,
+                  borderRadius: '8px',
+                  '& .MuiAvatar-root': {},
+                  '&::before': {}
+                }
+              }}
+              MenuListProps={{ sx: { p: 0 } }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem
+                id="session"
+                selected={selectedMenuItem === 'session'}
+                onClick={handleSessionClick}
+                sx={{ p: '8px', gap: '8px' }}
+              >
+                <img
+                  style={{
+                    width: 24,
+                    height: 24
+                  }}
+                  src={eventMenuOpenIcon}
+                  alt={'Открыть'}
+                />
+                <Typography>Открыть</Typography>
+              </MenuItem>
+              <MenuItem
+                id="copy"
+                selected={selectedMenuItem === 'copy'}
+                onClick={handleCopyLinkClick}
+                sx={{ p: '8px', gap: '8px' }}
+              >
+                <img
+                  style={{
+                    width: 24,
+                    height: 24
+                  }}
+                  src={eventMenuCopyIcon}
+                  alt={'Скопировать ссылку'}
+                />
+                <Typography>Коп. ссылку</Typography>
+              </MenuItem>
+            </Menu>
           </Stack>
         )}
         <Stack direction={'row'} gap={'4px'}>

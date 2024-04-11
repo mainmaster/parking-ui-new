@@ -146,7 +146,7 @@ export const CarNumberCard = ({
                     <div
                       className={styles.wrapRusImage}
                       style={{
-                        gap: small ? '3px' : isTable ? '3px' : '5px',
+                        gap: small ? '2px' : isTable ? '2px' : '5px',
                         fontSize: small ? '7px' : '11px',
                         lineHeight: small ? '7px' : '11px',
                         height: small ? '5px' : '8px',

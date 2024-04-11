@@ -173,7 +173,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
         autoComplete="off"
         onSubmit={formik.handleSubmit}
         sx={{
-          minWidth: '360px'
+          minWidth: isMobile ? '320px' : '360px'
         }}
       >
         <Stack
@@ -184,7 +184,6 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
           sx={{ width: '100%', px: '16px', pb: '8px' }}
         >
           <CarNumberInput
-            autoFocus
             fullWidth
             InputProps={{
               disableUnderline: true,

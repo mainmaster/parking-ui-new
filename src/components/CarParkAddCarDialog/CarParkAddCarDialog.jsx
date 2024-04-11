@@ -36,7 +36,7 @@ import {
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
-import { DateIcon } from './DateIcon';
+import { DateIcon } from '../Icons/DateIcon';
 
 const defaultValues = {
   description: '',

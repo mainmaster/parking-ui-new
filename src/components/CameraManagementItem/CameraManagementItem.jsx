@@ -40,6 +40,7 @@ import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { parseISO, differenceInSeconds } from 'date-fns';
 
 const CameraMessageInput = styled(TextField)(({ theme }) => ({
   width: '100%',
@@ -79,8 +80,14 @@ export default function CameraManagementItem({
 
   useEffect(() => {
     if (events && events[0] && events[0].access_point === camera.id) {
-      setCurrentEvent(events[0]);
-      setEventTimeout(5);
+      const start = differenceInSeconds(
+        Date.now(),
+        parseISO(events[0].create_datetime)
+      );
+      if (start < 6) {
+        setCurrentEvent(events[0]);
+        setEventTimeout(5);
+      }
     }
   }, [events]);
 

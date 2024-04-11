@@ -28,12 +28,16 @@ import {
 } from '../../theme/styles';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function BlackListFilter() {
   const [carNumber, setCarNumber] = useState('');
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.carPark.filters);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     return () => {
@@ -67,7 +71,7 @@ export default function BlackListFilter() {
   return (
     <Box
       sx={{
-        minWidth: '360px'
+        minWidth: isMobile ? '320px' : '360px'
       }}
     >
       <Stack
@@ -78,7 +82,6 @@ export default function BlackListFilter() {
         sx={{ width: '100%', px: '16px', pb: '8px' }}
       >
         <CarNumberInput
-          autoFocus
           fullWidth
           InputProps={{
             disableUnderline: true,

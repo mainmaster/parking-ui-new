@@ -25,7 +25,7 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
-import { DateIcon } from './DateIcon';
+import { DateIcon } from '../Icons/DateIcon';
 import {
   closeButtonStyle,
   primaryButtonStyle,
@@ -81,8 +81,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(eventsOnlyFetch(filters));
       dispatch(changeCurrentPage(1));
+      dispatch(eventsOnlyFetch(filters));
       setSubmited(true);
     }
   });
@@ -93,9 +93,9 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     setSelectedAccessPoint('');
     setFromValue(null);
     setToValue(null);
-    dispatch(eventsOnlyFetch());
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
+    dispatch(eventsOnlyFetch());
     setSubmited(true);
   };
 
@@ -215,7 +215,6 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
           sx={{ height: '64px', width: '100%', p: '16px', pb: '8px' }}
         >
           <CarNumberInput
-            autoFocus
             fullWidth
             InputProps={{
               disableUnderline: true,

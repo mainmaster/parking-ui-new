@@ -27,7 +27,11 @@ import {
   Tab
 } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  closeButtonStyle
+} from '../../theme/styles';
 import BlackListFilter from '../../components/BlackListFilter/BlackListFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import BlackListSpacer from './BlackListSpacer';
@@ -199,7 +203,7 @@ const BlackListPage = () => {
       <Stack
         ref={blackListRef}
         sx={[
-          listWithScrollStyle,
+          isMobile ? listStyle : listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
@@ -289,17 +293,18 @@ const BlackListPage = () => {
               {blackList.black_list.map((item, index) => (
                 <LogBlackListCard key={item.id} car={item} />
               ))}
-              {[...Array(itemsInRow)].map((value, index) => (
-                <Box
-                  id={index + 1}
-                  key={index}
-                  sx={{
-                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-                    minWidth: `${ITEM_MIN_WIDTH}px`,
-                    maxWidth: `${ITEM_MAX_WIDTH}px`
-                  }}
-                />
-              ))}
+              {itemsInRow > 0 &&
+                [...Array(itemsInRow)].map((value, index) => (
+                  <Box
+                    id={index + 1}
+                    key={index}
+                    sx={{
+                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                      minWidth: `${ITEM_MIN_WIDTH}px`,
+                      maxWidth: `${ITEM_MAX_WIDTH}px`
+                    }}
+                  />
+                ))}
             </Box>
 
             <Box
@@ -333,7 +338,9 @@ const BlackListPage = () => {
                   alt="Нет машин в чёрном списке"
                 />
                 <Typography sx={titleTextStyle}>
-                  Нет машин в чёрном списке
+                  {currentTab === 0
+                    ? 'Нет машин в чёрном списке'
+                    : 'Нет машин с истёкшим запретом на доступ'}
                 </Typography>
               </>
             )}

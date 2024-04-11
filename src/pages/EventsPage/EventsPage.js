@@ -25,7 +25,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Typography, Box, Drawer, Stack, Modal } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
 import { colors } from '../../theme/colors';
-import { listWithScrollStyle } from '../../theme/styles';
+import { listStyle, listWithScrollStyle } from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
@@ -372,7 +372,7 @@ const EventsPage = ({ onlyLog }) => {
       {isMobile && (!mobileCameras || onlyLog) && (
         <Stack
           sx={[
-            listWithScrollStyle,
+            listStyle,
             { width: '100%', backgroundColor: colors.surface.low }
           ]}
         >
@@ -383,7 +383,7 @@ const EventsPage = ({ onlyLog }) => {
             <>
               {events.map((item, index) => (
                 <LogEventCard
-                  key={index}
+                  key={item.id}
                   event={item}
                   onClickImage={changeActiveImageModal}
                   selected={item.id === selectedEventId}

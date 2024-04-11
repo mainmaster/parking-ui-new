@@ -27,7 +27,11 @@ import {
   Tab
 } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  closeButtonStyle
+} from '../../theme/styles';
 import CarParkFilter from '../../components/CarParkFilter/CarParkFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import CarParkSpacer from './CarParkSpacer';
@@ -209,7 +213,7 @@ const CarParkPage = () => {
       <Stack
         ref={parkListRef}
         sx={[
-          listWithScrollStyle,
+          isMobile ? listStyle : listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
@@ -299,17 +303,18 @@ const CarParkPage = () => {
               {carParks.car_park.map((item, index) => (
                 <LogCarParkCard key={item.id} car={item} />
               ))}
-              {[...Array(itemsInRow)].map((value, index) => (
-                <Box
-                  id={index + 1}
-                  key={index}
-                  sx={{
-                    flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-                    minWidth: `${ITEM_MIN_WIDTH}px`,
-                    maxWidth: `${ITEM_MAX_WIDTH}px`
-                  }}
-                />
-              ))}
+              {itemsInRow > 0 &&
+                [...Array(itemsInRow)].map((value, index) => (
+                  <Box
+                    id={index + 1}
+                    key={index}
+                    sx={{
+                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                      minWidth: `${ITEM_MIN_WIDTH}px`,
+                      maxWidth: `${ITEM_MAX_WIDTH}px`
+                    }}
+                  />
+                ))}
             </Box>
             <Box
               sx={{

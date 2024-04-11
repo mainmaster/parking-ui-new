@@ -3,15 +3,13 @@ import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import { colors } from '../../theme/colors';
 import { secondaryButtonStyle } from '../../theme/styles';
+import uploadIcon from '../../assets/svg/settings_upload_icon.svg';
 import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import TypeAuto from '../TypeAuto';
-import {
-  createApplicationsFetch,
-  deleteApplicationFetch,
-  setEditApplication
-} from 'store/applications/applicationSlice';
-import { useNavigate } from 'react-router-dom';
+import { paymentsFetch } from 'store/payments/paymentsSlice';
+import { usePostPaymentRefundMutation } from '../../api/apiSlice';
+import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -31,35 +29,47 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogApplicationCard({ application }) {
-  let navigate = useNavigate();
+export default function LogPaymentCard({ payment }) {
   const dispatch = useDispatch();
-  const dateString = format(parseISO(application.valid_for_date), 'dd.MM.yyyy');
+  const [addRefund] = usePostPaymentRefundMutation();
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleSessionClick = () => {
-    navigate(`../sessions/${application?.session_id}`);
-  };
+  let RURuble = new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'RUB'
+  });
 
-  const handleEditApplicationClick = () => {
-    dispatch(
-      setEditApplication({
-        edit: true,
-        application: application
-      })
+  const dateString = format(
+    parseISO(payment.create_datetime),
+    'dd.MM.yyyy HH:mm:ss'
+  );
+
+  const handlePaymentClick = () => {
+    window.open(
+      `${window.location.href}/${payment.id}`,
+      '_blank',
+      'noreferrer'
     );
   };
 
-  const handleDeleteApplicationClick = () => {
-    dispatch(deleteApplicationFetch(application.id));
+  const handleRefundClick = () => {
+    addRefund(payment.id)
+      .unwrap()
+      .then(() => {
+        enqueueSnackbar(`Возврат по ID - ${payment.id}`, {
+          variant: 'success'
+        });
+        dispatch(paymentsFetch());
+      });
   };
 
   return (
     <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'12px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
-          <CarNumberCard carNumber={application.vehicle_plate} isTable />
+          <CarNumberCard carNumber={payment.vehicle_plate} isTable />
           <Box sx={{ width: '100%' }}></Box>
           <Typography
             sx={{
@@ -67,15 +77,17 @@ export default function LogApplicationCard({ application }) {
               fontWeight: 500,
               color: colors.element.secondary
             }}
-          >{`№ ${application.id}`}</Typography>
+          >{`№ ${payment.id}`}</Typography>
         </Stack>
         <Stack direction={'row'} sx={{ minHeight: '20px' }}>
-          {!application.is_used && <TypeAuto type="not_used" />}
+          <TypeAuto type={payment.paymentType} />
+          {payment.paymentFor && <TypeAuto type={payment.paymentFor} />}
+          {payment.isRefund && <TypeAuto type="refund" />}
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Компания</Typography>
+          <Typography sx={labelTextStyle}>Сумма</Typography>
           <Typography sx={{ fontWeight: 500 }}>
-            {application.company_name}
+            {RURuble.format(payment.totalPayedSum)}
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -83,35 +95,35 @@ export default function LogApplicationCard({ application }) {
           <Typography sx={{ fontWeight: 500 }}>{dateString}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
+          <Typography sx={labelTextStyle}>E-mail</Typography>
+          <Typography sx={{ fontWeight: 500 }}>{payment.email}</Typography>
+        </Stack>
+        <Stack direction={'row'} gap={'8px'}>
           <Button
             disableRipple
-            disabled={!application.session_id}
+            disabled={payment.isRefund}
             variant="contained"
             fullWidth
             sx={secondaryButtonStyle}
-            onClick={handleSessionClick}
+            onClick={handleRefundClick}
           >
-            Сессия
+            Возврат
           </Button>
           <Button
             disableRipple
-            disabled={application.is_used}
             variant="contained"
             fullWidth
             sx={secondaryButtonStyle}
-            onClick={handleEditApplicationClick}
+            onClick={handlePaymentClick}
+            endIcon={
+              <img
+                src={uploadIcon}
+                alt="Открыть"
+                style={{ width: '24px', height: '24px' }}
+              />
+            }
           >
-            Изменить
-          </Button>
-          <Button
-            disableRipple
-            disabled={application.is_used}
-            variant="contained"
-            fullWidth
-            sx={secondaryButtonStyle}
-            onClick={handleDeleteApplicationClick}
-          >
-            Удалить
+            Открыть
           </Button>
         </Stack>
       </Stack>

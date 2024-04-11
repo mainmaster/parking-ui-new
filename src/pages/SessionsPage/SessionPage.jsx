@@ -189,15 +189,20 @@ export const SessionPage = () => {
             <Stack>
               <Stack
                 direction={'row'}
-                flexWrap={'wrap'}
+                flexWrap={'nowrap'}
                 gap={'8px'}
-                sx={{ p: 0, pb: '8px' }}
+                sx={{ p: 0, pb: '8px', width: '100%' }}
               >
                 {session.events.map((event) => {
                   if (event.car_img_path && event.car_img_path !== '') {
                     return (
                       <IconButton
                         disableRipple
+                        sx={{
+                          maxWidth: '560px',
+                          width: '100%',
+                          flex: '1 1 320px'
+                        }}
                         onClick={() =>
                           changeActiveImageModal(
                             process.env.REACT_APP_API_URL +
@@ -231,6 +236,7 @@ export const SessionPage = () => {
                 session.events[0].plate_img_path !== '' && (
                   <IconButton
                     disableRipple
+                    sx={{ maxWidth: '560px', width: '100%' }}
                     onClick={() =>
                       changeActiveImageModal(
                         process.env.REACT_APP_API_URL +
@@ -242,7 +248,8 @@ export const SessionPage = () => {
                     <img
                       style={{
                         maxWidth: '560px',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        width: '100%'
                       }}
                       src={
                         process.env.REACT_APP_API_URL +
