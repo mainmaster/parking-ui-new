@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
@@ -52,16 +52,20 @@ export const PaymentPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
+  const [dateString, setDateString] = useState('');
 
   let RURuble = new Intl.NumberFormat('ru-RU', {
     style: 'currency',
     currency: 'RUB'
   });
 
-  const dateString = format(
-    parseISO(payment.create_datetime),
-    'dd.MM.yyyy HH:mm:ss'
-  );
+  useEffect(() => {
+    if (payment) {
+      setDateString(
+        format(parseISO(payment.create_datetime), 'dd.MM.yyyy HH:mm:ss')
+      );
+    }
+  }, []);
 
   const handleCopyLinkClick = () => {
     navigator.clipboard.writeText(window.location.href);
