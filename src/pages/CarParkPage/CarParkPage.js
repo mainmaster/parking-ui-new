@@ -213,7 +213,7 @@ const CarParkPage = () => {
       <Stack
         ref={parkListRef}
         sx={[
-          isMobile ? listStyle : listWithScrollStyle,
+          listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low

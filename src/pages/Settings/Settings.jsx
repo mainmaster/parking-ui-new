@@ -693,7 +693,7 @@ const Settings = () => {
         <Stack
           ref={settingsRef}
           sx={[
-            isMobile ? listStyle : listWithScrollStyle,
+            listWithScrollStyle,
             {
               width: '100%',
               backgroundColor: colors.surface.low

@@ -150,7 +150,7 @@ const PaymentsPage = () => {
       <Stack
         ref={paymentsListRef}
         sx={[
-          isMobile ? listStyle : listWithScrollStyle,
+          listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low

@@ -372,7 +372,7 @@ const EventsPage = ({ onlyLog }) => {
       {isMobile && (!mobileCameras || onlyLog) && (
         <Stack
           sx={[
-            listStyle,
+            listWithScrollStyle,
             { width: '100%', backgroundColor: colors.surface.low }
           ]}
         >

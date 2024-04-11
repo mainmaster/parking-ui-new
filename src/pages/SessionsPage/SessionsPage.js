@@ -149,7 +149,7 @@ const SessionsPage = () => {
       <Stack
         ref={sessionsListRef}
         sx={[
-          isMobile ? listStyle : listWithScrollStyle,
+          listWithScrollStyle,
           {
             width: '100%',
             backgroundColor: colors.surface.low
