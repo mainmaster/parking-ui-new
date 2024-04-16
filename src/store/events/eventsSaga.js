@@ -3,6 +3,7 @@ import {
   eventsFetch,
   eventsOnlyFetch,
   getEventsSuccess,
+  setFilteredEvents,
   changePages,
   eventsChangePageFetch,
   changeCurrentPage,
@@ -51,6 +52,14 @@ function* workEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
+    if (
+      store.getState().events.filters &&
+      store.getState().events.filters !== {}
+    ) {
+      yield put(setFilteredEvents(data.events));
+    } else {
+      yield put(setFilteredEvents({}));
+    }
     yield put(changeAccessPointsLoading());
   } catch (e) {}
 }
@@ -64,6 +73,14 @@ function* workOnlyEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
+    if (
+      store.getState().events.filters &&
+      store.getState().events.filters !== {}
+    ) {
+      yield put(setFilteredEvents(data.events));
+    } else {
+      yield put(setFilteredEvents({}));
+    }
   } catch (e) {}
 }
 

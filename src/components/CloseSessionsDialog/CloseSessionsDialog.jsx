@@ -11,7 +11,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { formatISO } from 'date-fns';
+import { format } from 'date-fns';
 import { closeOlderThanDateSessionsFetch } from 'store/sessions/sessionsSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import {
@@ -34,7 +34,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
 
   const handleCloseSessions = () => {
     try {
-      dispatch(closeOlderThanDateSessionsFetch(formatISO(date)));
+      dispatch(closeOlderThanDateSessionsFetch(format(date, 'yyyy-MM-dd')));
       handleClose(false);
     } catch (e) {
       console.error(e);

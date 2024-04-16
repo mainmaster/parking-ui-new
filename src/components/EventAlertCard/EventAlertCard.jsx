@@ -24,7 +24,13 @@ import eventCloseIcon from '../../assets/svg/event_alert_close_icon.svg';
 import { colors } from '../../theme/colors';
 import { parseISO, differenceInSeconds } from 'date-fns';
 
-export default function EventAlertCard({ event, close, animate, fade }) {
+export default function EventAlertCard({
+  event,
+  close,
+  animate,
+  fade,
+  setPause
+}) {
   const { data: parkingData } = useParkingInfoQuery();
   const start =
     differenceInSeconds(Date.now(), parseISO(event.create_datetime)) * 20;
@@ -75,6 +81,7 @@ export default function EventAlertCard({ event, close, animate, fade }) {
   const handleCloseClick = (event) => {
     event.stopPropagation();
     setShowFade(false);
+    setPause(true);
     setTimeout(() => {
       close(null);
     }, 100);

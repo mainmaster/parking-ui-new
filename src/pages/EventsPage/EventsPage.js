@@ -78,6 +78,8 @@ const EventsPage = ({ onlyLog }) => {
   const [openForm, setOpenForm] = useState(false);
   const [eventsListScrolled, setEventsListScrolled] = useState(false);
   const events = useSelector((state) => state.events.events);
+  const filtered = useSelector((state) => state.events.filtered);
+  const [eventsList, setEventsList] = useState([]);
   const pages = useSelector((state) => state.events.pages);
   const currentPage = useSelector((state) => state.events.currentPage);
   const isLoading = useSelector((state) => state.events.isLoadingFetch);
@@ -155,11 +157,16 @@ const EventsPage = ({ onlyLog }) => {
 
   useEffect(() => {
     dispatch(eventsFetch());
-    if (window.innerWidth < BREAKPOINT_SM) {
-      setIsActiveModal(true);
-    }
     return () => dispatch(changeCurrentPage(1));
   }, []);
+
+  useEffect(() => {
+    if (filtered.length > 0) {
+      setEventsList(filtered);
+    } else {
+      setEventsList(events);
+    }
+  }, [events, filtered]);
 
   const changeMobileModal = () => {
     setIsActiveModalMobile(!isActiveModalMobile);
@@ -284,9 +291,9 @@ const EventsPage = ({ onlyLog }) => {
             onScroll={handleEventsListScroll}
           >
             <CarNumberFilterSpacer openForm={openForm} />
-            {events.length > 0 ? (
+            {eventsList.length > 0 ? (
               <>
-                {events.map((item, index) => (
+                {eventsList.map((item, index) => (
                   <LogEventCard
                     key={item.id}
                     event={item}
@@ -379,9 +386,9 @@ const EventsPage = ({ onlyLog }) => {
           {!onlyLog && <HeaderSpacer />}
           <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
 
-          {events.length > 0 ? (
+          {eventsList.length > 0 ? (
             <>
-              {events.map((item, index) => (
+              {eventsList.map((item, index) => (
                 <LogEventCard
                   key={item.id}
                   event={item}

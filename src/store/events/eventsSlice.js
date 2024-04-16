@@ -4,6 +4,7 @@ export const eventsSlice = createSlice({
   name: 'events',
   initialState: {
     events: [],
+    filtered: [],
     pages: 1,
     filters: {},
     currentPage: 1,
@@ -29,6 +30,12 @@ export const eventsSlice = createSlice({
     eventsChangePageFetch: (state, action) => {},
     openApFetch: (state, action) => {},
     openApByVehiclePlateFetch: (state, action) => {},
+    setFilteredEvents: (state, action) => {
+      return {
+        ...state,
+        filtered: action.payload
+      };
+    },
     getEventsSuccess: (state, action) => {
       return {
         ...state,
@@ -106,6 +113,7 @@ export const eventsSlice = createSlice({
 export const {
   eventsFetch,
   eventsOnlyFetch,
+  setFilteredEvents,
   getEventsSuccess,
   putEvent,
   changePages,

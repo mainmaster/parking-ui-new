@@ -4,20 +4,50 @@ import { useSelector } from 'react-redux';
 import { Stack, Slide, Fade } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { formatISO } from 'date-fns';
+import { formatISO, addHours } from 'date-fns';
 import { spacers } from '../../theme/spacers';
+import { useSwipeable } from 'react-swipeable';
 
 export default function EventManager() {
   const dataModal = useSelector((state) => state.events.dataModal);
   const events = useSelector((state) => state.events.events);
   //const [testEvents, setTestEvents] = useState([]);
   const [lastEvent, setLastEvent] = useState(null);
+  const [show, setShow] = useState(true);
   const [first, setFirst] = useState(null);
   const [second, setSecond] = useState(null);
   const [third, setThird] = useState(null);
   const [forth, setForth] = useState(null);
+  const [pause, setPause] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handlers = useSwipeable({
+    onSwipedUp: () => {
+      setShow(false);
+      setPause(true);
+    },
+    swipeDuration: 500,
+    preventScrollOnSwipe: true,
+    trackMouse: true
+  });
+
+  useEffect(() => {
+    if (!show) {
+      setTimeout(() => {
+        setFirst(null);
+        setShow(true);
+      }, 100);
+    }
+  }, [show]);
+
+  useEffect(() => {
+    if (pause) {
+      setTimeout(() => {
+        setPause(false);
+      }, 3000);
+    }
+  }, [pause]);
 
   //test of alerts
   // const [count, setCount] = useState(0);
@@ -43,27 +73,29 @@ export default function EventManager() {
     if (events.length > 0 && events[0] !== lastEvent) {
       //console.log('first event: ' + events[0].id);
       setLastEvent(events[0]);
-      if (first && !isMobile) {
-        if (second) {
-          if (third) {
-            if (!forth || forth.id !== third.id) {
-              setForth(third);
-              //console.log('forth: ' + third.id);
+      if (!pause) {
+        if (first && !isMobile) {
+          if (second) {
+            if (third) {
+              if (!forth || forth.id !== third.id) {
+                setForth(third);
+                //console.log('forth: ' + third.id);
+              }
+            }
+            if (!third || third.id !== second.id) {
+              setThird(second);
+              //console.log('third: ' + second.id);
             }
           }
-          if (!third || third.id !== second.id) {
-            setThird(second);
-            //console.log('third: ' + second.id);
+          if (!second || second.id !== first.id) {
+            setSecond(first);
+            //console.log('second: ' + first.id);
           }
         }
-        if (!second || second.id !== first.id) {
-          setSecond(first);
-          //console.log('second: ' + first.id);
+        if ((!first || first.id !== events[0].id) && lastEvent) {
+          setFirst(events[0]);
+          //console.log('first: ' + events[0].id);
         }
-      }
-      if ((!first || first.id !== events[0].id) && lastEvent) {
-        setFirst(events[0]);
-        //console.log('first: ' + events[0].id);
       }
     }
   }, [events]);
@@ -71,6 +103,7 @@ export default function EventManager() {
   return (
     <>
       <Stack
+        {...handlers}
         gap={'4px'}
         alignItems={'flex-end'}
         sx={{
@@ -82,12 +115,17 @@ export default function EventManager() {
         }}
       >
         {first && (
-          <EventAlertCard
-            key={first.id + formatISO(Date.now()) + 1}
-            event={first}
-            close={setFirst}
-            animate={true}
-          />
+          <Slide direction="down" in={show} appear={false} timeout={100}>
+            <div style={{ width: isMobile ? '100%' : 'inherit' }}>
+              <EventAlertCard
+                key={first.id + formatISO(Date.now()) + 1}
+                event={first}
+                close={setFirst}
+                animate={true}
+                setPause={setPause}
+              />
+            </div>
+          </Slide>
         )}
         {second && (
           <EventAlertCard
@@ -95,6 +133,7 @@ export default function EventManager() {
             event={second}
             close={setSecond}
             animate={false}
+            setPause={setPause}
           />
         )}
         {third && (
@@ -103,6 +142,7 @@ export default function EventManager() {
             event={third}
             close={setThird}
             animate={false}
+            setPause={setPause}
           />
         )}
         {forth && (
