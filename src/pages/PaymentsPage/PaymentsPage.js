@@ -6,15 +6,20 @@ import {
   paymentsChangePageFetch,
   changeCurrentPage
 } from 'store/payments/paymentsSlice';
+import { getPaymentsReport } from '../../api/payment';
 // Components
 import PaginationCustom from 'components/Pagination';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Styles
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Box, Stack, Typography } from '@mui/material';
+import { Button, AppBar, Box, Stack, Typography } from '@mui/material';
 import { colors } from '../../theme/colors';
-import { listStyle, listWithScrollStyle } from '../../theme/styles';
+import {
+  listStyle,
+  listWithScrollStyle,
+  closeButtonStyle
+} from '../../theme/styles';
 import PaymentFilter from '../../components/PaymentFilter/PaymentFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import PaymentsSpacer from './PaymentsSpacer';
@@ -23,6 +28,7 @@ import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogPaymentCard from '../../components/LogPaymentCard/LogPaymentCard';
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
+import { format, parseISO } from 'date-fns';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -51,6 +57,7 @@ const PaymentsPage = () => {
   const isLoading = useSelector((state) => state.payments.isLoadingFetch);
   const isError = useSelector((state) => state.payments.isErrorFetch);
   const totalPayment = useSelector((state) => state.payments.totalPayment);
+  const filters = useSelector((state) => state.payments.filters);
   const [paymentsListScrolled, setPaymentsListScrolled] = useState(false);
   const paymentsListRef = useRef(null);
   const theme = useTheme();
@@ -108,6 +115,29 @@ const PaymentsPage = () => {
     }
   };
 
+  const handleGetPaymentsReport = () => {
+    getPaymentsReport({ ...filters }).then((res) => {
+      // Create blob link to download
+      const url = URL.createObjectURL(res.data);
+      const link = document.createElement('a');
+      link.href = url;
+      const from = filters.createDateFrom
+        ? format(parseISO(filters.createDateFrom), 'yyyy-MM-dd')
+        : '';
+      const to = filters.createDateTo
+        ? format(parseISO(filters.createDateTo), 'yyyy-MM-dd')
+        : '';
+      const filename = `report_${from}_${to}.xlsx`;
+      link.setAttribute('download', filename);
+      // Append to html link element page
+      document.body.appendChild(link);
+      // Start download
+      link.click();
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
+    });
+  };
+
   return (
     <>
       {!isMobile && (
@@ -143,7 +173,22 @@ const PaymentsPage = () => {
               <Typography sx={titleTextStyle}>Оплаты</Typography>
               <Typography sx={totalTextStyle}>{totalString}</Typography>
             </Stack>
-            <PaymentFilter openForm={openForm} setOpenForm={setOpenForm} />
+            <Stack
+              direction={'row'}
+              justifyContent={'flex-end'}
+              sx={{ width: '100%' }}
+            >
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={closeButtonStyle}
+                onClick={handleGetPaymentsReport}
+              >
+                Выгрузить
+              </Button>
+              <PaymentFilter openForm={openForm} setOpenForm={setOpenForm} />
+            </Stack>
           </Stack>
         </AppBar>
       )}
@@ -175,7 +220,9 @@ const PaymentsPage = () => {
               }}
             >
               <Stack
-                justifyContent={'flex-start'}
+                direction={'row'}
+                gap={'16px'}
+                justifyContent={'space-between'}
                 sx={{
                   height: '66px',
                   width: '100%',
@@ -183,8 +230,26 @@ const PaymentsPage = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>Оплаты</Typography>
-                <Typography sx={mobileTotalTextStyle}>{totalString}</Typography>
+                <Stack
+                  justifyContent={'flex-start'}
+                  sx={{
+                    width: '100%'
+                  }}
+                >
+                  <Typography sx={titleTextStyle}>Оплаты</Typography>
+                  <Typography sx={mobileTotalTextStyle}>
+                    {totalString}
+                  </Typography>
+                </Stack>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={closeButtonStyle}
+                  onClick={handleGetPaymentsReport}
+                >
+                  Выгрузить
+                </Button>
               </Stack>
               <Box
                 sx={{

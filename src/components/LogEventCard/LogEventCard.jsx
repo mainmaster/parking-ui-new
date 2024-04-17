@@ -13,9 +13,12 @@ import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { useDispatch, useSelector } from 'react-redux';
 import eventButtonIcon from '../../assets/svg/log_event_button_icon.svg';
 import eventCarIcon from '../../assets/svg/log_event_car_icon.svg';
+import eventBarrierIcon from '../../assets/svg/log_event_barrier_icon.svg';
 import eventPlateIcon from '../../assets/svg/log_event_plate_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
+import eventCardIcon from '../../assets/svg/log_event_card_icon.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
 import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
 import { colors } from '../../theme/colors';
@@ -54,6 +57,11 @@ export default forwardRef(function LogEventCard(
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
+  let RURuble = new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'RUB'
+  });
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -154,13 +162,25 @@ export default forwardRef(function LogEventCard(
                 //     : () => {}
                 // }
               >
-                <img
-                  style={{
-                    width: 20
-                  }}
-                  src={eventCarIcon}
-                  alt="автомобиль"
-                />
+                {!event.is_recognition &&
+                event.event_code !== 1003 &&
+                event.event_code !== 1013 ? (
+                  <img
+                    style={{
+                      width: 24
+                    }}
+                    src={eventBarrierIcon}
+                    alt="шлагбаум"
+                  />
+                ) : (
+                  <img
+                    style={{
+                      width: 20
+                    }}
+                    src={eventCarIcon}
+                    alt="автомобиль"
+                  />
+                )}
               </IconButton>
             )}
           </Stack>
@@ -273,10 +293,10 @@ export default forwardRef(function LogEventCard(
             {dateString}
           </Typography>
         </Stack>
-        <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          {((event.car_brand && event.car_brand !== '') ||
-            typeText[event.access_status_code]) && (
-            <>
+        {((event.car_brand && event.car_brand !== '') ||
+          typeText[event.access_status_code]) && (
+          <>
+            <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
               <IconButton
                 disableRipple
                 sx={{
@@ -295,65 +315,104 @@ export default forwardRef(function LogEventCard(
                 />
               </IconButton>
               <Typography>{event.car_brand}</Typography>
-            </>
-          )}
-          <TypeAuto type={event.access_status_code} />
-        </Stack>
-        <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
-          {event.direction && (
+
+              <TypeAuto type={event.access_status_code} />
+            </Stack>
+          </>
+        )}
+        {event.access_point_description && (
+          <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
+            {event.direction && (
+              <img
+                style={{
+                  width: '18px'
+                }}
+                src={event.direction === 'in' ? eventInIcon : eventOutIcon}
+                alt={event.access_point_description}
+              />
+            )}
+            <Typography>{event.access_point_description}</Typography>
+          </Stack>
+        )}
+        {event.initiator && (
+          <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
             <img
               style={{
                 width: '18px'
               }}
-              src={event.direction === 'in' ? eventInIcon : eventOutIcon}
-              alt={event.access_point_description}
+              src={eventUserIcon}
+              alt={event.initiator}
             />
-          )}
-          <Typography>{event.access_point_description}</Typography>
-        </Stack>
-        <Stack
-          direction={'row'}
-          gap={'8px'}
-          alignItems={'center'}
-          justifyContent={'flex-start'}
-        >
-          {!event.is_recognition &&
-            (event.event_code === 1003 || event.event_code === 1033) && (
+            <Typography>{event.initiator}</Typography>
+          </Stack>
+        )}
+        {event.debt ? (
+          <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
+            <img
+              style={{
+                width: '18px'
+              }}
+              src={eventCardIcon}
+              alt={`Долг ${event.debt} руб`}
+            />
+            <Typography>{RURuble.format(event.debt)}</Typography>
+            <Typography sx={{ color: colors.element.secondary }}>
+              {event.event_code === 1026 ? 'долга обнулено' : 'долг'}
+            </Typography>
+          </Stack>
+        ) : null}
+        {(!event.is_recognition &&
+          (event.event_code === 1003 || event.event_code === 1033)) ||
+        event.access_status_code === '1004' ||
+        (event.debt &&
+          event.event_code !== 1026 &&
+          event.event_code !== 1027) ? (
+          <Stack
+            direction={'row'}
+            gap={'8px'}
+            alignItems={'center'}
+            justifyContent={'flex-start'}
+          >
+            {!event.is_recognition &&
+              (event.event_code === 1003 || event.event_code === 1033) && (
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={[positiveButtonStyle, { mt: '4px' }]}
+                  onClick={() =>
+                    dispatch(changeActiveOpenApModal(event.access_point))
+                  }
+                >
+                  Ввести номер
+                </Button>
+              )}
+            {event.access_status_code === '1004' && (
               <Button
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[positiveButtonStyle, { mt: '8px' }]}
-                onClick={() =>
-                  dispatch(changeActiveOpenApModal(event.access_point))
-                }
+                sx={[secondaryButtonStyle, { mt: '4px' }]}
               >
-                Ввести номер
+                Убрать из Чёрного списка
               </Button>
             )}
-          {event.access_status_code === '1004' && (
-            <Button
-              disableRipple
-              variant="contained"
-              fullWidth={false}
-              sx={[secondaryButtonStyle, { mt: '8px' }]}
-            >
-              Убрать из Чёрного списка
-            </Button>
-          )}
-          {event.debt && (
-            <Button
-              disableRipple
-              disabled={debtPaid}
-              variant="contained"
-              fullWidth={false}
-              sx={[secondaryButtonStyle, { mt: '8px' }]}
-              onClick={handleResetDebtClick}
-            >
-              Обнулить долг
-            </Button>
-          )}
-        </Stack>
+            {event.debt &&
+              event.event_code !== 1026 &&
+              event.event_code !== 1027 && (
+                <Button
+                  disableRipple
+                  disabled={debtPaid}
+                  variant="contained"
+                  fullWidth={false}
+                  sx={[secondaryButtonStyle, { mt: '4px' }]}
+                  onClick={handleResetDebtClick}
+                >
+                  Обнулить долг
+                </Button>
+              )}
+          </Stack>
+        ) : null}
       </Stack>
     </Box>
   );

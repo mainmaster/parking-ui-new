@@ -249,6 +249,8 @@ const Settings = () => {
     mins_to_leave_parking: 0,
     delay_before_checking_confirmation_events: 0,
     relay_closing_time: 0,
+    reentry_without_free_time: false,
+    minutes_for_prohibit_reentry_without_free_time: 0,
     entry_on_request_only: false,
     release_all_sessions_not_found_without_payment: false,
     release_all_sessions_not_found_with_payment_amount: 0,
@@ -2140,6 +2142,68 @@ const Settings = () => {
                                 id="relay_closing_time"
                                 name="relay_closing_time"
                                 value={globalSettings.relay_closing_time}
+                                onChange={handleGlobalSettings}
+                              />
+                            </Stack>
+                            <FormGroup>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={Boolean(
+                                      globalSettings.reentry_without_free_time
+                                    )}
+                                    onChange={handleGlobalSettings}
+                                    name="reentry_without_free_time"
+                                    sx={switchInputStyle}
+                                  />
+                                }
+                                label="Повторный проезд без бесплатного времени"
+                                labelPlacement="end"
+                                sx={{
+                                  m: 0,
+                                  justifyContent: 'flex-start',
+                                  gap: '16px',
+                                  pl: '12px'
+                                }}
+                              />
+                            </FormGroup>
+                            <Stack>
+                              <InputLabel
+                                htmlFor="minutes_for_prohibit_reentry_without_free_time"
+                                sx={[
+                                  labelStyle,
+                                  {
+                                    color:
+                                      globalSettings.reentry_without_free_time
+                                        ? colors.element.primary
+                                        : colors.element.inactive
+                                  }
+                                ]}
+                              >
+                                Время для зачёта заезда как повторного (мин)
+                              </InputLabel>
+                              <CarNumberInput
+                                fullWidth
+                                sx={{
+                                  borderColor:
+                                    globalSettings.reentry_without_free_time
+                                      ? colors.element.primary
+                                      : colors.element.inactive
+                                }}
+                                InputProps={{
+                                  type: 'number',
+                                  disableUnderline: true,
+                                  sx: { paddingLeft: '12px' }
+                                }}
+                                variant="filled"
+                                disabled={
+                                  !globalSettings.reentry_without_free_time
+                                }
+                                id="minutes_for_prohibit_reentry_without_free_time"
+                                name="minutes_for_prohibit_reentry_without_free_time"
+                                value={
+                                  globalSettings.minutes_for_prohibit_reentry_without_free_time
+                                }
                                 onChange={handleGlobalSettings}
                               />
                             </Stack>
