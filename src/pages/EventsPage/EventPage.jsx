@@ -4,8 +4,9 @@ import { NavLink, useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
 import { resetDebtRequest } from '../../api/sessions';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
+import FooterSpacer from '../../components/Header/FooterSpacer';
 import Lightbox from 'react-18-image-lightbox';
-import { Spinner, Accordion } from 'react-bootstrap';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { formatDate } from 'utils';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -255,7 +256,7 @@ export const EventPage = () => {
         onScroll={handleEventListScroll}
       >
         <EventManager />
-        {loading && <Spinner />}
+        {loading && <SpinerLogo />}
         {errorEvent && errorContent}
         {event && (
           <>
@@ -311,7 +312,9 @@ export const EventPage = () => {
               >
                 <Typography sx={labelTextStyle}>Госномер</Typography>
                 {event.vehicle_plate.full_plate !== '' && (
-                  <CarNumberCard carNumber={event.vehicle_plate} isTable />
+                  <Stack direction={'row'}>
+                    <CarNumberCard carNumber={event.vehicle_plate} isTable />
+                  </Stack>
                 )}
               </Stack>
               <Stack
@@ -358,7 +361,9 @@ export const EventPage = () => {
                 gap={isMobile ? '4px' : '16px'}
               >
                 <Typography sx={labelTextStyle}>Список авто</Typography>
-                <TypeAuto type={event.access_status_code} />
+                <Stack direction={'row'}>
+                  <TypeAuto type={event.access_status_code} />
+                </Stack>
               </Stack>
               <Stack
                 direction={isMobile ? 'column' : 'row'}
@@ -546,6 +551,7 @@ export const EventPage = () => {
             }}
           />
         )}
+        <FooterSpacer />
       </Stack>
     </>
   );

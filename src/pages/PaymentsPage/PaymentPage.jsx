@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
-import { Spinner } from 'react-bootstrap';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import { useDispatch, useSelector } from 'react-redux';
 import { paymentSelectFetch } from '../../store/payments/paymentsSlice';
@@ -65,7 +65,7 @@ export const PaymentPage = () => {
         format(parseISO(payment.create_datetime), 'dd.MM.yyyy HH:mm:ss')
       );
     }
-  }, []);
+  }, [payment]);
 
   const handleCopyLinkClick = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -108,7 +108,7 @@ export const PaymentPage = () => {
         ]}
       >
         <EventManager />
-        {loading && <Spinner />}
+        {loading && <SpinerLogo />}
         {errorLoad && errorContent}
         <Stack
           direction={'row'}

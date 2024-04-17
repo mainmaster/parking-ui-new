@@ -19,7 +19,7 @@ import { colors } from '../../theme/colors';
 import {
   listStyle,
   listWithScrollStyle,
-  closeButtonStyle
+  secondaryButtonStyle
 } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
@@ -131,19 +131,6 @@ const SessionsPage = () => {
               <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Stack>
           </Stack>
-          {userType === 'admin' && (
-            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
-              <Button
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={closeButtonStyle}
-                onClick={handleCloseSessionsClick}
-              >
-                Закрыть сессии старше даты
-              </Button>
-            </Stack>
-          )}
         </AppBar>
       )}
       <Stack
@@ -159,6 +146,7 @@ const SessionsPage = () => {
       >
         <EventManager />
         <SessionsSpacer />
+
         {isMobile && (
           <>
             <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
@@ -191,7 +179,7 @@ const SessionsPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth
-                  sx={closeButtonStyle}
+                  sx={secondaryButtonStyle}
                   onClick={handleCloseSessionsClick}
                 >
                   Закрыть сессии старше даты
@@ -199,6 +187,19 @@ const SessionsPage = () => {
               </Box>
             )}
           </>
+        )}
+        {!isMobile && userType === 'admin' && (
+          <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={secondaryButtonStyle}
+              onClick={handleCloseSessionsClick}
+            >
+              Закрыть сессии старше даты
+            </Button>
+          </Stack>
         )}
 
         {sessions.length > 0 ? (

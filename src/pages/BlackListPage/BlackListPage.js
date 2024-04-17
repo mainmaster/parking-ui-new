@@ -337,7 +337,7 @@ const BlackListPage = () => {
                   src={blackListEmptyIcon}
                   alt="Нет машин в чёрном списке"
                 />
-                <Typography sx={titleTextStyle}>
+                <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
                   {currentTab === 0
                     ? 'Нет машин в чёрном списке'
                     : 'Нет машин с истёкшим запретом на доступ'}

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 //import {Offcanvas, Navbar, Container} from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import { icons } from './utils';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { getUserData } from '../../api/auth/login';
@@ -134,6 +134,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const [userData, setUserData] = useState(null);
   const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [more, setMore] = useState(false);
+  const [moreListScrolled, setMoreListScrolled] = useState(false);
   const [adminFullMenu, setAdminFullMenu] = useState(false);
   const [firstMenuMouseOut, setFirstMenuMouseOut] = useState(true);
   const [secondMenuMouseOut, setSecondMenuMouseOut] = useState(true);
@@ -143,8 +144,20 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const dispatch = useDispatch();
+  const moreListRef = useRef(null);
 
   document.addEventListener('mouseleave', () => setAdminFullMenu(false));
+
+  const handleMoreListScroll = () => {
+    if (moreListRef.current) {
+      const { scrollTop } = moreListRef.current;
+      if (scrollTop > 0) {
+        setMoreListScrolled(true);
+      } else if (moreListScrolled) {
+        setMoreListScrolled(false);
+      }
+    }
+  };
 
   useEffect(() => {
     setCurrentHref(location.pathname);
@@ -347,7 +360,13 @@ const Header = ({ title, userType, isHideMenu = false }) => {
           </AppBar>
           {more && (
             <>
-              <AppBar position="absolute" sx={mobileMoreHeaderStyle}>
+              <AppBar
+                position="absolute"
+                sx={[
+                  mobileMoreHeaderStyle,
+                  { boxShadow: !moreListScrolled && 'none' }
+                ]}
+              >
                 <Stack
                   direction={'row'}
                   justifyContent={'space-between'}
@@ -374,7 +393,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                   </Button>
                 </Stack>
               </AppBar>
-              <Stack sx={mobileMoreListStyle}>
+              <Stack
+                ref={moreListRef}
+                sx={mobileMoreListStyle}
+                onScroll={handleMoreListScroll}
+              >
                 {parkingData && (
                   <Stack gap={'4px'}>
                     <Stack direction={'row'} gap={'8px'} alignItems={'center'}>

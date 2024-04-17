@@ -11,9 +11,6 @@ export default function SessionsSpacer() {
   return (
     <>
       <Box sx={{ minHeight: isMobile ? 0 : spacers.sessions }}></Box>
-      {userType === 'admin' && (
-        <Box sx={{ minHeight: isMobile ? 0 : spacers.sessions_admin }}></Box>
-      )}
     </>
   );
 }

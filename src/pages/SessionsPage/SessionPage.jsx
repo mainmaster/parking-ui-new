@@ -3,7 +3,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
 import Lightbox from 'react-18-image-lightbox';
-import { Spinner } from 'react-bootstrap';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
 import {
@@ -182,7 +182,7 @@ export const SessionPage = () => {
         onScroll={handleSessionListScroll}
       >
         <EventManager />
-        {loading && <Spinner />}
+        {loading && <SpinerLogo />}
         {errorLoad && errorContent}
         {session && session.events.length > 0 && (
           <>

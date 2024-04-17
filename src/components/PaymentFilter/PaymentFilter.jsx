@@ -512,7 +512,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="is-refund-select" sx={labelStyle}>
-                Тип оплаты
+                Возврат
               </InputLabel>
               <Select
                 id="is-refund-select"
