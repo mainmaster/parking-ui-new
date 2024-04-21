@@ -277,6 +277,18 @@ const PaymentsPage = () => {
               {payments.map((item, index) => (
                 <LogPaymentCard key={item.id} payment={item} />
               ))}
+              {itemsInRow > 0 &&
+                [...Array(itemsInRow)].map((value, index) => (
+                  <Box
+                    id={index + 1}
+                    key={index}
+                    sx={{
+                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                      minWidth: `${ITEM_MIN_WIDTH}px`,
+                      maxWidth: `${ITEM_MAX_WIDTH}px`
+                    }}
+                  />
+                ))}
             </Box>
             <Box
               sx={{
@@ -290,18 +302,6 @@ const PaymentsPage = () => {
                   currentPage={currentPage}
                 />
               )}
-              {itemsInRow > 0 &&
-                [...Array(itemsInRow)].map((value, index) => (
-                  <Box
-                    id={index + 1}
-                    key={index}
-                    sx={{
-                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-                      minWidth: `${ITEM_MIN_WIDTH}px`,
-                      maxWidth: `${ITEM_MAX_WIDTH}px`
-                    }}
-                  />
-                ))}
             </Box>
           </>
         ) : (
