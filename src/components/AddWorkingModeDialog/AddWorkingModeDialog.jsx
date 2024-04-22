@@ -168,7 +168,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
   }, [workingModeEdit]);
 
   useEffect(() => {
-    if (workingModeEdit) {
+    if (workingModeEdit && !_.isEmpty(workingModeEdit)) {
       setPassMode(workingModeEdit.pass_mode);
       setTimeFrom(
         setHours(
@@ -187,7 +187,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
       setTimeFrom(setHours(setMinutes(new Date(), 0), 0));
       setTimeTo(setHours(setMinutes(new Date(), 0), 0));
     }
-  }, [workingModeEdit]);
+  }, [workingModeEdit, edit]);
 
   const validationSchema = useMemo(() => {
     switch (passMode) {
@@ -430,69 +430,77 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
               }
             />
           </Stack>
-          <Stack>
-            <InputLabel htmlFor="pass_mode" sx={labelStyle}>
-              Пропускной режим
-            </InputLabel>
-            <Select
-              id="pass_mode"
-              name="pass_mode"
-              displayEmpty={true}
-              value={passMode}
-              onChange={handlePassModeChange}
-              onBlur={formik.handleBlur}
-              variant="filled"
-              IconComponent={(props) => (
-                <IconButton
-                  disableRipple
-                  {...props}
-                  sx={{ top: `${0} !important`, right: `4px !important` }}
+          {(passMode || _.isEmpty(workingModeEdit)) && (
+            <>
+              <Stack>
+                <InputLabel htmlFor="pass_mode" sx={labelStyle}>
+                  Пропускной режим
+                </InputLabel>
+                <Select
+                  id="pass_mode"
+                  name="pass_mode"
+                  displayEmpty={true}
+                  value={passMode}
+                  onChange={handlePassModeChange}
+                  onBlur={formik.handleBlur}
+                  variant="filled"
+                  IconComponent={(props) => (
+                    <IconButton
+                      disableRipple
+                      {...props}
+                      sx={{ top: `${0} !important`, right: `4px !important` }}
+                    >
+                      <img
+                        style={{
+                          width: '24px'
+                        }}
+                        src={selectIcon}
+                        alt="select"
+                      />
+                    </IconButton>
+                  )}
+                  sx={selectMenuStyle}
+                  renderValue={(selected) => {
+                    const selectedName = passModeOptions.find(
+                      (item) => item.value === selected
+                    );
+                    return (
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500 }}
+                      >
+                        {selectedName?.name}
+                      </Typography>
+                    );
+                  }}
+                  error={
+                    formik.touched.pass_mode && Boolean(formik.errors.pass_mode)
+                  }
                 >
-                  <img
-                    style={{
-                      width: '24px'
-                    }}
-                    src={selectIcon}
-                    alt="select"
-                  />
-                </IconButton>
-              )}
-              sx={selectMenuStyle}
-              renderValue={(selected) => {
-                const selectedName = passModeOptions.find(
-                  (item) => item.value === selected
-                );
-                return (
-                  <Typography component={'h5'} noWrap sx={{ fontWeight: 500 }}>
-                    {selectedName?.name}
-                  </Typography>
-                );
-              }}
-              error={
-                formik.touched.pass_mode && Boolean(formik.errors.pass_mode)
-              }
-            >
-              <MenuItem value="">
-                <em> </em>
-              </MenuItem>
-              {passModeOptions.map((m) => (
-                <MenuItem
-                  key={m.name}
-                  id={m.name}
-                  selected={m.value === formik.values.pass_mode}
-                  value={m.value}
-                >
-                  <Typography
-                    component={'h5'}
-                    noWrap
-                    sx={{ fontWeight: 500, p: 0 }}
-                  >
-                    {m.name}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Select>
-          </Stack>
+                  <MenuItem value="">
+                    <em> </em>
+                  </MenuItem>
+                  {passModeOptions.map((m) => (
+                    <MenuItem
+                      key={m.name}
+                      id={m.name}
+                      selected={m.value === formik.values.pass_mode}
+                      value={m.value}
+                    >
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500, p: 0 }}
+                      >
+                        {m.name}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Stack>
+            </>
+          )}
 
           {passMode !== '' && passMode !== 'closed' && (
             <Stack>
@@ -668,42 +676,46 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           )}
           {(passMode === 'pay_by_hour' || passMode === 'closed') && (
             <>
-              <Stack>
-                <InputLabel htmlFor="timeFrom" sx={labelStyle}>
-                  Время от (часов и минут)
-                </InputLabel>
-                <TimeField
-                  id="timeFrom"
-                  value={timeFrom}
-                  format={'HH:mm'}
-                  onChange={handleTimeFromChange}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle,
-                      placeholder: '00:00'
-                    }
-                  }}
-                />
-              </Stack>
-              <Stack>
-                <InputLabel htmlFor="timeTo" sx={labelStyle}>
-                  Время до (часов и минут)
-                </InputLabel>
-                <TimeField
-                  id="timeTo"
-                  value={timeTo}
-                  format={'HH:mm'}
-                  onChange={handleTimeToChange}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle,
-                      placeholder: '00:00'
-                    }
-                  }}
-                />
-              </Stack>
+              {timeFrom && (
+                <Stack>
+                  <InputLabel htmlFor="timeFrom" sx={labelStyle}>
+                    Время от (часов и минут)
+                  </InputLabel>
+                  <TimeField
+                    id="timeFrom"
+                    value={timeFrom}
+                    format={'HH:mm'}
+                    onChange={handleTimeFromChange}
+                    slotProps={{
+                      textField: {
+                        variant: 'filled',
+                        sx: DateInputStyle,
+                        placeholder: '00:00'
+                      }
+                    }}
+                  />
+                </Stack>
+              )}
+              {timeTo && (
+                <Stack>
+                  <InputLabel htmlFor="timeTo" sx={labelStyle}>
+                    Время до (часов и минут)
+                  </InputLabel>
+                  <TimeField
+                    id="timeTo"
+                    value={timeTo}
+                    format={'HH:mm'}
+                    onChange={handleTimeToChange}
+                    slotProps={{
+                      textField: {
+                        variant: 'filled',
+                        sx: DateInputStyle,
+                        placeholder: '00:00'
+                      }
+                    }}
+                  />
+                </Stack>
+              )}
             </>
           )}
 
