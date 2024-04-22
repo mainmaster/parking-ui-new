@@ -51,7 +51,7 @@ export const Home = () => {
       address = address.replace('http:', 'ws:');
     }
 
-    if (parkingData && !ws.current) {
+    if (parkingData && !ws.current && parkingData?.userType !== 'renter') {
       dispatch(setParkingUserType(parkingData.userType));
       ws.current = new WebSocket(
         address + `/wsEvents?parkingID=${parkingData.parkingID}`

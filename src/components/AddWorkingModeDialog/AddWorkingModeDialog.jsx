@@ -140,17 +140,31 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
   const isError = useSelector((state) => state.workingModes.isErrorFetch);
 
   const defaultValues = useMemo(() => {
-    return {
-      description: workingModeEdit?.description || '',
-      pass_mode: workingModeEdit?.pass_mode || '',
-      price: workingModeEdit?.price || '',
-      entry_fee: workingModeEdit?.entry_fee || '',
-      transit_block_time_min: workingModeEdit?.transit_block_time_min || '',
-      free_time_min: workingModeEdit?.free_time_min || '',
-      interval: workingModeEdit?.interval || '',
-      day_counts_from_mins: workingModeEdit?.day_counts_from_mins || '',
-      number_of_first_mins: workingModeEdit?.number_of_first_mins || ''
-    };
+    if (workingModeEdit) {
+      return {
+        description: workingModeEdit.description,
+        pass_mode: workingModeEdit.pass_mode,
+        price: workingModeEdit.price,
+        entry_fee: workingModeEdit.entry_fee,
+        transit_block_time_min: workingModeEdit.transit_block_time_min,
+        free_time_min: workingModeEdit.free_time_min,
+        interval: workingModeEdit.interval,
+        day_counts_from_mins: workingModeEdit.day_counts_from_mins,
+        number_of_first_mins: workingModeEdit.number_of_first_mins
+      };
+    } else {
+      return {
+        description: '',
+        pass_mode: '',
+        price: '',
+        entry_fee: '',
+        transit_block_time_min: '',
+        free_time_min: '',
+        interval: '',
+        day_counts_from_mins: '',
+        number_of_first_mins: ''
+      };
+    }
   }, [workingModeEdit]);
 
   useEffect(() => {
@@ -168,6 +182,10 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           workingModeEdit.time_gte_hour
         )
       );
+    } else {
+      setPassMode('');
+      setTimeFrom(setHours(setMinutes(new Date(), 0), 0));
+      setTimeTo(setHours(setMinutes(new Date(), 0), 0));
     }
   }, [workingModeEdit]);
 
@@ -307,8 +325,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
   };
 
   const handleCloseDialog = () => {
-    resetHandle();
     handleClose();
+    resetHandle();
   };
 
   const resetHandle = () => {
@@ -419,7 +437,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             <Select
               id="pass_mode"
               name="pass_mode"
-              displayEmpty
+              displayEmpty={true}
               value={passMode}
               onChange={handlePassModeChange}
               onBlur={formik.handleBlur}
@@ -698,7 +716,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>
-          {passMode === '' && (
+          {show && passMode === '' && (
             <Typography
               sx={{
                 width: '100%',
