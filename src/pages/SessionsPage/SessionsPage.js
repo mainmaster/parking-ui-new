@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
@@ -9,6 +10,8 @@ import {
   sessionsChangePageFetch,
   changeCurrentPage
 } from 'store/sessions/sessionsSlice';
+import { getUserData } from '../../api/auth/login';
+import { useSnackbar } from 'notistack';
 // Components
 import PaginationCustom from 'components/Pagination';
 // Constants
@@ -37,20 +40,76 @@ const titleTextStyle = {
   fontWeight: 500
 };
 
+const initialAccessOptions = {
+  disableResetDuty: false,
+  disableCloseSession: false,
+  disableCloseSessionBeforeDate: false
+};
+
 const SessionsPage = () => {
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const sessions = useSelector((state) => state.sessions.sessions);
   const pages = useSelector((state) => state.sessions.pages);
   const currentPage = useSelector((state) => state.sessions.currentPage);
   const isLoading = useSelector((state) => state.sessions.isLoadingFetch);
   const isError = useSelector((state) => state.sessions.isErrorFetch);
+  const [userData, setUserData] = useState(null);
   const userType = useSelector((state) => state.parkingInfo.userType);
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [openCloseSessionsDialog, setOpenCloseSessionsDialog] = useState(false);
+  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
+  const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  useLayoutEffect(() => {
+    if (currentHref !== '/login' && currentHref !== '/registration') {
+      getUserData()
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((e) => {
+          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
+        });
+    }
+  }, [currentHref]);
+
+  useEffect(() => {
+    if (userData && userType === 'operator') {
+      let options = initialAccessOptions;
+      if (
+        userData.operator &&
+        'access_to_close_session' in userData.operator &&
+        userData.operator.access_to_close_session === true
+      ) {
+        options = { ...options, disableCloseSession: true };
+      } else {
+        options = { ...options, disableCloseSession: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_close_sessions_before_date' in userData.operator &&
+        userData.operator.access_to_close_sessions_before_date === true
+      ) {
+        options = { ...options, disableCloseSessionBeforeDate: false };
+      } else {
+        options = { ...options, disableCloseSessionBeforeDate: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_reset_duty_session' in userData.operator &&
+        userData.operator.access_to_reset_duty_session === true
+      ) {
+        options = { ...options, disableResetDuty: true };
+      } else {
+        options = { ...options, disableResetDuty: true };
+      }
+      setAccessOptions(options);
+    }
+  }, [userType, userData]);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -164,7 +223,9 @@ const SessionsPage = () => {
             >
               <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Box>
-            {userType === 'admin' && (
+            {(userType === 'admin' ||
+              (userType === 'operator' &&
+                accessOptions.disableCloseSessionBeforeDate === false)) && (
               <Box
                 sx={{
                   px: '16px',
@@ -188,19 +249,22 @@ const SessionsPage = () => {
             )}
           </>
         )}
-        {!isMobile && userType === 'admin' && (
-          <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
-            <Button
-              disableRipple
-              variant="contained"
-              fullWidth={false}
-              sx={secondaryButtonStyle}
-              onClick={handleCloseSessionsClick}
-            >
-              Закрыть сессии старше даты
-            </Button>
-          </Stack>
-        )}
+        {!isMobile &&
+          (userType === 'admin' ||
+            (userType === 'operator' &&
+              accessOptions.disableCloseSessionBeforeDate === false)) && (
+            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={secondaryButtonStyle}
+                onClick={handleCloseSessionsClick}
+              >
+                Закрыть сессии старше даты
+              </Button>
+            </Stack>
+          )}
 
         {sessions.length > 0 ? (
           <>
@@ -216,6 +280,7 @@ const SessionsPage = () => {
                   key={item.id}
                   session={item}
                   onClickImage={changeActiveImageModal}
+                  accessOptions={accessOptions}
                 />
               ))}
             </Box>

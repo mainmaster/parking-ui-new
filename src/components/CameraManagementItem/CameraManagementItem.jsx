@@ -53,7 +53,10 @@ const CameraMessageInput = styled(TextField)(({ theme }) => ({
     backgroundColor: 'transparent',
     paddingRight: 0,
     paddingLeft: '12px',
-    '&:hover': { backgroundColor: 'transparent' }
+    '&:hover': { backgroundColor: 'transparent !important' },
+    '& .Mui-disabled': {
+      backgroundColor: 'transparent !important'
+    }
   },
   '& .MuiFilledInput-input': {
     backgroundColor: colors.surface.low,
@@ -67,7 +70,8 @@ export default function CameraManagementItem({
   camera,
   src,
   titlesLed,
-  setTitlesLed
+  setTitlesLed,
+  accessOptions
 }) {
   const [titlesInChange, setTitlesInChange] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -203,27 +207,29 @@ export default function CameraManagementItem({
             <Typography sx={{ fontWeight: 500 }}>
               {titlesLed[`access_point${camera.id}`]?.line2 || ''}
             </Typography>
-            <IconButton
-              disableRipple
-              aria-label="clear"
-              onClick={handleClearMessage}
-              sx={{
-                position: 'absolute',
-                top: '-14px',
-                right: '-14px'
-              }}
-            >
-              <img
-                style={{
-                  height: 12,
-                  backgroundColor: colors.surface.low,
-                  borderRadius: '50%',
-                  border: `1px solid ${colors.outline.surface}`
+            {!accessOptions.disableClearLED && (
+              <IconButton
+                disableRipple
+                aria-label="clear"
+                onClick={handleClearMessage}
+                sx={{
+                  position: 'absolute',
+                  top: '-14px',
+                  right: '-14px'
                 }}
-                src={cameraClearIcon}
-                alt="Clear message"
-              />
-            </IconButton>
+              >
+                <img
+                  style={{
+                    height: 12,
+                    backgroundColor: colors.surface.low,
+                    borderRadius: '50%',
+                    border: `1px solid ${colors.outline.surface}`
+                  }}
+                  src={cameraClearIcon}
+                  alt="Clear message"
+                />
+              </IconButton>
+            )}
           </Box>
           {currentEvent && (
             <Box
@@ -311,6 +317,7 @@ export default function CameraManagementItem({
           </Stack>
           <Button
             disableRipple
+            disabled={accessOptions.disableOpenAP}
             variant="contained"
             fullWidth={false}
             sx={openButtonStyle}
@@ -321,6 +328,7 @@ export default function CameraManagementItem({
           {!isMobile && (
             <Button
               disableRipple
+              disabled={accessOptions.disableOpenAP}
               variant="contained"
               fullWidth={false}
               sx={[positiveButtonStyle, { flexGrow: 1, minWidth: '130px' }]}
@@ -334,6 +342,7 @@ export default function CameraManagementItem({
           <Stack direction={'row'} gap={'8px'}>
             <Button
               disableRipple
+              disabled={accessOptions.disableOpenAP}
               variant="contained"
               fullWidth={false}
               sx={[positiveButtonStyle, { flexGrow: 1 }]}
@@ -343,6 +352,7 @@ export default function CameraManagementItem({
             </Button>
             <Button
               disableRipple
+              disabled={accessOptions.disableCloseAP}
               variant="contained"
               fullWidth={false}
               sx={closeButtonStyle}
@@ -356,6 +366,7 @@ export default function CameraManagementItem({
           {!isMobile && (
             <Button
               disableRipple
+              disabled={accessOptions.disableCloseAP}
               variant="contained"
               fullWidth={false}
               sx={closeButtonStyle}
@@ -366,6 +377,7 @@ export default function CameraManagementItem({
           )}
           <Button
             disableRipple
+            disabled={accessOptions.disableWorkAP}
             variant="contained"
             fullWidth={false}
             sx={[autoButtonStyle, { minWidth: '122.5px' }]}
@@ -382,6 +394,7 @@ export default function CameraManagementItem({
             sx={{ flexGrow: 2 }}
           >
             <CameraMessageInput
+              disabled={accessOptions.disableLEDMessage}
               fullWidth
               InputProps={{
                 disableUnderline: true,

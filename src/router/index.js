@@ -22,7 +22,6 @@ import ControllersPage from 'pages/ControllersPage';
 import LedPage from 'pages/LedPage';
 import Settings from 'pages/Settings/Settings';
 import { Applications } from 'pages/Applications/Applications';
-import { Renters } from 'pages/Renters/Renters';
 import { Operators } from 'pages/Operators/Operators';
 import { Terminals } from 'pages/Terminals/Terminals';
 import { EventPage } from 'pages/EventsPage/EventPage';
@@ -55,7 +54,6 @@ const router = createBrowserRouter(
           <Route path=":id" element={<PaymentPage />} />
         </Route>
 
-        <Route path="renters" element={<Renters />} />
         <Route path="requests" element={<Applications />} />
         <Route path="auto-park/*" element={<CarParkPage />} />
         <Route path="black-list/*" element={<BlackListPage />} />
@@ -65,7 +63,7 @@ const router = createBrowserRouter(
         <Route path="controllers" element={<ControllersPage />} />
         <Route path="led" element={<LedPage />} />
         <Route path="settings" element={<Settings />} />
-        <Route path="operator" element={<Operators />} />
+        <Route path="users/*" element={<Operators />} />
         <Route path="terminals" element={<Terminals />} />
         <Route path="search-logs" element={<SearchLogsPage />} />
       </Route>

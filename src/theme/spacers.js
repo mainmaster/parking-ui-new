@@ -7,6 +7,7 @@ export const spacers = {
   sessions_admin: '40px',
   carpark: '106px',
   carpark_mobile: '162px',
+  operator: '106px',
   applications: '64px',
   applications_mobile: '120px',
   payments: '64px',

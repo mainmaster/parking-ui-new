@@ -168,14 +168,7 @@ export const icons = [
     more: MoreWifiIcon
   },
   {
-    route: '/operator',
-    icon: IdIcon,
-    selected: IdIconSelected,
-    height: 18,
-    more: MoreIdIcon
-  },
-  {
-    route: '/renters',
+    route: '/users/operators',
     icon: UsersIcon,
     selected: UsersIconSelected,
     height: 22,

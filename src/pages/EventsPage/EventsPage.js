@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
 // Components
 import Cameras from 'components/Cameras';
@@ -19,6 +19,8 @@ import {
   changeCurrentPage,
   setSelectedEventId
 } from 'store/events/eventsSlice';
+import { getUserData } from '../../api/auth/login';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -69,14 +71,27 @@ const titleTextStyle = {
   lineSize: '1.75rem'
 };
 
+const initialAccessOptions = {
+  disableEvents: false,
+  disableOpenAP: false,
+  disableCloseAP: false,
+  disableWorkAP: false,
+  disableLEDMessage: false,
+  disableClearLED: false,
+  disableResetDuty: false
+};
+
 const EventsPage = ({ onlyLog }) => {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [isError, setIsError] = useState(false);
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
   const [mobileCameras, setMobileCameras] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [eventsListScrolled, setEventsListScrolled] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const events = useSelector((state) => state.events.events);
   const filtered = useSelector((state) => state.events.filtered);
   const [eventsList, setEventsList] = useState([]);
@@ -90,8 +105,92 @@ const EventsPage = ({ onlyLog }) => {
   const eventsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
+  const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  useLayoutEffect(() => {
+    if (currentHref !== '/login' && currentHref !== '/registration') {
+      getUserData()
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((e) => {
+          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
+        });
+    }
+  }, [currentHref]);
+
+  useEffect(() => {
+    if (userData && userType === 'operator') {
+      let options = initialAccessOptions;
+      if (
+        userData.operator &&
+        'access_to_events' in userData.operator &&
+        userData.operator.access_to_events === true
+      ) {
+        options = { ...options, disableEvents: false };
+      } else {
+        options = { ...options, disableEvents: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_open_access_point' in userData.operator &&
+        userData.operator.access_to_open_access_point === true
+      ) {
+        options = { ...options, disableOpenAP: false };
+      } else {
+        options = { ...options, disableOpenAP: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_close_access_point' in userData.operator &&
+        userData.operator.access_to_close_access_point === true
+      ) {
+        options = { ...options, disableCloseAP: false };
+      } else {
+        options = { ...options, disableCloseAP: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_working_mode_access_point' in userData.operator &&
+        userData.operator.access_to_working_mode_access_point === true
+      ) {
+        options = { ...options, disableWorkAP: false };
+      } else {
+        options = { ...options, disableWorkAP: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_send_message_led_board' in userData.operator &&
+        userData.operator.access_to_send_message_led_board === true
+      ) {
+        options = { ...options, disableLEDMessage: false };
+      } else {
+        options = { ...options, disableLEDMessage: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_clear_led_board' in userData.operator &&
+        userData.operator.access_to_clear_led_board === true
+      ) {
+        options = { ...options, disableClearLED: false };
+      } else {
+        options = { ...options, disableClearLED: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_reset_duty_session' in userData.operator &&
+        userData.operator.access_to_reset_duty_session === true
+      ) {
+        options = { ...options, disableResetDuty: false };
+      } else {
+        options = { ...options, disableResetDuty: true };
+      }
+      setAccessOptions(options);
+    }
+  }, [userType, userData]);
 
   useEffect(() => {
     if (eventId) {
@@ -156,7 +255,9 @@ const EventsPage = ({ onlyLog }) => {
   };
 
   useEffect(() => {
-    dispatch(eventsFetch());
+    if (!accessOptions.disableEvents) {
+      dispatch(eventsFetch());
+    }
     return () => dispatch(changeCurrentPage(1));
   }, []);
 
@@ -250,8 +351,10 @@ const EventsPage = ({ onlyLog }) => {
           </Box>
         </AppBar>
       )}
-      {!onlyLog && ((isMobile && mobileCameras) || !isMobile) && <Cameras />}
-      {!isMobile && (
+      {!onlyLog && ((isMobile && mobileCameras) || !isMobile) && (
+        <Cameras accessOptions={accessOptions} />
+      )}
+      {!isMobile && !accessOptions.disableEvents && (
         <Drawer
           sx={{
             width: spacers.events,
@@ -301,6 +404,7 @@ const EventsPage = ({ onlyLog }) => {
                     // onHoverImageButton={handleImageButtonHover}
                     selected={item.id === selectedEventId}
                     ref={addToRefs}
+                    accessOptions={accessOptions}
                   />
                 ))}
                 <Box
@@ -376,7 +480,7 @@ const EventsPage = ({ onlyLog }) => {
           )}
         </Drawer>
       )}
-      {isMobile && (!mobileCameras || onlyLog) && (
+      {isMobile && !accessOptions.disableEvents && (!mobileCameras || onlyLog) && (
         <Stack
           sx={[
             listWithScrollStyle,

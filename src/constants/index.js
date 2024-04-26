@@ -118,3 +118,166 @@ export const statusPaidName = (status) => {
 
   return name;
 };
+
+export const operatorAccessOptions = [
+  {
+    name: 'События и отчёты (главная)',
+    route: '/events',
+    value: 'access_to_events',
+    child: false
+    // children: [
+    //   'access_to_open_access_point',
+    //   'access_to_close_access_point',
+    //   'access_to_working_mode_access_point',
+    //   'access_to_send_message_led_board',
+    //   'access_to_clear_led_board'
+    // ]
+  },
+  {
+    name: 'Открытие шлагбаумов',
+    value: 'access_to_open_access_point',
+    child: true
+    // parent: 'access_to_events'
+  },
+  {
+    name: 'Закрытие шлагбаумов',
+    value: 'access_to_close_access_point',
+    child: true
+    // parent: 'access_to_events'
+  },
+  {
+    name: 'Смена режимов шлагбаумов',
+    value: 'access_to_working_mode_access_point',
+    child: true
+    // parent: 'access_to_events'
+  },
+  {
+    name: 'Отправка сообщений на LED-панель',
+    value: 'access_to_send_message_led_board',
+    child: true
+    // parent: 'access_to_events'
+  },
+  {
+    name: 'Очистка LED-панели',
+    value: 'access_to_clear_led_board',
+    child: true
+    // parent: 'access_to_events'
+  },
+  {
+    name: 'Сессии',
+    route: '/sessions',
+    value: 'access_to_sessions',
+    child: false
+    // children: [
+    //   'access_to_close_session',
+    //   'access_to_close_sessions_before_date',
+    //   'access_to_reset_duty_session'
+    // ]
+  },
+  {
+    name: 'Штучное закрытие',
+    value: 'access_to_close_session',
+    child: true
+    // parent: 'access_to_sessions'
+  },
+  {
+    name: 'Массовое закрытие',
+    value: 'access_to_close_sessions_before_date',
+    child: true
+    // parent: 'access_to_sessions'
+  },
+  {
+    name: 'Сброс долга',
+    value: 'access_to_reset_duty_session',
+    child: true
+    // parent: 'access_to_sessions'
+  },
+  {
+    name: 'Автопарк',
+    route: '/auto-park/active',
+    value: 'access_to_car_park',
+    child: false
+  },
+  {
+    name: 'Чёрный список',
+    route: '/black-list/active',
+    value: 'access_to_black_list',
+    child: false
+  },
+  {
+    name: 'Заявки',
+    route: '/requests',
+    value: 'access_to_requests',
+    child: false
+  },
+  {
+    name: 'Настройки',
+    route: '/settings',
+    value: 'access_to_settings',
+    child: false
+  },
+  {
+    name: 'Точки доступа',
+    route: '/access-points',
+    value: 'access_to_access_points',
+    child: false
+  },
+  {
+    name: 'Камеры',
+    route: '/cameras',
+    value: 'access_to_cameras',
+    child: false
+  },
+  {
+    name: 'LED табло',
+    route: '/led',
+    value: 'access_to_led_boards',
+    child: false
+  },
+  {
+    name: 'Терминалы',
+    route: '/terminals',
+    value: 'access_to_terminals',
+    child: false
+  },
+  {
+    name: 'Режимы',
+    route: '/working-modes',
+    value: 'access_to_working_modes',
+    child: false
+  },
+  {
+    name: 'Оплаты',
+    route: '/payments',
+    value: 'access_to_payments',
+    child: false
+  },
+  {
+    name: 'Контроллеры',
+    route: '/controllers',
+    value: 'access_to_laurents',
+    child: false
+  },
+  {
+    name: 'Доступы',
+    virtual: true,
+    value: 'access_to_operators, access_to_renters',
+    child: false,
+    children: ['access_to_operators', 'access_to_renters']
+  },
+  {
+    name: 'Операторы',
+    route: '/users/operators',
+    value: 'access_to_operators',
+    child: true,
+    parent: 'access_to_operators, access_to_renters'
+  },
+  {
+    name: 'Арендаторы',
+    route: '/users/renters',
+    value: 'access_to_renters',
+    child: true,
+    parent: 'access_to_operators, access_to_renters'
+  }
+  //{ name: 'Логи поиска', value: 'access_to_search_logs' }
+];

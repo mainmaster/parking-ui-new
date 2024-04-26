@@ -47,7 +47,9 @@ export default function EventAlertCard({
 
   useEffect(() => {
     if (event !== lastEvent) {
-      setImage(process.env.REACT_APP_API_URL + '/' + event.car_img_path);
+      const imagePath =
+        process.env.REACT_APP_API_URL + '/' + event.car_img_path;
+      if (image !== imagePath) setImage(imagePath);
       setLastEvent(event);
       setShow(true);
       //console.log(event.id + ' ' + start);
@@ -136,7 +138,7 @@ export default function EventAlertCard({
                 alignItems={'flex-start'}
               >
                 <Stack direction={'row'} alignItems={'flex-start'}>
-                  {event && event.car_img_path && (
+                  {image && (
                     <IconButton disableRipple sx={{ p: 0, pr: '8px' }}>
                       <img
                         style={{

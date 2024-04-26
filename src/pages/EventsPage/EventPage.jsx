@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
 import { resetDebtRequest } from '../../api/sessions';
+import { useParkingInfoQuery } from '../../api/settings/settings';
+import { getUserData } from '../../api/auth/login';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import Lightbox from 'react-18-image-lightbox';
@@ -31,7 +33,7 @@ import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
 import eventCopyIcon from '../../assets/svg/log_event_copy_icon.svg';
 import { colors } from '../../theme/colors';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
@@ -65,8 +67,15 @@ const detailsTextStyle = {
   lineHeight: '1.5rem'
 };
 
+const initialAccessOptions = {
+  disableOpenAP: false,
+  disableResetDuty: false
+};
+
 export const EventPage = () => {
   const { id } = useParams();
+  const [userData, setUserData] = useState(null);
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const [errorEvent, setErrorEvent] = useState(false);
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState();
@@ -82,8 +91,22 @@ export const EventPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
+  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
+  const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
 
   const errorContent = <div>Нет события с ID - {id}</div>;
+
+  useLayoutEffect(() => {
+    if (currentHref !== '/login' && currentHref !== '/registration') {
+      getUserData()
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((e) => {
+          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
+        });
+    }
+  }, [currentHref]);
 
   useLayoutEffect(() => {
     getEvent(id)
@@ -100,6 +123,31 @@ export const EventPage = () => {
       document.title = 'Parking';
     };
   }, [id]);
+
+  useEffect(() => {
+    if (userData && userType === 'operator') {
+      let options = initialAccessOptions;
+      if (
+        userData.operator &&
+        'access_to_open_access_point' in userData.operator &&
+        userData.operator.access_to_open_access_point === true
+      ) {
+        options = { ...options, disableOpenAP: true };
+      } else {
+        options = { ...options, disableOpenAP: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_reset_duty_session' in userData.operator &&
+        userData.operator.access_to_reset_duty_session === true
+      ) {
+        options = { ...options, disableResetDuty: true };
+      } else {
+        options = { ...options, disableResetDuty: true };
+      }
+      setAccessOptions(options);
+    }
+  }, [userType, userData]);
 
   useEffect(() => {
     if (event?.scores) {
@@ -422,8 +470,8 @@ export const EventPage = () => {
                   justifyContent={'flex-start'}
                 >
                   {!event.is_recognition &&
-                    (event.event_code === 1003 ||
-                      event.event_code === 1033) && (
+                    (event.event_code === 1003 || event.event_code === 1033) &&
+                    !accessOptions.disableOpenAP && (
                       <Button
                         disableRipple
                         variant="contained"
@@ -446,7 +494,7 @@ export const EventPage = () => {
                       Убрать из Чёрного списка
                     </Button>
                   )}
-                  {event.debt && (
+                  {event.debt && !accessOptions.disableResetDuty && (
                     <Button
                       disableRipple
                       disabled={debtPaid}
@@ -489,7 +537,7 @@ export const EventPage = () => {
                                   {item[0]}:
                                 </Typography>
                                 {item[1].map((li) => (
-                                  <Typography>{li}</Typography>
+                                  <Typography key={li}>{li}</Typography>
                                 ))}
                               </>
                             ) : (

@@ -60,7 +60,7 @@ const titleTextStyle = {
   lineSize: '1.75rem'
 };
 
-const Cameras = () => {
+const Cameras = ({ accessOptions }) => {
   const dispatch = useDispatch();
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const isFetched = useSelector((state) => state.events.isAccessPointsFetched);
@@ -171,6 +171,7 @@ const Cameras = () => {
             >
               <Button
                 disableRipple
+                disabled={accessOptions.disableOpenAP}
                 variant="contained"
                 sx={[
                   secondaryButtonStyle,
@@ -178,10 +179,13 @@ const Cameras = () => {
                 ]}
                 onClick={() => dispatch(openApAllFetch())}
               >
-                <Typography noWrap>Открыть все</Typography>
+                <Typography noWrap sx={{ color: 'inherit' }}>
+                  Открыть все
+                </Typography>
               </Button>
               <Button
                 disableRipple
+                disabled={accessOptions.disableCloseAP}
                 variant="contained"
                 sx={[
                   secondaryButtonStyle,
@@ -189,10 +193,13 @@ const Cameras = () => {
                 ]}
                 onClick={() => dispatch(closeApAllFetch())}
               >
-                <Typography noWrap>Закрыть все</Typography>
+                <Typography noWrap sx={{ color: 'inherit' }}>
+                  Закрыть все
+                </Typography>
               </Button>
               <Button
                 disableRipple
+                disabled={accessOptions.disableWorkAP}
                 variant="contained"
                 sx={[
                   secondaryButtonStyle,
@@ -200,7 +207,9 @@ const Cameras = () => {
                 ]}
                 onClick={() => dispatch(normalApAllFetch())}
               >
-                <Typography noWrap>Авто- все</Typography>
+                <Typography noWrap sx={{ color: 'inherit' }}>
+                  Авто- все
+                </Typography>
               </Button>
             </Stack>
             <ParkingInfo />
@@ -247,30 +256,39 @@ const Cameras = () => {
               >
                 <Button
                   disableRipple
+                  disabled={accessOptions.disableOpenAP}
                   variant="contained"
                   fullWidth
                   sx={secondaryButtonStyle}
                   onClick={() => dispatch(openApAllFetch())}
                 >
-                  <Typography noWrap>Открыть все</Typography>
+                  <Typography noWrap sx={{ color: 'inherit' }}>
+                    Открыть все
+                  </Typography>
                 </Button>
                 <Button
                   disableRipple
+                  disabled={accessOptions.disableCloseAP}
                   variant="contained"
                   fullWidth
                   sx={secondaryButtonStyle}
                   onClick={() => dispatch(closeApAllFetch())}
                 >
-                  <Typography noWrap>Закрыть все</Typography>
+                  <Typography noWrap sx={{ color: 'inherit' }}>
+                    Закрыть все
+                  </Typography>
                 </Button>
                 <Button
                   disableRipple
+                  disabled={accessOptions.disableWorkAP}
                   variant="contained"
                   fullWidth
                   sx={secondaryButtonStyle}
                   onClick={() => dispatch(normalApAllFetch())}
                 >
-                  <Typography noWrap>Авто- все</Typography>
+                  <Typography noWrap sx={{ color: 'inherit' }}>
+                    Авто- все
+                  </Typography>
                 </Button>
               </Stack>
             </Stack>
@@ -295,6 +313,7 @@ const Cameras = () => {
                 }
                 titlesLed={titlesLed}
                 setTitlesLed={setTitlesLed}
+                accessOptions={accessOptions}
               />
             </>
           )) || (

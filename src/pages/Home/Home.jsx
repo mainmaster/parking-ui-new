@@ -9,10 +9,13 @@ import { useDispatch } from 'react-redux';
 import { putEvent, changeDataModal } from 'store/events/eventsSlice';
 import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
 import { getUserData } from '../../api/auth/login';
+import { operatorAccessOptions } from '../../constants';
 import React from 'react';
 
 export const Home = () => {
   const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery();
+  const [userData, setUserData] = useState(null);
+  const [disableEvents, setDisableEvents] = useState(false);
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -23,15 +26,36 @@ export const Home = () => {
   let fourNumbersInRow = useRef([]);
 
   useEffect(() => {
-    getUserData().catch((e) => {
-      console.log(e);
-      enqueueSnackbar('Ошибка подключения');
-    });
+    getUserData()
+      .then((res) => {
+        setUserData(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        enqueueSnackbar('Ошибка подключения');
+      });
   }, []);
 
   useEffect(() => {
+    if (userData && parkingData?.userType === 'operator') {
+      const eventsOption = operatorAccessOptions.find(
+        (option) => option.route === '/events'
+      );
+      if (
+        userData.operator &&
+        eventsOption.value in userData.operator &&
+        userData.operator[eventsOption] === true
+      ) {
+        setDisableEvents(false);
+      } else {
+        setDisableEvents(true);
+      }
+    }
+  }, [userData, parkingData]);
+
+  useEffect(() => {
     if (location.pathname === '/') {
-      navigate(parkingData?.userType === 'renter' ? 'events-logs' : 'events', {
+      navigate('events', {
         replace: true
       });
     }
@@ -51,7 +75,12 @@ export const Home = () => {
       address = address.replace('http:', 'ws:');
     }
 
-    if (parkingData && !ws.current && parkingData?.userType !== 'renter') {
+    if (
+      parkingData &&
+      !ws.current &&
+      parkingData?.userType !== 'renter' &&
+      !(parkingData?.userType === 'operator' && disableEvents)
+    ) {
       dispatch(setParkingUserType(parkingData.userType));
       ws.current = new WebSocket(
         address + `/wsEvents?parkingID=${parkingData.parkingID}`

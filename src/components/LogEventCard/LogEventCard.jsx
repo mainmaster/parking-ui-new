@@ -48,7 +48,7 @@ const selectedStyle = {
 };
 
 export default forwardRef(function LogEventCard(
-  { event, onClickImage, onHoverImageButton, selected },
+  { event, onClickImage, onHoverImageButton, selected, accessOptions },
   ref
 ) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -362,11 +362,13 @@ export default forwardRef(function LogEventCard(
           </Stack>
         ) : null}
         {(!event.is_recognition &&
-          (event.event_code === 1003 || event.event_code === 1033)) ||
+          (event.event_code === 1003 || event.event_code === 1033) &&
+          !accessOptions.disableOpenAP) ||
         event.access_status_code === '1004' ||
         (event.debt &&
           event.event_code !== 1026 &&
-          event.event_code !== 1027) ? (
+          event.event_code !== 1027 &&
+          !accessOptions.disableResetDuty) ? (
           <Stack
             direction={'row'}
             gap={'8px'}
@@ -374,7 +376,8 @@ export default forwardRef(function LogEventCard(
             justifyContent={'flex-start'}
           >
             {!event.is_recognition &&
-              (event.event_code === 1003 || event.event_code === 1033) && (
+              (event.event_code === 1003 || event.event_code === 1033) &&
+              !accessOptions.disableOpenAP && (
                 <Button
                   disableRipple
                   variant="contained"
@@ -399,7 +402,8 @@ export default forwardRef(function LogEventCard(
             )}
             {event.debt &&
               event.event_code !== 1026 &&
-              event.event_code !== 1027 && (
+              event.event_code !== 1027 &&
+              !accessOptions.disableResetDuty && (
                 <Button
                   disableRipple
                   disabled={debtPaid}

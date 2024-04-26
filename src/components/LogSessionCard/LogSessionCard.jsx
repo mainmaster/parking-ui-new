@@ -72,7 +72,11 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogSessionCard({ session, onClickImage }) {
+export default function LogSessionCard({
+  session,
+  onClickImage,
+  accessOptions
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -265,32 +269,34 @@ export default function LogSessionCard({ session, onClickImage }) {
           <Typography sx={labelTextStyle}>Долг</Typography>
           <Typography>{`${session.payment_amount} ₽`}</Typography>
         </Stack>
-        <Stack direction={'row'} gap={'8px'}>
-          {session.payment_amount > 0 ? (
-            <Button
-              disableRipple
-              variant="contained"
-              fullWidth
-              sx={secondaryButtonStyle}
-              onClick={handlePaidClick}
-            >
-              Обнулить долг
-            </Button>
-          ) : (
-            <Box sx={{ width: '100%' }} />
-          )}
-          {session.status === 'open' && (
-            <Button
-              disableRipple
-              variant="contained"
-              fullWidth
-              sx={secondaryButtonStyle}
-              onClick={handleCloseClick}
-            >
-              Закрыть
-            </Button>
-          )}
-        </Stack>
+        {!accessOptions.disableResetDuty && !accessOptions.disableCloseSession && (
+          <Stack direction={'row'} gap={'8px'}>
+            {session.payment_amount > 0 && !accessOptions.disableResetDuty ? (
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle}
+                onClick={handlePaidClick}
+              >
+                Обнулить долг
+              </Button>
+            ) : (
+              <Box sx={{ width: '100%' }} />
+            )}
+            {session.status === 'open' && !accessOptions.disableCloseSession && (
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle}
+                onClick={handleCloseClick}
+              >
+                Закрыть
+              </Button>
+            )}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );

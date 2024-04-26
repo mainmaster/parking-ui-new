@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState, useRef } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useLayoutEffect, useState, useRef, useEffect } from 'react';
+import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
 import Lightbox from 'react-18-image-lightbox';
@@ -12,6 +12,8 @@ import {
   statusSessionSelectFetch
 } from '../../store/sessions/sessionsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { getUserData } from '../../api/auth/login';
+import { useSnackbar } from 'notistack';
 import {
   Tooltip,
   Typography,
@@ -44,16 +46,63 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
+const initialAccessOptions = {
+  disableResetDuty: false,
+  disableCloseSession: false
+};
+
 export const SessionPage = () => {
   const { id } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
   const session = useSelector((state) => state.sessions.selectSession);
   const loading = useSelector((state) => state.sessions.isLoadingSelect);
   const errorLoad = useSelector((state) => state.sessions.isErrorSelect);
+  const [userData, setUserData] = useState(null);
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const [copied, setCopied] = useState(false);
   const [sessionListScrolled, setSessionListScrolled] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const sessionListRef = useRef(null);
+  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
+  const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  useLayoutEffect(() => {
+    if (currentHref !== '/login' && currentHref !== '/registration') {
+      getUserData()
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((e) => {
+          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
+        });
+    }
+  }, [currentHref]);
+
+  useEffect(() => {
+    if (userData && userType === 'operator') {
+      let options = initialAccessOptions;
+      if (
+        userData.operator &&
+        'access_to_close_session' in userData.operator &&
+        userData.operator.access_to_close_session === true
+      ) {
+        options = { ...options, disableCloseSession: true };
+      } else {
+        options = { ...options, disableCloseSession: true };
+      }
+      if (
+        userData.operator &&
+        'access_to_reset_duty_session' in userData.operator &&
+        userData.operator.access_to_reset_duty_session === true
+      ) {
+        options = { ...options, disableResetDuty: true };
+      } else {
+        options = { ...options, disableResetDuty: true };
+      }
+      setAccessOptions(options);
+    }
+  }, [userType, userData]);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,
@@ -355,28 +404,30 @@ export const SessionPage = () => {
               <Typography sx={labelTextStyle}>Действие</Typography>
               <Stack direction={'row'}>
                 <Stack direction={'row'} gap={'8px'}>
-                  {session.payment_amount > 0 && (
-                    <Button
-                      disableRipple
-                      variant="contained"
-                      fullWidth
-                      sx={[secondaryButtonStyle, { minWidth: '141px' }]}
-                      onClick={handlePaidClick}
-                    >
-                      Обнулить долг
-                    </Button>
-                  )}
-                  {session.status === 'open' && (
-                    <Button
-                      disableRipple
-                      variant="contained"
-                      fullWidth
-                      sx={secondaryButtonStyle}
-                      onClick={handleCloseClick}
-                    >
-                      Закрыть
-                    </Button>
-                  )}
+                  {session.payment_amount > 0 &&
+                    !accessOptions.disableResetDuty && (
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        fullWidth
+                        sx={[secondaryButtonStyle, { minWidth: '141px' }]}
+                        onClick={handlePaidClick}
+                      >
+                        Обнулить долг
+                      </Button>
+                    )}
+                  {session.status === 'open' &&
+                    !accessOptions.disableCloseSession && (
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        fullWidth
+                        sx={secondaryButtonStyle}
+                        onClick={handleCloseClick}
+                      >
+                        Закрыть
+                      </Button>
+                    )}
                 </Stack>
               </Stack>
             </Stack>

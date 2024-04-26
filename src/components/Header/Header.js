@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-//import {Offcanvas, Navbar, Container} from 'react-bootstrap'
+import { operatorAccessOptions } from '../../constants';
 import PropTypes from 'prop-types';
 import { icons } from './utils';
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { getUserData } from '../../api/auth/login';
 import { useSnackbar } from 'notistack';
-import React from 'react';
+import _ from 'lodash';
+import React, { useMemo } from 'react';
 import {
   AppBar,
   Box,
@@ -138,6 +139,8 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const [adminFullMenu, setAdminFullMenu] = useState(false);
   const [firstMenuMouseOut, setFirstMenuMouseOut] = useState(true);
   const [secondMenuMouseOut, setSecondMenuMouseOut] = useState(true);
+  const [filteredOperatorRoutes, setFilteredOperatorRoutes] =
+    useState(operatorRoutes);
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   let navigate = useNavigate();
@@ -169,34 +172,59 @@ const Header = ({ title, userType, isHideMenu = false }) => {
     }
   }, [firstMenuMouseOut, secondMenuMouseOut]);
 
-  const routeList =
-    userType === 'admin'
-      ? adminRoutes.slice(0, 6)
-      : userType === 'operator'
-      ? operatorRoutes
-      : userType === 'renter'
-      ? renterRoutes
-      : [];
+  const routeList = useMemo(
+    () =>
+      userType === 'admin'
+        ? adminRoutes.slice(0, 6)
+        : userType === 'operator'
+        ? filteredOperatorRoutes.slice(0, 6)
+        : userType === 'renter'
+        ? renterRoutes
+        : [],
+    [filteredOperatorRoutes]
+  );
 
-  const adminRouteList2 = userType === 'admin' ? adminRoutes.slice(6, 11) : [];
+  const adminRouteList2 = useMemo(
+    () =>
+      userType === 'admin'
+        ? adminRoutes.slice(6, 11)
+        : userType === 'operator'
+        ? filteredOperatorRoutes.slice(6, 11)
+        : [],
+    [filteredOperatorRoutes]
+  );
 
-  const adminRouteList3 = userType === 'admin' ? adminRoutes.slice(11) : [];
+  const adminRouteList3 = useMemo(
+    () =>
+      userType === 'admin'
+        ? adminRoutes.slice(11)
+        : userType === 'operator'
+        ? filteredOperatorRoutes.slice(11)
+        : [],
+    [filteredOperatorRoutes]
+  );
 
-  const mobileRouteList =
-    userType === 'admin'
-      ? adminRoutes.slice(0, 3)
-      : userType === 'operator'
-      ? operatorRoutes.slice(0, 3)
-      : userType === 'renter'
-      ? renterRoutes
-      : [];
+  const mobileRouteList = useMemo(
+    () =>
+      userType === 'admin'
+        ? adminRoutes.slice(0, 3)
+        : userType === 'operator'
+        ? filteredOperatorRoutes.slice(0, 3)
+        : userType === 'renter'
+        ? renterRoutes
+        : [],
+    [filteredOperatorRoutes]
+  );
 
-  const mobileRouteList2 =
-    userType === 'admin'
-      ? adminRoutes.slice(3)
-      : userType === 'operator'
-      ? operatorRoutes.slice(3)
-      : [];
+  const mobileRouteList2 = useMemo(
+    () =>
+      userType === 'admin'
+        ? adminRoutes.slice(3)
+        : userType === 'operator'
+        ? filteredOperatorRoutes.slice(3)
+        : [],
+    [filteredOperatorRoutes]
+  );
 
   useLayoutEffect(() => {
     if (currentHref !== '/login' && currentHref !== '/registration') {
@@ -209,6 +237,27 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         });
     }
   }, [currentHref]);
+
+  useEffect(() => {
+    if (userData && !_.isEmpty(userData.operator)) {
+      const routes = adminRoutes.filter((route) => {
+        const option = operatorAccessOptions.find(
+          (option) => option.route === route.eventKey
+        );
+        if (
+          (option &&
+            option.value in userData.operator &&
+            userData.operator[option.value]) ||
+          (option && option.value === 'access_to_events')
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setFilteredOperatorRoutes(routes);
+    }
+  }, [userData]);
 
   const handleMoreClick = () => {
     setMore(true);
@@ -533,7 +582,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                   : ''}
               </Typography>
             </Box>
-            {userType === 'admin' && adminFullMenu && (
+            {adminRouteList2.length > 0 && adminFullMenu && (
               <Stack direction={'row'} onMouseLeave={handleSecondMenuMouseOut}>
                 <Stack
                   sx={{

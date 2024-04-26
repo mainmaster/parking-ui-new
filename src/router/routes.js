@@ -26,6 +26,5 @@ export const adminRoutes = [
   { eventKey: '/working-modes', title: 'Режимы' },
   { eventKey: '/payments', title: 'Оплаты' },
   { eventKey: '/controllers', title: 'Контроллеры' },
-  { eventKey: '/operator', title: 'Операторы' },
-  { eventKey: '/renters', title: 'Арендаторы' }
+  { eventKey: '/users/operators', title: 'Доступы' }
 ];
