@@ -85,7 +85,7 @@ const SessionsPage = () => {
         'access_to_close_session' in userData.operator &&
         userData.operator.access_to_close_session === true
       ) {
-        options = { ...options, disableCloseSession: true };
+        options = { ...options, disableCloseSession: false };
       } else {
         options = { ...options, disableCloseSession: true };
       }
@@ -103,7 +103,7 @@ const SessionsPage = () => {
         'access_to_reset_duty_session' in userData.operator &&
         userData.operator.access_to_reset_duty_session === true
       ) {
-        options = { ...options, disableResetDuty: true };
+        options = { ...options, disableResetDuty: false };
       } else {
         options = { ...options, disableResetDuty: true };
       }

@@ -65,7 +65,6 @@ const router = createBrowserRouter(
         <Route path="settings" element={<Settings />} />
         <Route path="users/*" element={<Operators />} />
         <Route path="terminals" element={<Terminals />} />
-        <Route path="search-logs" element={<SearchLogsPage />} />
       </Route>
     </>
   )

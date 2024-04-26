@@ -22,7 +22,6 @@ export const adminRoutes = [
   { eventKey: '/cameras', title: 'Камеры' },
   { eventKey: '/led', title: 'LED Табло' },
   { eventKey: '/terminals', title: 'Терминалы' },
-  { eventKey: '/search-logs', title: 'Лог поиска' },
   { eventKey: '/working-modes', title: 'Режимы' },
   { eventKey: '/payments', title: 'Оплаты' },
   { eventKey: '/controllers', title: 'Контроллеры' },
