@@ -269,7 +269,8 @@ export default function LogSessionCard({
           <Typography sx={labelTextStyle}>Долг</Typography>
           <Typography>{`${session.payment_amount} ₽`}</Typography>
         </Stack>
-        {!accessOptions.disableResetDuty && !accessOptions.disableCloseSession && (
+        {(!accessOptions.disableResetDuty ||
+          !accessOptions.disableCloseSession) && (
           <Stack direction={'row'} gap={'8px'}>
             {session.payment_amount > 0 && !accessOptions.disableResetDuty ? (
               <Button
