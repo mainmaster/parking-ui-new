@@ -53,10 +53,18 @@ export const eventsSlice = createSlice({
       };
     },
     setFilters: (state, action) => {
-      return {
-        ...state,
-        filters: action.payload
-      };
+      if (!action.payload) {
+        return {
+          ...state,
+          filters: action.payload,
+          filtered: []
+        };
+      } else {
+        return {
+          ...state,
+          filters: action.payload
+        };
+      }
     },
     putEvent: (state, action) => {
       return {

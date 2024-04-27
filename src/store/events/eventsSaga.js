@@ -56,7 +56,7 @@ function* workEvents({ payload }) {
     if (!_.isEmpty(store.getState().events.filters)) {
       yield put(setFilteredEvents(data.events));
     } else {
-      yield put(setFilteredEvents({}));
+      yield put(setFilteredEvents([]));
     }
     yield put(changeAccessPointsLoading());
   } catch (e) {}
@@ -74,7 +74,7 @@ function* workOnlyEvents({ payload }) {
     if (!_.isEmpty(store.getState().events.filters)) {
       yield put(setFilteredEvents(data.events));
     } else {
-      yield put(setFilteredEvents({}));
+      yield put(setFilteredEvents([]));
     }
   } catch (e) {}
 }
