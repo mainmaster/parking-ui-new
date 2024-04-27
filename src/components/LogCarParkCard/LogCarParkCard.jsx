@@ -28,7 +28,7 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogCarParkCard({ car }) {
+export default function LogCarParkCard({ car, renter }) {
   const dispatch = useDispatch();
   const validDateString = format(parseISO(car.valid_until), 'dd.MM.yyyy');
   const theme = useTheme();
@@ -63,7 +63,9 @@ export default function LogCarParkCard({ car }) {
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
             <Typography sx={labelTextStyle}>Компания</Typography>
-            <Typography sx={{ fontWeight: 500 }}>{car.renter}</Typography>
+            <Typography sx={{ fontWeight: 500 }}>
+              {renter?.company_name || ''}
+            </Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>

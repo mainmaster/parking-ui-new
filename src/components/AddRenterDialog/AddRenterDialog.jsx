@@ -22,6 +22,7 @@ import {
   useUpdateRenterMutation,
   useCreateRentersMutation
 } from '../../api/renters/renters.api';
+import { accessPointsOnlyFetch } from 'store/accessPoints/accessPointsSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import {
@@ -60,6 +61,10 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const [updateRenter, { isError: isUpdateError }] = useUpdateRenterMutation();
   const [createRenter, { isError: isCreateError }] = useCreateRentersMutation();
+
+  useEffect(() => {
+    dispatch(accessPointsOnlyFetch());
+  }, []);
 
   const defaultValues = useMemo(() => {
     if (renterEdit) {
@@ -348,7 +353,8 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 );
                 return (
                   <Typography component={'h5'} noWrap sx={{ fontWeight: 500 }}>
-                    {selectedItems.map((item) => item.description).join(', ')}
+                    {selectedItems.map((item) => item.description).join(', ') ||
+                      '...'}
                   </Typography>
                 );
               }}
@@ -357,8 +363,8 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.access_points)
               }
             >
-              <MenuItem disabled value="">
-                <em> </em>
+              <MenuItem value="">
+                <Typography component={'h5'}>...</Typography>
               </MenuItem>
               {accessPoints &&
                 accessPoints.map((p) => (

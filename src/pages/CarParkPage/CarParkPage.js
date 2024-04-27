@@ -10,6 +10,7 @@ import {
   carParkChangePageFetch,
   changeCurrentPage
 } from '../../store/carPark/carParkSlice';
+import { useRentersQuery } from '../../api/renters/renters.api';
 // Components
 import PaginationCustom from 'components/Pagination';
 import CreateCarParkModal from 'components/Modals/CreateCarParkModal';
@@ -62,6 +63,7 @@ const tabStyle = {
 const CarParkPage = () => {
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
+  const { data: renters } = useRentersQuery();
   const carParks = useSelector((state) => state.carPark.carParks);
   const pages = useSelector((state) => state.carPark.pages);
   const currentPage = useSelector((state) => state.carPark.currentPage);
@@ -301,7 +303,11 @@ const CarParkPage = () => {
               }}
             >
               {carParks.car_park.map((item, index) => (
-                <LogCarParkCard key={item.id} car={item} />
+                <LogCarParkCard
+                  key={item.id}
+                  car={item}
+                  renter={renters?.find((renter) => renter.id === item.renter)}
+                />
               ))}
               {itemsInRow > 0 &&
                 [...Array(itemsInRow)].map((value, index) => (
@@ -344,10 +350,20 @@ const CarParkPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={parkEmptyIcon}
-                  alt="Нет активных машин в автопарке"
+                  alt={
+                    currentTab === 0
+                      ? 'Нет активных машин в автопарке'
+                      : currentTab === 1
+                      ? 'Нет неактивных машин в автопарке'
+                      : 'нет абонементов'
+                  }
                 />
                 <Typography sx={titleTextStyle}>
-                  Нет активных машин в автопарке
+                  {currentTab === 0
+                    ? 'Нет активных машин в автопарке'
+                    : currentTab === 1
+                    ? 'Нет неактивных машин в автопарке'
+                    : 'нет абонементов'}
                 </Typography>
               </>
             )}

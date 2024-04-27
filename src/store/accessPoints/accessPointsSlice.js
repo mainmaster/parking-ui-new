@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export const accessPointsSlice = createSlice({
   name: 'access-points',
@@ -8,11 +8,14 @@ export const accessPointsSlice = createSlice({
     isErrorFetch: false,
     isCreateModal: false,
     isEditModal: false,
-    accessPointEdit: {},
+    accessPointEdit: {}
   },
   reducers: {
     accessPointsFetch: (state, action) => {
-      return { ...state, isLoadingFetch: true, isErrorFetch: false }
+      return { ...state, isLoadingFetch: true, isErrorFetch: false };
+    },
+    accessPointsOnlyFetch: (state, action) => {
+      return { ...state, isLoadingFetch: true, isErrorFetch: false };
     },
     accessPointsCamerasFetch: () => {},
     editAccessPointFetch: (state, action) => {},
@@ -21,31 +24,32 @@ export const accessPointsSlice = createSlice({
     editModalHandler: (state, action) => {
       const accessPoint = [...state.accessPoints].find(
         (item) => item.id === action.payload
-      )
+      );
       return {
         ...state,
         isEditModal: !state.isEditModal,
-        accessPointEdit: accessPoint,
-      }
+        accessPointEdit: accessPoint
+      };
     },
     createModalHandler: (state, action) => {
-      return { ...state, isCreateModal: !state.isCreateModal }
+      return { ...state, isCreateModal: !state.isCreateModal };
     },
     getAccessPointsSuccess: (state, action) => {
-      return { ...state, accessPoints: action.payload, isLoadingFetch: false }
+      return { ...state, accessPoints: action.payload, isLoadingFetch: false };
     },
     getAccessPointsError: (state, action) => {
       return {
         ...state,
         isLoadingFetch: false,
-        isErrorFetch: true,
-      }
-    },
-  },
-})
+        isErrorFetch: true
+      };
+    }
+  }
+});
 
 export const {
   accessPointsFetch,
+  accessPointsOnlyFetch,
   editAccessPointFetch,
   createAccessPointFetch,
   deleteAccessPointFetch,
@@ -53,7 +57,7 @@ export const {
   createModalHandler,
   getAccessPointsSuccess,
   getAccessPointsError,
-  accessPointsCamerasFetch,
-} = accessPointsSlice.actions
+  accessPointsCamerasFetch
+} = accessPointsSlice.actions;
 
-export default accessPointsSlice.reducer
+export default accessPointsSlice.reducer;

@@ -55,7 +55,7 @@ export const Home = () => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('events', {
+      navigate(parkingData?.userType === 'renter' ? 'events-logs' : 'events', {
         replace: true
       });
     }

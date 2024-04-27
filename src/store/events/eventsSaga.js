@@ -40,6 +40,7 @@ import { getAccessPointsSuccess } from '../accessPoints/accessPointsSlice';
 import { getAccessPointStatusRequest } from '../../api/access-points';
 import { store } from '../index';
 import { EVENTS_ON_PAGE } from '../../constants';
+import _ from 'lodash';
 
 function* workEvents({ payload }) {
   try {
@@ -52,10 +53,7 @@ function* workEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
-    if (
-      store.getState().events.filters &&
-      store.getState().events.filters !== {}
-    ) {
+    if (!_.isEmpty(store.getState().events.filters)) {
       yield put(setFilteredEvents(data.events));
     } else {
       yield put(setFilteredEvents({}));
@@ -73,10 +71,7 @@ function* workOnlyEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
-    if (
-      store.getState().events.filters &&
-      store.getState().events.filters !== {}
-    ) {
+    if (!_.isEmpty(store.getState().events.filters)) {
       yield put(setFilteredEvents(data.events));
     } else {
       yield put(setFilteredEvents({}));

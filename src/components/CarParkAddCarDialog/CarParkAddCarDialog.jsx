@@ -16,12 +16,15 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
+import _ from 'lodash';
 import { formatISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useRentersQuery } from '../../api/renters/renters.api';
+import { accessPointsOnlyFetch } from 'store/accessPoints/accessPointsSlice';
 import {
   createCarParkFetch,
   editCarParkFetch
@@ -38,64 +41,92 @@ import {
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
 
-const defaultValues = {
-  description: '',
-  vehiclePlate: ''
-};
-
 const labelStyle = {
   pb: '4px',
   pl: '12px'
 };
 
+const validationSchema = yup.object({
+  description: yup.string().required('Введите описание'),
+  vehicle_plate: yup.string().required('Введите номер машины'),
+  access_points: yup.string()
+});
+
 export default function AddCarDialog({ show, handleClose, edit }) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
-  const [carNumber, setCarNumber] = useState('');
-  const [carDescription, setCarDescription] = useState('');
   const [renter, setRenter] = useState('');
   const [submited, setSubmited] = useState(true);
   const { data: renters } = useRentersQuery();
+  const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
+  const [actualAccessPoints, setActualAccessPoints] = useState([]);
   const carParkEdit = useSelector((state) => state.carPark.carParkEdit);
   const isError = useSelector((state) => state.carPark.isErrorFetch);
   const urlStatus = useParams();
 
+  const defaultValues = useMemo(() => {
+    if (carParkEdit && !_.isEmpty(carParkEdit)) {
+      return {
+        description: carParkEdit.description,
+        vehicle_plate: carParkEdit.vehicle_plate?.full_plate || '',
+        access_points: carParkEdit.access_points.join(',')
+      };
+    } else {
+      return {
+        description: '',
+        vehicle_plate: '',
+        access_points: ''
+      };
+    }
+  }, [carParkEdit]);
+
   useEffect(() => {
     if (show && edit && carParkEdit) {
-      setCarDescription(carParkEdit.description);
       setRenter(carParkEdit.renter ? carParkEdit.renter : '');
-      setCarNumber(carParkEdit.vehicle_plate.full_plate);
       setDate(new Date(carParkEdit.valid_until));
       setSubmited(true);
     }
   }, [show, edit]);
 
+  useEffect(() => {
+    dispatch(accessPointsOnlyFetch());
+  }, []);
+
+  useEffect(() => {
+    if (accessPoints) {
+      setActualAccessPoints(accessPoints);
+    }
+  }, [accessPoints]);
+
   const formik = useFormik({
     initialValues: defaultValues,
+    enableReinitialize: true,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
-      const { description, vehiclePlate } = values;
+      date.setHours(23, 59, 0, 0);
+      let payload = {
+        ...values,
+        valid_until: formatISO(date),
+        status: urlStatus['*'],
+        renter: renter,
+        access_points: values.access_points
+          .split(',')
+          .map((i) => parseInt(i, 10))
+          .filter((i) => !isNaN(i))
+      };
       if (edit) {
-        const payload = {
-          valid_until: formatISO(date),
-          description: description || carDescription,
-          vehicle_plate: vehiclePlate || carNumber,
-          status: urlStatus['*'],
-          renter: renter,
+        payload = {
+          ...payload,
           id: carParkEdit.id
         };
         dispatch(editCarParkFetch(payload));
         if (!isError) {
           enqueueSnackbar('Машина сохранена', { variant: 'success' });
         }
-      } else if (description !== '' && vehiclePlate !== '') {
-        date.setHours(23, 59, 0, 0);
-        const payload = {
-          valid_until: formatISO(date),
-          description: description,
-          vehicle_plate: vehiclePlate,
-          status: urlStatus['*'],
-          renter: renter,
+      } else {
+        payload = {
+          ...payload,
           is_active: true
         };
         dispatch(createCarParkFetch(payload));
@@ -107,39 +138,56 @@ export default function AddCarDialog({ show, handleClose, edit }) {
     }
   });
 
+  const handleValidate = useCallback(() => {
+    if (!_.isEmpty(formik.errors)) {
+      Object.entries(formik.errors).map((error) => {
+        enqueueSnackbar(`${error[1]}`, {
+          variant: 'error',
+          iconVariant: 'warning'
+        });
+      });
+    }
+  }, [formik.errors]);
+
+  const handleSubmit = (event) => {
+    handleValidate();
+    formik.handleSubmit(event);
+  };
+
+  const handleValueChange = (event) => {
+    formik.handleChange(event);
+    setSubmited(false);
+  };
+
+  const handleMultiSelectChange = (event) => {
+    const {
+      target: { value }
+    } = event;
+    const points = value.map((item) => item).join(',');
+    formik.setFieldValue('access_points', points);
+    setSubmited(false);
+  };
+
   const handleDateChange = (newValue) => {
     if (newValue) {
       setDate(newValue);
-      if (carNumber !== '' && carDescription !== '') {
-        setSubmited(false);
-      }
-    }
-  };
-
-  const handleChangeNumber = (event) => {
-    setCarNumber(event.target.value);
-    if (event.target.value !== '' && carDescription !== '') {
       setSubmited(false);
-    } else {
-      setSubmited(true);
     }
-    formik.handleChange(event);
-  };
-
-  const handleChangeDescription = (event) => {
-    setCarDescription(event.target.value);
-    if (event.target.value !== '' && carNumber !== '') {
-      setSubmited(false);
-    } else {
-      setSubmited(true);
-    }
-    formik.handleChange(event);
   };
 
   const handleRenterChange = (event) => {
-    if (carNumber !== '' && carDescription !== '') {
-      setSubmited(false);
+    if (event.target.value !== '') {
+      const renter = renters.find((renter) => renter.id === event.target.value);
+      if (renter) {
+        const filteredItems = accessPoints.filter((item) =>
+          renter.access_points.includes(item.id)
+        );
+        setActualAccessPoints(filteredItems);
+      }
+    } else {
+      setActualAccessPoints(accessPoints);
     }
+    setSubmited(false);
     setRenter(event.target.value);
   };
 
@@ -151,8 +199,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const resetHandle = () => {
     formik.resetForm();
     setDate(null);
-    setCarNumber('');
-    setCarDescription('');
     setRenter('');
     setSubmited(true);
   };
@@ -206,7 +252,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           component="form"
           noValidate
           autoComplete="off"
-          onSubmit={formik.handleSubmit}
+          onSubmit={handleSubmit}
           sx={{
             display: 'flex',
             padding: '16px',
@@ -254,8 +300,8 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               variant="filled"
               id="description"
               name="description"
-              value={carDescription}
-              onChange={handleChangeDescription}
+              value={formik.values.description}
+              onChange={handleValueChange}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.description && Boolean(formik.errors.description)
@@ -263,7 +309,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             />
           </Stack>
           <Stack>
-            <InputLabel htmlFor="vehiclePlate" sx={labelStyle}>
+            <InputLabel htmlFor="vehicle_plate" sx={labelStyle}>
               Номер машины
             </InputLabel>
             <CarNumberInput
@@ -273,14 +319,14 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 sx: { paddingLeft: '12px' }
               }}
               variant="filled"
-              id="vehiclePlate"
-              name="vehiclePlate"
-              value={carNumber}
-              onChange={handleChangeNumber}
+              id="vehicle_plate"
+              name="vehicle_plate"
+              value={formik.values.vehicle_plate}
+              onChange={handleValueChange}
               onBlur={formik.handleBlur}
               error={
-                formik.touched.vehiclePlate &&
-                Boolean(formik.errors.vehiclePlate)
+                formik.touched.vehicle_plate &&
+                Boolean(formik.errors.vehicle_plate)
               }
             />
           </Stack>
@@ -312,30 +358,31 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               sx={selectMenuStyle}
               renderValue={(selected) => {
                 if (selected === '') {
-                  return <em></em>;
+                  return <Typography component={'h5'}>...</Typography>;
                 } else {
+                  const selectedRenter = renters.find((r) => r.id === selected);
                   return (
                     <Typography
                       component={'h5'}
                       noWrap
                       sx={{ fontWeight: 500 }}
                     >
-                      {selected}
+                      {selectedRenter?.company_name}
                     </Typography>
                   );
                 }
               }}
             >
-              <MenuItem disabled value="">
-                <em> </em>
+              <MenuItem value="">
+                <Typography component={'h5'}>...</Typography>
               </MenuItem>
               {renters &&
                 renters.map((r) => (
                   <MenuItem
-                    key={r.company_name}
-                    id={r.company_name}
-                    selected={r.company_name === renter}
-                    value={r.company_name}
+                    key={r.id}
+                    id={r.id}
+                    selected={r.id === renter}
+                    value={r.id}
                   >
                     <Typography
                       component={'h5'}
@@ -346,6 +393,74 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                     </Typography>
                   </MenuItem>
                 ))}
+            </Select>
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor="access_points" sx={labelStyle}>
+              Доступ к точкам доступа
+            </InputLabel>
+            <Select
+              id="access_points"
+              name="access_points"
+              multiple
+              displayEmpty
+              value={formik.values.access_points.split(',')}
+              onChange={handleMultiSelectChange}
+              onBlur={formik.handleBlur}
+              variant="filled"
+              IconComponent={(props) => (
+                <IconButton
+                  disableRipple
+                  {...props}
+                  sx={{ top: `${0} !important`, right: `4px !important` }}
+                >
+                  <img
+                    style={{
+                      width: '24px'
+                    }}
+                    src={selectIcon}
+                    alt="select"
+                  />
+                </IconButton>
+              )}
+              sx={selectMenuStyle}
+              renderValue={(selected) => {
+                const selectedItems = accessPoints.filter((item) =>
+                  selected.includes(item.id.toString())
+                );
+                return (
+                  <Typography component={'h5'} noWrap sx={{ fontWeight: 500 }}>
+                    {selectedItems.map((item) => item.description).join(', ') ||
+                      '...'}
+                  </Typography>
+                );
+              }}
+              error={
+                formik.touched.access_points &&
+                Boolean(formik.errors.access_points)
+              }
+            >
+              <MenuItem value="">
+                <Typography component={'h5'}>...</Typography>
+              </MenuItem>
+              {actualAccessPoints.map((p) => (
+                <MenuItem
+                  key={p.id}
+                  id={p.id}
+                  selected={formik.values.access_points
+                    .split(',')
+                    .some((item) => item === p.id)}
+                  value={p.id?.toString() || ''}
+                >
+                  <Typography
+                    component={'h5'}
+                    noWrap
+                    sx={{ fontWeight: 500, p: 0 }}
+                  >
+                    {p.description}
+                  </Typography>
+                </MenuItem>
+              ))}
             </Select>
           </Stack>
           <Button
