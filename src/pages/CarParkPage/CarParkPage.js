@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { format } from 'date-fns';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
 import {
@@ -11,6 +12,7 @@ import {
   changeCurrentPage
 } from '../../store/carPark/carParkSlice';
 import { useRentersQuery } from '../../api/renters/renters.api';
+import { getCarParkReport, uploadCarParkReport } from '../../api/car-park';
 // Components
 import PaginationCustom from 'components/Pagination';
 import CreateCarParkModal from 'components/Modals/CreateCarParkModal';
@@ -25,13 +27,15 @@ import {
   Typography,
   Button,
   Tabs,
-  Tab
+  Tab,
+  styled
 } from '@mui/material';
 import { colors } from '../../theme/colors';
 import {
   listStyle,
   listWithScrollStyle,
-  closeButtonStyle
+  closeButtonStyle,
+  secondaryButtonStyle
 } from '../../theme/styles';
 import CarParkFilter from '../../components/CarParkFilter/CarParkFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -60,6 +64,18 @@ const tabStyle = {
   }
 };
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1
+});
+
 const CarParkPage = () => {
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
@@ -81,6 +97,7 @@ const CarParkPage = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
+  const [file, setFile] = useState(null);
 
   const handleResize = useCallback(() => {
     if (containerRef?.current) {
@@ -147,6 +164,42 @@ const CarParkPage = () => {
     setCurrentTab(value);
   };
 
+  const handleImportClick = (e) => {
+    console.log(e.target.files[0]);
+    let file = e.target.files[0];
+    setFile(file);
+  };
+
+  useEffect(() => {
+    if (file) {
+      let formData = new FormData();
+      //Adding files to the formdata
+      formData.append('file', file);
+      formData.append('name', file.name);
+      uploadCarParkReport(formData).then((response) => {
+        setFile(null);
+      });
+    }
+  }, [file]);
+
+  const handleExportClick = () => {
+    getCarParkReport().then((res) => {
+      // Create blob link to download
+      const url = URL.createObjectURL(res.data);
+      const link = document.createElement('a');
+      link.href = url;
+      const date = format(Date.now(), 'yyyy-MM-dd');
+      const filename = `export_${date}.xlsx`;
+      link.setAttribute('download', filename);
+      // Append to html link element page
+      document.body.appendChild(link);
+      // Start download
+      link.click();
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
+    });
+  };
+
   return (
     <>
       {!isMobile && (
@@ -173,7 +226,39 @@ const CarParkPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Автопарк</Typography>
+            <Stack
+              direction={'row'}
+              justifyContent={'flex-start'}
+              alignItems={'center'}
+              gap={'16px'}
+              sx={{ width: '100%' }}
+            >
+              <Typography sx={titleTextStyle}>Автопарк</Typography>
+              <Stack direction={'row'} gap={'8px'}>
+                <Button
+                  component="label"
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={secondaryButtonStyle}
+                >
+                  Импорт
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleImportClick}
+                  />
+                </Button>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={secondaryButtonStyle}
+                  onClick={handleExportClick}
+                >
+                  Экспорт
+                </Button>
+              </Stack>
+            </Stack>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -259,6 +344,36 @@ const CarParkPage = () => {
                   onClick={handleAddCarClick}
                 >
                   Добавить машину
+                </Button>
+              </Stack>
+              <Stack
+                direction={'row'}
+                gap={'8px'}
+                justifyContent={'space-between'}
+                sx={{
+                  height: '56px',
+                  width: '100%',
+                  px: '16px',
+                  py: '8px'
+                }}
+              >
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={secondaryButtonStyle}
+                  onClick={handleImportClick}
+                >
+                  Импорт
+                </Button>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth
+                  sx={secondaryButtonStyle}
+                  onClick={handleExportClick}
+                >
+                  Экспорт
                 </Button>
               </Stack>
               <Box

@@ -1,10 +1,10 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 import {
   createCarParkRequest,
   deleteCarParkRequest,
   getCarParksRequest,
-  updateCarParkRequest,
-} from 'api/car-park'
+  updateCarParkRequest
+} from 'api/car-park';
 import {
   carParkFetch,
   createCarParkFetch,
@@ -16,11 +16,11 @@ import {
   changePages,
   editModalHandler,
   changeCurrentPage,
-  carParkChangePageFetch,
-} from './carParkSlice'
+  carParkChangePageFetch
+} from './carParkSlice';
 
-import { getPageNum } from 'utils'
-import { store } from '../index'
+import { getPageNum } from 'utils';
+import { store } from '../index';
 
 const urlPath = () => {
   if (
@@ -30,8 +30,8 @@ const urlPath = () => {
   ) {
     return {
       isSubscribe: 'True',
-      status: 'active',
-    }
+      status: 'active'
+    };
   } else if (
     document.location.href.split('/')[
       document.location.href.split('/').length - 1
@@ -39,26 +39,26 @@ const urlPath = () => {
   ) {
     return {
       isSubscribe: 'False',
-      status: 'active',
-    }
+      status: 'active'
+    };
   } else {
     return {
-      status: 'inactive',
-    }
+      status: 'inactive'
+    };
   }
-}
+};
 
 function* workCarParks({ payload }) {
   try {
     const { data } = yield call(getCarParksRequest, {
       offset: 0,
       ...urlPath(),
-      ...store.getState().carPark.filters,
-    })
-    yield put(changePages(data.count))
-    yield put(getCarParkSuccess(data))
+      ...store.getState().carPark.filters
+    });
+    yield put(changePages(data.count));
+    yield put(getCarParkSuccess(data));
   } catch (e) {
-    yield put(getCarParkError())
+    yield put(getCarParkError());
   }
 }
 
@@ -67,60 +67,60 @@ function* workCarParkPage({ payload }) {
     const { data } = yield call(getCarParksRequest, {
       offset: getPageNum(payload) * 5,
       ...urlPath(),
-      ...store.getState().carPark.filters,
-    })
-    yield put(getCarParkSuccess(data))
-    yield put(changePages(data.count))
-    yield put(changeCurrentPage(payload))
+      ...store.getState().carPark.filters
+    });
+    yield put(getCarParkSuccess(data));
+    yield put(changePages(data.count));
+    yield put(changeCurrentPage(payload));
   } catch (e) {
-    yield put(getCarParkError())
+    yield put(getCarParkError());
   }
 }
 
 function* workEditCarPark({ payload }) {
   try {
-    const carParkEdit = yield select((state) => state.carPark.carParkEdit)
-    payload.id = carParkEdit.id
-    yield call(updateCarParkRequest, payload)
+    const carParkEdit = yield select((state) => state.carPark.carParkEdit);
+    payload.id = carParkEdit.id;
+    yield call(updateCarParkRequest, payload);
     const { data } = yield call(getCarParksRequest, {
       offset: 0,
       ...urlPath(),
-      ...store.getState().carPark.filters,
-    })
-    yield put(getCarParkSuccess(data))
-    yield put(editModalHandler())
+      ...store.getState().carPark.filters
+    });
+    yield put(getCarParkSuccess(data));
+    yield put(editModalHandler());
   } catch (e) {}
 }
 
 function* workCreateCarPark({ payload }) {
   try {
-    yield call(createCarParkRequest, payload)
+    yield call(createCarParkRequest, payload);
     const { data } = yield call(getCarParksRequest, {
       offset: 0,
       ...urlPath(),
-      ...store.getState().carPark.filters,
-    })
-    yield put(getCarParkSuccess(data))
-    yield put(createModalHandler())
+      ...store.getState().carPark.filters
+    });
+    yield put(getCarParkSuccess(data));
+    yield put(createModalHandler());
   } catch (e) {}
 }
 
 function* workDeleteCarPark({ payload }) {
   try {
-    yield call(deleteCarParkRequest, payload.id)
+    yield call(deleteCarParkRequest, payload.id);
     const { data } = yield call(getCarParksRequest, {
       offset: 0,
       ...urlPath(),
-      ...store.getState().carPark.filters,
-    })
-    yield put(getCarParkSuccess(data))
+      ...store.getState().carPark.filters
+    });
+    yield put(getCarParkSuccess(data));
   } catch (e) {}
 }
 
 export default function* carParkSagaWatcher() {
-  yield takeEvery(carParkFetch.type, workCarParks)
-  yield takeEvery(editCarParkFetch.type, workEditCarPark)
-  yield takeEvery(carParkChangePageFetch.type, workCarParkPage)
-  yield takeEvery(createCarParkFetch.type, workCreateCarPark)
-  yield takeEvery(deleteCarParkFetch.type, workDeleteCarPark)
+  yield takeEvery(carParkFetch.type, workCarParks);
+  yield takeEvery(editCarParkFetch.type, workEditCarPark);
+  yield takeEvery(carParkChangePageFetch.type, workCarParkPage);
+  yield takeEvery(createCarParkFetch.type, workCreateCarPark);
+  yield takeEvery(deleteCarParkFetch.type, workDeleteCarPark);
 }

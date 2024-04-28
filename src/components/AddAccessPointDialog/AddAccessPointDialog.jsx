@@ -193,9 +193,6 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           id: accessPointEdit.id
         };
         dispatch(editAccessPointFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Точка доступа сохранена', { variant: 'success' });
-        }
       } else {
         const payload = {
           description: description,
@@ -217,9 +214,6 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
             .filter((i) => !isNaN(i))
         };
         dispatch(createAccessPointFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Точка доступа добавлена', { variant: 'success' });
-        }
       }
       resetHandle();
     }

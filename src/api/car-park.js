@@ -1,4 +1,4 @@
-import { $api } from '.'
+import { $api } from '.';
 
 export const getCarParksRequest = async ({
   offset = 50,
@@ -7,7 +7,7 @@ export const getCarParksRequest = async ({
   is_subscribe,
   vehiclePlate,
   isSubscribe,
-  status,
+  status
 }) => {
   return $api.get(`/carPark/`, {
     params: {
@@ -17,19 +17,31 @@ export const getCarParksRequest = async ({
       isSubscribe,
       companyName,
       is_subscribe,
-      status,
-    },
-  })
-}
+      status
+    }
+  });
+};
 
 export const createCarParkRequest = async (data) => {
-  return $api.post('/carPark/', data)
-}
+  return $api.post('/carPark/', data);
+};
 
 export const updateCarParkRequest = async (data) => {
-  return $api.put('/carPark/' + data.id, data)
-}
+  return $api.put('/carPark/' + data.id, data);
+};
 
 export const deleteCarParkRequest = async (id) => {
-  return $api.delete('/carPark/' + id)
-}
+  return $api.delete('/carPark/' + id);
+};
+
+export const getCarParkReport = async () => {
+  return $api.get('/carPark/export/', {
+    responseType: 'blob'
+  });
+};
+
+export const uploadCarParkReport = async (file) => {
+  return $api.post('/carPark/import/', file, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+};

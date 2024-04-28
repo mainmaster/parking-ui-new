@@ -115,7 +115,16 @@ export default function LogAccessPointCard({ point }) {
   return (
     <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'16px'}>
-        <Typography sx={titleTextStyle}>{point.description}</Typography>
+        <Stack direction={'row'} justifyContent={'space-between'}>
+          <Typography sx={titleTextStyle}>{point.description}</Typography>
+          <Typography
+            sx={{
+              whiteSpace: 'nowrap',
+              fontWeight: 500,
+              color: colors.element.secondary
+            }}
+          >{`№ ${point.id}`}</Typography>
+        </Stack>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>Направление</Typography>

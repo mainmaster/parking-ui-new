@@ -74,9 +74,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           id: blackListEdit.id
         };
         dispatch(editBlackListFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Машина сохранена', { variant: 'success' });
-        }
       } else if (description !== '' && vehiclePlate !== '') {
         date.setHours(23, 59, 0, 0);
         const payload = {
@@ -85,9 +82,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           vehicle_plate: vehiclePlate
         };
         dispatch(createBlackListFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Машина добавлена', { variant: 'success' });
-        }
       }
       resetHandle();
     }

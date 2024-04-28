@@ -103,9 +103,6 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
           id: applicationEdit.application.id
         };
         dispatch(editApplicationFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Заявка сохранена', { variant: 'success' });
-        }
       } else if (vehiclePlate !== '') {
         const payload = {
           valid_for_date: format(date, 'yyyy-MM-dd'),
@@ -113,9 +110,6 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
           company_id: renter.id
         };
         dispatch(createApplicationsFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Заявка добавлена', { variant: 'success' });
-        }
       }
       resetHandle();
       handleClose();

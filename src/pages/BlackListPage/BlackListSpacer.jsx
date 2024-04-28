@@ -8,7 +8,9 @@ export default function BlackListSpacer() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <Box
-      sx={{ minHeight: isMobile ? spacers.carpark_mobile : spacers.carpark }}
+      sx={{
+        minHeight: isMobile ? spacers.blacklist_mobile : spacers.blacklist
+      }}
     ></Box>
   );
 }

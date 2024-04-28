@@ -284,14 +284,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           id: workingModeEdit.id
         };
         dispatch(editWorkingModeFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Режим сохранён', { variant: 'success' });
-        }
       } else {
         dispatch(createWorkingModeFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Режим добавлен', { variant: 'success' });
-        }
       }
       resetHandle();
     }
