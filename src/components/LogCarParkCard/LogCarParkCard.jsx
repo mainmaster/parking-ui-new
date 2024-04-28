@@ -39,7 +39,7 @@ export default function LogCarParkCard({ car, renter }) {
   };
 
   const handleDeleteCarClick = () => {
-    dispatch(deleteCarParkFetch(car.id));
+    dispatch(deleteCarParkFetch({ id: car.id }));
   };
 
   return (

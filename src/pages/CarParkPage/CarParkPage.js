@@ -165,9 +165,10 @@ const CarParkPage = () => {
   };
 
   const handleImportClick = (e) => {
-    console.log(e.target.files[0]);
-    let file = e.target.files[0];
-    setFile(file);
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      setFile(file);
+    }
   };
 
   useEffect(() => {
