@@ -499,6 +499,7 @@ const EventsPage = ({ onlyLog }) => {
                   onClickImage={changeActiveImageModal}
                   selected={item.id === selectedEventId}
                   ref={addToRefs}
+                  accessOptions={accessOptions}
                 />
               ))}
               <Box

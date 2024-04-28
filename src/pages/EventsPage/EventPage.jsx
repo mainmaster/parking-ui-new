@@ -132,7 +132,7 @@ export const EventPage = () => {
         'access_to_open_access_point' in userData.operator &&
         userData.operator.access_to_open_access_point === true
       ) {
-        options = { ...options, disableOpenAP: true };
+        options = { ...options, disableOpenAP: false };
       } else {
         options = { ...options, disableOpenAP: true };
       }
@@ -141,7 +141,7 @@ export const EventPage = () => {
         'access_to_reset_duty_session' in userData.operator &&
         userData.operator.access_to_reset_duty_session === true
       ) {
-        options = { ...options, disableResetDuty: true };
+        options = { ...options, disableResetDuty: false };
       } else {
         options = { ...options, disableResetDuty: true };
       }
