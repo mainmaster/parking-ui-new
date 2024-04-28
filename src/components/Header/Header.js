@@ -435,7 +435,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     disableRipple
                     variant="contained"
                     fullWidth={false}
-                    onClick={handleExitMoreClick}
+                    onClick={handleLogout}
                     sx={secondaryButtonStyle}
                   >
                     Выход

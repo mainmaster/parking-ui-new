@@ -67,7 +67,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
   }, []);
 
   const defaultValues = useMemo(() => {
-    if (renterEdit) {
+    if (!_.isEmpty(renterEdit)) {
       return {
         company_name: renterEdit.company_name,
         contacts: renterEdit.contacts,

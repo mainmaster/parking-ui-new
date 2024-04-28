@@ -140,7 +140,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
   const isError = useSelector((state) => state.workingModes.isErrorFetch);
 
   const defaultValues = useMemo(() => {
-    if (workingModeEdit) {
+    if (!_.isEmpty(workingModeEdit)) {
       return {
         description: workingModeEdit.description,
         pass_mode: workingModeEdit.pass_mode,
