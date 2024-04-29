@@ -345,6 +345,17 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   </IconButton>
                 )}
                 sx={selectMenuStyle}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      borderRadius: '8px',
+                      border: '1px solid ' + colors.outline.default
+                    }
+                  },
+                  MenuListProps: {
+                    sx: { py: '4px' }
+                  }
+                }}
                 renderValue={(selected) => {
                   if (selected === '') {
                     return <em>Выбрать</em>;
@@ -408,6 +419,17 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   </IconButton>
                 )}
                 sx={selectMenuStyle}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      borderRadius: '8px',
+                      border: '1px solid ' + colors.outline.default
+                    }
+                  },
+                  MenuListProps: {
+                    sx: { py: '4px' }
+                  }
+                }}
                 renderValue={(selected) => {
                   if (selected === '') {
                     return <em>Выбрать</em>;

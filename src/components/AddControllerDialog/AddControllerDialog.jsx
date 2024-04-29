@@ -4,7 +4,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import _ from 'lodash';
 import { useSnackbar } from 'notistack';
-import { editCameraFetch, createCameraFetch } from 'store/cameras/camerasSlice';
+import {
+  editControllerFetch,
+  createControllerFetch
+} from 'store/controllers/controllersSlice';
 import {
   Box,
   Stack,
@@ -30,19 +33,13 @@ import { colors } from '../../theme/colors';
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
   ip_address: yup.string().required('Введите IP адрес'),
-  login: yup.string().required('Введите логин'),
-  password: yup.string().required('Введите пароль'),
-  mjpeg_url: yup.string().required('Введите ссылку на трансляцию'),
-  snapshot_url: yup.string().required('Введите ссылку на снапшот')
+  password: yup.string().required('Введите пароль')
 });
 
 const initialValues = {
   description: '',
   ip_address: '',
-  login: '',
   password: '',
-  mjpeg_url: '',
-  snapshot_url: '',
   port: 80
 };
 
@@ -52,27 +49,26 @@ const labelStyle = {
   whiteSpace: 'wrap'
 };
 
-export default function AddCameraDialog({ show, handleClose, edit }) {
+export default function AddControllerDialog({ show, handleClose, edit }) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
-  const cameraEdit = useSelector((state) => state.cameras.cameraEdit);
+  const controllerEdit = useSelector(
+    (state) => state.controllers.controllerEdit
+  );
 
   const defaultValues = useMemo(() => {
-    if (!_.isEmpty(cameraEdit)) {
+    if (!_.isEmpty(controllerEdit)) {
       return {
-        description: cameraEdit.description,
-        ip_address: cameraEdit.ip_address,
-        login: cameraEdit.login,
-        password: cameraEdit.password,
-        mjpeg_url: cameraEdit.mjpeg_url,
-        snapshot_url: cameraEdit.snapshot_url,
-        port: cameraEdit.port
+        description: controllerEdit.description,
+        ip_address: controllerEdit.ip_address,
+        password: controllerEdit.password,
+        port: controllerEdit.port
       };
     } else {
       return initialValues;
     }
-  }, [cameraEdit]);
+  }, [controllerEdit]);
 
   const formik = useFormik({
     initialValues: defaultValues,
@@ -85,11 +81,11 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
       if (edit) {
         payload = {
           ...payload,
-          id: cameraEdit.id
+          id: controllerEdit.id
         };
-        dispatch(editCameraFetch(payload));
+        dispatch(editControllerFetch(payload));
       } else {
-        dispatch(createCameraFetch(payload));
+        dispatch(createControllerFetch(payload));
       }
       resetHandle();
     }
@@ -167,7 +163,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать камеру' : 'Добавить камеру'}
+        {edit ? 'Редактировать контроллер' : 'Добавить контроллер'}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -250,25 +246,6 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
             />
           </Stack>
           <Stack>
-            <InputLabel htmlFor="login" sx={labelStyle}>
-              Логин
-            </InputLabel>
-            <CarNumberInput
-              fullWidth
-              InputProps={{
-                disableUnderline: true,
-                sx: { paddingLeft: '12px' }
-              }}
-              variant="filled"
-              id="login"
-              name="login"
-              value={formik.values.login}
-              onChange={handleValueChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.login && Boolean(formik.errors.login)}
-            />
-          </Stack>
-          <Stack>
             <InputLabel htmlFor="password" sx={labelStyle}>
               Пароль
             </InputLabel>
@@ -286,49 +263,6 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
               onChange={handleValueChange}
               onBlur={formik.handleBlur}
               error={formik.touched.password && Boolean(formik.errors.password)}
-            />
-          </Stack>
-          <Stack>
-            <InputLabel htmlFor="mjpeg_url" sx={labelStyle}>
-              Ссылка на трансляцию
-            </InputLabel>
-            <CarNumberInput
-              fullWidth
-              InputProps={{
-                disableUnderline: true,
-                sx: { paddingLeft: '12px' }
-              }}
-              variant="filled"
-              id="mjpeg_url"
-              name="mjpeg_url"
-              value={formik.values.mjpeg_url}
-              onChange={handleValueChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.mjpeg_url && Boolean(formik.errors.mjpeg_url)
-              }
-            />
-          </Stack>
-          <Stack>
-            <InputLabel htmlFor="snapshot_url" sx={labelStyle}>
-              Ссылка на снапшот
-            </InputLabel>
-            <CarNumberInput
-              fullWidth
-              InputProps={{
-                disableUnderline: true,
-                sx: { paddingLeft: '12px' }
-              }}
-              variant="filled"
-              id="snapshot_url"
-              name="snapshot_url"
-              value={formik.values.snapshot_url}
-              onChange={handleValueChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.snapshot_url &&
-                Boolean(formik.errors.snapshot_url)
-              }
             />
           </Stack>
 

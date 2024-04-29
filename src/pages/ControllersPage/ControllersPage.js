@@ -1,95 +1,237 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import css from './ControllersPage.module.scss'
-import { Button, Spinner } from 'react-bootstrap'
-// Components
-import ControllerItem from 'components/ControllerItem'
-import CreateControllerModal from 'components/Modals/CreateControllerModal'
-import EditControllerModal from 'components/Modals/EditControllerModal'
+import { useEffect, useCallback, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // Store
 import {
   controllersFetch,
   editModalHandler,
-  createModalHandler,
-  deleteControllerFetch,
-} from 'store/controllers/controllersSlice'
-import _ from 'lodash'
+  createModalHandler
+} from 'store/controllers/controllersSlice';
+import _ from 'lodash';
+import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
+import { colors } from '../../theme/colors';
+import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import FooterSpacer from '../../components/Header/FooterSpacer';
+import ControllersSpacer from './ControllersSpacer';
+import controllerEmptyIcon from '../../assets/svg/controller_empty_icon.svg';
+import EventManager from '../../components/EventManager/EventManager';
+import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
+import AddControllerDialog from '../../components/AddControllerDialog/AddControllerDialog';
+import LogControllerCard from '../../components/LogControllerCard/LogControllerCard';
+import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 
+const titleTextStyle = {
+  fontSize: '1.5rem',
+  lineHeight: '1.75rem',
+  fontWeight: 500,
+  whiteSpace: 'nowrap'
+};
 
 const ControllersPage = () => {
-  const dispatch = useDispatch()
-  const controllers = useSelector((state) => state.controllers.controllers)
-  const isLoadingFetch = useSelector(
-    (state) => state.controllers.isLoadingFetch
-  )
-  const isErrorFetch = useSelector((state) => state.controllers.isErrorFetch)
-  const isEditModal = useSelector((state) => state.controllers.isEditModal)
-  const isCreateModal = useSelector((state) => state.controllers.isCreateModal)
+  const dispatch = useDispatch();
+  const controllers = useSelector((state) => state.controllers.controllers);
+  const isLoading = useSelector((state) => state.controllers.isLoadingFetch);
+  const isError = useSelector((state) => state.controllers.isErrorFetch);
+  const isEditModal = useSelector((state) => state.controllers.isEditModal);
+  const isCreateModal = useSelector((state) => state.controllers.isCreateModal);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [controllersListScrolled, setControllersListScrolled] = useState(false);
+  const controllersListRef = useRef(null);
+  const containerRef = useRef(null);
+  const [itemsInRow, setItemsInRow] = useState(0);
+
+  const handleResize = useCallback(() => {
+    if (containerRef?.current) {
+      const items = Math.floor(
+        containerRef.current.offsetWidth / ITEM_MIN_WIDTH
+      );
+      setItemsInRow(items - 1);
+    }
+  }, [containerRef]);
 
   useEffect(() => {
-    dispatch(controllersFetch())
+    window.addEventListener('load', handleResize);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('load', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [containerRef, handleResize]);
+
+  useEffect(() => {
+    dispatch(controllersFetch());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  const editPopupHandler = (id) => {
-    dispatch(editModalHandler(id))
-  }
+  const handleControllersListScroll = () => {
+    if (controllersListRef.current) {
+      const { scrollTop } = controllersListRef.current;
+      if (scrollTop > 0) {
+        setControllersListScrolled(true);
+      } else if (controllersListScrolled) {
+        setControllersListScrolled(false);
+      }
+    }
+  };
 
-  const createPopupHandler = () => {
-    dispatch(createModalHandler())
-  }
+  const handleEditControllerClick = () => {
+    dispatch(editModalHandler());
+  };
 
-  const deleteHandler = (id) => {
-    dispatch(deleteControllerFetch(id))
-  }
-
-  const spinnerContent = (
-    <div className={css.spinner}>
-      <Spinner animation="border" />
-    </div>
-  )
-
-  const errorContent = (
-    <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
-  )
-
-  const emptyData = <div className={css.empty}>Контроллеров нет</div>
-
-  const cardsContent = (
-    <div className={css.cards}>
-      {controllers.length !== 0
-        ? _.sortBy(controllers, ['id']).map((item) => (
-            <ControllerItem
-              key={item.id}
-              {...item}
-              editHandler={() => editPopupHandler(item.id)}
-              deleteHandler={() => deleteHandler(item.id)}
-            />
-          ))
-        : emptyData}
-    </div>
-  )
-
-  const hasData = !(isLoadingFetch || isErrorFetch)
-  const errorMessage = isErrorFetch ? errorContent : null
-  const spinner = isLoadingFetch ? spinnerContent : null
-  const content = hasData ? cardsContent : null
+  const handleAddControllerClick = () => {
+    dispatch(createModalHandler());
+  };
 
   return (
     <>
-      <div className={css.top}>
-        <Button className="mb-4 mt-3" onClick={createPopupHandler}>Добавить контроллер</Button>
-      </div>
-      {errorMessage}
-      {spinner}
-      {content}
-      <CreateControllerModal
-        show={isCreateModal}
-        handleClose={createPopupHandler}
-      />
-      <EditControllerModal show={isEditModal} handleClose={editPopupHandler} />
-    </>
-  )
-}
+      {!isMobile && (
+        <AppBar
+          sx={{
+            width: 'calc(100% - 72px)',
+            position: 'absolute',
+            top: 0,
+            left: '72px',
+            backgroundColor: colors.surface.low,
+            boxShadow: !controllersListScrolled && 'none',
+            zIndex: 10
+            //borderBottom: `1px solid ${colors.outline.separator}`
+          }}
+        >
+          <Stack
+            direction={'row'}
+            gap={'16px'}
+            justifyContent={'space-between'}
+            sx={{
+              height: '64px',
+              width: '100%',
+              p: '16px',
+              pb: '8px'
+            }}
+          >
+            <Typography sx={titleTextStyle}>Контроллеры</Typography>
+            <Stack
+              direction={'row'}
+              justifyContent={'flex-end'}
+              sx={{ width: '100%' }}
+            >
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={closeButtonStyle}
+                onClick={handleAddControllerClick}
+              >
+                Добавить контроллер
+              </Button>
+            </Stack>
+          </Stack>
+        </AppBar>
+      )}
+      <Stack
+        ref={controllersListRef}
+        sx={[
+          listWithScrollStyle,
+          {
+            width: '100%',
+            backgroundColor: colors.surface.low
+          }
+        ]}
+        onScroll={handleControllersListScroll}
+      >
+        <EventManager />
+        <ControllersSpacer />
+        {isMobile && (
+          <Stack
+            direction={'row'}
+            gap={'16px'}
+            justifyContent={'space-between'}
+            sx={{
+              height: '64px',
+              width: '100%',
+              p: '16px',
+              pb: '8px'
+            }}
+          >
+            <Typography sx={titleTextStyle}>Контроллеры</Typography>
+            <Button
+              disableRipple
+              variant="contained"
+              fullWidth={false}
+              sx={closeButtonStyle}
+              onClick={handleAddControllerClick}
+            >
+              Добавить контроллер
+            </Button>
+          </Stack>
+        )}
 
-export default ControllersPage
+        {controllers && controllers.length > 0 ? (
+          <>
+            <Box
+              ref={containerRef}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+              }}
+            >
+              {_.sortBy(controllers, ['id']).map((item) => (
+                <LogControllerCard key={item.id} controller={item} />
+              ))}
+              {itemsInRow > 0 &&
+                [...Array(itemsInRow)].map((value, index) => (
+                  <Box
+                    id={index + 1}
+                    key={index}
+                    sx={{
+                      flex: `1 1 ${ITEM_MIN_WIDTH}px`,
+                      minWidth: `${ITEM_MIN_WIDTH}px`,
+                      maxWidth: `${ITEM_MAX_WIDTH}px`
+                    }}
+                  />
+                ))}
+            </Box>
+          </>
+        ) : (
+          <Stack
+            justifyContent={'center'}
+            alignItems={'center'}
+            height={'100%'}
+            gap={'16px'}
+          >
+            {isLoading ? (
+              <SpinerLogo />
+            ) : (
+              <>
+                <img
+                  style={{ height: '40px' }}
+                  src={controllerEmptyIcon}
+                  alt="Нет контроллеров"
+                />
+                <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
+                  Нет контроллеров
+                </Typography>
+              </>
+            )}
+          </Stack>
+        )}
+
+        <FooterSpacer />
+      </Stack>
+      <AddControllerDialog
+        show={isCreateModal}
+        handleClose={handleAddControllerClick}
+      />
+      <AddControllerDialog
+        show={isEditModal}
+        handleClose={handleEditControllerClick}
+        edit={true}
+      />
+    </>
+  );
+};
+
+export default ControllersPage;

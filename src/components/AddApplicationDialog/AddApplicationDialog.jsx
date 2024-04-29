@@ -36,6 +36,7 @@ import {
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
+import { colors } from '../../theme/colors';
 import { DateIcon } from '../Icons/DateIcon';
 
 const defaultValues = {
@@ -297,6 +298,17 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 if (selected === '') {
                   return <em></em>;

@@ -5,8 +5,8 @@ import { secondaryButtonStyle } from '../../theme/styles';
 import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
 import {
   editModalHandler,
-  deleteCameraFetch
-} from 'store/cameras/camerasSlice';
+  deleteControllerFetch
+} from 'store/controllers/controllersSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -33,48 +33,34 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogCameraCard({ camera }) {
+export default function LogControllerCard({ controller }) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleEditModeClick = () => {
-    dispatch(editModalHandler(camera.id));
+    dispatch(editModalHandler(controller.id));
   };
 
   const handleDeleteModeClick = () => {
-    dispatch(deleteCameraFetch(camera.id));
+    dispatch(deleteControllerFetch(controller.id));
   };
 
   return (
     <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'16px'}>
-        <Typography sx={titleTextStyle}>{camera.description}</Typography>
-        <Stack gap={'12px'} sx={{ minHeight: '216px' }}>
+        <Typography sx={titleTextStyle}>{controller.description}</Typography>
+        <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>IP адрес</Typography>
             <Typography sx={{ fontWeight: 500 }}>
-              {`${camera.ip_address}:${camera.port}`}
+              {`${controller.ip_address}:${controller.port}`}
             </Typography>
-          </Stack>
-          <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Логин</Typography>
-            <Typography sx={{ fontWeight: 500 }}>{camera.login}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>Пароль</Typography>
-            <Typography sx={{ fontWeight: 500 }}>{camera.password}</Typography>
-          </Stack>
-          <Stack gap={'4px'}>
-            <Typography sx={labelTextStyle}>Ссылка на трансляцию</Typography>
-            <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
-              {camera.mjpeg_url}
-            </Typography>
-          </Stack>
-          <Stack gap={'4px'}>
-            <Typography sx={labelTextStyle}>Ссылка на снапшот</Typography>
-            <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
-              {camera.snapshot_url}
+            <Typography sx={{ fontWeight: 500 }}>
+              {controller.password}
             </Typography>
           </Stack>
         </Stack>

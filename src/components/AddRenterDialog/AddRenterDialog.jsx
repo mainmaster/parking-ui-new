@@ -25,6 +25,7 @@ import {
 import { accessPointsOnlyFetch } from 'store/accessPoints/accessPointsSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
+import checkIcon from '../../assets/svg/multiselect_check_icon.svg';
 import {
   closeButtonStyle,
   listStyle,
@@ -32,6 +33,7 @@ import {
   CarNumberInput,
   selectMenuStyle
 } from '../../theme/styles';
+import { colors } from '../../theme/colors';
 import _ from 'lodash';
 
 const labelStyle = {
@@ -347,6 +349,17 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedItems = accessPoints.filter((item) =>
                   selected.includes(item.id.toString())
@@ -363,28 +376,54 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.access_points)
               }
             >
-              <MenuItem value="">
+              <MenuItem
+                disableRipple
+                value=""
+                sx={{
+                  p: '8px',
+                  pl: '40px',
+                  '&.Mui-selected': { backgroundColor: 'transparent' }
+                }}
+              >
                 <Typography component={'h5'}>...</Typography>
               </MenuItem>
               {accessPoints &&
-                accessPoints.map((p) => (
-                  <MenuItem
-                    key={p.id}
-                    id={p.id}
-                    selected={formik.values.access_points
-                      .split(',')
-                      .some((item) => item === p.id)}
-                    value={p.id.toString()}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
+                accessPoints.map((p) => {
+                  const selected = formik.values.access_points
+                    .split(',')
+                    .some((item) => item === p.id.toString());
+                  return (
+                    <MenuItem
+                      key={p.id}
+                      id={p.id}
+                      disableRipple
+                      selected={selected}
+                      value={p.id.toString()}
+                      sx={{
+                        p: '8px',
+                        '&.Mui-selected': { backgroundColor: 'transparent' }
+                      }}
                     >
-                      {p.description}
-                    </Typography>
-                  </MenuItem>
-                ))}
+                      <Stack
+                        direction={'row'}
+                        gap={'8px'}
+                        sx={{ height: '24px' }}
+                        alignItems={'center'}
+                      >
+                        <Box sx={{ width: '24px' }}>
+                          {selected && <img src={checkIcon} alt="checked" />}
+                        </Box>
+                        <Typography
+                          component={'h5'}
+                          noWrap
+                          sx={{ fontWeight: 500, p: 0 }}
+                        >
+                          {p.description}
+                        </Typography>
+                      </Stack>
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </Stack>
           <Button

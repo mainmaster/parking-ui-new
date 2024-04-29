@@ -454,6 +454,17 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
                     </IconButton>
                   )}
                   sx={selectMenuStyle}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        borderRadius: '8px',
+                        border: '1px solid ' + colors.outline.default
+                      }
+                    },
+                    MenuListProps: {
+                      sx: { py: '4px' }
+                    }
+                  }}
                   renderValue={(selected) => {
                     const selectedName = passModeOptions.find(
                       (item) => item.value === selected

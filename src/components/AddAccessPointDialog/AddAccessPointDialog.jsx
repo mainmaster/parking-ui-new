@@ -31,6 +31,7 @@ import {
 } from 'store/accessPoints/accessPointsSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
+import checkIcon from '../../assets/svg/multiselect_check_icon.svg';
 import {
   closeButtonStyle,
   listStyle,
@@ -39,6 +40,7 @@ import {
   selectMenuStyle,
   switchInputStyle
 } from '../../theme/styles';
+import { colors } from '../../theme/colors';
 import {
   directionOptions,
   relayNumberOptions,
@@ -369,6 +371,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = directionOptions.find(
                   (item) => item.value === selected
@@ -432,6 +445,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = camerasOptions.find(
                   (item) => item.value === selected
@@ -493,6 +517,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = controllersOptions.find(
                   (item) => item.value === selected
@@ -556,6 +591,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = ledsOptions.find(
                   (item) => item.value === selected
@@ -620,6 +666,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = relayNumberOptions.find(
                   (item) => item.value === selected
@@ -684,6 +741,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = relayNumberOptions.find(
                   (item) => item.value === selected
@@ -748,6 +816,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = statusContactOptions.find(
                   (item) => item.value === selected
@@ -881,6 +960,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedName = terminalOptions.find(
                   (item) => item.value === selected
@@ -966,6 +1056,17 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedItems = workingModesOptions.filter((item) =>
                   selected.includes(item.value.toString())
@@ -981,28 +1082,44 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.working_modes)
               }
             >
-              <MenuItem disabled value="">
-                <em> </em>
-              </MenuItem>
+              <MenuItem disabled value="" sx={{ display: 'none' }}></MenuItem>
               {workingModesOptions &&
-                workingModesOptions.map((d) => (
-                  <MenuItem
-                    key={d.name}
-                    id={d.name}
-                    selected={formik.values.working_modes
-                      .split(',')
-                      .some((item) => item === d.value)}
-                    value={d.value.toString()}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
+                workingModesOptions.map((d) => {
+                  const selected = formik.values.working_modes
+                    .split(',')
+                    .some((item) => item === d.value.toString());
+                  return (
+                    <MenuItem
+                      key={d.name}
+                      id={d.name}
+                      disableRipple
+                      selected={selected}
+                      value={d.value.toString()}
+                      sx={{
+                        p: '8px',
+                        '&.Mui-selected': { backgroundColor: 'transparent' }
+                      }}
                     >
-                      {d.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
+                      <Stack
+                        direction={'row'}
+                        gap={'8px'}
+                        sx={{ height: '24px' }}
+                        alignItems={'center'}
+                      >
+                        <Box sx={{ width: '24px' }}>
+                          {selected && <img src={checkIcon} alt="checked" />}
+                        </Box>
+                        <Typography
+                          component={'h5'}
+                          noWrap
+                          sx={{ fontWeight: 500, p: 0 }}
+                        >
+                          {d.name}
+                        </Typography>
+                      </Stack>
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </Stack>
           <Button

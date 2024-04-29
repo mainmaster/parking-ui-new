@@ -31,6 +31,7 @@ import {
 } from 'store/carPark/carParkSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
+import checkIcon from '../../assets/svg/multiselect_check_icon.svg';
 import {
   closeButtonStyle,
   listStyle,
@@ -39,6 +40,7 @@ import {
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
+import { colors } from '../../theme/colors';
 import { DateIcon } from '../Icons/DateIcon';
 
 const labelStyle = {
@@ -121,18 +123,12 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           id: carParkEdit.id
         };
         dispatch(editCarParkFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Машина сохранена', { variant: 'success' });
-        }
       } else {
         payload = {
           ...payload,
           is_active: true
         };
         dispatch(createCarParkFetch(payload));
-        if (!isError) {
-          enqueueSnackbar('Машина добавлена', { variant: 'success' });
-        }
       }
       resetHandle();
     }
@@ -356,6 +352,17 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 if (selected === '') {
                   return <Typography component={'h5'}>...</Typography>;
@@ -424,6 +431,17 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 </IconButton>
               )}
               sx={selectMenuStyle}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    border: '1px solid ' + colors.outline.default
+                  }
+                },
+                MenuListProps: {
+                  sx: { py: '4px' }
+                }
+              }}
               renderValue={(selected) => {
                 const selectedItems = accessPoints.filter((item) =>
                   selected.includes(item.id.toString())
@@ -440,27 +458,53 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.access_points)
               }
             >
-              <MenuItem value="">
+              <MenuItem
+                disableRipple
+                value=""
+                sx={{
+                  p: '8px',
+                  pl: '40px',
+                  '&.Mui-selected': { backgroundColor: 'transparent' }
+                }}
+              >
                 <Typography component={'h5'}>...</Typography>
               </MenuItem>
-              {actualAccessPoints.map((p) => (
-                <MenuItem
-                  key={p.id}
-                  id={p.id}
-                  selected={formik.values.access_points
-                    .split(',')
-                    .some((item) => item === p.id)}
-                  value={p.id?.toString() || ''}
-                >
-                  <Typography
-                    component={'h5'}
-                    noWrap
-                    sx={{ fontWeight: 500, p: 0 }}
+              {actualAccessPoints.map((p) => {
+                const selected = formik.values.access_points
+                  .split(',')
+                  .some((item) => item === p.id?.toString());
+                return (
+                  <MenuItem
+                    key={p.id}
+                    id={p.id}
+                    disableRipple
+                    selected={selected}
+                    value={p.id?.toString() || ''}
+                    sx={{
+                      p: '8px',
+                      '&.Mui-selected': { backgroundColor: 'transparent' }
+                    }}
                   >
-                    {p.description}
-                  </Typography>
-                </MenuItem>
-              ))}
+                    <Stack
+                      direction={'row'}
+                      gap={'8px'}
+                      sx={{ height: '24px' }}
+                      alignItems={'center'}
+                    >
+                      <Box sx={{ width: '24px' }}>
+                        {selected && <img src={checkIcon} alt="checked" />}
+                      </Box>
+                      <Typography
+                        component={'h5'}
+                        noWrap
+                        sx={{ fontWeight: 500, p: 0 }}
+                      >
+                        {p.description}
+                      </Typography>
+                    </Stack>
+                  </MenuItem>
+                );
+              })}
             </Select>
           </Stack>
           <Button

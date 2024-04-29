@@ -1093,6 +1093,18 @@ const Settings = () => {
                                   </IconButton>
                                 )}
                                 sx={selectMenuStyle}
+                                MenuProps={{
+                                  PaperProps: {
+                                    sx: {
+                                      borderRadius: '8px',
+                                      border:
+                                        '1px solid ' + colors.outline.default
+                                    }
+                                  },
+                                  MenuListProps: {
+                                    sx: { py: '4px' }
+                                  }
+                                }}
                                 renderValue={(selected) => (
                                   <Typography
                                     component={'h5'}
@@ -1172,6 +1184,18 @@ const Settings = () => {
                                   </IconButton>
                                 )}
                                 sx={selectMenuStyle}
+                                MenuProps={{
+                                  PaperProps: {
+                                    sx: {
+                                      borderRadius: '8px',
+                                      border:
+                                        '1px solid ' + colors.outline.default
+                                    }
+                                  },
+                                  MenuListProps: {
+                                    sx: { py: '4px' }
+                                  }
+                                }}
                                 renderValue={(selected) => {
                                   const selectedName =
                                     yookassaTaxSystemCodeValues.find(
@@ -1242,6 +1266,18 @@ const Settings = () => {
                                   </IconButton>
                                 )}
                                 sx={selectMenuStyle}
+                                MenuProps={{
+                                  PaperProps: {
+                                    sx: {
+                                      borderRadius: '8px',
+                                      border:
+                                        '1px solid ' + colors.outline.default
+                                    }
+                                  },
+                                  MenuListProps: {
+                                    sx: { py: '4px' }
+                                  }
+                                }}
                                 renderValue={(selected) => {
                                   const selectedName =
                                     yookassaVatCodeValues.find(
@@ -1312,6 +1348,18 @@ const Settings = () => {
                                   </IconButton>
                                 )}
                                 sx={selectMenuStyle}
+                                MenuProps={{
+                                  PaperProps: {
+                                    sx: {
+                                      borderRadius: '8px',
+                                      border:
+                                        '1px solid ' + colors.outline.default
+                                    }
+                                  },
+                                  MenuListProps: {
+                                    sx: { py: '4px' }
+                                  }
+                                }}
                                 renderValue={(selected) => {
                                   const selectedName =
                                     aqsiTaxSystemCodeValues.find(
@@ -1382,6 +1430,18 @@ const Settings = () => {
                                   </IconButton>
                                 )}
                                 sx={selectMenuStyle}
+                                MenuProps={{
+                                  PaperProps: {
+                                    sx: {
+                                      borderRadius: '8px',
+                                      border:
+                                        '1px solid ' + colors.outline.default
+                                    }
+                                  },
+                                  MenuListProps: {
+                                    sx: { py: '4px' }
+                                  }
+                                }}
                                 renderValue={(selected) => {
                                   const selectedName = aqsiVatCodeValues.find(
                                     (item) => item.value === selected
