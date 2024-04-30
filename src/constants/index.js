@@ -17,7 +17,8 @@ export const passModeOptions = [
 
 export const directionOptions = [
   { name: 'Въезд', value: 'in' },
-  { name: 'Выезд', value: 'out' }
+  { name: 'Выезд', value: 'out' },
+  { name: 'Внутренняя', value: 'inner' }
 ];
 export const eventCodes = [
   { name: 'Номер не распознан, доступ не предоставлен', value: 1003 },
@@ -74,6 +75,9 @@ export const directionName = (direction) => {
       break;
     case 'out':
       name = 'Выезд';
+      break;
+    case 'inner':
+      name = 'Внутренняя';
       break;
     default:
       name = '';
