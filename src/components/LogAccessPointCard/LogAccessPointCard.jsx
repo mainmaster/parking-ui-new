@@ -14,6 +14,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 
 const cardContainerStyle = {
   flex: `1 1 ${ITEM_MIN_WIDTH}px`,
@@ -135,7 +136,13 @@ export default function LogAccessPointCard({ point }) {
                     style={{
                       width: '18px'
                     }}
-                    src={point.direction === 'in' ? eventInIcon : eventOutIcon}
+                    src={
+                      point.direction === 'in'
+                        ? eventInIcon
+                        : point.direction === 'out'
+                        ? eventOutIcon
+                        : eventInnerIcon
+                    }
                     alt={point.description}
                   />
                 )}

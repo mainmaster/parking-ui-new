@@ -20,6 +20,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import eventCloseIcon from '../../assets/svg/event_alert_close_icon.svg';
 import { colors } from '../../theme/colors';
 import { parseISO, differenceInSeconds } from 'date-fns';
@@ -185,7 +186,9 @@ export default function EventAlertCard({
                             src={
                               event.direction === 'in'
                                 ? eventInIcon
-                                : eventOutIcon
+                                : event.direction === 'out'
+                                ? eventOutIcon
+                                : eventInnerIcon
                             }
                             alt={event.access_point_description}
                           />

@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import Camera from '../Camera/Camera';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import cameraClearIcon from '../../assets/svg/camera_clear_icon.svg';
 import { colors } from '../../theme/colors';
 import {
@@ -276,7 +277,13 @@ export default function CameraManagementItem({
                 style={{
                   width: '18px'
                 }}
-                src={camera.direction === 'in' ? eventInIcon : eventOutIcon}
+                src={
+                  camera.direction === 'in'
+                    ? eventInIcon
+                    : camera.direction === 'out'
+                    ? eventOutIcon
+                    : eventInnerIcon
+                }
                 alt={camera.description}
               />
               <Typography>{camera.description}</Typography>

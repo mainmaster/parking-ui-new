@@ -17,6 +17,7 @@ import eventBarrierIcon from '../../assets/svg/log_event_barrier_icon.svg';
 import eventPlateIcon from '../../assets/svg/log_event_plate_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
 import eventCardIcon from '../../assets/svg/log_event_card_icon.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
@@ -327,7 +328,13 @@ export default forwardRef(function LogEventCard(
                 style={{
                   width: '18px'
                 }}
-                src={event.direction === 'in' ? eventInIcon : eventOutIcon}
+                src={
+                  event.direction === 'in'
+                    ? eventInIcon
+                    : event.direction === 'out'
+                    ? eventOutIcon
+                    : eventInnerIcon
+                }
                 alt={event.access_point_description}
               />
             )}
