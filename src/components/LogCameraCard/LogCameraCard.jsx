@@ -53,7 +53,7 @@ export default function LogCameraCard({ camera }) {
         <Stack gap={'12px'} sx={{ minHeight: '216px' }}>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>IP адрес</Typography>
-            <Typography sx={{ fontWeight: 500 }}>
+            <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
               {`${camera.ip_address}:${camera.port}`}
             </Typography>
           </Stack>

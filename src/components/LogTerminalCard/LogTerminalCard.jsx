@@ -1,12 +1,14 @@
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { colors } from '../../theme/colors';
 import { secondaryButtonStyle } from '../../theme/styles';
 import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
+import { setEditTerminal } from '../../store/terminals/terminalsSlice';
 import {
-  editModalHandler,
-  deleteControllerFetch
-} from 'store/controllers/controllersSlice';
+  useDeleteTerminalMutation,
+  useActivateTerminalMutation
+} from '../../api/terminal/terminal.api';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -33,38 +35,79 @@ const labelTextStyle = {
   color: colors.element.secondary
 };
 
-export default function LogControllerCard({ controller }) {
+export default function LogTerminalCard({ terminal }) {
+  const { enqueueSnackbar } = useSnackbar();
+  const [deleteTerminal] = useDeleteTerminalMutation();
+  const [activateTerminal] = useActivateTerminalMutation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleEditModeClick = () => {
-    dispatch(editModalHandler(controller.id));
+    dispatch(setEditTerminal(terminal));
+  };
+
+  const handleActivateModeClick = () => {
+    activateTerminal(terminal.id)
+      .unwrap()
+      .then((result) => {
+        console.log(result);
+        enqueueSnackbar('Терминал активирован', { variant: 'success' });
+      })
+      .catch(() => {
+        enqueueSnackbar('Ошибка, попробуйте позже', {
+          variant: 'error',
+          iconVariant: 'warning'
+        });
+      });
   };
 
   const handleDeleteModeClick = () => {
-    dispatch(deleteControllerFetch(controller.id));
+    deleteTerminal(terminal.id);
   };
 
   return (
     <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
       <Stack gap={'16px'}>
-        <Typography sx={titleTextStyle}>{controller.description}</Typography>
+        <Typography sx={titleTextStyle}>{terminal.description}</Typography>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>IP адрес</Typography>
+            <Typography sx={labelTextStyle}>Адрес</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{terminal.address}</Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Место</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{terminal.place}</Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Номер</Typography>
             <Typography sx={{ fontWeight: 500 }}>
-              {`${controller.ip_address}:${controller.port}`}
+              {terminal.automat_number}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Пароль</Typography>
+            <Typography sx={labelTextStyle}>IP адрес</Typography>
             <Typography sx={{ fontWeight: 500 }}>
-              {controller.password}
+              {`${terminal.ip_address}:${terminal.port}`}
+            </Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Тип</Typography>
+            <Typography sx={{ fontWeight: 500 }}>
+              {terminal.terminal_type}
             </Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
+          <Button
+            disableRipple
+            variant="contained"
+            fullWidth
+            sx={secondaryButtonStyle}
+            onClick={handleActivateModeClick}
+          >
+            Тест
+          </Button>
           <Button
             disableRipple
             variant="contained"

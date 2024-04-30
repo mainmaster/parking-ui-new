@@ -25,8 +25,8 @@ const titleTextStyle = {
 };
 
 const labelTextStyle = {
-  minWidth: '160px',
-  maxWidth: '160px',
+  minWidth: '88px',
+  maxWidth: '88px',
   color: colors.element.secondary
 };
 

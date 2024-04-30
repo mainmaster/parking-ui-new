@@ -23,6 +23,7 @@ import paymentsSlice from './payments/paymentsSlice';
 import parkingInfo from './parkingInfo/parkingInfo';
 import applicationSlice from './applications/applicationSlice';
 import rentersSlice from './renters/rentersSlice';
+import terminalsSlice from './terminals/terminalsSlice';
 import operatorSlice from './operator/operatorSlice';
 import searchLogsSlice from '../pages/SearchLogs/searchLogs.slice';
 
@@ -38,6 +39,7 @@ export const store = configureStore({
     [operatorApi.reducerPath]: operatorApi.reducer,
     cameras: camerasSlice,
     renters: rentersSlice,
+    terminals: terminalsSlice,
     operator: operatorSlice,
     searchLogs: searchLogsSlice,
     controllers: controllersSlice,

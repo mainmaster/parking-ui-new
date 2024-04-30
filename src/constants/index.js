@@ -26,6 +26,11 @@ export const ledTypeOptions = [
   { name: 'Запуск', value: 'zapusk' }
 ];
 
+export const terminalTypeOptions = [
+  { name: 'aqsi', value: 'aqsi' },
+  { name: 'vendotek', value: 'vendotek' }
+];
+
 export const eventCodes = [
   { name: 'Номер не распознан, доступ не предоставлен', value: 1003 },
   { name: 'Авто из черного списка, доступ не предоставлен', value: 1004 },
