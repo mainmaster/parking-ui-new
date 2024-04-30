@@ -262,7 +262,6 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 <CarNumberInput
                   fullWidth
                   InputProps={{
-                    type: 'password',
                     disableUnderline: true,
                     sx: { paddingLeft: '12px' }
                   }}

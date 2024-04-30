@@ -275,7 +275,6 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
             <CarNumberInput
               fullWidth
               InputProps={{
-                type: 'password',
                 disableUnderline: true,
                 sx: { paddingLeft: '12px' }
               }}
