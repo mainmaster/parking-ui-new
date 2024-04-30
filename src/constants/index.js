@@ -20,6 +20,12 @@ export const directionOptions = [
   { name: 'Выезд', value: 'out' },
   { name: 'Внутренняя', value: 'inner' }
 ];
+
+export const ledTypeOptions = [
+  { name: 'Магнит', value: 'magnit' },
+  { name: 'Запуск', value: 'zapusk' }
+];
+
 export const eventCodes = [
   { name: 'Номер не распознан, доступ не предоставлен', value: 1003 },
   { name: 'Авто из черного списка, доступ не предоставлен', value: 1004 },

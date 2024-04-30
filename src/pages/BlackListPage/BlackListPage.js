@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // Components
 import PaginationCustom from 'components/Pagination';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
-import CreateCarParkModal from 'components/Modals/CreateCarParkModal';
-import EditCarParkModal from 'components/Modals/EditCarParkModal';
 // Store
 import {
   blackListFetch,

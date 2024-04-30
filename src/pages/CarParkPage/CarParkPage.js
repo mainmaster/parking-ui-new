@@ -15,8 +15,6 @@ import { useRentersQuery } from '../../api/renters/renters.api';
 import { getCarParkReport, uploadCarParkReport } from '../../api/car-park';
 // Components
 import PaginationCustom from 'components/Pagination';
-import CreateCarParkModal from 'components/Modals/CreateCarParkModal';
-import EditCarParkModal from 'components/Modals/EditCarParkModal';
 // Constants
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
