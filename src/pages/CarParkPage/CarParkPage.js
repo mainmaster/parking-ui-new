@@ -15,6 +15,7 @@ import { useRentersQuery } from '../../api/renters/renters.api';
 import { getCarParkReport, uploadCarParkReport } from '../../api/car-park';
 // Components
 import PaginationCustom from 'components/Pagination';
+import { useSnackbar } from 'notistack';
 // Constants
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -77,6 +78,7 @@ const VisuallyHiddenInput = styled('input')({
 const CarParkPage = () => {
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { data: renters } = useRentersQuery();
   const carParks = useSelector((state) => state.carPark.carParks);
   const pages = useSelector((state) => state.carPark.pages);
@@ -163,9 +165,12 @@ const CarParkPage = () => {
   };
 
   const handleImportClick = (e) => {
+    console.log('import click');
     if (e.target.files && e.target.files[0]) {
+      console.log(e.target.files);
       let file = e.target.files[0];
       setFile(file);
+      e.target.value = null;
     }
   };
 
@@ -176,6 +181,7 @@ const CarParkPage = () => {
       formData.append('file', file);
       formData.append('name', file.name);
       uploadCarParkReport(formData).then((response) => {
+        enqueueSnackbar('Файл отправлен', { variant: 'success' });
         setFile(null);
       });
     }
@@ -357,13 +363,17 @@ const CarParkPage = () => {
                 }}
               >
                 <Button
+                  component="label"
                   disableRipple
                   variant="contained"
                   fullWidth
                   sx={secondaryButtonStyle}
-                  onClick={handleImportClick}
                 >
                   Импорт
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleImportClick}
+                  />
                 </Button>
                 <Button
                   disableRipple

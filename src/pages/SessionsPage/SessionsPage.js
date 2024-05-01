@@ -1,7 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
@@ -10,8 +9,6 @@ import {
   sessionsChangePageFetch,
   changeCurrentPage
 } from 'store/sessions/sessionsSlice';
-import { getUserData } from '../../api/auth/login';
-import { useSnackbar } from 'notistack';
 // Components
 import PaginationCustom from 'components/Pagination';
 // Constants
@@ -19,11 +16,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
 import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  secondaryButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle, secondaryButtonStyle } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -49,59 +42,45 @@ const initialAccessOptions = {
 const SessionsPage = () => {
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const sessions = useSelector((state) => state.sessions.sessions);
   const pages = useSelector((state) => state.sessions.pages);
   const currentPage = useSelector((state) => state.sessions.currentPage);
   const isLoading = useSelector((state) => state.sessions.isLoadingFetch);
   const isError = useSelector((state) => state.sessions.isErrorFetch);
-  const [userData, setUserData] = useState(null);
+  const operator = useSelector((state) => state.parkingInfo.operator);
   const userType = useSelector((state) => state.parkingInfo.userType);
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [openCloseSessionsDialog, setOpenCloseSessionsDialog] = useState(false);
-  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
 
-  useLayoutEffect(() => {
-    if (currentHref !== '/login' && currentHref !== '/registration') {
-      getUserData()
-        .then((res) => {
-          setUserData(res.data);
-        })
-        .catch((e) => {
-          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
-        });
-    }
-  }, [currentHref]);
-
   useEffect(() => {
-    if (userData && userType === 'operator') {
+    if (userType === 'operator') {
       let options = initialAccessOptions;
       if (
-        userData.operator &&
-        'access_to_close_session' in userData.operator &&
-        userData.operator.access_to_close_session === true
+        operator &&
+        'access_to_close_session' in operator &&
+        operator.access_to_close_session === true
       ) {
         options = { ...options, disableCloseSession: false };
       } else {
         options = { ...options, disableCloseSession: true };
       }
       if (
-        userData.operator &&
-        'access_to_close_sessions_before_date' in userData.operator &&
-        userData.operator.access_to_close_sessions_before_date === true
+        operator &&
+        'access_to_close_sessions_before_date' in operator &&
+        operator.access_to_close_sessions_before_date === true
       ) {
         options = { ...options, disableCloseSessionBeforeDate: false };
       } else {
         options = { ...options, disableCloseSessionBeforeDate: true };
       }
       if (
-        userData.operator &&
-        'access_to_reset_duty_session' in userData.operator &&
-        userData.operator.access_to_reset_duty_session === true
+        operator &&
+        'access_to_reset_duty_session' in operator &&
+        operator.access_to_reset_duty_session === true
       ) {
         options = { ...options, disableResetDuty: false };
       } else {
@@ -109,7 +88,7 @@ const SessionsPage = () => {
       }
       setAccessOptions(options);
     }
-  }, [userType, userData]);
+  }, [userType, operator]);
 
   const [imageModal, setImageModal] = useState({
     isOpen: false,

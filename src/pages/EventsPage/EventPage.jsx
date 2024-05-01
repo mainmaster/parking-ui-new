@@ -1,10 +1,8 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
 import { resetDebtRequest } from '../../api/sessions';
-import { useParkingInfoQuery } from '../../api/settings/settings';
-import { getUserData } from '../../api/auth/login';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import Lightbox from 'react-18-image-lightbox';
@@ -25,7 +23,6 @@ import {
   secondaryButtonStyle,
   positiveButtonStyle
 } from '../../theme/styles';
-import backIcon from '../../assets/svg/back_icon.svg';
 import linkIcon from '../../assets/svg/link_icon.svg';
 import eventCarIcon from '../../assets/svg/log_event_car_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
@@ -34,7 +31,6 @@ import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
 import eventCopyIcon from '../../assets/svg/log_event_copy_icon.svg';
 import { colors } from '../../theme/colors';
-import { useNavigate, useLocation } from 'react-router-dom';
 import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
@@ -75,7 +71,7 @@ const initialAccessOptions = {
 
 export const EventPage = () => {
   const { id } = useParams();
-  const [userData, setUserData] = useState(null);
+  const operator = useSelector((state) => state.parkingInfo.operator);
   const userType = useSelector((state) => state.parkingInfo.userType);
   const [errorEvent, setErrorEvent] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -86,28 +82,14 @@ export const EventPage = () => {
   const [detailsCopied, setDetailsCopied] = useState(false);
   const [eventListScrolled, setEventListScrolled] = useState(false);
   const isOpenApModal = useSelector((state) => state.cameras.isOpenApModal);
-  let navigate = useNavigate();
   const dispatch = useDispatch();
   const eventListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
-  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
 
   const errorContent = <div>Нет события с ID - {id}</div>;
-
-  useLayoutEffect(() => {
-    if (currentHref !== '/login' && currentHref !== '/registration') {
-      getUserData()
-        .then((res) => {
-          setUserData(res.data);
-        })
-        .catch((e) => {
-          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
-        });
-    }
-  }, [currentHref]);
 
   useLayoutEffect(() => {
     getEvent(id)
@@ -126,21 +108,21 @@ export const EventPage = () => {
   }, [id]);
 
   useEffect(() => {
-    if (userData && userType === 'operator') {
+    if (userType === 'operator') {
       let options = initialAccessOptions;
       if (
-        userData.operator &&
-        'access_to_open_access_point' in userData.operator &&
-        userData.operator.access_to_open_access_point === true
+        operator &&
+        'access_to_open_access_point' in operator &&
+        operator.access_to_open_access_point === true
       ) {
         options = { ...options, disableOpenAP: false };
       } else {
         options = { ...options, disableOpenAP: true };
       }
       if (
-        userData.operator &&
-        'access_to_reset_duty_session' in userData.operator &&
-        userData.operator.access_to_reset_duty_session === true
+        operator &&
+        'access_to_reset_duty_session' in operator &&
+        operator.access_to_reset_duty_session === true
       ) {
         options = { ...options, disableResetDuty: false };
       } else {
@@ -148,7 +130,7 @@ export const EventPage = () => {
       }
       setAccessOptions(options);
     }
-  }, [userType, userData]);
+  }, [userType, operator]);
 
   useEffect(() => {
     if (event?.scores) {
@@ -164,10 +146,6 @@ export const EventPage = () => {
   const handleCopyDetailsClick = () => {
     navigator.clipboard.writeText(detailsText);
     setDetailsCopied(true);
-  };
-
-  const handleBackClick = () => {
-    navigate(-1);
   };
 
   const handleEventListScroll = () => {

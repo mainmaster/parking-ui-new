@@ -4,7 +4,9 @@ export const parkingInfo = createSlice({
   name: 'parkingInfo',
   initialState: {
     parkingID: 0,
-    userType: ''
+    userType: '',
+    username: '',
+    operator: {}
   },
   reducers: {
     setParkingID: (state, action) => {
@@ -12,9 +14,16 @@ export const parkingInfo = createSlice({
     },
     setParkingUserType: (state, action) => {
       return { ...state, userType: action.payload };
+    },
+    setOperator: (state, action) => {
+      return { ...state, operator: action.payload };
+    },
+    setUsername: (state, action) => {
+      return { ...state, username: action.payload };
     }
   }
 });
 
-export const { setParkingID, setParkingUserType } = parkingInfo.actions;
+export const { setParkingID, setParkingUserType, setOperator, setUsername } =
+  parkingInfo.actions;
 export default parkingInfo.reducer;

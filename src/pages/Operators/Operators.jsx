@@ -1,12 +1,5 @@
-import {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useLayoutEffect
-} from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData } from '../../api/auth/login';
 import { useLazyRentersQuery } from '../../api/renters/renters.api';
 import { useLazyOperatorsQuery } from '../../api/operator/operator.api';
 import {
@@ -18,8 +11,7 @@ import {
   setEditOperator
 } from '../../store/operator/operatorSlice';
 import { operatorAccessOptions } from '../../constants';
-import { useSnackbar } from 'notistack';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -32,16 +24,12 @@ import {
   Tab
 } from '@mui/material';
 import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  closeButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import OperatorsSpacer from './OperatorsSpacer';
 import usersEmptyIcon from '../../assets/svg/users_empty_icon.svg';
-import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogOperatorCard from '../../components/LogOperatorCard/LogOperatorCard';
 import LogRenterCard from '../../components/LogRenterCard/LogRenterCard';
 import EventManager from '../../components/EventManager/EventManager';
@@ -68,7 +56,6 @@ const tabStyle = {
 
 export const Operators = () => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const [getOperators, { data: operators, isLoading: operatorsLoading }] =
     useLazyOperatorsQuery();
   const [getRenters, { data: renters, isLoading: rentersLoading }] =
@@ -78,8 +65,7 @@ export const Operators = () => {
   const createRenter = useSelector((state) => state.renters.createRenter);
   const editOperator = useSelector((state) => state.operator.editOperator);
   const createOperator = useSelector((state) => state.operator.createOperator);
-  const [userData, setUserData] = useState(null);
-  const [currentHref, setCurrentHref] = useState(useLocation().pathname);
+  const operator = useSelector((state) => state.parkingInfo.operator);
   const [usersListScrolled, setUsersListScrolled] = useState(false);
   const usersListRef = useRef(null);
   const theme = useTheme();
@@ -101,27 +87,15 @@ export const Operators = () => {
     }
   }, [containerRef]);
 
-  useLayoutEffect(() => {
-    if (currentHref !== '/login' && currentHref !== '/registration') {
-      getUserData()
-        .then((res) => {
-          setUserData(res.data);
-        })
-        .catch((e) => {
-          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
-        });
-    }
-  }, [currentHref]);
-
   useEffect(() => {
-    if (userData && userType === 'operator') {
+    if (userType === 'operator') {
       const operatorOption = operatorAccessOptions.find(
         (option) => option.route === '/users/operators'
       );
       if (
-        userData.operator &&
-        operatorOption.value in userData.operator &&
-        userData.operator[operatorOption.value] === true
+        operator &&
+        operatorOption.value in operator &&
+        operator[operatorOption.value] === true
       ) {
         setDisableOperators(false);
       } else {
@@ -131,16 +105,16 @@ export const Operators = () => {
         (option) => option.route === '/users/renters'
       );
       if (
-        userData.operator &&
-        renterOption.value in userData.operator &&
-        userData.operator[renterOption.value] === true
+        operator &&
+        renterOption.value in operator &&
+        operator[renterOption.value] === true
       ) {
         setDisableRenters(false);
       } else {
         setDisableRenters(true);
       }
     }
-  }, [userType, userData]);
+  }, [userType, operator]);
 
   useEffect(() => {
     window.addEventListener('load', handleResize);
@@ -391,7 +365,7 @@ export const Operators = () => {
             height={'100%'}
             gap={'16px'}
           >
-            {operatorsLoading ? (
+            {operatorsLoading || rentersLoading ? (
               <SpinerLogo />
             ) : (
               <>

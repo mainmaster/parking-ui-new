@@ -93,6 +93,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
   const isError = useSelector((state) => state.accessPoints.isErrorFetch);
   const urlStatus = useParams();
 
+  useEffect(() => {
+    if (!show) {
+      resetHandle();
+    }
+  }, [show]);
+
   const defaultValues = useMemo(() => {
     return {
       description: accessPointEdit?.description || '',
@@ -217,7 +223,6 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         };
         dispatch(createAccessPointFetch(payload));
       }
-      resetHandle();
     }
   });
 

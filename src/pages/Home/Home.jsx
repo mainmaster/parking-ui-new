@@ -7,7 +7,11 @@ import { useSnackbar } from 'notistack';
 import soundNotification from '../EventsPage/notofication.mp3';
 import { useDispatch } from 'react-redux';
 import { putEvent, changeDataModal } from 'store/events/eventsSlice';
-import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
+import {
+  setParkingUserType,
+  setOperator,
+  setUsername
+} from '../../store/parkingInfo/parkingInfo';
 import { getUserData } from '../../api/auth/login';
 import { operatorAccessOptions } from '../../constants';
 import React from 'react';
@@ -29,6 +33,11 @@ export const Home = () => {
     getUserData()
       .then((res) => {
         setUserData(res.data);
+        if (res.data?.username) {
+          dispatch(setUsername(res.data.username));
+        } else {
+          dispatch(setUsername(''));
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -38,6 +47,11 @@ export const Home = () => {
 
   useEffect(() => {
     if (userData && parkingData?.userType === 'operator') {
+      if (userData.operator) {
+        dispatch(setOperator(userData.operator));
+      } else {
+        dispatch(setOperator({}));
+      }
       const eventsOption = operatorAccessOptions.find(
         (option) => option.route === '/events'
       );

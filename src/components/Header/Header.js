@@ -2,11 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { operatorAccessOptions } from '../../constants';
 import PropTypes from 'prop-types';
 import { icons } from './utils';
-import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { getUserData } from '../../api/auth/login';
-import { useSnackbar } from 'notistack';
 import _ from 'lodash';
 import React, { useMemo } from 'react';
 import {
@@ -29,7 +27,11 @@ import MoreIcon from '../../assets/svg/more_icon.svg';
 import MoreIconSelected from '../../assets/svg/more_icon_selected.svg';
 import { adminRoutes, operatorRoutes, renterRoutes } from '../../router/routes';
 import { logout } from '../../api/auth/login';
-import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
+import {
+  setParkingUserType,
+  setOperator,
+  setUsername
+} from '../../store/parkingInfo/parkingInfo';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { spacers } from '../../theme/spacers';
 import { useTheme } from '@mui/material/styles';
@@ -132,7 +134,8 @@ const selectedTextStyle = {
 
 const Header = ({ title, userType, isHideMenu = false }) => {
   const { data: parkingData } = useParkingInfoQuery();
-  const [userData, setUserData] = useState(null);
+  const operator = useSelector((state) => state.parkingInfo.operator);
+  const username = useSelector((state) => state.parkingInfo.username);
   const [currentHref, setCurrentHref] = useState(useLocation().pathname);
   const [more, setMore] = useState(false);
   const [moreListScrolled, setMoreListScrolled] = useState(false);
@@ -141,7 +144,6 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const [secondMenuMouseOut, setSecondMenuMouseOut] = useState(true);
   const [filteredOperatorRoutes, setFilteredOperatorRoutes] =
     useState(operatorRoutes);
-  const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   let navigate = useNavigate();
   const theme = useTheme();
@@ -226,28 +228,14 @@ const Header = ({ title, userType, isHideMenu = false }) => {
     [filteredOperatorRoutes]
   );
 
-  useLayoutEffect(() => {
-    if (currentHref !== '/login' && currentHref !== '/registration') {
-      getUserData()
-        .then((res) => {
-          setUserData(res.data);
-        })
-        .catch((e) => {
-          enqueueSnackbar('Ошибка подключения', { variant: 'error' });
-        });
-    }
-  }, [currentHref]);
-
   useEffect(() => {
-    if (userData && !_.isEmpty(userData.operator)) {
+    if (!_.isEmpty(operator)) {
       const routes = adminRoutes.filter((route) => {
         const option = operatorAccessOptions.find(
           (option) => option.route === route.eventKey
         );
         if (
-          (option &&
-            option.value in userData.operator &&
-            userData.operator[option.value]) ||
+          (option && option.value in operator && operator[option.value]) ||
           (option && option.value === 'access_to_events')
         ) {
           return true;
@@ -257,7 +245,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
       });
       setFilteredOperatorRoutes(routes);
     }
-  }, [userData]);
+  }, [operator]);
 
   const handleMoreClick = () => {
     setMore(true);
@@ -284,6 +272,8 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   const handleLogout = () => {
     logout();
     dispatch(setParkingUserType(''));
+    dispatch(setOperator({}));
+    dispatch(setUsername(''));
   };
 
   return (
@@ -483,7 +473,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       />
                       <Typography>{parkingData.address}</Typography>
                     </Stack>
-                    {userData && (
+                    {username !== '' && (
                       <Stack
                         direction={'row'}
                         gap={'8px'}
@@ -497,7 +487,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           src={MoreUserIcon}
                           alt="Пользователь"
                         />
-                        <Typography>{userData.username}</Typography>
+                        <Typography>{username}</Typography>
                       </Stack>
                     )}
                   </Stack>
@@ -794,7 +784,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     </Stack>
                   </>
                 )}
-                {userData && (
+                {username !== '' && (
                   <>
                     <Stack>
                       <IconButton disableRipple disabled sx={{ p: 0 }}>
@@ -806,11 +796,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           alt="Профиль"
                         />
                       </IconButton>
-                      {userData.username && (
-                        <Typography sx={menuTextStyle}>
-                          {userData.username}
-                        </Typography>
-                      )}
+                      <Typography sx={menuTextStyle}>{username}</Typography>
                     </Stack>
                     <Box
                       sx={{
