@@ -357,7 +357,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="company-select" sx={labelStyle}>
-                Компания
+                Арендатор
               </InputLabel>
               <Select
                 id="company-select"

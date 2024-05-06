@@ -73,7 +73,7 @@ export default function LogApplicationCard({ application }) {
           {!application.is_used && <TypeAuto type="not_used" />}
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Компания</Typography>
+          <Typography sx={labelTextStyle}>Арендатор</Typography>
           <Typography sx={{ fontWeight: 500 }}>
             {application.company_name}
           </Typography>

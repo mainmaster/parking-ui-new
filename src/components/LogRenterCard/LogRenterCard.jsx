@@ -69,7 +69,7 @@ export default function LogRenterCard({ renter }) {
           >{`№ ${renter.id}`}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Компания</Typography>
+          <Typography sx={labelTextStyle}>Арендатор</Typography>
           <Typography sx={{ fontWeight: 500 }}>
             {renter.company_name}
           </Typography>

@@ -299,7 +299,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="company_name" sx={labelStyle}>
-              Компания
+              Арендатор
             </InputLabel>
             <CarNumberInput
               fullWidth

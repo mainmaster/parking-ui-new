@@ -260,7 +260,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
           <Stack sx={isMobile ? mobileMenuStyle : desktopMenuStyle} gap={'8px'}>
             <Stack>
               <InputLabel htmlFor="company-select" sx={labelStyle}>
-                Компания
+                Арендатор
               </InputLabel>
               <Select
                 id="company-select"

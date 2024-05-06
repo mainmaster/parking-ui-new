@@ -274,7 +274,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
 
           <Stack>
             <InputLabel htmlFor="renter" sx={labelStyle}>
-              Компания
+              Арендатор
             </InputLabel>
             <Select
               id="renter"

@@ -1,20 +1,20 @@
-import styles from '../Settings/settings.module.css'
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { useParkingInfoQuery } from '../../api/settings/settings'
-import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard'
-import { Link } from 'react-router-dom'
+import styles from '../Settings/settings.module.css';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useParkingInfoQuery } from '../../api/settings/settings';
+import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
+import { Link } from 'react-router-dom';
 
 export let titles = [
   { id: 1, name: '#' },
   { id: 2, name: 'Номер машины' },
-  { id: 4, name: 'Компания' },
+  { id: 4, name: 'Арендатор' },
   { id: 5, name: 'Использована' },
   { id: 6, name: 'Дата' },
-  { id: 7, name: 'Действие' },
-]
+  { id: 7, name: 'Действие' }
+];
 export let rows = (applications, deleteApplication, editApplication) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: parkingInfo } = useParkingInfoQuery()
+  const { data: parkingInfo } = useParkingInfoQuery();
   return applications?.map((application) => {
     return (
       <tr key={application.id} className={styles.operatorCard}>
@@ -33,11 +33,11 @@ export let rows = (applications, deleteApplication, editApplication) => {
                 : true
             }
             onClick={() => {
-              deleteApplication(application.id)
+              deleteApplication(application.id);
             }}
             style={{
               borderRadius: 10,
-              fontSize: 13,
+              fontSize: 13
             }}
           >
             Удалить
@@ -50,11 +50,11 @@ export let rows = (applications, deleteApplication, editApplication) => {
                 : true
             }
             onClick={() => {
-              editApplication(application)
+              editApplication(application);
             }}
             style={{
               borderRadius: 10,
-              fontSize: 13,
+              fontSize: 13
             }}
           >
             Изменить
@@ -71,7 +71,7 @@ export let rows = (applications, deleteApplication, editApplication) => {
                   style={{
                     borderRadius: 10,
                     fontSize: 13,
-                    pointerEvents: 'none',
+                    pointerEvents: 'none'
                   }}
                   disabled
                   variant="danger"
@@ -83,6 +83,6 @@ export let rows = (applications, deleteApplication, editApplication) => {
           )}
         </td>
       </tr>
-    )
-  })
-}
+    );
+  });
+};
