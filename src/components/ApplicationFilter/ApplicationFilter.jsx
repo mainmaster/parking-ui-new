@@ -37,7 +37,7 @@ import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
-import { formatISO } from 'date-fns';
+import { format } from 'date-fns';
 
 const defaultValues = {
   vehiclePlate: '',
@@ -172,7 +172,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     if (newValue) {
       const values = {
         ...filters,
-        createDateFrom: formatISO(newValue)
+        validForDateFrom: format(newValue, 'yyyy-MM-dd')
       };
       dispatch(setFilters(values));
       setFromValue(newValue);
@@ -184,7 +184,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     if (newValue) {
       const values = {
         ...filters,
-        createDateTo: formatISO(newValue)
+        validForDateTo: format(newValue, 'yyyy-MM-dd')
       };
       dispatch(setFilters(values));
       setToValue(newValue);
@@ -193,12 +193,15 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
   };
 
   const handleCompanyChange = (event) => {
-    const values = {
-      ...filters,
-      companyName: event.target.value
-    };
-    dispatch(setFilters(values));
-    setSubmited(false);
+    const renter = renters.find((r) => r.company_name === event.target.value);
+    if (renter) {
+      const values = {
+        ...filters,
+        companyID: renter.id
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    }
     setSelectedCompany(event.target.value);
   };
 
@@ -209,7 +212,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     if (status) {
       const values = {
         ...filters,
-        status: status.value
+        isUsed: status.value
       };
       dispatch(setFilters(values));
       setSubmited(false);
