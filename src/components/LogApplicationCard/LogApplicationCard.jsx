@@ -70,7 +70,11 @@ export default function LogApplicationCard({ application }) {
           >{`№ ${application.id}`}</Typography>
         </Stack>
         <Stack direction={'row'} sx={{ minHeight: '20px' }}>
-          {!application.is_used && <TypeAuto type="not_used" />}
+          {application.is_used ? (
+            <TypeAuto type="used" />
+          ) : (
+            <TypeAuto type="not_used" />
+          )}
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
           <Typography sx={labelTextStyle}>Арендатор</Typography>

@@ -46,6 +46,11 @@ export const typeText = {
     color: colors.session.payment.not_paid,
     textColor: colors.element.light
   },
+  used: {
+    label: 'Использована',
+    color: colors.request_status.used,
+    textColor: colors.element.light
+  },
   not_used: {
     label: 'Не использована',
     color: colors.request_status.not_used,
