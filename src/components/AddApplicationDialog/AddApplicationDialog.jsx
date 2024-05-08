@@ -86,7 +86,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
     onSubmit: (values) => {
       let payload = {
         valid_for_date: format(date, 'yyyy-MM-dd'),
-        vehicle_plate: values.vehiclePlate
+        vehicle_plate: carNumber || values.vehiclePlate
       };
 
       if (edit) {

@@ -29,7 +29,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
 
   useEffect(() => {
     if (setRenter && applicationEdit && applicationEdit.application) {
-      if (renters.length > 0) {
+      if (renters && renters.length > 0) {
         const currentRenter = renters.find(
           (renter) =>
             renter.company_name === applicationEdit.application.company_name
