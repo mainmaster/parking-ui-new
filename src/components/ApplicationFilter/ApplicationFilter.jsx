@@ -20,7 +20,6 @@ import {
   changeCurrentPage,
   setFilters
 } from '../../store/applications/applicationSlice';
-import { useRentersQuery } from '../../api/renters/renters.api';
 import { useFormik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -38,6 +37,7 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import { format } from 'date-fns';
+import RenterSelect from './RenterSelect';
 
 const defaultValues = {
   vehiclePlate: '',
@@ -88,7 +88,8 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
   const [submited, setSubmited] = useState(true);
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.applications.filters);
-  const { data: renters } = useRentersQuery();
+
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -193,15 +194,12 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
   };
 
   const handleCompanyChange = (event) => {
-    const renter = renters.find((r) => r.company_name === event.target.value);
-    if (renter) {
-      const values = {
-        ...filters,
-        companyID: renter.id
-      };
-      dispatch(setFilters(values));
-      setSubmited(false);
-    }
+    const values = {
+      ...filters,
+      companyID: event.target.value
+    };
+    dispatch(setFilters(values));
+    setSubmited(false);
     setSelectedCompany(event.target.value);
   };
 
@@ -358,80 +356,12 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 />
               </Stack>
             </Stack>
-            <Stack>
-              <InputLabel htmlFor="company-select" sx={labelStyle}>
-                Арендатор
-              </InputLabel>
-              <Select
-                id="company-select"
-                displayEmpty
-                value={selectedCompany}
-                onChange={handleCompanyChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>Выбрать</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem disabled value="">
-                  <em>Выбрать</em>
-                </MenuItem>
-                {renters.map((r) => (
-                  <MenuItem
-                    key={r.company_name}
-                    id={r.company_name}
-                    selected={r.company_name === selectedCompany}
-                    value={r.company_name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {r.company_name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
+            {userType && userType !== 'renter' && (
+              <RenterSelect
+                selected={selectedCompany}
+                handleChange={handleCompanyChange}
+              />
+            )}
             <Stack>
               <InputLabel htmlFor="application-status-select" sx={labelStyle}>
                 Статус заявки

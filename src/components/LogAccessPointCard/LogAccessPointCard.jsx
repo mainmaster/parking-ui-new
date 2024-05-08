@@ -209,6 +209,14 @@ export default function LogAccessPointCard({ point }) {
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>
+              Задержка перед проверкой статуса шлагбаума
+            </Typography>
+            <Typography sx={{ fontWeight: 500 }}>
+              {`${point.seconds_before_laurent_checks} сек`}
+            </Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>Терминал</Typography>
             <Typography sx={{ fontWeight: 500 }}>{terminalName}</Typography>
           </Stack>

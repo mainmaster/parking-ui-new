@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { format, parse } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { useRentersQuery } from '../../api/renters/renters.api';
+import RenterSelect from './RenterSelect';
 import {
   createApplicationsFetch,
   editApplicationFetch
@@ -55,7 +55,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
   const [carNumber, setCarNumber] = useState('');
   const [renter, setRenter] = useState('');
   const [submited, setSubmited] = useState(true);
-  const { data: renters } = useRentersQuery();
+  const userType = useSelector((state) => state.parkingInfo.userType);
   const applicationEdit = useSelector(
     (state) => state.applications.editApplication
   );
@@ -63,17 +63,6 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
 
   useEffect(() => {
     if (show && edit && applicationEdit && applicationEdit.application) {
-      if (renters.length > 0) {
-        const currentRenter = renters.find(
-          (renter) =>
-            renter.company_name === applicationEdit.application.company_name
-        );
-        if (currentRenter) {
-          setRenter(currentRenter);
-        } else {
-          setRenter('');
-        }
-      }
       setCarNumber(
         applicationEdit.application.vehicle_plate?.full_plate
           ? applicationEdit.application.vehicle_plate.full_plate
@@ -95,21 +84,32 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      const { vehiclePlate } = values;
+      let payload = {
+        valid_for_date: format(date, 'yyyy-MM-dd'),
+        vehicle_plate: values.vehiclePlate
+      };
+
       if (edit) {
-        const payload = {
-          valid_for_date: format(date, 'yyyy-MM-dd'),
-          vehicle_plate: vehiclePlate || carNumber,
-          company_name: renter.company_name,
-          id: applicationEdit.application.id
-        };
+        if (renter !== '') {
+          payload = {
+            ...payload,
+            company_name: renter.company_name,
+            id: applicationEdit.application.id
+          };
+        } else {
+          payload = {
+            ...payload,
+            id: applicationEdit.application.id
+          };
+        }
         dispatch(editApplicationFetch(payload));
-      } else if (vehiclePlate !== '') {
-        const payload = {
-          valid_for_date: format(date, 'yyyy-MM-dd'),
-          vehicle_plate: vehiclePlate,
-          company_id: renter.id
-        };
+      } else if (values.vehiclePlate !== '') {
+        if (renter !== '') {
+          payload = {
+            ...payload,
+            company_id: renter.id
+          };
+        }
         dispatch(createApplicationsFetch(payload));
       }
       resetHandle();
@@ -139,16 +139,6 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
   const handleRenterChange = (event) => {
     if (carNumber !== '') {
       setSubmited(false);
-    }
-    if (renters.length > 0) {
-      const currentRenter = renters.find(
-        (renter) => renter.company_name === event.target.value
-      );
-      if (currentRenter) {
-        setRenter(currentRenter);
-      } else {
-        setRenter('');
-      }
     }
   };
 
@@ -272,81 +262,13 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
             />
           </Stack>
 
-          <Stack>
-            <InputLabel htmlFor="renter" sx={labelStyle}>
-              Арендатор
-            </InputLabel>
-            <Select
-              id="renter"
-              displayEmpty
-              value={renter.company_name || ''}
-              onChange={handleRenterChange}
-              variant="filled"
-              IconComponent={(props) => (
-                <IconButton
-                  disableRipple
-                  {...props}
-                  sx={{ top: `${0} !important`, right: `4px !important` }}
-                >
-                  <img
-                    style={{
-                      width: '24px'
-                    }}
-                    src={selectIcon}
-                    alt="select"
-                  />
-                </IconButton>
-              )}
-              sx={selectMenuStyle}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
-                  }
-                },
-                MenuListProps: {
-                  sx: { py: '4px' }
-                }
-              }}
-              renderValue={(selected) => {
-                if (selected === '') {
-                  return <em></em>;
-                } else {
-                  return (
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500 }}
-                    >
-                      {selected}
-                    </Typography>
-                  );
-                }
-              }}
-            >
-              <MenuItem disabled value="">
-                <em> </em>
-              </MenuItem>
-              {renters &&
-                renters.map((r) => (
-                  <MenuItem
-                    key={r.company_name}
-                    id={r.company_name}
-                    selected={r.company_name === renter}
-                    value={r.company_name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {r.company_name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-            </Select>
-          </Stack>
+          {userType && userType !== 'renter' && (
+            <RenterSelect
+              selected={renter}
+              handleChange={handleRenterChange}
+              setRenter={setRenter}
+            />
+          )}
           <Button
             disableRipple
             disabled={submited}

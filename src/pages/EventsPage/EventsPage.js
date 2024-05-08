@@ -10,6 +10,7 @@ import { BREAKPOINT_SM } from 'constants';
 // Store
 import {
   eventsFetch,
+  eventsOnlyFetch,
   eventsChangePageFetch,
   changeDataModal,
   changeCurrentPage,
@@ -235,10 +236,14 @@ const EventsPage = ({ onlyLog }) => {
 
   useEffect(() => {
     if (!accessOptions.disableEvents) {
-      dispatch(eventsFetch());
+      if (userType === 'renter') {
+        dispatch(eventsOnlyFetch());
+      } else {
+        dispatch(eventsFetch());
+      }
     }
     return () => dispatch(changeCurrentPage(1));
-  }, []);
+  }, [accessOptions, userType]);
 
   useEffect(() => {
     if (filtered.length > 0) {

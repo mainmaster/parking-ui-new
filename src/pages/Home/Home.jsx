@@ -46,34 +46,37 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (userData && parkingData?.userType === 'operator') {
-      if (userData.operator) {
-        dispatch(setOperator(userData.operator));
-      } else {
-        dispatch(setOperator({}));
-      }
-      const eventsOption = operatorAccessOptions.find(
-        (option) => option.route === '/events'
-      );
-      if (
-        userData.operator &&
-        eventsOption.value in userData.operator &&
-        userData.operator[eventsOption] === true
-      ) {
-        setDisableEvents(false);
-      } else {
-        setDisableEvents(true);
+    if (parkingData) {
+      dispatch(setParkingUserType(parkingData.userType));
+      if (userData && parkingData?.userType === 'operator') {
+        if (userData.operator) {
+          dispatch(setOperator(userData.operator));
+        } else {
+          dispatch(setOperator({}));
+        }
+        const eventsOption = operatorAccessOptions.find(
+          (option) => option.route === '/events'
+        );
+        if (
+          userData.operator &&
+          eventsOption.value in userData.operator &&
+          userData.operator[eventsOption] === true
+        ) {
+          setDisableEvents(false);
+        } else {
+          setDisableEvents(true);
+        }
       }
     }
   }, [userData, parkingData]);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' && parkingData) {
       navigate(parkingData?.userType === 'renter' ? 'events-logs' : 'events', {
         replace: true
       });
     }
-  }, [location]);
+  }, [location, parkingData]);
 
   if (parkingInfoError) {
     enqueueSnackbar('Ошибка подключения', { variant: 'error' });
@@ -95,7 +98,6 @@ export const Home = () => {
       parkingData?.userType !== 'renter' &&
       !(parkingData?.userType === 'operator' && disableEvents)
     ) {
-      dispatch(setParkingUserType(parkingData.userType));
       ws.current = new WebSocket(
         address + `/wsEvents?parkingID=${parkingData.parkingID}`
       );

@@ -3,7 +3,8 @@ import { useFormik } from 'formik';
 import Layout from '../../components/Layout';
 import { CarNumberInput, closeButtonStyle } from '../../theme/styles';
 import { colors } from '../../theme/colors';
-
+import { useDispatch } from 'react-redux';
+import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
 import { useState } from 'react';
 import { login } from '../../api/auth/login';
 import { useSnackbar } from 'notistack';
@@ -22,6 +23,7 @@ const defaultValues = {
 };
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +37,7 @@ const LoginPage = () => {
           .then((res) => {
             getParkingData().then((res) => {
               const data = res.data;
+              dispatch(setParkingUserType(data.userType));
               if (data.userType === 'operator') {
                 localStorage.setItem('notificationsSound', 'true');
               }

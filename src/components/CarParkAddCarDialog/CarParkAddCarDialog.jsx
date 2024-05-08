@@ -92,10 +92,6 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   }, [show, edit]);
 
   useEffect(() => {
-    dispatch(accessPointsOnlyFetch());
-  }, []);
-
-  useEffect(() => {
     if (accessPoints) {
       setActualAccessPoints(accessPoints);
     }

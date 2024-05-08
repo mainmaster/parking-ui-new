@@ -48,7 +48,7 @@ export const typeText = {
   },
   used: {
     label: 'Использована',
-    color: colors.request_status.used,
+    color: colors.element.inactive,
     textColor: colors.element.light
   },
   not_used: {

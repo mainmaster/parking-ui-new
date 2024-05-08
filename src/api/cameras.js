@@ -1,13 +1,13 @@
-import { $api } from '.'
+import { $api } from '.';
 
 export const getCamerasRequest = async () => {
   return $api.get('/cameras/', {
     withCredentials: true,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-  })
-}
+  });
+};
 
 export const createCameraRequest = async ({
   description,
@@ -26,8 +26,8 @@ export const createCameraRequest = async ({
     mjpeg_url,
     snapshot_url,
     port
-  })
-}
+  });
+};
 
 export const updateCameraRequest = async ({
   description,
@@ -47,9 +47,9 @@ export const updateCameraRequest = async ({
     mjpeg_url,
     snapshot_url,
     port
-  })
-}
+  });
+};
 
 export const deleteCameraRequest = async (id) => {
-  return $api.delete('/cameras/' + id)
-}
+  return $api.delete('/cameras/' + id);
+};

@@ -64,10 +64,6 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
   const [updateRenter, { isError: isUpdateError }] = useUpdateRenterMutation();
   const [createRenter, { isError: isCreateError }] = useCreateRentersMutation();
 
-  useEffect(() => {
-    dispatch(accessPointsOnlyFetch());
-  }, []);
-
   const defaultValues = useMemo(() => {
     if (!_.isEmpty(renterEdit)) {
       return {

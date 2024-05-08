@@ -61,6 +61,9 @@ const validationSchema = yup.object({
   seconds_before_close_laurent: yup
     .number()
     .required('Введите задержку перед закрытием'),
+  seconds_between_laurent_checks: yup
+    .number()
+    .required('Введите задержку между проверкой статуса шлагбаума'),
   seconds_before_laurent_checks: yup
     .number()
     .required('Введите задержку перед проверкой статуса шлагбаума'),
@@ -111,6 +114,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
       status_contact_number: accessPointEdit?.status_contact_number || '',
       seconds_before_close_laurent:
         accessPointEdit?.seconds_before_close_laurent || '',
+      seconds_between_laurent_checks:
+        accessPointEdit?.seconds_between_laurent_checks || '',
       seconds_before_laurent_checks:
         accessPointEdit?.seconds_before_laurent_checks || '',
       laurent_checks_amount: accessPointEdit?.laurent_checks_amount || '',
@@ -173,6 +178,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         close_relay_number,
         status_contact_number,
         seconds_before_close_laurent,
+        seconds_between_laurent_checks,
         seconds_before_laurent_checks,
         laurent_checks_amount,
         terminal_id,
@@ -190,6 +196,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           close_relay_number: close_relay_number,
           status_contact_number: status_contact_number,
           seconds_before_close_laurent: seconds_before_close_laurent,
+          seconds_between_laurent_checks: seconds_between_laurent_checks,
           seconds_before_laurent_checks: seconds_before_laurent_checks,
           laurent_checks_amount: laurent_checks_amount,
           terminal_id: terminal_id,
@@ -212,6 +219,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           close_relay_number: close_relay_number,
           status_contact_number: status_contact_number,
           seconds_before_close_laurent: seconds_before_close_laurent,
+          seconds_between_laurent_checks: seconds_between_laurent_checks,
           seconds_before_laurent_checks: seconds_before_laurent_checks,
           laurent_checks_amount: laurent_checks_amount,
           is_reverse_access_point: is_reverse_access_point,
@@ -888,6 +896,32 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               error={
                 formik.touched.seconds_before_close_laurent &&
                 Boolean(formik.errors.seconds_before_close_laurent)
+              }
+            />
+          </Stack>
+          <Stack>
+            <InputLabel
+              htmlFor="seconds_between_laurent_checks"
+              sx={labelStyle}
+            >
+              Задержка между проверкой статуса шлагбаума (секунд)
+            </InputLabel>
+            <CarNumberInput
+              fullWidth
+              InputProps={{
+                type: 'number',
+                disableUnderline: true,
+                sx: { paddingLeft: '12px' }
+              }}
+              variant="filled"
+              id="seconds_between_laurent_checks"
+              name="seconds_between_laurent_checks"
+              value={formik.values.seconds_between_laurent_checks}
+              onChange={handleValueChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.seconds_between_laurent_checks &&
+                Boolean(formik.errors.seconds_between_laurent_checks)
               }
             />
           </Stack>
