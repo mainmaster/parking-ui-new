@@ -176,7 +176,6 @@ const EventsPage = ({ onlyLog }) => {
     if (eventId) {
       setTimeout(() => {
         dispatch(setSelectedEventId(parseInt(eventId)));
-        console.log(eventId);
       }, 1000);
     }
   }, [eventId]);
@@ -235,7 +234,7 @@ const EventsPage = ({ onlyLog }) => {
   };
 
   useEffect(() => {
-    if (!accessOptions.disableEvents) {
+    if (!accessOptions.disableEvents && userType) {
       if (userType === 'renter') {
         dispatch(eventsOnlyFetch());
       } else {
@@ -531,10 +530,12 @@ const EventsPage = ({ onlyLog }) => {
           )}
         </Stack>
       )}
-      <CarNumberDialog
-        show={isOpenApModal}
-        handleClose={() => dispatch(changeActiveOpenApModal())}
-      />
+      {isOpenApModal && (
+        <CarNumberDialog
+          show={isOpenApModal}
+          handleClose={() => dispatch(changeActiveOpenApModal())}
+        />
+      )}
     </>
   );
 };

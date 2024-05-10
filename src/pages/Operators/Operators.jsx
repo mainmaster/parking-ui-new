@@ -35,6 +35,7 @@ import LogRenterCard from '../../components/LogRenterCard/LogRenterCard';
 import EventManager from '../../components/EventManager/EventManager';
 import AddRenterDialog from '../../components/AddRenterDialog/AddRenterDialog';
 import AddOperatorDialog from '../../components/AddOperatorDialog/AddOperatorDialog';
+import { accessPointsOnlyFetch } from '../../store/accessPoints/accessPointsSlice';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -77,6 +78,10 @@ export const Operators = () => {
   const [itemsInRow, setItemsInRow] = useState(0);
   const [disableOperators, setDisableOperators] = useState(false);
   const [disableRenters, setDisableRenters] = useState(false);
+
+  useEffect(() => {
+    dispatch(accessPointsOnlyFetch());
+  }, []);
 
   const handleResize = useCallback(() => {
     if (containerRef?.current) {

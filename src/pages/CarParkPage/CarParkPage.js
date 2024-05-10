@@ -45,6 +45,7 @@ import LogCarParkCard from '../../components/LogCarParkCard/LogCarParkCard';
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import AddCarDialog from '../../components/CarParkAddCarDialog/CarParkAddCarDialog';
+import { accessPointsOnlyFetch } from '../../store/accessPoints/accessPointsSlice';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -120,6 +121,7 @@ const CarParkPage = () => {
 
   useEffect(() => {
     dispatch(carParkFetch());
+    dispatch(accessPointsOnlyFetch());
   }, [urlStatus, params]);
 
   // const changePage = (index) => {

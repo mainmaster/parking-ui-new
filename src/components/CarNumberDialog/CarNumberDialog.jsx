@@ -60,12 +60,12 @@ export default function CarNumberDialog({ show, handleClose }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      setSelectedNumber('');
       const payload = {
         accessPointid: accessPointId,
-        vehiclePlate: values.vehiclePlate
+        vehiclePlate: selectedNumber
       };
       dispatch(openApByVehiclePlateFetch(payload));
+      setSelectedNumber('');
     }
   });
 
