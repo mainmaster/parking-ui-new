@@ -254,7 +254,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       </IconButton>
                     )}
                     <Typography
-                      className={route.vltitle ? css.vltitle : ''}
+                      className={
+                        theme.name === 'vltheme' && route.vltitle
+                          ? css.vltitle
+                          : ''
+                      }
                       sx={[
                         route.vltitle
                           ? vlMenuTextStyle({ ...theme })
@@ -264,7 +268,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           : {}
                       ]}
                     >
-                      {route.vltitle
+                      {theme.name === 'vltheme' && route.vltitle
                         ? route.vltitle.replace(' ', '')
                         : route.title}
                     </Typography>
@@ -685,9 +689,13 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     </IconButton>
                   )}
                   <Typography
-                    className={route.vltitle ? css.vltitle : ''}
+                    className={
+                      theme.name === 'vltheme' && route.vltitle
+                        ? css.vltitle
+                        : ''
+                    }
                     sx={[
-                      route.vltitle
+                      theme.name === 'vltheme' && route.vltitle
                         ? vlMenuTextStyle({ ...theme })
                         : menuTextStyle({ ...theme }),
                       icon.route === currentHref
@@ -695,7 +703,9 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         : {}
                     ]}
                   >
-                    {route.vltitle ? route.vltitle : route.title}
+                    {theme.name === 'vltheme' && route.vltitle
+                      ? route.vltitle
+                      : route.title}
                   </Typography>
                 </Box>
               );

@@ -32,10 +32,12 @@ import { vlcolors } from './theme/vlcolors';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+const currentTheme = process.env.THEME === 'vl' ? vltheme : theme;
+console.log(process.env);
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
   '&.notistack-MuiContent-error': {
-    backgroundColor: vlcolors.element.error,
+    backgroundColor: currentTheme.colors.element.error,
     borderRadius: '8px',
     paddingTop: '6px',
     height: '40px',
@@ -46,7 +48,7 @@ const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
 }));
 
 root.render(
-  <ThemeProvider theme={vltheme}>
+  <ThemeProvider theme={currentTheme}>
     <ApiProvider api={apiSlice}>
       <SkeletonTheme baseColor="rgb(170, 170, 170)">
         <Provider store={store}>
