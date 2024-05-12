@@ -8,7 +8,8 @@ import {
   Menu,
   MenuItem
 } from '@mui/material';
-import React, { forwardRef, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import React, { forwardRef, useMemo, useState } from 'react';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { useDispatch, useSelector } from 'react-redux';
 import eventButtonIcon from '../../assets/svg/log_event_button_icon.svg';
@@ -22,7 +23,6 @@ import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
 import eventCardIcon from '../../assets/svg/log_event_card_icon.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
 import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
-import { colors } from '../../theme/colors';
 import { format, parseISO } from 'date-fns';
 import { positiveButtonStyle, secondaryButtonStyle } from '../../theme/styles';
 import TypeAuto from '../TypeAuto';
@@ -38,16 +38,6 @@ import { useNavigate } from 'react-router-dom';
 import { typeText } from '../TypeAuto/types';
 import { useSnackbar } from 'notistack';
 
-const selectedStyle = {
-  animation: 'flipBackground 400ms ease-out 200ms',
-  animationIterationCount: 2,
-  '@keyframes flipBackground': {
-    '0%': { backgroundColor: colors.surface.active },
-    '50%': { backgroundColor: colors.surface.active },
-    '100%': { backgroundColor: colors.surface.high }
-  }
-};
-
 export default forwardRef(function LogEventCard(
   { event, onClickImage, onHoverImageButton, selected, accessOptions },
   ref
@@ -58,6 +48,19 @@ export default forwardRef(function LogEventCard(
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
+
+  const selectedStyle = useMemo(() => {
+    return {
+      animation: 'flipBackground 400ms ease-out 200ms',
+      animationIterationCount: 2,
+      '@keyframes flipBackground': {
+        '0%': { backgroundColor: theme.colors.surface.active },
+        '50%': { backgroundColor: theme.colors.surface.active },
+        '100%': { backgroundColor: theme.colors.surface.high }
+      }
+    };
+  }, [theme]);
 
   let RURuble = new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -125,7 +128,7 @@ export default forwardRef(function LogEventCard(
         {
           p: '1rem',
           width: '100%',
-          borderBottom: '1px solid ' + colors.outline.separator
+          borderBottom: '1px solid ' + theme.colors.outline.separator
         },
         selected && selectedStyle
       ]}
@@ -141,8 +144,8 @@ export default forwardRef(function LogEventCard(
                   width: '40px',
                   height: '40px',
                   borderRadius: '8px',
-                  border: `1px solid ${colors.outline.separator}`,
-                  backgroundColor: colors.button.secondary.default
+                  border: `1px solid ${theme.colors.outline.separator}`,
+                  backgroundColor: theme.colors.button.secondary.default
                 }}
                 onClick={() =>
                   onClickImage(
@@ -211,7 +214,7 @@ export default forwardRef(function LogEventCard(
                 top: 0,
                 left: 0,
                 width: '168px',
-                border: `1px solid ${colors.outline.default}`,
+                border: `1px solid ${theme.colors.outline.default}`,
                 borderRadius: '8px',
                 '& .MuiAvatar-root': {},
                 '&::before': {}
@@ -262,8 +265,8 @@ export default forwardRef(function LogEventCard(
               width: '40px',
               height: '40px',
               borderRadius: '8px',
-              border: `1px solid ${colors.outline.separator}`,
-              backgroundColor: colors.button.secondary.default
+              border: `1px solid ${theme.colors.outline.separator}`,
+              backgroundColor: theme.colors.button.secondary.default
             }}
             onClick={() =>
               onClickImage(
@@ -287,7 +290,7 @@ export default forwardRef(function LogEventCard(
           <Typography
             sx={{
               fontSize: '0.75rem',
-              color: colors.element.secondary,
+              color: theme.colors.element.secondary,
               lineHeight: '0.875rem'
             }}
           >
@@ -363,7 +366,7 @@ export default forwardRef(function LogEventCard(
               alt={`Долг ${event.debt} руб`}
             />
             <Typography>{RURuble.format(event.debt)}</Typography>
-            <Typography sx={{ color: colors.element.secondary }}>
+            <Typography sx={{ color: theme.colors.element.secondary }}>
               {event.event_code === 1026 ? 'долга обнулено' : 'долг'}
             </Typography>
           </Stack>
@@ -389,7 +392,7 @@ export default forwardRef(function LogEventCard(
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={[positiveButtonStyle, { mt: '4px' }]}
+                  sx={[positiveButtonStyle({ ...theme }), { mt: '4px' }]}
                   onClick={() =>
                     dispatch(changeActiveOpenApModal(event.access_point))
                   }

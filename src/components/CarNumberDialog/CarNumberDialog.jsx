@@ -8,6 +8,7 @@ import {
   TextField,
   styled
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -17,9 +18,8 @@ import {
 import { getOpenedSessionsRequest } from '../../api/sessions';
 import { openApByVehiclePlateFetch } from '../../store/events/eventsSlice';
 import { useFormik } from 'formik';
-import { colors } from '../../theme/colors';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput
@@ -38,6 +38,7 @@ export default function CarNumberDialog({ show, handleClose }) {
   const [carNumbers, setCarNumbers] = useState([]);
   const [snapshot, setSnapshot] = useState(null);
   const [selectedNumber, setSelectedNumber] = useState('');
+  const theme = useTheme();
   let counter = 0;
 
   useEffect(() => {
@@ -88,7 +89,12 @@ export default function CarNumberDialog({ show, handleClose }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -100,7 +106,7 @@ export default function CarNumberDialog({ show, handleClose }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -164,7 +170,7 @@ export default function CarNumberDialog({ show, handleClose }) {
             disableRipple
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             Открыть
           </Button>

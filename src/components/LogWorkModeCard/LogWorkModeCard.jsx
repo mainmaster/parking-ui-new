@@ -2,9 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
+import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
 import {
   editModalHandler,
   deleteWorkingModeFetch
@@ -13,33 +11,24 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { passModeOptions } from 'constants';
 
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
-
 const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
 };
 
-const labelTextStyle = {
-  minWidth: '160px',
-  maxWidth: '160px',
-  color: colors.element.secondary
-};
-
 export default function LogWorkModeCard({ mode }) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '160px',
+      maxWidth: '160px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   let RURuble = new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -59,7 +48,9 @@ export default function LogWorkModeCard({ mode }) {
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack gap={'16px'}>
         <Typography sx={titleTextStyle}>{mode.description}</Typography>
         <Stack gap={'12px'} sx={{ minHeight: '216px' }}>
@@ -160,7 +151,7 @@ export default function LogWorkModeCard({ mode }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
             Изменить
@@ -169,7 +160,7 @@ export default function LogWorkModeCard({ mode }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
             Удалить

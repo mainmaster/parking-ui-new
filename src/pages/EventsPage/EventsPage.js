@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
@@ -21,7 +21,6 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
-import { colors } from '../../theme/colors';
 import { listWithScrollStyle } from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
@@ -34,19 +33,6 @@ import FooterSpacer from '../../components/Header/FooterSpacer';
 import { EVENTS_ON_PAGE } from '../../constants';
 import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
 
-const mobileHeaderStyle = {
-  backgroundColor: colors.surface.high,
-  borderBottom: `1px solid ${colors.outline.surface}`,
-  boxShadow: 'none',
-  justifyContent: 'space-around',
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: '16px',
-  px: '16px',
-  width: '100%',
-  height: spacers.header
-};
-
 const mobileMenuItemStyle = {
   width: '100%',
   height: '100%',
@@ -54,10 +40,6 @@ const mobileMenuItemStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer'
-};
-
-const mobileMenuItemTextStyle = {
-  color: colors.element.secondary
 };
 
 const titleTextStyle = {
@@ -101,6 +83,27 @@ const EventsPage = ({ onlyLog }) => {
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  const mobileHeaderStyle = useMemo(() => {
+    return {
+      backgroundColor: theme.colors.surface.high,
+      borderBottom: `1px solid ${theme.colors.outline.surface}`,
+      boxShadow: 'none',
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '16px',
+      px: '16px',
+      width: '100%',
+      height: spacers.header
+    };
+  }, [theme]);
+
+  const mobileMenuItemTextStyle = useMemo(() => {
+    return {
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (userType === 'operator') {
@@ -289,7 +292,7 @@ const EventsPage = ({ onlyLog }) => {
               mobileMenuItemStyle,
               {
                 borderBottom: mobileCameras
-                  ? `2px solid ${colors.button.primary.default}`
+                  ? `2px solid ${theme.colors.button.primary.default}`
                   : 'none'
               }
             ]}
@@ -300,8 +303,8 @@ const EventsPage = ({ onlyLog }) => {
                 mobileMenuItemTextStyle,
                 {
                   color: mobileCameras
-                    ? colors.button.primary.default
-                    : colors.element.secondary
+                    ? theme.colors.button.primary.default
+                    : theme.colors.element.secondary
                 }
               ]}
             >
@@ -313,7 +316,7 @@ const EventsPage = ({ onlyLog }) => {
               mobileMenuItemStyle,
               {
                 borderBottom: !mobileCameras
-                  ? `2px solid ${colors.button.primary.default}`
+                  ? `2px solid ${theme.colors.button.primary.default}`
                   : 'none'
               }
             ]}
@@ -324,8 +327,8 @@ const EventsPage = ({ onlyLog }) => {
                 mobileMenuItemTextStyle,
                 {
                   color: !mobileCameras
-                    ? colors.button.primary.default
-                    : colors.element.secondary
+                    ? theme.colors.button.primary.default
+                    : theme.colors.element.secondary
                 }
               ]}
             >
@@ -358,7 +361,7 @@ const EventsPage = ({ onlyLog }) => {
               position: 'absolute',
               top: 0,
               right: 0,
-              backgroundColor: colors.surface.high,
+              backgroundColor: theme.colors.surface.high,
               boxShadow: !eventsListScrolled && 'none',
               zIndex: 1
             }}
@@ -368,10 +371,10 @@ const EventsPage = ({ onlyLog }) => {
           <Stack
             ref={eventsListRef}
             sx={[
-              listWithScrollStyle,
+              listWithScrollStyle({ ...theme }),
               {
                 width: `calc(${spacers.events} - 1px)`,
-                backgroundColor: colors.surface.high
+                backgroundColor: theme.colors.surface.high
               }
             ]}
             onScroll={handleEventsListScroll}
@@ -466,8 +469,8 @@ const EventsPage = ({ onlyLog }) => {
       {isMobile && !accessOptions.disableEvents && (!mobileCameras || onlyLog) && (
         <Stack
           sx={[
-            listWithScrollStyle,
-            { width: '100%', backgroundColor: colors.surface.low }
+            listWithScrollStyle({ ...theme }),
+            { width: '100%', backgroundColor: theme.colors.surface.low }
           ]}
         >
           {!onlyLog && <HeaderSpacer />}

@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import React from 'react';
-import { colors } from '../../theme/colors';
 
 export default function ParkingInfo({ fullWidth }) {
   const { data: parkingInfo } = useParkingInfoQuery();
@@ -33,7 +32,7 @@ export default function ParkingInfo({ fullWidth }) {
       <Stack
         direction={'row'}
         sx={{
-          border: `1px solid ${colors.outline.separator}`,
+          border: `1px solid ${theme.colors.outline.separator}`,
           borderRadius: '8px',
           width: '100%',
           //maxWidth: '566px',
@@ -49,12 +48,12 @@ export default function ParkingInfo({ fullWidth }) {
             top: 0,
             left: 0,
             borderRadius: '8px',
-            border: `1px solid ${colors.element.primary}`,
+            border: `1px solid ${theme.colors.element.primary}`,
             width: `${
               (ocupied / parkingInfo?.carsOnParking.totalPlaces) * 100
             }%`,
             height: '40px',
-            backgroundColor: colors.surface.high
+            backgroundColor: theme.colors.surface.high
           }}
         >
           <Typography

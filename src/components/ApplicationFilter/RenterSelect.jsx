@@ -7,10 +7,11 @@ import {
   Stack,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useRentersQuery } from '../../api/renters/renters.api';
-import { colors } from '../../theme/colors';
 import { selectMenuStyle } from '../../theme/styles';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
+import _ from 'lodash';
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -22,6 +23,7 @@ const labelStyle = {
 
 export default function RenterSelect({ selected, handleChange }) {
   const { data: renters } = useRentersQuery();
+  const theme = useTheme();
 
   return (
     <>
@@ -51,12 +53,12 @@ export default function RenterSelect({ selected, handleChange }) {
                 />
               </IconButton>
             )}
-            sx={selectMenuStyle}
+            sx={selectMenuStyle({ ...theme })}
             MenuProps={{
               PaperProps: {
                 sx: {
                   borderRadius: '8px',
-                  border: '1px solid ' + colors.outline.default
+                  border: '1px solid ' + theme.colors.outline.default
                 }
               },
               MenuListProps: {
@@ -81,7 +83,7 @@ export default function RenterSelect({ selected, handleChange }) {
             <MenuItem disabled value="">
               <em>Выбрать</em>
             </MenuItem>
-            {renters.map((r) => (
+            {_.sortBy(renters, ['company_name']).map((r) => (
               <MenuItem
                 key={r.id}
                 id={r.id}

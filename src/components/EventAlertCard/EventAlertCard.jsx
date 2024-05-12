@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -22,7 +22,6 @@ import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import eventCloseIcon from '../../assets/svg/event_alert_close_icon.svg';
-import { colors } from '../../theme/colors';
 import { parseISO, differenceInSeconds } from 'date-fns';
 
 export default function EventAlertCard({
@@ -40,7 +39,7 @@ export default function EventAlertCard({
   const [stopped, setStopped] = useState(false);
   const [show, setShow] = useState(true);
   const [showFade, setShowFade] = useState(true);
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const { pathname } = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -48,14 +47,19 @@ export default function EventAlertCard({
 
   useEffect(() => {
     if (event !== lastEvent) {
-      const imagePath =
-        process.env.REACT_APP_API_URL + '/' + event.car_img_path;
-      if (image !== imagePath) setImage(imagePath);
+      // const imagePath =
+      //   process.env.REACT_APP_API_URL + '/' + event.car_img_path;
+      // if (image !== imagePath) setImage(imagePath);
       setLastEvent(event);
       setShow(true);
       //console.log(event.id + ' ' + start);
     }
   }, [event]);
+
+  const image = useMemo(
+    () => process.env.REACT_APP_API_URL + '/' + event.car_img_path,
+    [event]
+  );
 
   useEffect(() => {
     if (progress < 100) {
@@ -119,7 +123,7 @@ export default function EventAlertCard({
         >
           <Card
             sx={{
-              border: `1px solid ${colors.outline.surface}`,
+              border: `1px solid ${theme.colors.outline.surface}`,
               borderRadius: '16px',
               width: isMobile ? '100%' : 'inherit',
               borderTopRightRadius: isMobile ? '0' : '16px',
@@ -220,7 +224,7 @@ export default function EventAlertCard({
               value={progress}
               sx={{
                 backgroundColor: 'transparent',
-                '& span': { backgroundColor: colors.outline.surface }
+                '& span': { backgroundColor: theme.colors.outline.surface }
               }}
             />
           </Card>

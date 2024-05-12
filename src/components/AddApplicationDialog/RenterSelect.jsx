@@ -8,8 +8,8 @@ import {
   Stack,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useRentersQuery } from '../../api/renters/renters.api';
-import { colors } from '../../theme/colors';
 import { selectMenuStyle } from '../../theme/styles';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 
@@ -26,6 +26,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
   const applicationEdit = useSelector(
     (state) => state.applications.editApplication
   );
+  const theme = useTheme();
 
   useEffect(() => {
     if (setRenter && applicationEdit && applicationEdit.application) {
@@ -85,12 +86,12 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
                 />
               </IconButton>
             )}
-            sx={selectMenuStyle}
+            sx={selectMenuStyle({ ...theme })}
             MenuProps={{
               PaperProps: {
                 sx: {
                   borderRadius: '8px',
-                  border: '1px solid ' + colors.outline.default
+                  border: '1px solid ' + theme.colors.outline.default
                 }
               },
               MenuListProps: {

@@ -8,8 +8,7 @@ import {
 } from 'store/cameras/camerasSlice';
 import _ from 'lodash';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -94,7 +93,7 @@ const CamerasPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !camerasListScrolled && 'none',
             zIndex: 10
             //borderBottom: `1px solid ${colors.outline.separator}`
@@ -121,7 +120,7 @@ const CamerasPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCameraClick}
               >
                 Добавить камеру
@@ -133,10 +132,10 @@ const CamerasPage = () => {
       <Stack
         ref={camerasListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleCamerasListScroll}
@@ -160,7 +159,7 @@ const CamerasPage = () => {
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={closeButtonStyle}
+              sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddCameraClick}
             >
               Добавить камеру

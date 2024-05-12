@@ -23,13 +23,14 @@ import {
 import { useFormik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { colors } from '../../theme/colors';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   secondaryButtonStyle,
   CarNumberInput,
   DateInputStyle,
-  selectMenuStyle
+  selectMenuStyle,
+  desktopMenuStyle,
+  mobileMenuStyle
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
@@ -40,27 +41,6 @@ import { formatISO } from 'date-fns';
 
 const defaultValues = {
   vehiclePlate: ''
-};
-
-const desktopMenuStyle = {
-  position: 'absolute',
-  top: '64px',
-  right: '16px',
-  width: '360px',
-  p: '16px',
-  pt: '8px',
-  //borderBottom: `1px solid ${colors.outline.surface}`,
-  backgroundColor: colors.surface.low,
-  borderRadius: '16px',
-  filter: 'drop-shadow(0 4px 4px rgba(0,0,0,0.2))',
-  zIndex: 1
-};
-
-const mobileMenuStyle = {
-  p: '16px',
-  pt: '8px',
-  backgroundColor: colors.surface.low,
-  borderBottom: `1px solid ${colors.outline.surface}`
 };
 
 const labelStyle = {
@@ -325,7 +305,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             disableRipple
             onClick={handleOpenForm}
             sx={[
-              secondaryButtonStyle,
+              secondaryButtonStyle({ ...theme }),
               {
                 width: '48px',
                 height: '40px'
@@ -342,7 +322,14 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
           </IconButton>
         </Stack>
         {openForm && (
-          <Stack sx={isMobile ? mobileMenuStyle : desktopMenuStyle} gap={'8px'}>
+          <Stack
+            sx={
+              isMobile
+                ? mobileMenuStyle({ ...theme, border: true })
+                : desktopMenuStyle({ ...theme })
+            }
+            gap={'8px'}
+          >
             <Stack>
               <Typography sx={labelStyle}>Дата</Typography>
               <Stack direction={'row'} gap={'8px'}>
@@ -355,7 +342,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'От'
                     },
                     openPickerButton: { disableRipple: true }
@@ -373,7 +360,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'До'
                     },
                     openPickerButton: { disableRipple: true }
@@ -409,12 +396,12 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -483,12 +470,12 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -557,12 +544,12 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -613,7 +600,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[closeButtonStyle, { flexGrow: 1 }]}
+                sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
                 Применить
@@ -623,7 +610,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[secondaryButtonStyle, { flexGrow: 1 }]}
+                sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
                 Сбросить

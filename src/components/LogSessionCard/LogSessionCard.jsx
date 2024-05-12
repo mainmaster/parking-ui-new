@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -20,42 +20,18 @@ import {
 } from 'store/sessions/sessionsSlice';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import TypeAuto from '../TypeAuto';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
 import { formatDate, getDayMinuteSecondsByNumber } from 'utils';
-import { positiveButtonStyle, secondaryButtonStyle } from '../../theme/styles';
+import {
+  positiveButtonStyle,
+  secondaryButtonStyle,
+  cardContainerStyle
+} from '../../theme/styles';
 import sessionSkeleton from '../../assets/svg/session_skeleton.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
 import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
-import { colors } from '../../theme/colors';
 import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
-
-const imageContainerStyle = {
-  backgroundColor: colors.surface.high,
-  backgroundSize: 'cover',
-  width: '100%',
-  height: '100%',
-  minHeight: '174px',
-  maxHeight: '250px',
-  aspectRatio: '16 / 9',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: '8px',
-  border: `1px solid ${colors.outline.surface}`
-};
 
 const imageStyle = {
   objectFit: 'contain',
@@ -65,11 +41,6 @@ const imageStyle = {
   maxHeight: '250px',
   display: 'block',
   cursor: 'pointer'
-};
-
-const labelTextStyle = {
-  minWidth: '88px',
-  color: colors.element.secondary
 };
 
 export default function LogSessionCard({
@@ -84,6 +55,30 @@ export default function LogSessionCard({
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const imageContainerStyle = useMemo(() => {
+    return {
+      backgroundColor: theme.colors.surface.high,
+      backgroundSize: 'cover',
+      width: '100%',
+      height: '100%',
+      minHeight: '174px',
+      maxHeight: '250px',
+      aspectRatio: '16 / 9',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      border: `1px solid ${theme.colors.outline.surface}`
+    };
+  }, [theme]);
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '88px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (session && session.events[0] && session.events[0].car_img_path) {
@@ -131,7 +126,9 @@ export default function LogSessionCard({
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack gap={'12px'}>
         <Box
           sx={[
@@ -162,7 +159,7 @@ export default function LogSessionCard({
             <IconButton
               disableRipple
               sx={[
-                secondaryButtonStyle,
+                secondaryButtonStyle({ ...theme }),
                 {
                   width: '48px',
                   height: '40px'
@@ -185,7 +182,7 @@ export default function LogSessionCard({
                   top: 0,
                   left: 0,
                   width: '168px',
-                  border: `1px solid ${colors.outline.default}`,
+                  border: `1px solid ${theme.colors.outline.default}`,
                   borderRadius: '8px',
                   '& .MuiAvatar-root': {},
                   '&::before': {}
@@ -277,7 +274,7 @@ export default function LogSessionCard({
                 disableRipple
                 variant="contained"
                 fullWidth
-                sx={secondaryButtonStyle}
+                sx={secondaryButtonStyle({ ...theme })}
                 onClick={handlePaidClick}
               >
                 Обнулить долг
@@ -290,7 +287,7 @@ export default function LogSessionCard({
                 disableRipple
                 variant="contained"
                 fullWidth
-                sx={secondaryButtonStyle}
+                sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleCloseClick}
               >
                 Закрыть

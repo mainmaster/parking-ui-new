@@ -7,17 +7,22 @@ import {
   Button,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { listStyle, secondaryButtonStyle } from '../../theme/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 
 export default function SettingsConfirmDialog({ show, cancel, confirm }) {
+  const theme = useTheme();
   return (
     <Dialog
       open={show}
       onClose={cancel}
       scroll="body"
       sx={{
-        '& .MuiDialog-container': { ...listStyle, position: 'relative' }
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
       }}
       PaperProps={{
         style: {
@@ -33,7 +38,7 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
         disableRipple
         onClick={cancel}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -67,7 +72,7 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
           disableRipple
           fullWidth
           variant="contained"
-          sx={secondaryButtonStyle}
+          sx={secondaryButtonStyle({ ...theme })}
           onClick={confirm}
         >
           Выйти
@@ -76,7 +81,7 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
           disableRipple
           fullWidth
           variant="contained"
-          sx={secondaryButtonStyle}
+          sx={secondaryButtonStyle({ ...theme })}
           onClick={cancel}
         >
           Остаться

@@ -14,13 +14,13 @@ import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import cameraClearIcon from '../../assets/svg/camera_clear_icon.svg';
-import { colors } from '../../theme/colors';
 import {
   autoButtonStyle,
   closeButtonStyle,
   openButtonStyle,
   positiveButtonStyle,
-  primaryButtonStyle
+  sendButtonStyle,
+  CameraMessageInput
 } from '../../theme/styles';
 import {
   openApFetch,
@@ -36,36 +36,13 @@ import {
 } from '../../api/access-points';
 import { useSnackbar } from 'notistack';
 import submitIcon from '../../assets/svg/camera_submit_icon.svg';
-import cameraSkeleton from '../../assets/svg/camera_skeleton_logo.svg';
+import cameraSkeleton from '../../assets/svg/theme/camera_skeleton_logo.svg';
+import vlCameraSkeleton from '../../assets/svg/vltheme/camera_skeleton_logo.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { parseISO, differenceInSeconds } from 'date-fns';
-
-const CameraMessageInput = styled(TextField)(({ theme }) => ({
-  width: '100%',
-  backgroundColor: colors.surface.low,
-  border: '1px solid ' + colors.outline.default,
-  borderRadius: '20px',
-  height: '40px',
-  justifyContent: 'center',
-  '& .MuiFilledInput-root': {
-    backgroundColor: 'transparent',
-    paddingRight: 0,
-    paddingLeft: '12px',
-    '&:hover': { backgroundColor: 'transparent !important' },
-    '& .Mui-disabled': {
-      backgroundColor: 'transparent !important'
-    }
-  },
-  '& .MuiFilledInput-input': {
-    backgroundColor: colors.surface.low,
-    alignSelf: 'center',
-    padding: 0,
-    color: 'black'
-  }
-}));
 
 export default function CameraManagementItem({
   camera,
@@ -182,7 +159,9 @@ export default function CameraManagementItem({
       <Stack gap={'8px'}>
         <Box
           sx={{
-            backgroundImage: `url("${cameraSkeleton}")`,
+            backgroundImage: `url("${
+              theme.name === 'vltheme' ? vlCameraSkeleton : cameraSkeleton
+            }")`,
             backgroundSize: 'cover',
             position: 'relative',
             lineHeight: 0
@@ -197,7 +176,7 @@ export default function CameraManagementItem({
               py: '2px',
               px: '4px',
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              border: `1px solid ${colors.outline.surface}`,
+              border: `1px solid ${theme.colors.outline.surface}`,
               borderRadius: '4px'
             }}
           >
@@ -222,9 +201,9 @@ export default function CameraManagementItem({
                 <img
                   style={{
                     height: 12,
-                    backgroundColor: colors.surface.low,
+                    backgroundColor: theme.colors.surface.low,
                     borderRadius: '50%',
-                    border: `1px solid ${colors.outline.surface}`
+                    border: `1px solid ${theme.colors.outline.surface}`
                   }}
                   src={cameraClearIcon}
                   alt="Clear message"
@@ -251,7 +230,7 @@ export default function CameraManagementItem({
                   fontWeight: 500,
                   p: '4px',
                   backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                  border: `1px solid ${colors.outline.surface}`,
+                  border: `1px solid ${theme.colors.outline.surface}`,
                   borderRadius: '4px'
                 }}
               >
@@ -267,7 +246,7 @@ export default function CameraManagementItem({
               py: '4px',
               px: '8px',
               borderRadius: '8px',
-              border: `1px solid ${colors.outline.surface}`,
+              border: `1px solid ${theme.colors.outline.surface}`,
               flexGrow: 1,
               minWidth: '120px'
             }}
@@ -296,10 +275,10 @@ export default function CameraManagementItem({
                   borderRadius: '4px',
                   backgroundColor:
                     camera.status === 'open'
-                      ? colors.mode.open.element
+                      ? theme.colors.mode.open.element
                       : camera.status === 'working_mode'
-                      ? colors.mode.auto.element
-                      : colors.mode.close.element
+                      ? theme.colors.mode.auto.element
+                      : theme.colors.mode.close.element
                 }}
               ></Box>
               <Typography
@@ -308,10 +287,10 @@ export default function CameraManagementItem({
                   lineHeight: '0.875rem',
                   color:
                     camera.status === 'open'
-                      ? colors.mode.open.element
+                      ? theme.colors.mode.open.element
                       : camera.status === 'working_mode'
-                      ? colors.mode.auto.element
-                      : colors.mode.close.element
+                      ? theme.colors.mode.auto.element
+                      : theme.colors.mode.close.element
                 }}
               >
                 {camera.status === 'open'
@@ -327,7 +306,7 @@ export default function CameraManagementItem({
             disabled={accessOptions.disableOpenAP}
             variant="contained"
             fullWidth={false}
-            sx={openButtonStyle}
+            sx={openButtonStyle({ ...theme })}
             onClick={openAp}
           >
             Открыть
@@ -338,7 +317,10 @@ export default function CameraManagementItem({
               disabled={accessOptions.disableOpenAP}
               variant="contained"
               fullWidth={false}
-              sx={[positiveButtonStyle, { flexGrow: 1, minWidth: '130px' }]}
+              sx={[
+                positiveButtonStyle({ ...theme }),
+                { flexGrow: 1, minWidth: '130px' }
+              ]}
               onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
             >
               Ввести номер
@@ -352,7 +334,7 @@ export default function CameraManagementItem({
               disabled={accessOptions.disableOpenAP}
               variant="contained"
               fullWidth={false}
-              sx={[positiveButtonStyle, { flexGrow: 1 }]}
+              sx={[positiveButtonStyle({ ...theme }), { flexGrow: 1 }]}
               onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
             >
               Ввести номер
@@ -362,7 +344,7 @@ export default function CameraManagementItem({
               disabled={accessOptions.disableCloseAP}
               variant="contained"
               fullWidth={false}
-              sx={closeButtonStyle}
+              sx={closeButtonStyle({ ...theme })}
               onClick={closeAp}
             >
               Закрыть
@@ -376,7 +358,7 @@ export default function CameraManagementItem({
               disabled={accessOptions.disableCloseAP}
               variant="contained"
               fullWidth={false}
-              sx={closeButtonStyle}
+              sx={closeButtonStyle({ ...theme })}
               onClick={closeAp}
             >
               Закрыть
@@ -387,7 +369,7 @@ export default function CameraManagementItem({
             disabled={accessOptions.disableWorkAP}
             variant="contained"
             fullWidth={false}
-            sx={[autoButtonStyle, { minWidth: '122.5px' }]}
+            sx={[autoButtonStyle({ ...theme }), { minWidth: '122.5px' }]}
             onClick={normalAp}
           >
             Авто-режим
@@ -412,7 +394,7 @@ export default function CameraManagementItem({
                         disableRipple
                         aria-label="submit"
                         type="submit"
-                        sx={primaryButtonStyle}
+                        sx={sendButtonStyle({ ...theme })}
                       >
                         <img
                           style={{
@@ -441,7 +423,7 @@ export default function CameraManagementItem({
           sx={{
             width: '100%',
             height: '1px',
-            backgroundColor: colors.outline.separator
+            backgroundColor: theme.colors.outline.separator
           }}
         />
       </Stack>

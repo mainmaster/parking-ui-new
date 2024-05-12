@@ -8,6 +8,7 @@ import {
   IconButton,
   InputLabel
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -15,7 +16,7 @@ import { format } from 'date-fns';
 import { closeOlderThanDateSessionsFetch } from 'store/sessions/sessionsSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   DateInputStyle
@@ -31,6 +32,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
   const dispatch = useDispatch();
   const [date, setDate] = useState(null);
   const [submited, setSubmited] = useState(true);
+  const theme = useTheme();
 
   const handleCloseSessions = () => {
     try {
@@ -63,7 +65,12 @@ export default function CloseSessionsDialog({ show, handleClose }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -78,7 +85,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -128,7 +135,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
               slotProps={{
                 textField: {
                   variant: 'filled',
-                  sx: DateInputStyle,
+                  sx: DateInputStyle({ ...theme }),
                   placeholder: 'Дата'
                 },
                 openPickerButton: { disableRipple: true }
@@ -144,7 +151,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
             variant="contained"
             fullWidth
             onClick={handleCloseSessions}
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             Закрыть сессии
           </Button>

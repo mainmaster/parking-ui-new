@@ -1,5 +1,5 @@
 export const operatorRoutes = [
-  { eventKey: '/events', title: 'VIZOR' },
+  { eventKey: '/events', title: 'VIZOR', vltitle: 'Vision Labs' },
   { eventKey: '/sessions', title: 'Сессии' },
   { eventKey: '/auto-park/active', title: 'Автопарк' },
   { eventKey: '/black-list/active', title: 'Черный список' },
@@ -7,12 +7,12 @@ export const operatorRoutes = [
   { eventKey: '/settings', title: 'Настройки' }
 ];
 export const renterRoutes = [
-  { eventKey: '/events-logs', title: 'VIZOR' },
+  { eventKey: '/events-logs', title: 'VIZOR', vltitle: 'Vision Labs' },
   { eventKey: '/sessions', title: 'Сессии' },
   { eventKey: '/requests', title: 'Заявки' }
 ];
 export const adminRoutes = [
-  { eventKey: '/events', title: 'VIZOR' },
+  { eventKey: '/events', title: 'VIZOR', vltitle: 'Vision Labs' },
   { eventKey: '/sessions', title: 'Сессии' },
   { eventKey: '/auto-park/active', title: 'Автопарк' },
   { eventKey: '/black-list/active', title: 'Черный список' },

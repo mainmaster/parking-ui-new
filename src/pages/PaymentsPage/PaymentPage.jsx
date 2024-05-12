@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
@@ -16,8 +16,11 @@ import {
   IconButton
 } from '@mui/material';
 import linkIcon from '../../assets/svg/link_icon.svg';
-import { colors } from '../../theme/colors';
-import { listWithScrollStyle, secondaryButtonStyle } from '../../theme/styles';
+import {
+  listWithScrollStyle,
+  secondaryButtonStyle,
+  captionTextStyle
+} from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EventManager from '../../components/EventManager/EventManager';
@@ -28,17 +31,6 @@ const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const captionTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  color: colors.element.secondary
-};
-
-const labelTextStyle = {
-  width: '112px',
-  color: colors.element.secondary
 };
 
 export const PaymentPage = () => {
@@ -53,6 +45,13 @@ export const PaymentPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
   const [dateString, setDateString] = useState('');
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      width: '112px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   let RURuble = new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -99,11 +98,11 @@ export const PaymentPage = () => {
       <Stack
         gap={'16px'}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
             px: '16px',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
       >
@@ -125,7 +124,9 @@ export const PaymentPage = () => {
               gap={isMobile ? 0 : '0.5rem'}
             >
               <Typography sx={titleTextStyle}>Оплата </Typography>
-              <Typography sx={isMobile ? captionTextStyle : titleTextStyle}>
+              <Typography
+                sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
+              >
                 №{id}
               </Typography>
             </Stack>
@@ -137,7 +138,7 @@ export const PaymentPage = () => {
               fullWidth={false}
               onClick={handleCopyLinkClick}
               sx={[
-                secondaryButtonStyle,
+                secondaryButtonStyle({ ...theme }),
                 isMobile
                   ? {
                       minWidth: '48px',
@@ -236,7 +237,7 @@ export const PaymentPage = () => {
                     disableRipple
                     variant="contained"
                     fullWidth
-                    sx={secondaryButtonStyle}
+                    sx={secondaryButtonStyle({ ...theme })}
                     onClick={handleRefundPayment}
                   >
                     Возврат

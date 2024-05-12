@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Store
 import {
@@ -14,12 +14,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Button, AppBar, Box, Stack, Typography } from '@mui/material';
-import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  closeButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import PaymentFilter from '../../components/PaymentFilter/PaymentFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import PaymentsSpacer from './PaymentsSpacer';
@@ -34,18 +29,6 @@ const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const totalTextStyle = {
-  fontSize: '1.5rem',
-  lineHeight: '1.75rem',
-  color: colors.element.secondary
-};
-
-const mobileTotalTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  color: colors.element.secondary
 };
 
 const PaymentsPage = () => {
@@ -64,6 +47,22 @@ const PaymentsPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
+
+  const totalTextStyle = useMemo(() => {
+    return {
+      fontSize: '1.5rem',
+      lineHeight: '1.75rem',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
+
+  const mobileTotalTextStyle = useMemo(() => {
+    return {
+      fontSize: '0.75rem',
+      lineHeight: '0.875rem',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   const handleResize = useCallback(() => {
     if (containerRef?.current) {
@@ -147,10 +146,10 @@ const PaymentsPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !paymentsListScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -182,7 +181,7 @@ const PaymentsPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleGetPaymentsReport}
               >
                 Выгрузить
@@ -195,10 +194,10 @@ const PaymentsPage = () => {
       <Stack
         ref={paymentsListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handlePaymentsListScroll}
@@ -213,10 +212,10 @@ const PaymentsPage = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                backgroundColor: colors.surface.low,
+                backgroundColor: theme.colors.surface.low,
                 boxShadow: !paymentsListScrolled && 'none',
                 zIndex: 10,
-                borderBottom: `1px solid ${colors.outline.separator}`
+                borderBottom: `1px solid ${theme.colors.outline.separator}`
               }}
             >
               <Stack
@@ -245,7 +244,7 @@ const PaymentsPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={closeButtonStyle}
+                  sx={primaryButtonStyle({ ...theme })}
                   onClick={handleGetPaymentsReport}
                 >
                   Выгрузить

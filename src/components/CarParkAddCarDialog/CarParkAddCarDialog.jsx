@@ -14,6 +14,7 @@ import {
   InputLabel,
   styled
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
@@ -33,14 +34,13 @@ import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import checkIcon from '../../assets/svg/multiselect_check_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
-import { colors } from '../../theme/colors';
 import { DateIcon } from '../Icons/DateIcon';
 
 const labelStyle = {
@@ -66,6 +66,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const carParkEdit = useSelector((state) => state.carPark.carParkEdit);
   const isError = useSelector((state) => state.carPark.isErrorFetch);
   const urlStatus = useParams();
+  const theme = useTheme();
 
   const defaultValues = useMemo(() => {
     if (carParkEdit && !_.isEmpty(carParkEdit)) {
@@ -200,7 +201,12 @@ export default function AddCarDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -215,7 +221,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -269,7 +275,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               slotProps={{
                 textField: {
                   variant: 'filled',
-                  sx: DateInputStyle,
+                  sx: DateInputStyle({ ...theme }),
                   placeholder: 'Дата'
                 },
                 openPickerButton: { disableRipple: true }
@@ -352,7 +358,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -431,7 +437,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -508,7 +514,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>

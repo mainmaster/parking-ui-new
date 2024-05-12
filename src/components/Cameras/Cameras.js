@@ -42,7 +42,6 @@ import {
   positiveButtonStyle,
   secondaryButtonStyle
 } from '../../theme/styles';
-import { colors } from '../../theme/colors';
 import { spacers } from '../../theme/spacers';
 import ParkingInfo from '../ParkingInfo/ParkingInfo';
 import CameraManagementItem from '../CameraManagementItem/CameraManagementItem';
@@ -146,7 +145,7 @@ const Cameras = ({ accessOptions }) => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !cameraListScrolled && 'none',
             zIndex: 1
           }}
@@ -174,7 +173,7 @@ const Cameras = ({ accessOptions }) => {
                 disabled={accessOptions.disableOpenAP}
                 variant="contained"
                 sx={[
-                  secondaryButtonStyle,
+                  secondaryButtonStyle({ ...theme }),
                   { width: '120px', px: '4px !important' }
                 ]}
                 onClick={() => dispatch(openApAllFetch())}
@@ -188,7 +187,7 @@ const Cameras = ({ accessOptions }) => {
                 disabled={accessOptions.disableCloseAP}
                 variant="contained"
                 sx={[
-                  secondaryButtonStyle,
+                  secondaryButtonStyle({ ...theme }),
                   { width: '120px', px: '4px !important' }
                 ]}
                 onClick={() => dispatch(closeApAllFetch())}
@@ -202,7 +201,7 @@ const Cameras = ({ accessOptions }) => {
                 disabled={accessOptions.disableWorkAP}
                 variant="contained"
                 sx={[
-                  secondaryButtonStyle,
+                  secondaryButtonStyle({ ...theme }),
                   { width: '120px', px: '4px !important' }
                 ]}
                 onClick={() => dispatch(normalApAllFetch())}
@@ -220,9 +219,9 @@ const Cameras = ({ accessOptions }) => {
       <Box
         ref={camerasListRef}
         sx={[
-          listStyle,
+          listStyle({ ...theme }),
           {
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             width: '100%'
           }
         ]}
@@ -259,7 +258,7 @@ const Cameras = ({ accessOptions }) => {
                   disabled={accessOptions.disableOpenAP}
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={() => dispatch(openApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>
@@ -271,7 +270,7 @@ const Cameras = ({ accessOptions }) => {
                   disabled={accessOptions.disableCloseAP}
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={() => dispatch(closeApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>
@@ -283,7 +282,7 @@ const Cameras = ({ accessOptions }) => {
                   disabled={accessOptions.disableWorkAP}
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={() => dispatch(normalApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>

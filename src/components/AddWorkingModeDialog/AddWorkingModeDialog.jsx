@@ -17,6 +17,7 @@ import {
   Switch,
   styled
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
@@ -32,7 +33,7 @@ import {
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
@@ -40,7 +41,6 @@ import {
   DateInputStyle
 } from '../../theme/styles';
 import { passModeOptions } from 'constants';
-import { colors } from '../../theme/colors';
 
 const validationSchemaHour = yup.object({
   description: yup.string().required('Введите название'),
@@ -138,6 +138,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
     (state) => state.workingModes.workingModeEdit
   );
   const isError = useSelector((state) => state.workingModes.isErrorFetch);
+  const theme = useTheme();
 
   const defaultValues = useMemo(() => {
     if (!_.isEmpty(workingModeEdit)) {
@@ -347,7 +348,12 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -362,7 +368,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -453,12 +459,12 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
                       />
                     </IconButton>
                   )}
-                  sx={selectMenuStyle}
+                  sx={selectMenuStyle({ ...theme })}
                   MenuProps={{
                     PaperProps: {
                       sx: {
                         borderRadius: '8px',
-                        border: '1px solid ' + colors.outline.default
+                        border: '1px solid ' + theme.colors.outline.default
                       }
                     },
                     MenuListProps: {
@@ -694,7 +700,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
                     slotProps={{
                       textField: {
                         variant: 'filled',
-                        sx: DateInputStyle,
+                        sx: DateInputStyle({ ...theme }),
                         placeholder: '00:00'
                       }
                     }}
@@ -714,7 +720,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
                     slotProps={{
                       textField: {
                         variant: 'filled',
-                        sx: DateInputStyle,
+                        sx: DateInputStyle({ ...theme }),
                         placeholder: '00:00'
                       }
                     }}
@@ -729,7 +735,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>
@@ -738,7 +744,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
               sx={{
                 width: '100%',
                 textAlign: 'center',
-                color: colors.element.error
+                color: theme.colors.element.error
               }}
             >
               Заполните поля, чтобы добавить режим

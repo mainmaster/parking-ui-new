@@ -1,26 +1,27 @@
 import React from 'react';
 import { typeText } from './types';
-import { colors } from '../../theme/colors';
+import { useTheme } from '@mui/material/styles';
 
 const TypeAuto = ({ type }) => {
+  const theme = useTheme();
   return (
     <>
-      {typeText[type] && (
+      {typeText({ ...theme })[type] && (
         <div
           style={{
-            backgroundColor: typeText[type]?.color,
-            color: typeText[type]?.textColor,
+            backgroundColor: typeText({ ...theme })[type]?.color,
+            color: typeText({ ...theme })[type]?.textColor,
             padding: '2px 6px',
             borderRadius: '16px',
-            border: typeText[type]
-              ? `1px solid ${colors.outline.separator}`
+            border: typeText({ ...theme })[type]
+              ? `1px solid ${theme.colors.outline.separator}`
               : '',
             fontSize: '0.75rem',
             lineHeight: '0.875rem',
             whiteSpace: 'nowrap'
           }}
         >
-          {typeText[type].label}
+          {typeText({ ...theme })[type].label}
         </div>
       )}
     </>

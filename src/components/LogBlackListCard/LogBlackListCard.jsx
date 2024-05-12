@@ -1,9 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
+import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
 import {
   editModalHandler,
@@ -12,22 +10,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
-
-const labelTextStyle = {
-  minWidth: '88px',
-  color: colors.element.secondary
-};
+import { useMemo } from 'react';
 
 export default function LogBlackListCard({ car }) {
   const dispatch = useDispatch();
@@ -35,6 +18,13 @@ export default function LogBlackListCard({ car }) {
   const validDateString = format(parseISO(car.valid_until), 'dd.MM.yyyy');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '88px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   const handleEditCarClick = () => {
     dispatch(editModalHandler(car.id));
@@ -50,7 +40,9 @@ export default function LogBlackListCard({ car }) {
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack gap={'12px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
           <CarNumberCard carNumber={car.vehicle_plate} isTable />
@@ -59,7 +51,7 @@ export default function LogBlackListCard({ car }) {
             sx={{
               whiteSpace: 'nowrap',
               fontWeight: 500,
-              color: colors.element.secondary
+              color: theme.colors.element.secondary
             }}
           >{`№ ${car.id}`}</Typography>
         </Stack>
@@ -76,7 +68,7 @@ export default function LogBlackListCard({ car }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditCarClick}
           >
             Изменить
@@ -85,7 +77,7 @@ export default function LogBlackListCard({ car }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteCarClick}
           >
             Удалить

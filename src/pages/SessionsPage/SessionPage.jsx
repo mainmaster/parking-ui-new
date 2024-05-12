@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useRef, useEffect } from 'react';
+import { useLayoutEffect, useState, useRef, useEffect, useMemo } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import TypeAuto from '../../components/TypeAuto';
@@ -21,8 +21,11 @@ import {
   IconButton
 } from '@mui/material';
 import linkIcon from '../../assets/svg/link_icon.svg';
-import { colors } from '../../theme/colors';
-import { listStyle, secondaryButtonStyle } from '../../theme/styles';
+import {
+  listStyle,
+  secondaryButtonStyle,
+  captionTextStyle
+} from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EventManager from '../../components/EventManager/EventManager';
@@ -31,17 +34,6 @@ const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const captionTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  color: colors.element.secondary
-};
-
-const labelTextStyle = {
-  width: '112px',
-  color: colors.element.secondary
 };
 
 const initialAccessOptions = {
@@ -62,6 +54,13 @@ export const SessionPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const sessionListRef = useRef(null);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      width: '112px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (userType === 'operator') {
@@ -143,7 +142,7 @@ export const SessionPage = () => {
           position: 'absolute',
           top: 0,
           left: isMobile ? 0 : '72px',
-          backgroundColor: colors.surface.low,
+          backgroundColor: theme.colors.surface.low,
           boxShadow: !sessionListScrolled && 'none'
         }}
       >
@@ -161,7 +160,9 @@ export const SessionPage = () => {
               gap={isMobile ? 0 : '0.5rem'}
             >
               <Typography sx={titleTextStyle}>Сессия </Typography>
-              <Typography sx={isMobile ? captionTextStyle : titleTextStyle}>
+              <Typography
+                sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
+              >
                 №{id}
               </Typography>
             </Stack>
@@ -173,7 +174,7 @@ export const SessionPage = () => {
               fullWidth={false}
               onClick={handleCopyLinkClick}
               sx={[
-                secondaryButtonStyle,
+                secondaryButtonStyle({ ...theme }),
                 isMobile
                   ? {
                       minWidth: '48px',
@@ -203,13 +204,13 @@ export const SessionPage = () => {
         gap={'16px'}
         ref={sessionListRef}
         sx={[
-          listStyle,
+          listStyle({ ...theme }),
           {
             width: '100%',
             p: '16px',
             pt: isMobile ? '66px' : '64px',
             pb: 0,
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleSessionListScroll}
@@ -394,7 +395,10 @@ export const SessionPage = () => {
                         disableRipple
                         variant="contained"
                         fullWidth
-                        sx={[secondaryButtonStyle, { minWidth: '141px' }]}
+                        sx={[
+                          secondaryButtonStyle({ ...theme }),
+                          { minWidth: '141px' }
+                        ]}
                         onClick={handlePaidClick}
                       >
                         Обнулить долг
@@ -406,7 +410,7 @@ export const SessionPage = () => {
                         disableRipple
                         variant="contained"
                         fullWidth
-                        sx={secondaryButtonStyle}
+                        sx={secondaryButtonStyle({ ...theme })}
                         onClick={handleCloseClick}
                       >
                         Закрыть

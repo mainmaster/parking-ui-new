@@ -24,11 +24,10 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import { colors } from '../../theme/colors';
 import {
-  listStyle,
   listWithScrollStyle,
-  closeButtonStyle
+  primaryButtonStyle,
+  tabStyle
 } from '../../theme/styles';
 import BlackListFilter from '../../components/BlackListFilter/BlackListFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -44,17 +43,6 @@ const titleTextStyle = {
   lineHeight: '1.75rem',
   fontWeight: 500,
   whiteSpace: 'nowrap'
-};
-
-const tabStyle = {
-  minHeight: '42px',
-  textTransform: 'none',
-  fontSize: '1rem',
-  lineHeight: '1.125rem',
-  fontWeight: 500,
-  '&.Mui-selected': {
-    color: colors.button.primary.default
-  }
 };
 
 const BlackListPage = () => {
@@ -143,10 +131,10 @@ const BlackListPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !blackListScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -170,7 +158,7 @@ const BlackListPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCarClick}
               >
                 Добавить в ЧС
@@ -187,13 +175,17 @@ const BlackListPage = () => {
               scrollButtons={false}
               TabIndicatorProps={{
                 sx: {
-                  backgroundColor: colors.button.primary.default
+                  backgroundColor: theme.colors.button.primary.default
                 }
               }}
               sx={{ minHeight: '42px' }}
             >
-              <Tab sx={tabStyle} disableRipple label="Активные" />
-              <Tab sx={tabStyle} disableRipple label="Неактивные" />
+              <Tab sx={tabStyle({ ...theme })} disableRipple label="Активные" />
+              <Tab
+                sx={tabStyle({ ...theme })}
+                disableRipple
+                label="Неактивные"
+              />
             </Tabs>
           </Stack>
         </AppBar>
@@ -201,10 +193,10 @@ const BlackListPage = () => {
       <Stack
         ref={blackListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleBlackListScroll}
@@ -219,10 +211,10 @@ const BlackListPage = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                backgroundColor: colors.surface.low,
+                backgroundColor: theme.colors.surface.low,
                 boxShadow: !blackListScrolled && 'none',
                 zIndex: 10,
-                borderBottom: `1px solid ${colors.outline.separator}`
+                borderBottom: `1px solid ${theme.colors.outline.separator}`
               }}
             >
               <Stack
@@ -241,7 +233,7 @@ const BlackListPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={closeButtonStyle}
+                  sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddCarClick}
                 >
                   Добавить в ЧС
@@ -263,13 +255,21 @@ const BlackListPage = () => {
                   scrollButtons={false}
                   TabIndicatorProps={{
                     sx: {
-                      backgroundColor: colors.button.primary.default
+                      backgroundColor: theme.colors.button.primary.default
                     }
                   }}
                   sx={{ minHeight: '42px' }}
                 >
-                  <Tab sx={tabStyle} disableRipple label="Активные" />
-                  <Tab sx={tabStyle} disableRipple label="Неактивные" />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Активные"
+                  />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Неактивные"
+                  />
                 </Tabs>
               </Stack>
             </AppBar>

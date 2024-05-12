@@ -9,12 +9,7 @@ import {
 } from 'store/workingModes/workingModesSlice';
 import _ from 'lodash';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  closeButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -105,7 +100,7 @@ const WorkingModesPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !modesListScrolled && 'none',
             zIndex: 10
             //borderBottom: `1px solid ${colors.outline.separator}`
@@ -132,7 +127,7 @@ const WorkingModesPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddModeClick}
               >
                 Добавить режим
@@ -144,10 +139,10 @@ const WorkingModesPage = () => {
       <Stack
         ref={modesListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleModesListScroll}
@@ -171,7 +166,7 @@ const WorkingModesPage = () => {
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={closeButtonStyle}
+              sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddModeClick}
             >
               Добавить режим

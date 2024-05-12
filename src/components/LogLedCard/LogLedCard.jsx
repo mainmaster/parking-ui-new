@@ -1,22 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
+import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
 import { editModalHandler, deleteLedFetch } from 'store/led/ledSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
+import { useMemo } from 'react';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -24,16 +12,18 @@ const titleTextStyle = {
   fontWeight: 500
 };
 
-const labelTextStyle = {
-  minWidth: '88px',
-  maxWidth: '88px',
-  color: colors.element.secondary
-};
-
 export default function LogLedCard({ led }) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '88px',
+      maxWidth: '88px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   const handleEditModeClick = () => {
     dispatch(editModalHandler(led.id));
@@ -44,7 +34,9 @@ export default function LogLedCard({ led }) {
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack gap={'16px'}>
         <Typography sx={titleTextStyle}>{led.description}</Typography>
         <Stack gap={'12px'}>
@@ -66,7 +58,7 @@ export default function LogLedCard({ led }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
             Изменить
@@ -75,7 +67,7 @@ export default function LogLedCard({ led }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
             Удалить

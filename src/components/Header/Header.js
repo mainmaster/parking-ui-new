@@ -15,8 +15,19 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
+import {
+  secondaryButtonStyle,
+  mobileFooterStyle,
+  mobileMoreHeaderStyle,
+  mobileMoreListStyle,
+  mobileMenuButtonStyle,
+  menuButtonStyle,
+  mobileProfileTextStyle,
+  menuTextStyle,
+  vlMenuTextStyle,
+  selectedTextStyle
+} from '../../theme/styles';
+import css from './Header.module.scss';
 import MoreIdIcon from '../../assets/svg/more_parking_id.svg';
 import MoreHomeIcon from '../../assets/svg/more_parking_home.svg';
 import MoreUserIcon from '../../assets/svg/more_parking_user.svg';
@@ -24,7 +35,8 @@ import ProfileIcon from '../../assets/svg/profile_icon.svg';
 import AddressIcon from '../../assets/svg/parking_address_icon.svg';
 import IdIcon from '../../assets/svg/parking_id_icon.svg';
 import MoreIcon from '../../assets/svg/more_icon.svg';
-import MoreIconSelected from '../../assets/svg/more_icon_selected.svg';
+import MoreIconSelected from '../../assets/svg/theme/more_icon_selected.svg';
+import VlMoreIconSelected from '../../assets/svg/vltheme/more_icon_selected.svg';
 import { adminRoutes, operatorRoutes, renterRoutes } from '../../router/routes';
 import { logout } from '../../api/auth/login';
 import {
@@ -37,99 +49,14 @@ import { spacers } from '../../theme/spacers';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const mobileFooterStyle = {
-  top: 'auto',
-  bottom: 0,
-  justifyContent: 'center',
-  width: '100%',
-  height: spacers.footer,
-  backgroundColor: colors.surface.low
-};
-
-const mobileMoreHeaderStyle = {
-  zIndex: 1200,
-  top: 0,
-  bottom: 'auto',
-  justifyContent: 'center',
-  width: '100%',
-  height: spacers.more,
-  backgroundColor: colors.surface.low,
-  p: '16px',
-  pb: '8px'
-};
-
-const mobileMoreListStyle = {
-  width: '100%',
-  height: `calc(100% - ${spacers.more} - ${spacers.footer})`,
-  maxHeight: `calc(100dvh - ${spacers.more} - ${spacers.footer})`,
-  backgroundColor: colors.surface.low,
-  position: 'absolute',
-  top: spacers.more,
-  left: 0,
-  right: 0,
-  zIndex: 1100,
-  overflowY: 'scroll',
-  scrollbarWidth: 'none', // Hide the scrollbar for firefox
-  '&::-webkit-scrollbar': {
-    display: 'none' // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
-  },
-  '&-ms-overflow-style:': {
-    display: 'none' // Hide the scrollbar for IE
-  },
-  p: '16px',
-  gap: '16px'
-};
-
-const mobileMenuButtonStyle = {
-  height: '56px',
-  width: '100%',
-  borderWidth: 0,
-  borderTop: `1px solid ${colors.outline.surface}`,
-  backgroundColor: colors.surface.high,
-  flexGrow: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  cursor: 'pointer'
-};
-
-const menuButtonStyle = {
-  height: '80px',
-  width: '72px',
-  pt: '8px',
-  borderRight: `1px solid ${colors.outline.surface}`,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  cursor: 'pointer'
-};
-
 const menuIconStyle = {
   padding: '4px',
   height: '40px'
 };
 
-const mobileProfileTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  color: colors.element.secondary
-};
-
-const menuTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  textAlign: 'center',
-  fontWeight: 500,
-  color: colors.element.secondary,
-  width: '100%',
-  overflowWrap: 'break-word',
-  hyphens: 'manual'
-};
-
-const selectedTextStyle = {
-  color: colors.button.primary.default
+const mobileMenuIconStyle = {
+  padding: '4px',
+  height: '38px'
 };
 
 const Header = ({ title, userType, isHideMenu = false }) => {
@@ -248,7 +175,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
   }, [operator]);
 
   const handleMoreClick = () => {
-    setMore(true);
+    setMore(!more);
   };
 
   const handleAdminMenuMouseOver = () => {
@@ -280,25 +207,28 @@ const Header = ({ title, userType, isHideMenu = false }) => {
     <>
       {isMobile && (
         <>
-          <AppBar position="absolute" sx={mobileFooterStyle}>
+          <AppBar
+            position="absolute"
+            sx={mobileFooterStyle({ ...theme, spacers: spacers })}
+          >
             <Stack
               direction={'row'}
               justifyContent={'space-around'}
               sx={{ width: '100%' }}
             >
               {mobileRouteList.map((route) => {
-                const icon = icons.find(
+                const icon = theme.icons.find(
                   (icon) => icon.route === route.eventKey
                 );
                 return (
                   <Box
                     sx={[
-                      mobileMenuButtonStyle,
+                      mobileMenuButtonStyle({ ...theme }),
                       {
                         borderColor:
                           !more && icon.route === currentHref
-                            ? colors.button.primary.default
-                            : colors.outline.surface
+                            ? theme.colors.button.primary.default
+                            : theme.colors.outline.surface
                       }
                     ]}
                     key={route.eventKey}
@@ -308,11 +238,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     }}
                   >
                     {icon && (
-                      <IconButton disableRipple sx={menuIconStyle}>
+                      <IconButton disableRipple sx={mobileMenuIconStyle}>
                         <img
                           style={{
                             height: icon.height,
-                            color: colors.button.primary.default
+                            color: theme.colors.button.primary.default
                           }}
                           src={
                             !more && icon.route === currentHref
@@ -324,14 +254,19 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       </IconButton>
                     )}
                     <Typography
+                      className={route.vltitle ? css.vltitle : ''}
                       sx={[
-                        menuTextStyle,
+                        route.vltitle
+                          ? vlMenuTextStyle({ ...theme })
+                          : menuTextStyle({ ...theme }),
                         !more && icon.route === currentHref
-                          ? selectedTextStyle
+                          ? selectedTextStyle({ ...theme })
                           : {}
                       ]}
                     >
-                      {route.title}
+                      {route.vltitle
+                        ? route.vltitle.replace(' ', '')
+                        : route.title}
                     </Typography>
                   </Box>
                 );
@@ -339,27 +274,36 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               {userType !== 'renter' && (
                 <Box
                   sx={[
-                    mobileMenuButtonStyle,
+                    mobileMenuButtonStyle({ ...theme }),
                     {
                       borderColor: more
-                        ? colors.button.primary.default
-                        : colors.outline.surface
+                        ? theme.colors.button.primary.default
+                        : theme.colors.outline.surface
                     }
                   ]}
                   onClick={handleMoreClick}
                 >
-                  <IconButton disableRipple sx={menuIconStyle}>
+                  <IconButton disableRipple sx={mobileMenuIconStyle}>
                     <img
                       style={{
                         height: 5,
-                        color: colors.button.primary.default
+                        color: theme.colors.button.primary.default
                       }}
-                      src={more ? MoreIconSelected : MoreIcon}
+                      src={
+                        more
+                          ? theme.name === 'vltheme'
+                            ? VlMoreIconSelected
+                            : MoreIconSelected
+                          : MoreIcon
+                      }
                       alt="Ещё"
                     />
                   </IconButton>
                   <Typography
-                    sx={[menuTextStyle, more ? selectedTextStyle : {}]}
+                    sx={[
+                      menuTextStyle({ ...theme }),
+                      more ? selectedTextStyle({ ...theme }) : {}
+                    ]}
                   >
                     Ещё
                   </Typography>
@@ -372,7 +316,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               gap={'4px'}
               sx={{ width: '100%' }}
             >
-              <Typography sx={mobileProfileTextStyle}>
+              <Typography sx={mobileProfileTextStyle({ ...theme })}>
                 {userType === 'admin'
                   ? 'Админ'
                   : userType === 'operator'
@@ -391,7 +335,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 />
               </IconButton>
               {parkingData && (
-                <Typography sx={mobileProfileTextStyle}>
+                <Typography sx={mobileProfileTextStyle({ ...theme })}>
                   {parkingData.address}
                 </Typography>
               )}
@@ -402,7 +346,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               <AppBar
                 position="absolute"
                 sx={[
-                  mobileMoreHeaderStyle,
+                  mobileMoreHeaderStyle({ ...theme, spacers: spacers }),
                   { boxShadow: !moreListScrolled && 'none' }
                 ]}
               >
@@ -426,7 +370,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     variant="contained"
                     fullWidth={false}
                     onClick={handleLogout}
-                    sx={secondaryButtonStyle}
+                    sx={secondaryButtonStyle({ ...theme })}
                   >
                     Выход
                   </Button>
@@ -434,7 +378,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               </AppBar>
               <Stack
                 ref={moreListRef}
-                sx={mobileMoreListStyle}
+                sx={mobileMoreListStyle({ ...theme, spacers: spacers })}
                 onScroll={handleMoreListScroll}
               >
                 {parkingData && (
@@ -443,7 +387,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       <Typography
                         sx={{
                           fontWeight: 500,
-                          color: colors.element.secondary,
+                          color: theme.colors.element.secondary,
                           width: '24px'
                         }}
                       >
@@ -455,7 +399,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       <img
                         style={{
                           width: 24,
-                          color: colors.element.primary
+                          color: theme.colors.element.primary
                         }}
                         src={MoreIdIcon}
                         alt="ID"
@@ -466,7 +410,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       <img
                         style={{
                           width: 24,
-                          color: colors.element.primary
+                          color: theme.colors.element.primary
                         }}
                         src={MoreHomeIcon}
                         alt="Адрес"
@@ -482,7 +426,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         <img
                           style={{
                             width: 24,
-                            color: colors.element.primary
+                            color: theme.colors.element.primary
                           }}
                           src={MoreUserIcon}
                           alt="Пользователь"
@@ -494,7 +438,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 )}
                 <Stack>
                   {mobileRouteList2.map((route) => {
-                    const icon = icons.find(
+                    const icon = theme.icons.find(
                       (icon) => icon.route === route.eventKey
                     );
                     return (
@@ -505,7 +449,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         sx={{
                           px: '12px',
                           py: '8px',
-                          backgroundColor: colors.surface.high
+                          backgroundColor: theme.colors.surface.high
                         }}
                         key={route.eventKey}
                         onClick={() => {
@@ -518,7 +462,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             <img
                               style={{
                                 width: 24,
-                                color: colors.element.primary
+                                color: theme.colors.element.primary
                               }}
                               src={icon.more}
                               alt={route.title}
@@ -544,9 +488,9 @@ const Header = ({ title, userType, isHideMenu = false }) => {
             width: '72px',
             height: '100%',
             maxHeight: '100dvh',
-            backgroundColor: colors.surface.high,
+            backgroundColor: theme.colors.surface.high,
             borderRight: !adminFullMenu
-              ? `1px solid ${colors.outline.surface}`
+              ? `1px solid ${theme.colors.outline.surface}`
               : 'none',
             position: 'relative',
             zIndex: 1200
@@ -579,7 +523,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     width: '72px',
                     height: '100%',
                     maxHeight: '100dvh',
-                    backgroundColor: colors.surface.high,
+                    backgroundColor: theme.colors.surface.high,
                     position: 'absolute',
                     top: 0,
                     right: '-73px',
@@ -588,18 +532,18 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 >
                   <Box sx={{ minHeight: '1rem' }}></Box>
                   {adminRouteList2.map((route) => {
-                    const icon = icons.find(
+                    const icon = theme.icons.find(
                       (icon) => icon.route === route.eventKey
                     );
                     return (
                       <Box
                         sx={[
-                          menuButtonStyle,
+                          menuButtonStyle({ ...theme }),
                           {
                             borderColor:
                               icon.route === currentHref
-                                ? colors.button.primary.default
-                                : colors.outline.surface
+                                ? theme.colors.button.primary.default
+                                : theme.colors.outline.surface
                           }
                         ]}
                         key={route.eventKey}
@@ -613,7 +557,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             <img
                               style={{
                                 height: icon.height,
-                                color: colors.button.primary.default
+                                color: theme.colors.button.primary.default
                               }}
                               src={
                                 icon.route === currentHref
@@ -626,8 +570,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         )}
                         <Typography
                           sx={[
-                            menuTextStyle,
-                            icon.route === currentHref ? selectedTextStyle : {}
+                            menuTextStyle({ ...theme }),
+                            icon.route === currentHref
+                              ? selectedTextStyle({ ...theme })
+                              : {}
                           ]}
                         >
                           {route.title}
@@ -641,28 +587,28 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     width: '72px',
                     height: '100%',
                     maxHeight: '100dvh',
-                    backgroundColor: colors.surface.high,
+                    backgroundColor: theme.colors.surface.high,
                     position: 'absolute',
                     top: 0,
                     right: '-145px',
                     zIndex: 1200,
-                    borderRight: `1px solid ${colors.outline.surface}`
+                    borderRight: `1px solid ${theme.colors.outline.surface}`
                   }}
                 >
                   <Box sx={{ minHeight: '1rem' }}></Box>
                   {adminRouteList3.map((route) => {
-                    const icon = icons.find(
+                    const icon = theme.icons.find(
                       (icon) => icon.route === route.eventKey
                     );
                     return (
                       <Box
                         sx={[
-                          menuButtonStyle,
+                          menuButtonStyle({ ...theme }),
                           {
                             borderColor:
                               icon.route === currentHref
-                                ? colors.button.primary.default
-                                : colors.outline.surface
+                                ? theme.colors.button.primary.default
+                                : theme.colors.outline.surface
                           }
                         ]}
                         key={route.eventKey}
@@ -676,7 +622,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             <img
                               style={{
                                 height: icon.height,
-                                color: colors.button.primary.default
+                                color: theme.colors.button.primary.default
                               }}
                               src={
                                 icon.route === currentHref
@@ -689,8 +635,10 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                         )}
                         <Typography
                           sx={[
-                            menuTextStyle,
-                            icon.route === currentHref ? selectedTextStyle : {}
+                            menuTextStyle({ ...theme }),
+                            icon.route === currentHref
+                              ? selectedTextStyle({ ...theme })
+                              : {}
                           ]}
                         >
                           {route.title}
@@ -702,16 +650,18 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               </Stack>
             )}
             {routeList.map((route) => {
-              const icon = icons.find((icon) => icon.route === route.eventKey);
+              const icon = theme.icons.find(
+                (icon) => icon.route === route.eventKey
+              );
               return (
                 <Box
                   sx={[
-                    menuButtonStyle,
+                    menuButtonStyle({ ...theme }),
                     {
                       borderColor:
                         icon.route === currentHref
-                          ? colors.button.primary.default
-                          : colors.outline.surface
+                          ? theme.colors.button.primary.default
+                          : theme.colors.outline.surface
                     }
                   ]}
                   key={route.eventKey}
@@ -725,7 +675,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       <img
                         style={{
                           height: icon.height,
-                          color: colors.button.primary.default
+                          color: theme.colors.button.primary.default
                         }}
                         src={
                           icon.route === currentHref ? icon.selected : icon.icon
@@ -735,12 +685,17 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     </IconButton>
                   )}
                   <Typography
+                    className={route.vltitle ? css.vltitle : ''}
                     sx={[
-                      menuTextStyle,
-                      icon.route === currentHref ? selectedTextStyle : {}
+                      route.vltitle
+                        ? vlMenuTextStyle({ ...theme })
+                        : menuTextStyle({ ...theme }),
+                      icon.route === currentHref
+                        ? selectedTextStyle({ ...theme })
+                        : {}
                     ]}
                   >
-                    {route.title}
+                    {route.vltitle ? route.vltitle : route.title}
                   </Typography>
                 </Box>
               );
@@ -751,7 +706,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
               <>
                 {parkingData && (
                   <>
-                    <Typography sx={menuTextStyle}>
+                    <Typography sx={menuTextStyle({ ...theme })}>
                       ID: {parkingData.parkingID}
                     </Typography>
                     <Stack>
@@ -764,7 +719,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           alt="Идентификатор"
                         />
                       </IconButton>
-                      <Typography sx={menuTextStyle}>
+                      <Typography sx={menuTextStyle({ ...theme })}>
                         {parkingData.name}
                       </Typography>
                     </Stack>
@@ -778,7 +733,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           alt="Адрес"
                         />
                       </IconButton>
-                      <Typography sx={menuTextStyle}>
+                      <Typography sx={menuTextStyle({ ...theme })}>
                         {parkingData.address}
                       </Typography>
                     </Stack>
@@ -796,7 +751,9 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           alt="Профиль"
                         />
                       </IconButton>
-                      <Typography sx={menuTextStyle}>{username}</Typography>
+                      <Typography sx={menuTextStyle({ ...theme })}>
+                        {username}
+                      </Typography>
                     </Stack>
                     <Box
                       sx={{
@@ -808,7 +765,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       onClick={handleLogout}
                     >
                       <Typography
-                        sx={{ color: colors.button.visited_link.default }}
+                        sx={{ color: theme.colors.button.visited_link.default }}
                       >
                         Выйти
                       </Typography>

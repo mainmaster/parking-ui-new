@@ -23,17 +23,19 @@ import { apiSlice } from './api/apiSlice';
 import { SnackbarProvider, MaterialDesignContent } from 'notistack';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/normal';
+import vltheme from './theme/vlnormal';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import errorIcon from './assets/svg/login_error_icon.svg';
 import { colors } from './theme/colors';
+import { vlcolors } from './theme/vlcolors';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
   '&.notistack-MuiContent-error': {
-    backgroundColor: colors.element.error,
+    backgroundColor: vlcolors.element.error,
     borderRadius: '8px',
     paddingTop: '6px',
     height: '40px',
@@ -44,7 +46,7 @@ const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
 }));
 
 root.render(
-  <ThemeProvider theme={theme}>
+  <ThemeProvider theme={vltheme}>
     <ApiProvider api={apiSlice}>
       <SkeletonTheme baseColor="rgb(170, 170, 170)">
         <Provider store={store}>

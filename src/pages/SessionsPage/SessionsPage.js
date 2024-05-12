@@ -15,7 +15,6 @@ import PaginationCustom from 'components/Pagination';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { colors } from '../../theme/colors';
 import { listWithScrollStyle, secondaryButtonStyle } from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
@@ -142,7 +141,7 @@ const SessionsPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !sessionsListScrolled && 'none',
             zIndex: 10
           }}
@@ -174,10 +173,10 @@ const SessionsPage = () => {
       <Stack
         ref={sessionsListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleSessionsListScroll}
@@ -196,7 +195,7 @@ const SessionsPage = () => {
                 py: '8px',
                 borderBottom:
                   openForm && userType !== 'admin'
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : 'none'
               }}
             >
@@ -211,7 +210,7 @@ const SessionsPage = () => {
                   py: '8px',
                   minWidth: '288px',
                   borderBottom: openForm
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : 'none'
                 }}
               >
@@ -219,7 +218,7 @@ const SessionsPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleCloseSessionsClick}
                 >
                   Закрыть сессии старше даты
@@ -237,7 +236,7 @@ const SessionsPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={secondaryButtonStyle}
+                sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleCloseSessionsClick}
               >
                 Закрыть сессии старше даты

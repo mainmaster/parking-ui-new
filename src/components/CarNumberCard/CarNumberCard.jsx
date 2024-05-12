@@ -3,7 +3,7 @@ import styles from './carnumber.module.css';
 import flag from './flag.jpeg';
 import flagBlank from './flag_blank.png';
 import { useSnackbar } from 'notistack';
-import { colors } from '../../theme/colors';
+import { useTheme } from '@mui/material/styles';
 
 const numberTextStyle = {
   padding: '0 6px'
@@ -17,6 +17,7 @@ export const CarNumberCard = ({
   handleClick
 }) => {
   const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
   if (carNumber && carNumber.number !== '') {
     return (
       <div
@@ -58,7 +59,7 @@ export const CarNumberCard = ({
                 className={styles.number}
                 style={{
                   border: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
@@ -71,7 +72,7 @@ export const CarNumberCard = ({
                   borderBottomLeftRadius: small ? '4px' : '8px',
                   backgroundColor: small
                     ? 'rgba(255, 255, 255, 0.7)'
-                    : colors.surface.low
+                    : theme.colors.surface.low
                 }}
               >
                 {carNumber.number === '' ? '------' : carNumber.number}
@@ -80,18 +81,18 @@ export const CarNumberCard = ({
                 style={{
                   height: small ? '24px' : isTable ? '40px' : '50px',
                   borderTop: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
                   borderBottom: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
                   backgroundColor: small
                     ? 'rgba(255, 255, 255, 0.7)'
-                    : colors.surface.low
+                    : theme.colors.surface.low
                 }}
               >
                 <div
@@ -99,7 +100,7 @@ export const CarNumberCard = ({
                     width: '1px',
                     height: small ? '16px' : isTable ? '25px' : '35px',
                     margin: small ? '4px 0 ' : '7px 0 ',
-                    backgroundColor: colors.outline.surface
+                    backgroundColor: theme.colors.outline.surface
                   }}
                 ></div>
               </div>
@@ -107,17 +108,17 @@ export const CarNumberCard = ({
                 className={styles.region}
                 style={{
                   borderTop: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
                   borderRight: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
                   borderBottom: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',
@@ -127,7 +128,7 @@ export const CarNumberCard = ({
                   gap: small ? '3px' : '6px',
                   backgroundColor: small
                     ? 'rgba(255, 255, 255, 0.7)'
-                    : colors.surface.low
+                    : theme.colors.surface.low
                 }}
               >
                 {(carNumber.region || carNumber.region === '') && (
@@ -174,7 +175,7 @@ export const CarNumberCard = ({
                 style={{
                   borderRadius: small ? '4px' : '8px',
                   border: small
-                    ? `1px solid ${colors.outline.surface}`
+                    ? `1px solid ${theme.colors.outline.surface}`
                     : isTable
                     ? '1px solid black'
                     : '2px solid black',

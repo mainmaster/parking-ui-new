@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getEvent } from '../../api/events';
@@ -21,7 +21,8 @@ import {
 import {
   listStyle,
   secondaryButtonStyle,
-  positiveButtonStyle
+  positiveButtonStyle,
+  captionTextStyle
 } from '../../theme/styles';
 import linkIcon from '../../assets/svg/link_icon.svg';
 import eventCarIcon from '../../assets/svg/log_event_car_icon.svg';
@@ -30,7 +31,6 @@ import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import eventUserIcon from '../../assets/svg/log_event_user_icon.svg';
 import eventCopyIcon from '../../assets/svg/log_event_copy_icon.svg';
-import { colors } from '../../theme/colors';
 import TypeAuto from '../../components/TypeAuto';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
@@ -42,17 +42,6 @@ const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const captionTextStyle = {
-  fontSize: '0.75rem',
-  lineHeight: '0.875rem',
-  color: colors.element.secondary
-};
-
-const labelTextStyle = {
-  width: '112px',
-  color: colors.element.secondary
 };
 
 const valueTextStyle = {
@@ -88,6 +77,13 @@ export const EventPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      width: '112px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   const errorContent = <div>Нет события с ID - {id}</div>;
 
@@ -189,7 +185,7 @@ export const EventPage = () => {
           position: 'absolute',
           top: 0,
           left: isMobile ? 0 : '72px',
-          backgroundColor: colors.surface.low,
+          backgroundColor: theme.colors.surface.low,
           boxShadow: !eventListScrolled && 'none'
         }}
       >
@@ -231,7 +227,9 @@ export const EventPage = () => {
               gap={isMobile ? 0 : '0.5rem'}
             >
               <Typography sx={titleTextStyle}>Событие </Typography>
-              <Typography sx={isMobile ? captionTextStyle : titleTextStyle}>
+              <Typography
+                sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
+              >
                 №{id}
               </Typography>
             </Stack>
@@ -243,7 +241,7 @@ export const EventPage = () => {
               fullWidth={false}
               onClick={handleCopyLinkClick}
               sx={[
-                secondaryButtonStyle,
+                secondaryButtonStyle({ ...theme }),
                 isMobile
                   ? {
                       minWidth: '48px',
@@ -272,12 +270,12 @@ export const EventPage = () => {
       <Stack
         ref={eventListRef}
         sx={[
-          listStyle,
+          listStyle({ ...theme }),
           {
             width: '100%',
             p: '16px',
             pt: isMobile ? '66px' : '64px',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleEventListScroll}
@@ -370,7 +368,7 @@ export const EventPage = () => {
                   gap={'8px'}
                   sx={labelTextStyle}
                 >
-                  <Typography sx={{ color: colors.element.secondary }}>
+                  <Typography sx={{ color: theme.colors.element.secondary }}>
                     Авто
                   </Typography>
                   <img
@@ -426,7 +424,7 @@ export const EventPage = () => {
                   gap={'8px'}
                   sx={labelTextStyle}
                 >
-                  <Typography sx={{ color: colors.element.secondary }}>
+                  <Typography sx={{ color: theme.colors.element.secondary }}>
                     Автор
                   </Typography>
                   <img
@@ -459,7 +457,7 @@ export const EventPage = () => {
                         disableRipple
                         variant="contained"
                         fullWidth={false}
-                        sx={[positiveButtonStyle, { mt: '8px' }]}
+                        sx={[positiveButtonStyle({ ...theme }), { mt: '8px' }]}
                         onClick={() =>
                           dispatch(changeActiveOpenApModal(event.access_point))
                         }
@@ -472,7 +470,7 @@ export const EventPage = () => {
                       disableRipple
                       variant="contained"
                       fullWidth={false}
-                      sx={[secondaryButtonStyle, { mt: '8px' }]}
+                      sx={[secondaryButtonStyle({ ...theme }), { mt: '8px' }]}
                     >
                       Убрать из Чёрного списка
                     </Button>
@@ -483,7 +481,7 @@ export const EventPage = () => {
                       disabled={debtPaid}
                       variant="contained"
                       fullWidth={false}
-                      sx={[secondaryButtonStyle, { mt: '8px' }]}
+                      sx={[secondaryButtonStyle({ ...theme }), { mt: '8px' }]}
                       onClick={handleResetDebtClick}
                     >
                       Обнулить долг
@@ -504,9 +502,9 @@ export const EventPage = () => {
                     sx={{
                       width: '100%',
                       maxWidth: '720px',
-                      backgroundColor: colors.surface.high,
+                      backgroundColor: theme.colors.surface.high,
                       borderRadius: '8px',
-                      border: `1px solid ${colors.outline.surface}`,
+                      border: `1px solid ${theme.colors.outline.surface}`,
                       p: '16px'
                     }}
                   >
@@ -545,7 +543,7 @@ export const EventPage = () => {
                         fullWidth={false}
                         onClick={handleCopyDetailsClick}
                         sx={[
-                          secondaryButtonStyle,
+                          secondaryButtonStyle({ ...theme }),
                           {
                             minWidth: '48px',
                             '& .MuiButton-startIcon': {

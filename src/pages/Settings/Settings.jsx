@@ -1,6 +1,6 @@
 import InputMask from 'react-input-mask';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useBlocker, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import {
@@ -40,15 +40,14 @@ import {
   MenuItem,
   Input
 } from '@mui/material';
-import { colors } from '../../theme/colors';
 import {
   listWithScrollStyle,
-  listStyle,
-  closeButtonStyle,
+  primaryButtonStyle,
   CarNumberInput,
   switchInputStyle,
   selectMenuStyle,
-  secondaryButtonStyle
+  secondaryButtonStyle,
+  tabStyle
 } from '../../theme/styles';
 import SettingsSpacer from './SettingsSpacer';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -58,6 +57,7 @@ import { ExpandIcon } from '../../components/Icons/ExpandIcon';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
+import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import uploadIcon from '../../assets/svg/settings_upload_icon.svg';
 
 const titleTextStyle = {
@@ -68,42 +68,10 @@ const titleTextStyle = {
   fontWeight: 500
 };
 
-const tabStyle = {
-  minHeight: '42px',
-  textTransform: 'none',
-  fontSize: '1rem',
-  lineHeight: '1.125rem',
-  fontWeight: 500,
-  '&.Mui-selected': {
-    color: colors.button.primary.default
-  }
-};
-
 const labelStyle = {
   pb: '4px',
   pl: '12px',
   whiteSpace: 'wrap'
-};
-
-const sectionContainerStyle = {
-  width: '100%',
-  maxWidth: '1200px',
-  my: 0,
-  p: '16px 28px',
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none'
-};
-
-const accordionContainerStyle = {
-  width: '100%',
-  maxWidth: '1200px',
-  my: 0,
-  p: '16px',
-  boxShadow: 'none',
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none'
 };
 
 const accordionTitleStyle = {
@@ -113,46 +81,6 @@ const accordionTitleStyle = {
   lineHeight: '1.75rem',
   fontWeight: 500,
   whiteSpace: 'nowrap'
-};
-
-const uploadButtonStyle = {
-  height: '40px',
-  minWidth: '147px',
-  py: '8px',
-  px: '12px',
-  textTransform: 'none',
-  fontSize: '1rem',
-  backgroundColor: `${colors.surface.high} !important`,
-  border: `1px solid ${colors.outline.separator}`,
-  borderRadius: 0,
-  borderTopLeftRadius: '8px',
-  borderBottomLeftRadius: '8px',
-  color: colors.element.primary,
-  boxShadow: 'none',
-  whiteSpace: 'nowrap'
-};
-
-const uploadInfoStyle = {
-  width: '100%',
-  height: '40px',
-  border: `1px solid ${colors.outline.separator}`,
-  borderLeft: 'none',
-  borderTopRightRadius: '8px',
-  borderBottomRightRadius: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  px: '16px'
-};
-
-const downloadInfoStyle = {
-  px: '12px',
-  textDecoration: 'none',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  '&:hover': {
-    textDecoration: 'none',
-    backgroundColor: colors.surface.hover
-  }
 };
 
 const yookassaTaxSystemCodeValues = [
@@ -268,6 +196,77 @@ const Settings = () => {
     ({ currentLocation, nextLocation }) =>
       !submited && currentLocation.pathname !== nextLocation.pathname
   );
+
+  const sectionContainerStyle = useMemo(() => {
+    return {
+      width: '100%',
+      maxWidth: '1200px',
+      my: 0,
+      p: '16px 28px',
+      border: '1px solid ' + theme.colors.outline.separator,
+      borderTop: 'none',
+      borderLeft: 'none'
+    };
+  }, [theme]);
+
+  const accordionContainerStyle = useMemo(() => {
+    return {
+      width: '100%',
+      maxWidth: '1200px',
+      my: 0,
+      p: '16px',
+      boxShadow: 'none',
+      border: '1px solid ' + theme.colors.outline.separator,
+      borderTop: 'none',
+      borderLeft: 'none'
+    };
+  }, [theme]);
+
+  const uploadButtonStyle = useMemo(() => {
+    return {
+      height: '40px',
+      minWidth: '147px',
+      py: '8px',
+      px: '12px',
+      textTransform: 'none',
+      fontSize: '1rem',
+      backgroundColor: `${theme.colors.surface.high} !important`,
+      border: `1px solid ${theme.colors.outline.separator}`,
+      borderRadius: 0,
+      borderTopLeftRadius: '8px',
+      borderBottomLeftRadius: '8px',
+      color: theme.colors.element.primary,
+      boxShadow: 'none',
+      whiteSpace: 'nowrap'
+    };
+  }, [theme]);
+
+  const uploadInfoStyle = useMemo(() => {
+    return {
+      width: '100%',
+      height: '40px',
+      border: `1px solid ${theme.colors.outline.separator}`,
+      borderLeft: 'none',
+      borderTopRightRadius: '8px',
+      borderBottomRightRadius: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      px: '16px'
+    };
+  }, [theme]);
+
+  const downloadInfoStyle = useMemo(() => {
+    return {
+      px: '12px',
+      textDecoration: 'none',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'none',
+        backgroundColor: theme.colors.surface.hover
+      }
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (
@@ -637,10 +636,10 @@ const Settings = () => {
             position: 'absolute',
             top: 0,
             left: isMobile ? 0 : '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !settingsScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -665,7 +664,7 @@ const Settings = () => {
                 disabled={submited}
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 type="submit"
               >
                 Сохранить
@@ -681,13 +680,21 @@ const Settings = () => {
                 scrollButtons={false}
                 TabIndicatorProps={{
                   sx: {
-                    backgroundColor: colors.button.primary.default
+                    backgroundColor: theme.colors.button.primary.default
                   }
                 }}
                 sx={{ minHeight: '42px' }}
               >
-                <Tab sx={tabStyle} disableRipple label="Основные" />
-                <Tab sx={tabStyle} disableRipple label="О парковке" />
+                <Tab
+                  sx={tabStyle({ ...theme })}
+                  disableRipple
+                  label="Основные"
+                />
+                <Tab
+                  sx={tabStyle({ ...theme })}
+                  disableRipple
+                  label="О парковке"
+                />
               </Tabs>
             </Stack>
           )}
@@ -695,10 +702,10 @@ const Settings = () => {
         <Stack
           ref={settingsRef}
           sx={[
-            listWithScrollStyle,
+            listWithScrollStyle({ ...theme }),
             {
               width: '100%',
-              backgroundColor: colors.surface.low
+              backgroundColor: theme.colors.surface.low
             }
           ]}
           onScroll={handleSettingsScroll}
@@ -864,7 +871,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="print_count_free_places"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Вывод количества свободных мест"
@@ -959,7 +966,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="if_payment_is_impossible_passage_cars_for_free"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Пускать авто бесплатно если система оплаты не доступна"
@@ -1092,13 +1099,14 @@ const Settings = () => {
                                     />
                                   </IconButton>
                                 )}
-                                sx={selectMenuStyle}
+                                sx={selectMenuStyle({ ...theme })}
                                 MenuProps={{
                                   PaperProps: {
                                     sx: {
                                       borderRadius: '8px',
                                       border:
-                                        '1px solid ' + colors.outline.default
+                                        '1px solid ' +
+                                        theme.colors.outline.default
                                     }
                                   },
                                   MenuListProps: {
@@ -1183,13 +1191,14 @@ const Settings = () => {
                                     />
                                   </IconButton>
                                 )}
-                                sx={selectMenuStyle}
+                                sx={selectMenuStyle({ ...theme })}
                                 MenuProps={{
                                   PaperProps: {
                                     sx: {
                                       borderRadius: '8px',
                                       border:
-                                        '1px solid ' + colors.outline.default
+                                        '1px solid ' +
+                                        theme.colors.outline.default
                                     }
                                   },
                                   MenuListProps: {
@@ -1265,13 +1274,14 @@ const Settings = () => {
                                     />
                                   </IconButton>
                                 )}
-                                sx={selectMenuStyle}
+                                sx={selectMenuStyle({ ...theme })}
                                 MenuProps={{
                                   PaperProps: {
                                     sx: {
                                       borderRadius: '8px',
                                       border:
-                                        '1px solid ' + colors.outline.default
+                                        '1px solid ' +
+                                        theme.colors.outline.default
                                     }
                                   },
                                   MenuListProps: {
@@ -1347,13 +1357,14 @@ const Settings = () => {
                                     />
                                   </IconButton>
                                 )}
-                                sx={selectMenuStyle}
+                                sx={selectMenuStyle({ ...theme })}
                                 MenuProps={{
                                   PaperProps: {
                                     sx: {
                                       borderRadius: '8px',
                                       border:
-                                        '1px solid ' + colors.outline.default
+                                        '1px solid ' +
+                                        theme.colors.outline.default
                                     }
                                   },
                                   MenuListProps: {
@@ -1429,13 +1440,14 @@ const Settings = () => {
                                     />
                                   </IconButton>
                                 )}
-                                sx={selectMenuStyle}
+                                sx={selectMenuStyle({ ...theme })}
                                 MenuProps={{
                                   PaperProps: {
                                     sx: {
                                       borderRadius: '8px',
                                       border:
-                                        '1px solid ' + colors.outline.default
+                                        '1px solid ' +
+                                        theme.colors.outline.default
                                     }
                                   },
                                   MenuListProps: {
@@ -1509,7 +1521,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="email_for_online_payment"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Требовать  email для онлайн-оплаты"
@@ -1543,7 +1555,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="support_subscribe"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Возможность покупки абонемента"
@@ -1663,7 +1675,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="vision_labs_support"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Использовать распознование от Vizor VL"
@@ -1705,7 +1717,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="free_access_emergency"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Бесплатный доступ для спец. авто"
@@ -2003,7 +2015,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="additional_confirmation_car_by_brand_and_model"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Дополнительное подтверждение машин по марке и модели"
@@ -2037,7 +2049,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="release_all_sessions_not_found_without_payment"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Выпускать все машины без сессии без оплаты"
@@ -2059,7 +2071,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="let_the_car_in_with_opened_session"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Впускать все машины с открытой сессией"
@@ -2104,7 +2116,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="entry_on_request_only"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Въезд только по заявкам"
@@ -2126,7 +2138,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="save_events_with_not_recognized_plate"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Сохранять события с нераспознанным номером"
@@ -2214,7 +2226,7 @@ const Settings = () => {
                                     )}
                                     onChange={handleGlobalSettings}
                                     name="reentry_without_free_time"
-                                    sx={switchInputStyle}
+                                    sx={switchInputStyle({ ...theme })}
                                   />
                                 }
                                 label="Повторный проезд без бесплатного времени"
@@ -2235,8 +2247,8 @@ const Settings = () => {
                                   {
                                     color:
                                       globalSettings.reentry_without_free_time
-                                        ? colors.element.primary
-                                        : colors.element.inactive
+                                        ? theme.colors.element.primary
+                                        : theme.colors.element.inactive
                                   }
                                 ]}
                               >
@@ -2247,8 +2259,8 @@ const Settings = () => {
                                 sx={{
                                   borderColor:
                                     globalSettings.reentry_without_free_time
-                                      ? colors.element.primary
-                                      : colors.element.inactive
+                                      ? theme.colors.element.primary
+                                      : theme.colors.element.inactive
                                 }}
                                 InputProps={{
                                   type: 'number',
@@ -2420,7 +2432,7 @@ const Settings = () => {
                                 );
                               }}
                               name="sound"
-                              sx={switchInputStyle}
+                              sx={switchInputStyle({ ...theme })}
                             />
                           }
                           label="Звук уведомлений"

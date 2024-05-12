@@ -19,15 +19,14 @@ import {
   Typography,
   styled
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
-import { colors } from '../../theme/colors';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import { DateIcon } from '../Icons/DateIcon';
 import {
-  closeButtonStyle,
   primaryButtonStyle,
   secondaryButtonStyle,
   CarNumberInput,
@@ -37,6 +36,7 @@ import {
 import { eventCodes } from '../../constants';
 import { getAccessPointsRequest } from '../../api/access-points';
 import { formatISO } from 'date-fns';
+import _ from 'lodash';
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -59,6 +59,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.events.filters);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   useEffect(() => {
     return () => {
@@ -271,7 +272,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
             disableRipple
             onClick={handleOpenForm}
             sx={[
-              secondaryButtonStyle,
+              secondaryButtonStyle({ ...theme }),
               {
                 width: '48px',
                 height: '40px'
@@ -292,7 +293,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
             sx={{
               p: '16px',
               pt: '8px',
-              borderBottom: `1px solid ${colors.outline.surface}`
+              borderBottom: `1px solid ${theme.colors.outline.surface}`
             }}
             gap={'8px'}
           >
@@ -321,12 +322,12 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -352,7 +353,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 <MenuItem disabled value="">
                   <em>Выбрать</em>
                 </MenuItem>
-                {eventCodes.map((code) => (
+                {_.sortBy(eventCodes, ['name']).map((code) => (
                   <MenuItem
                     key={code.value}
                     id={code.name}
@@ -382,7 +383,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'От'
                     },
                     openPickerButton: { disableRipple: true }
@@ -400,7 +401,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'До'
                     },
                     openPickerButton: { disableRipple: true }
@@ -436,12 +437,12 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -491,7 +492,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[closeButtonStyle, { flexGrow: 1 }]}
+                sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
                 Применить
@@ -501,7 +502,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[secondaryButtonStyle, { flexGrow: 1 }]}
+                sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
                 Сбросить

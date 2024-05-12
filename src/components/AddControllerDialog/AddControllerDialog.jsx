@@ -21,14 +21,14 @@ import {
   Typography,
   InputLabel
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput
 } from '../../theme/styles';
-import { colors } from '../../theme/colors';
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -56,6 +56,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
   const controllerEdit = useSelector(
     (state) => state.controllers.controllerEdit
   );
+  const theme = useTheme();
 
   const defaultValues = useMemo(() => {
     if (!_.isEmpty(controllerEdit)) {
@@ -127,7 +128,12 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -142,7 +148,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -270,7 +276,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>

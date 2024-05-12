@@ -29,12 +29,11 @@ import {
   Tab,
   styled
 } from '@mui/material';
-import { colors } from '../../theme/colors';
 import {
-  listStyle,
   listWithScrollStyle,
-  closeButtonStyle,
-  secondaryButtonStyle
+  primaryButtonStyle,
+  secondaryButtonStyle,
+  tabStyle
 } from '../../theme/styles';
 import CarParkFilter from '../../components/CarParkFilter/CarParkFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -51,17 +50,6 @@ const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const tabStyle = {
-  minHeight: '42px',
-  textTransform: 'none',
-  fontSize: '1rem',
-  lineHeight: '1.125rem',
-  fontWeight: 500,
-  '&.Mui-selected': {
-    color: colors.button.primary.default
-  }
 };
 
 const VisuallyHiddenInput = styled('input')({
@@ -216,10 +204,10 @@ const CarParkPage = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !parkListScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -247,7 +235,7 @@ const CarParkPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                 >
                   Импорт
                   <VisuallyHiddenInput
@@ -259,7 +247,7 @@ const CarParkPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleExportClick}
                 >
                   Экспорт
@@ -275,7 +263,7 @@ const CarParkPage = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCarClick}
               >
                 Добавить машину
@@ -292,14 +280,22 @@ const CarParkPage = () => {
               scrollButtons={false}
               TabIndicatorProps={{
                 sx: {
-                  backgroundColor: colors.button.primary.default
+                  backgroundColor: theme.colors.button.primary.default
                 }
               }}
               sx={{ minHeight: '42px' }}
             >
-              <Tab sx={tabStyle} disableRipple label="Активные" />
-              <Tab sx={tabStyle} disableRipple label="Неактивные" />
-              <Tab sx={tabStyle} disableRipple label="Абонементы" />
+              <Tab sx={tabStyle({ ...theme })} disableRipple label="Активные" />
+              <Tab
+                sx={tabStyle({ ...theme })}
+                disableRipple
+                label="Неактивные"
+              />
+              <Tab
+                sx={tabStyle({ ...theme })}
+                disableRipple
+                label="Абонементы"
+              />
             </Tabs>
           </Stack>
         </AppBar>
@@ -307,10 +303,10 @@ const CarParkPage = () => {
       <Stack
         ref={parkListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleParkListScroll}
@@ -325,10 +321,10 @@ const CarParkPage = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                backgroundColor: colors.surface.low,
+                backgroundColor: theme.colors.surface.low,
                 boxShadow: !parkListScrolled && 'none',
                 zIndex: 10,
-                borderBottom: `1px solid ${colors.outline.separator}`
+                borderBottom: `1px solid ${theme.colors.outline.separator}`
               }}
             >
               <Stack
@@ -347,7 +343,7 @@ const CarParkPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={closeButtonStyle}
+                  sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddCarClick}
                 >
                   Добавить машину
@@ -369,7 +365,7 @@ const CarParkPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                 >
                   Импорт
                   <VisuallyHiddenInput
@@ -381,7 +377,7 @@ const CarParkPage = () => {
                   disableRipple
                   variant="contained"
                   fullWidth
-                  sx={secondaryButtonStyle}
+                  sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleExportClick}
                 >
                   Экспорт
@@ -403,14 +399,26 @@ const CarParkPage = () => {
                   scrollButtons={false}
                   TabIndicatorProps={{
                     sx: {
-                      backgroundColor: colors.button.primary.default
+                      backgroundColor: theme.colors.button.primary.default
                     }
                   }}
                   sx={{ minHeight: '42px' }}
                 >
-                  <Tab sx={tabStyle} disableRipple label="Активные" />
-                  <Tab sx={tabStyle} disableRipple label="Неактивные" />
-                  <Tab sx={tabStyle} disableRipple label="Абонементы" />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Активные"
+                  />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Неактивные"
+                  />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Абонементы"
+                  />
                 </Tabs>
               </Stack>
             </AppBar>

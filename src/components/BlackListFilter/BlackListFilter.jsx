@@ -19,13 +19,7 @@ import {
   changeCurrentPage,
   setFilters
 } from '../../store/blackList/blackListSlice';
-import { colors } from '../../theme/colors';
-import {
-  closeButtonStyle,
-  secondaryButtonStyle,
-  CarNumberInput,
-  selectMenuStyle
-} from '../../theme/styles';
+import { secondaryButtonStyle, CarNumberInput } from '../../theme/styles';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import { useTheme } from '@mui/material/styles';

@@ -2,29 +2,13 @@ import { useDispatch } from 'react-redux';
 import { useMemo } from 'react';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
-import {
-  ITEM_MAX_WIDTH,
-  ITEM_MIN_WIDTH,
-  operatorAccessOptions
-} from '../../constants';
+import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
+import { operatorAccessOptions } from '../../constants';
 import { setEditOperator } from '../../store/operator/operatorSlice';
 import { useDeleteOperatorMutation } from '../../api/operator/operator.api';
 import { useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -33,17 +17,19 @@ const titleTextStyle = {
   whiteSpace: 'nowrap'
 };
 
-const labelTextStyle = {
-  minWidth: '88px',
-  color: colors.element.secondary
-};
-
 export default function LogOperatorCard({ operator }) {
   const [deleteOperator] = useDeleteOperatorMutation();
   const dispatch = useDispatch();
   const urlStatus = useParams();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '88px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   const filteredAccessOptions = useMemo(
     () =>
@@ -64,7 +50,9 @@ export default function LogOperatorCard({ operator }) {
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack
         justifyContent={'space-between'}
         sx={{ height: '100%' }}
@@ -77,7 +65,7 @@ export default function LogOperatorCard({ operator }) {
               sx={{
                 whiteSpace: 'nowrap',
                 fontWeight: 500,
-                color: colors.element.secondary
+                color: theme.colors.element.secondary
               }}
             >{`№ ${operator.id}`}</Typography>
           </Stack>
@@ -95,7 +83,7 @@ export default function LogOperatorCard({ operator }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditOperatorClick}
           >
             Изменить
@@ -104,7 +92,7 @@ export default function LogOperatorCard({ operator }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteOperatorClick}
           >
             Удалить

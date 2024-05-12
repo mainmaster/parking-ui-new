@@ -14,6 +14,7 @@ import {
   FormControlLabel,
   Checkbox
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,15 +26,15 @@ import {
 } from '../../api/operator/operator.api';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
-  CarNumberInput,
-  DateInputStyle
+  CarNumberInput
 } from '../../theme/styles';
 import _ from 'lodash';
 import { operatorAccessOptions } from '../../constants';
 import { CheckedIcon } from '../Icons/CheckedIcon';
+import theme from '../../theme/normal';
 
 const initialValues = {
   username: '',
@@ -66,6 +67,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
   const [createOperator, { isError: isCreateError }] =
     useCreateOperatorMutation();
   const [accessValues, setAccessValues] = useState(initialAccessValues);
+  const theme = useTheme();
 
   useEffect(() => {
     if (operatorEdit) {
@@ -233,7 +235,12 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -248,7 +255,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -362,7 +369,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>

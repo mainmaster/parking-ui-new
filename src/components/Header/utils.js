@@ -11,7 +11,8 @@ import {
   Wallet
 } from 'react-bootstrap-icons';
 import { CarIcon } from 'icons/index';
-import MainIcon from '../../assets/svg/main_icon.svg';
+import MainIcon from '../../assets/svg/theme/main_icon.svg';
+import VlMainIcon from '../../assets/svg/vltheme/main_icon.svg';
 import SessionsIcon from '../../assets/svg/sessions_icon.svg';
 import ParkIcon from '../../assets/svg/park_icon.svg';
 import BlackListIcon from '../../assets/svg/blacklist_icon.svg';
@@ -27,22 +28,36 @@ import WifiIcon from '../../assets/svg/wifi_icon.svg';
 import IdIcon from '../../assets/svg/id_icon.svg';
 import UsersIcon from '../../assets/svg/users_icon.svg';
 import CardIcon from '../../assets/svg/card_icon.svg';
-import MainIconSelected from '../../assets/svg/main_icon_selected.svg';
-import SessionsIconSelected from '../../assets/svg/sessions_icon_selected.svg';
-import ParkIconSelected from '../../assets/svg/park_icon_selected.svg';
-import BlackListIconSelected from '../../assets/svg/blacklist_icon_selected.svg';
-import RequestsIconSelected from '../../assets/svg/requests_icon_selected.svg';
-import SettingsIconSelected from '../../assets/svg/settings_icon_selected.svg';
-import AccessPointIconSelected from '../../assets/svg/accesspoint_icon_selected.svg';
-import CameraIconSelected from '../../assets/svg/camera_icon_selected.svg';
-import LedIconSelected from '../../assets/svg/led_icon_selected.svg';
-import TerminalIconSelected from '../../assets/svg/terminal_icon_selected.svg';
+import MainIconSelected from '../../assets/svg/theme/main_icon_selected.svg';
+import VlMainIconSelected from '../../assets/svg/vltheme/main_icon_selected.svg';
+import SessionsIconSelected from '../../assets/svg/theme/sessions_icon_selected.svg';
+import VlSessionsIconSelected from '../../assets/svg/vltheme/sessions_icon_selected.svg';
+import ParkIconSelected from '../../assets/svg/theme/park_icon_selected.svg';
+import VlParkIconSelected from '../../assets/svg/vltheme/park_icon_selected.svg';
+import BlackListIconSelected from '../../assets/svg/theme/blacklist_icon_selected.svg';
+import VlBlackListIconSelected from '../../assets/svg/vltheme/blacklist_icon_selected.svg';
+import RequestsIconSelected from '../../assets/svg/theme/requests_icon_selected.svg';
+import VlRequestsIconSelected from '../../assets/svg/vltheme/requests_icon_selected.svg';
+import SettingsIconSelected from '../../assets/svg/theme/settings_icon_selected.svg';
+import VlSettingsIconSelected from '../../assets/svg/vltheme/settings_icon_selected.svg';
+import AccessPointIconSelected from '../../assets/svg/theme/accesspoint_icon_selected.svg';
+import VlAccessPointIconSelected from '../../assets/svg/vltheme/accesspoint_icon_selected.svg';
+import CameraIconSelected from '../../assets/svg/theme/camera_icon_selected.svg';
+import VlCameraIconSelected from '../../assets/svg/vltheme/camera_icon_selected.svg';
+import LedIconSelected from '../../assets/svg/theme/led_icon_selected.svg';
+import VlLedIconSelected from '../../assets/svg/vltheme/led_icon_selected.svg';
+import TerminalIconSelected from '../../assets/svg/theme/terminal_icon_selected.svg';
+import VlTerminalIconSelected from '../../assets/svg/vltheme/terminal_icon_selected.svg';
 import LogIconSelected from '../../assets/svg/log_icon_selected.svg';
-import TimeIconSelected from '../../assets/svg/time_icon_selected.svg';
-import WifiIconSelected from '../../assets/svg/wifi_icon_selected.svg';
+import TimeIconSelected from '../../assets/svg/theme/time_icon_selected.svg';
+import VlTimeIconSelected from '../../assets/svg/vltheme/time_icon_selected.svg';
+import WifiIconSelected from '../../assets/svg/theme/wifi_icon_selected.svg';
+import VlWifiIconSelected from '../../assets/svg/vltheme/wifi_icon_selected.svg';
 import IdIconSelected from '../../assets/svg/id_icon_selected.svg';
-import UsersIconSelected from '../../assets/svg/users_icon_selected.svg';
-import CardIconSelected from '../../assets/svg/card_icon_selected.svg';
+import UsersIconSelected from '../../assets/svg/theme/users_icon_selected.svg';
+import VlUsersIconSelected from '../../assets/svg/vltheme/users_icon_selected.svg';
+import CardIconSelected from '../../assets/svg/theme/card_icon_selected.svg';
+import VlCardIconSelected from '../../assets/svg/vltheme/card_icon_selected.svg';
 import MoreBlackListIcon from '../../assets/svg/more_blacklist_icon.svg';
 import MoreRequestsIcon from '../../assets/svg/more_requests_icon.svg';
 import MoreSettingsIcon from '../../assets/svg/more_settings_icon.svg';
@@ -178,6 +193,118 @@ export const icons = [
     route: '/payments',
     icon: CardIcon,
     selected: CardIconSelected,
+    height: 21,
+    more: MoreCardIcon
+  }
+];
+
+export const vlicons = [
+  { route: '/', icon: VlMainIcon, selected: VlMainIconSelected, height: 19 },
+  {
+    route: '/events',
+    icon: VlMainIcon,
+    selected: VlMainIconSelected,
+    height: 21
+  },
+  {
+    route: '/events-logs',
+    icon: VlMainIcon,
+    selected: VlMainIconSelected,
+    height: 21
+  },
+  {
+    route: '/sessions',
+    icon: SessionsIcon,
+    selected: VlSessionsIconSelected,
+    height: 21
+  },
+  {
+    route: '/auto-park/active',
+    icon: ParkIcon,
+    selected: VlParkIconSelected,
+    height: 16
+  },
+  {
+    route: '/black-list/active',
+    icon: BlackListIcon,
+    selected: VlBlackListIconSelected,
+    height: 26,
+    more: MoreBlackListIcon
+  },
+  {
+    route: '/requests',
+    icon: RequestsIcon,
+    selected: VlRequestsIconSelected,
+    height: 21,
+    more: MoreRequestsIcon
+  },
+  {
+    route: '/settings',
+    icon: SettingsIcon,
+    selected: VlSettingsIconSelected,
+    height: 27,
+    more: MoreSettingsIcon
+  },
+  {
+    route: '/access-points',
+    icon: AccessPointIcon,
+    selected: VlAccessPointIconSelected,
+    height: 28,
+    more: MoreAccessPointIcon
+  },
+  {
+    route: '/cameras',
+    icon: CameraIcon,
+    selected: VlCameraIconSelected,
+    height: 22,
+    more: MoreCameraIcon
+  },
+  {
+    route: '/led',
+    icon: LedIcon,
+    selected: VlLedIconSelected,
+    height: 18,
+    more: MoreLedIcon
+  },
+  {
+    route: '/terminals',
+    icon: TerminalIcon,
+    selected: VlTerminalIconSelected,
+    height: 21,
+    more: MoreTerminalIcon
+  },
+  {
+    route: '/search-logs',
+    icon: LogIcon,
+    selected: LogIconSelected,
+    height: 23,
+    more: MoreLogIcon
+  },
+  {
+    route: '/working-modes',
+    icon: TimeIcon,
+    selected: VlTimeIconSelected,
+    height: 26,
+    more: MoreTimeIcon
+  },
+  {
+    route: '/controllers',
+    icon: WifiIcon,
+    selected: VlWifiIconSelected,
+    height: 21,
+    more: MoreWifiIcon
+  },
+  {
+    route: '/users/operators',
+    icon: UsersIcon,
+    selected: VlUsersIconSelected,
+    height: 22,
+    more: MoreUsersIcon
+  },
+  {
+    route: '/payments',
+    icon: CardIcon,
+    selected: VlCardIconSelected,
     height: 21,
     more: MoreCardIcon
   }

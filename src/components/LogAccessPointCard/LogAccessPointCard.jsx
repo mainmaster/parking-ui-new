@@ -2,9 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import { colors } from '../../theme/colors';
-import { secondaryButtonStyle } from '../../theme/styles';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH } from '../../constants';
+import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
 import {
   editModalHandler,
   deleteAccessPointFetch
@@ -16,27 +14,10 @@ import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 
-const cardContainerStyle = {
-  flex: `1 1 ${ITEM_MIN_WIDTH}px`,
-  minWidth: `${ITEM_MIN_WIDTH}px`,
-  maxWidth: `${ITEM_MAX_WIDTH}px`,
-  border: '1px solid ' + colors.outline.separator,
-  borderTop: 'none',
-  borderLeft: 'none',
-  p: '16px',
-  backgroundColor: colors.surface.low
-};
-
 const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
-};
-
-const labelTextStyle = {
-  minWidth: '160px',
-  maxWidth: '160px',
-  color: colors.element.secondary
 };
 
 export default function LogAccessPointCard({ point }) {
@@ -51,6 +32,14 @@ export default function LogAccessPointCard({ point }) {
   const [filteredModes, setFilteredModes] = useState([]);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const labelTextStyle = useMemo(() => {
+    return {
+      minWidth: '160px',
+      maxWidth: '160px',
+      color: theme.colors.element.secondary
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (
@@ -114,7 +103,9 @@ export default function LogAccessPointCard({ point }) {
   };
 
   return (
-    <Box sx={[cardContainerStyle, isMobile && { minWidth: '320px' }]}>
+    <Box
+      sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
+    >
       <Stack gap={'16px'}>
         <Stack direction={'row'} justifyContent={'space-between'}>
           <Typography sx={titleTextStyle}>{point.description}</Typography>
@@ -122,7 +113,7 @@ export default function LogAccessPointCard({ point }) {
             sx={{
               whiteSpace: 'nowrap',
               fontWeight: 500,
-              color: colors.element.secondary
+              color: theme.colors.element.secondary
             }}
           >{`№ ${point.id}`}</Typography>
         </Stack>
@@ -240,7 +231,7 @@ export default function LogAccessPointCard({ point }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditPointClick}
           >
             Изменить
@@ -249,7 +240,7 @@ export default function LogAccessPointCard({ point }) {
             disableRipple
             variant="contained"
             fullWidth
-            sx={secondaryButtonStyle}
+            sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeletePointClick}
           >
             Удалить

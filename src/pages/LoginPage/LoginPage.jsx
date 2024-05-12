@@ -1,15 +1,16 @@
 import { Box, Stack, Button, Typography, InputLabel } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useFormik } from 'formik';
 import Layout from '../../components/Layout';
-import { CarNumberInput, closeButtonStyle } from '../../theme/styles';
-import { colors } from '../../theme/colors';
+import { CarNumberInput, primaryButtonStyle } from '../../theme/styles';
 import { useDispatch } from 'react-redux';
 import { setParkingUserType } from '../../store/parkingInfo/parkingInfo';
 import { useState } from 'react';
 import { login } from '../../api/auth/login';
 import { useSnackbar } from 'notistack';
 import getParkingData from '../../api/auth/parking-data';
-import Logo from '../../assets/svg/login_logo.svg';
+import Logo from '../../assets/svg/theme/login_logo.svg';
+import VlLogo from '../../assets/svg/vltheme/login_logo.svg';
 
 const labelStyle = {
   pb: '4px',
@@ -27,6 +28,7 @@ const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const theme = useTheme();
 
   const formik = useFormik({
     initialValues: defaultValues,
@@ -74,10 +76,14 @@ const LoginPage = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }}
         >
-          <img style={{ height: '60px' }} src={Logo} alt="logo" />
+          <img
+            style={{ height: '60px' }}
+            src={theme.name === 'vltheme' ? VlLogo : Logo}
+            alt="logo"
+          />
         </Box>
         <Box
           component={'form'}
@@ -141,7 +147,10 @@ const LoginPage = () => {
           <Button
             disableRipple
             variant="filled"
-            sx={[closeButtonStyle, { width: '100%', maxWidth: '500px' }]}
+            sx={[
+              primaryButtonStyle({ ...theme }),
+              { width: '100%', maxWidth: '500px' }
+            ]}
             type="submit"
           >
             Войти

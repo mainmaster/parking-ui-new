@@ -23,8 +23,11 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import {
+  listWithScrollStyle,
+  primaryButtonStyle,
+  tabStyle
+} from '../../theme/styles';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import OperatorsSpacer from './OperatorsSpacer';
@@ -42,17 +45,6 @@ const titleTextStyle = {
   lineHeight: '1.75rem',
   fontWeight: 500,
   whiteSpace: 'nowrap'
-};
-
-const tabStyle = {
-  minHeight: '42px',
-  textTransform: 'none',
-  fontSize: '1rem',
-  lineHeight: '1.125rem',
-  fontWeight: 500,
-  '&.Mui-selected': {
-    color: colors.button.primary.default
-  }
 };
 
 export const Operators = () => {
@@ -185,10 +177,10 @@ export const Operators = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !usersListScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -212,7 +204,7 @@ export const Operators = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={
                   currentTab === 0
                     ? handleAddOperatorClick
@@ -233,19 +225,19 @@ export const Operators = () => {
               scrollButtons={false}
               TabIndicatorProps={{
                 sx: {
-                  backgroundColor: colors.button.primary.default
+                  backgroundColor: theme.colors.button.primary.default
                 }
               }}
               sx={{ minHeight: '42px' }}
             >
               <Tab
-                sx={tabStyle}
+                sx={tabStyle({ ...theme })}
                 disableRipple
                 disabled={disableOperators}
                 label="Операторы"
               />
               <Tab
-                sx={tabStyle}
+                sx={tabStyle({ ...theme })}
                 disableRipple
                 disabled={disableRenters}
                 label="Арендаторы"
@@ -257,10 +249,10 @@ export const Operators = () => {
       <Stack
         ref={usersListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleUsersListScroll}
@@ -275,10 +267,10 @@ export const Operators = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                backgroundColor: colors.surface.low,
+                backgroundColor: theme.colors.surface.low,
                 boxShadow: !usersListScrolled && 'none',
                 zIndex: 10,
-                borderBottom: `1px solid ${colors.outline.separator}`
+                borderBottom: `1px solid ${theme.colors.outline.separator}`
               }}
             >
               <Stack
@@ -297,7 +289,7 @@ export const Operators = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={closeButtonStyle}
+                  sx={primaryButtonStyle({ ...theme })}
                   onClick={
                     currentTab === 0
                       ? handleAddOperatorClick
@@ -317,13 +309,21 @@ export const Operators = () => {
                   scrollButtons={false}
                   TabIndicatorProps={{
                     sx: {
-                      backgroundColor: colors.button.primary.default
+                      backgroundColor: theme.colors.button.primary.default
                     }
                   }}
                   sx={{ minHeight: '42px' }}
                 >
-                  <Tab sx={tabStyle} disableRipple label="Операторы" />
-                  <Tab sx={tabStyle} disableRipple label="Арендаторы" />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Операторы"
+                  />
+                  <Tab
+                    sx={tabStyle({ ...theme })}
+                    disableRipple
+                    label="Арендаторы"
+                  />
                 </Tabs>
               </Stack>
             </AppBar>

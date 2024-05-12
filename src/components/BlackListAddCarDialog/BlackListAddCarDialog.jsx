@@ -11,6 +11,7 @@ import {
   Typography,
   InputLabel
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ import {
 } from 'store/blackList/blackListSlice';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
@@ -52,6 +53,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
   const blackListEdit = useSelector((state) => state.blackList.blackListEdit);
   const isError = useSelector((state) => state.blackList.isErrorFetch);
   const urlStatus = useParams();
+  const theme = useTheme();
 
   useEffect(() => {
     if (show && edit && blackListEdit) {
@@ -134,7 +136,12 @@ export default function AddCarDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -149,7 +156,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -203,7 +210,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
               slotProps={{
                 textField: {
                   variant: 'filled',
-                  sx: DateInputStyle,
+                  sx: DateInputStyle({ ...theme }),
                   placeholder: 'Дата'
                 },
                 openPickerButton: { disableRipple: true }
@@ -261,7 +268,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>

@@ -1,35 +1,13 @@
-@import '../../styles/mixins.scss';
-
-.parkingInfo{
-  display: flex;
-  gap: 10px;
+@font-face {
+  font-family: ProximaNova;
+  src: url('../../assets/fonts/Proxima-Nova-Regular.otf');
 }
 
-.header {
-  &_logo {
-    display: flex;
-    align-items: center;
-
-    svg {
-      height: 60px;
-      width: 100%;
-    }
-  }
-
-  &_toggle {
-    display: block !important;
-  }
-
-
-
-  &_title {
-    margin-left: 20px;
-    font-size: 25px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .parkingInfo{
-    flex-wrap: wrap;
-  }
+.vltitle {
+  font-family: ProximaNova;
+  font-size: '1rem';
+  line-height: '0.9rem';
+  text-align: 'center';
+  overflow-wrap: 'break-word';
+  hyphens: 'manual';
 }

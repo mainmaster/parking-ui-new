@@ -11,12 +11,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { colors } from '../../theme/colors';
-import {
-  listStyle,
-  listWithScrollStyle,
-  closeButtonStyle
-} from '../../theme/styles';
+import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import ApplicationFilter from '../../components/ApplicationFilter/ApplicationFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import ApplicationsSpacer from './ApplicationsSpacer';
@@ -119,10 +114,10 @@ export const Applications = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !applicationsListScrolled && 'none',
             zIndex: 10,
-            borderBottom: `1px solid ${colors.outline.separator}`
+            borderBottom: `1px solid ${theme.colors.outline.separator}`
           }}
         >
           <Stack
@@ -146,7 +141,7 @@ export const Applications = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddApplicationClick}
               >
                 Добавить заявку
@@ -163,10 +158,10 @@ export const Applications = () => {
       <Stack
         ref={applicationsListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleApplicationsListScroll}
@@ -181,10 +176,10 @@ export const Applications = () => {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                backgroundColor: colors.surface.low,
+                backgroundColor: theme.colors.surface.low,
                 boxShadow: !applicationsListScrolled && 'none',
                 zIndex: 10,
-                borderBottom: `1px solid ${colors.outline.separator}`
+                borderBottom: `1px solid ${theme.colors.outline.separator}`
               }}
             >
               <Stack
@@ -203,7 +198,7 @@ export const Applications = () => {
                   disableRipple
                   variant="contained"
                   fullWidth={false}
-                  sx={closeButtonStyle}
+                  sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddApplicationClick}
                 >
                   Добавить заявку

@@ -2,11 +2,12 @@
 import PropTypes from 'prop-types';
 import Pagination from '@mui/material/Pagination';
 import React from 'react';
-import { colors } from '../../theme/colors';
 import { secondaryButtonStyle } from '../../theme/styles';
 import { PaginationItem } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const PaginationCustom = ({ pages, changePage, currentPage }) => {
+  const theme = useTheme();
   return (
     <Pagination
       page={currentPage}
@@ -18,7 +19,7 @@ const PaginationCustom = ({ pages, changePage, currentPage }) => {
         my: '4px',
         flexWrap: 'nowrap',
         '& .Mui-selected': [
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             paddingLeft: '10px',
             paddingRight: '10px'

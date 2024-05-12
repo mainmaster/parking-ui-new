@@ -17,6 +17,7 @@ import {
   Switch,
   styled
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,19 +34,19 @@ import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import checkIcon from '../../assets/svg/multiselect_check_icon.svg';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
   selectMenuStyle,
   switchInputStyle
 } from '../../theme/styles';
-import { colors } from '../../theme/colors';
 import {
   directionOptions,
   relayNumberOptions,
   statusContactOptions
 } from 'constants';
+import theme from '../../theme/normal';
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -95,6 +96,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
   const workingModes = useSelector((state) => state.workingModes.workingModes);
   const isError = useSelector((state) => state.accessPoints.isErrorFetch);
   const urlStatus = useParams();
+  const theme = useTheme();
 
   useEffect(() => {
     if (!show) {
@@ -279,7 +281,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
       open={show}
       onClose={handleClose}
       scroll="body"
-      sx={{ '& .MuiDialog-container': { ...listStyle, position: 'relative' } }}
+      sx={{
+        '& .MuiDialog-container': {
+          ...listStyle({ ...theme }),
+          position: 'relative'
+        }
+      }}
       PaperProps={{
         style: {
           borderRadius: '24px',
@@ -294,7 +301,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         disableRipple
         onClick={handleCloseDialog}
         sx={[
-          secondaryButtonStyle,
+          secondaryButtonStyle({ ...theme }),
           {
             position: 'absolute',
             right: '16px',
@@ -383,12 +390,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -457,12 +464,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -529,12 +536,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -603,12 +610,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -678,12 +685,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -753,12 +760,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -828,12 +835,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -998,12 +1005,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -1053,7 +1060,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   checked={Boolean(formik.values.is_reverse_access_point)}
                   onChange={handleValueChange}
                   name="is_reverse_access_point"
-                  sx={switchInputStyle}
+                  sx={switchInputStyle({ ...theme })}
                 />
               }
               label="Включить реверс"
@@ -1094,12 +1101,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   />
                 </IconButton>
               )}
-              sx={selectMenuStyle}
+              sx={selectMenuStyle({ ...theme })}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     borderRadius: '8px',
-                    border: '1px solid ' + colors.outline.default
+                    border: '1px solid ' + theme.colors.outline.default
                   }
                 },
                 MenuListProps: {
@@ -1166,7 +1173,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
             disabled={submited}
             variant="contained"
             type="submit"
-            sx={closeButtonStyle}
+            sx={primaryButtonStyle({ ...theme })}
           >
             {edit ? 'Сохранить' : 'Добавить'}
           </Button>

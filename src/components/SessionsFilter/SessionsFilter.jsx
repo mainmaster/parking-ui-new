@@ -14,13 +14,14 @@ import {
   styled
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { colors } from '../../theme/colors';
 import {
-  closeButtonStyle,
+  primaryButtonStyle,
   secondaryButtonStyle,
   CarNumberInput,
   DateInputStyle,
-  selectMenuStyle
+  selectMenuStyle,
+  desktopMenuStyle,
+  mobileMenuStyle
 } from '../../theme/styles';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
@@ -37,26 +38,6 @@ import { useFormik } from 'formik';
 import { formatISO } from 'date-fns';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-const desktopMenuStyle = {
-  position: 'absolute',
-  top: '64px',
-  right: '16px',
-  width: '360px',
-  p: '16px',
-  pt: '8px',
-  //borderBottom: `1px solid ${colors.outline.surface}`,
-  backgroundColor: colors.surface.low,
-  borderRadius: '16px',
-  filter: 'drop-shadow(0 4px 4px rgba(0,0,0,0.2))',
-  zIndex: 1
-};
-
-const mobileMenuStyle = {
-  p: '16px',
-  pt: '8px',
-  backgroundColor: colors.surface.low
-};
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -301,7 +282,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
             disableRipple
             onClick={handleOpenForm}
             sx={[
-              secondaryButtonStyle,
+              secondaryButtonStyle({ ...theme }),
               {
                 width: '48px',
                 height: '40px'
@@ -318,7 +299,14 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
           </IconButton>
         </Stack>
         {openForm && (
-          <Stack sx={isMobile ? mobileMenuStyle : desktopMenuStyle} gap={'8px'}>
+          <Stack
+            sx={
+              isMobile
+                ? mobileMenuStyle({ ...theme })
+                : desktopMenuStyle({ ...theme })
+            }
+            gap={'8px'}
+          >
             <Stack>
               <InputLabel htmlFor="session-status-select" sx={labelStyle}>
                 Статус сессии
@@ -344,12 +332,12 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -418,12 +406,12 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                     />
                   </IconButton>
                 )}
-                sx={selectMenuStyle}
+                sx={selectMenuStyle({ ...theme })}
                 MenuProps={{
                   PaperProps: {
                     sx: {
                       borderRadius: '8px',
-                      border: '1px solid ' + colors.outline.default
+                      border: '1px solid ' + theme.colors.outline.default
                     }
                   },
                   MenuListProps: {
@@ -479,7 +467,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'От'
                     },
                     openPickerButton: { disableRipple: true }
@@ -497,7 +485,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      sx: DateInputStyle,
+                      sx: DateInputStyle({ ...theme }),
                       placeholder: 'До'
                     },
                     openPickerButton: { disableRipple: true }
@@ -515,7 +503,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[closeButtonStyle, { flexGrow: 1 }]}
+                sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
                 Применить
@@ -525,7 +513,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={[secondaryButtonStyle, { flexGrow: 1 }]}
+                sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
                 Сбросить

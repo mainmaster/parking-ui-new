@@ -1,9 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 import '@fontsource-variable/onest';
 import { colors } from './colors';
+import { icons } from '../components/Header/utils';
 import VeranoSansSemibold from '../assets/fonts/VeranoSans-SemiBold.ttf';
 
 const theme = createTheme({
+  colors: colors,
+  icons: icons,
+  name: 'theme',
   breakpoints: {
     values: {
       xs: 0,

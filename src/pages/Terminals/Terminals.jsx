@@ -7,8 +7,7 @@ import {
 } from '../../store/terminals/terminalsSlice';
 import _ from 'lodash';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { colors } from '../../theme/colors';
-import { listWithScrollStyle, closeButtonStyle } from '../../theme/styles';
+import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -82,7 +81,7 @@ export const Terminals = () => {
             position: 'absolute',
             top: 0,
             left: '72px',
-            backgroundColor: colors.surface.low,
+            backgroundColor: theme.colors.surface.low,
             boxShadow: !terminalListScrolled && 'none',
             zIndex: 10
             //borderBottom: `1px solid ${colors.outline.separator}`
@@ -109,7 +108,7 @@ export const Terminals = () => {
                 disableRipple
                 variant="contained"
                 fullWidth={false}
-                sx={closeButtonStyle}
+                sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddTerminalClick}
               >
                 Добавить терминал
@@ -121,10 +120,10 @@ export const Terminals = () => {
       <Stack
         ref={terminalListRef}
         sx={[
-          listWithScrollStyle,
+          listWithScrollStyle({ ...theme }),
           {
             width: '100%',
-            backgroundColor: colors.surface.low
+            backgroundColor: theme.colors.surface.low
           }
         ]}
         onScroll={handleTerminalListScroll}
@@ -148,7 +147,7 @@ export const Terminals = () => {
               disableRipple
               variant="contained"
               fullWidth={false}
-              sx={closeButtonStyle}
+              sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddTerminalClick}
             >
               Добавить
