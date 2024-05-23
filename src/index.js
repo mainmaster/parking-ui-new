@@ -33,7 +33,6 @@ import { vlcolors } from './theme/vlcolors';
 const container = document.getElementById('root');
 const root = createRoot(container);
 const currentTheme = process.env.THEME === 'vl' ? vltheme : theme;
-console.log(process.env);
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
   '&.notistack-MuiContent-error': {

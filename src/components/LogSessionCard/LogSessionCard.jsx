@@ -37,6 +37,7 @@ const imageStyle = {
   objectFit: 'contain',
   objectPosition: 'center',
   height: '100%',
+  width: '100%',
   minHeight: '174px',
   maxHeight: '250px',
   display: 'block',

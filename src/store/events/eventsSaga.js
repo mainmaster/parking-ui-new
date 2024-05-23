@@ -89,6 +89,11 @@ function* workEventsPage({ payload }) {
     yield put(getEventsSuccess(data.events));
     yield put(changePages(data.count));
     yield put(changeCurrentPage(payload));
+    if (!_.isEmpty(store.getState().events.filters)) {
+      yield put(setFilteredEvents(data.events));
+    } else {
+      yield put(setFilteredEvents([]));
+    }
   } catch (e) {}
 }
 

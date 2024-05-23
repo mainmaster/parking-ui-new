@@ -78,6 +78,7 @@ const EventsPage = ({ onlyLog }) => {
   const eventRef = useRef([]);
   eventRef.current = [];
   const eventsListRef = useRef(null);
+  const mobileEventsListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [searchParams] = useSearchParams();
@@ -265,6 +266,10 @@ const EventsPage = ({ onlyLog }) => {
       eventsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setEventsListScrolled(false);
     }
+    if (mobileEventsListRef.current) {
+      mobileEventsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      setEventsListScrolled(false);
+    }
   };
 
   const handleMobileMenuItemClick = () => {
@@ -274,6 +279,17 @@ const EventsPage = ({ onlyLog }) => {
   const handleEventsListScroll = () => {
     if (eventsListRef.current) {
       const { scrollTop } = eventsListRef.current;
+      if (scrollTop > 0) {
+        setEventsListScrolled(true);
+      } else if (eventsListScrolled) {
+        setEventsListScrolled(false);
+      }
+    }
+  };
+
+  const handleMobileEventsListScroll = () => {
+    if (mobileEventsListRef.current) {
+      const { scrollTop } = mobileEventsListRef.current;
       if (scrollTop > 0) {
         setEventsListScrolled(true);
       } else if (eventsListScrolled) {
@@ -468,10 +484,12 @@ const EventsPage = ({ onlyLog }) => {
       )}
       {isMobile && !accessOptions.disableEvents && (!mobileCameras || onlyLog) && (
         <Stack
+          ref={mobileEventsListRef}
           sx={[
             listWithScrollStyle({ ...theme }),
             { width: '100%', backgroundColor: theme.colors.surface.low }
           ]}
+          onScroll={handleMobileEventsListScroll}
         >
           {!onlyLog && <HeaderSpacer />}
           <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
