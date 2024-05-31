@@ -76,6 +76,7 @@ const Cameras = ({ accessOptions }) => {
   const camerasListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  let counter = 0;
 
   useEffect(() => {
     dispatch(camerasFetch());
@@ -305,7 +306,7 @@ const Cameras = ({ accessOptions }) => {
             <>
               <CameraManagementItem
                 camera={camera}
-                key={camera.id}
+                key={camera.id + (counter++).toString()}
                 src={
                   cameras.find((item) => item.id === camera.cameras[0])
                     ?.mjpeg_url

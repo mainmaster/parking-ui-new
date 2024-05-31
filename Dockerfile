@@ -12,7 +12,7 @@ RUN yarn install
 
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
-ENV THEME="vl"
+ENV THEME="default"
 
 RUN echo "DEBUG": $REACT_APP_API_URL
 #To bundle your app’s source code inside the Docker image, use the COPY instruction:

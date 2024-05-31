@@ -130,17 +130,17 @@ export default function LogWorkModeCard({ mode }) {
               <Stack direction={'row'} gap={'12px'}>
                 <Typography sx={labelTextStyle}>Время от</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                  {`${mode.time_gte_hour}`.padStart(2, '0') +
+                  {`${mode.time_lte_hour}`.padStart(2, '0') +
                     ':' +
-                    `${mode.time_gte_min}`.padStart(2, '0')}
+                    `${mode.time_lte_min}`.padStart(2, '0')}
                 </Typography>
               </Stack>
               <Stack direction={'row'} gap={'12px'}>
                 <Typography sx={labelTextStyle}>Время до</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                  {`${mode.time_lte_hour}`.padStart(2, '0') +
+                  {`${mode.time_gte_hour}`.padStart(2, '0') +
                     ':' +
-                    `${mode.time_lte_min}`.padStart(2, '0')}
+                    `${mode.time_gte_min}`.padStart(2, '0')}
                 </Typography>
               </Stack>
             </>
