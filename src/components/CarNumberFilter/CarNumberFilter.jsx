@@ -75,7 +75,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
           value: point.id
         };
       });
-      setAccessPoints([...access, { value: null, name: '' }]);
+      setAccessPoints([...access]);
     });
   }, []);
 
@@ -156,6 +156,13 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        eventCode: ''
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
     }
     setSelectedEventCode(event.target.value);
   };
@@ -192,6 +199,13 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       const values = {
         ...filters,
         accessPoint: accessPoint.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        accessPoint: ''
       };
       dispatch(setFilters(values));
       setSubmited(false);
@@ -350,7 +364,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {_.sortBy(eventCodes, ['name']).map((code) => (
@@ -465,7 +479,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {accessPoints.map((apoint) => (

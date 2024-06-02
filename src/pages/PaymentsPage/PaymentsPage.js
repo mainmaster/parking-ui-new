@@ -202,7 +202,7 @@ const PaymentsPage = () => {
         ]}
         onScroll={handlePaymentsListScroll}
       >
-        <EventManager />
+        <EventManager offset={!openForm ? 0 : isMobile ? 0 : 336} />
         <PaymentsSpacer />
         {isMobile && (
           <>

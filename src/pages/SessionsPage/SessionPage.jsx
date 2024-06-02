@@ -266,7 +266,7 @@ export const SessionPage = () => {
                   }
                 })}
               </Stack>
-              {session.events[0].plate_img_path &&
+              {session.events[0]?.plate_img_path &&
                 session.events[0].plate_img_path !== '' && (
                   <IconButton
                     disableRipple

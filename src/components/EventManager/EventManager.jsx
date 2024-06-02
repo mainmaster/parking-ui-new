@@ -8,7 +8,7 @@ import { formatISO, addHours } from 'date-fns';
 import { spacers } from '../../theme/spacers';
 import { useSwipeable } from 'react-swipeable';
 
-export default function EventManager() {
+export default function EventManager({ offset }) {
   const dataModal = useSelector((state) => state.events.dataModal);
   const events = useSelector((state) => state.events.events);
   //const [testEvents, setTestEvents] = useState([]);
@@ -108,7 +108,11 @@ export default function EventManager() {
         alignItems={'flex-end'}
         sx={{
           position: 'fixed',
-          top: isMobile ? 0 : `calc(24px + ${spacers.header})`,
+          top: isMobile
+            ? offset
+              ? { offset }
+              : 0
+            : `calc(24px + ${spacers.header} + ${offset ? offset + 4 : 0}px)`,
           right: isMobile ? 0 : '24px',
           left: isMobile ? 0 : 'auto',
           zIndex: 1300

@@ -62,9 +62,7 @@ export const eventCodes = [
   { name: 'Номер не обнаружен', value: 1033 },
   { name: 'Проезд не зарегистрирован', value: 1035 },
   { name: 'Терминал оплаты активирован', value: 1036 },
-  { name: 'Контроль устройства доступа', value: 1037 },
-
-  { name: '', value: null }
+  { name: 'Контроль устройства доступа', value: 1037 }
 ];
 
 export const relayNumberOptions = [...Array(4).keys()].map((item, index) => ({

@@ -300,7 +300,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {_.sortBy(renters, ['company_name']).map((r) => (

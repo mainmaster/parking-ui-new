@@ -194,6 +194,13 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        isUsed: ''
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
     }
     setSelectedApplicationStatus(event.target.value);
   };
@@ -402,7 +409,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {applicationStatusValues.map((st) => (

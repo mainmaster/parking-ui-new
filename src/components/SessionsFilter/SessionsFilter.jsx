@@ -160,6 +160,13 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        status: ''
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
     }
     setSelectedSessionStatus(event.target.value);
   };
@@ -172,6 +179,13 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       const values = {
         ...filters,
         isPaid: status.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        isPaid: ''
       };
       dispatch(setFilters(values));
       setSubmited(false);
@@ -360,7 +374,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {sessionStatusValues.map((st) => (
@@ -434,7 +448,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {paymentStatusValues.map((st) => (

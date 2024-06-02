@@ -17,6 +17,7 @@ import {
   setSelectedEventId
 } from 'store/events/eventsSlice';
 import React from 'react';
+import { formatISO } from 'date-fns';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
@@ -400,7 +401,7 @@ const EventsPage = ({ onlyLog }) => {
               <>
                 {eventsList.map((item, index) => (
                   <LogEventCard
-                    key={item.id}
+                    key={item.id + formatISO(Date.now())}
                     event={item}
                     onClickImage={changeActiveImageModal}
                     // onHoverImageButton={handleImageButtonHover}
@@ -498,7 +499,7 @@ const EventsPage = ({ onlyLog }) => {
             <>
               {eventsList.map((item, index) => (
                 <LogEventCard
-                  key={item.id}
+                  key={item.id + formatISO(Date.now())}
                   event={item}
                   onClickImage={changeActiveImageModal}
                   selected={item.id === selectedEventId}

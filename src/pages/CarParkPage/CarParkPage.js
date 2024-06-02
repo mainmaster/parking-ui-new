@@ -311,7 +311,7 @@ const CarParkPage = () => {
         ]}
         onScroll={handleParkListScroll}
       >
-        <EventManager />
+        <EventManager offset={!openForm ? 0 : isMobile ? 0 : 138} />
         <CarParkSpacer />
         {isMobile && (
           <>

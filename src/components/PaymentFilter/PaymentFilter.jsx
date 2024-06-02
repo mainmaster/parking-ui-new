@@ -192,6 +192,13 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        paymentType: ''
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
     }
     setPaymentType(event.target.value);
   };
@@ -207,6 +214,13 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
       };
       dispatch(setFilters(values));
       setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        isRefund: ''
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
     }
     setIsRefund(event.target.value);
   };
@@ -219,6 +233,13 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
       const values = {
         ...filters,
         paymentFor: item.value
+      };
+      dispatch(setFilters(values));
+      setSubmited(false);
+    } else if (event.target.value === '') {
+      const values = {
+        ...filters,
+        paymentFor: ''
       };
       dispatch(setFilters(values));
       setSubmited(false);
@@ -424,7 +445,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {paymentTypeValues.map((item) => (
@@ -498,7 +519,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {paymentForValues.map((item) => (
@@ -572,7 +593,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                   }
                 }}
               >
-                <MenuItem disabled value="">
+                <MenuItem value="">
                   <em>Выбрать</em>
                 </MenuItem>
                 {isRefundValues.map((item) => (

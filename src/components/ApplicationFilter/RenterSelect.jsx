@@ -80,7 +80,7 @@ export default function RenterSelect({ selected, handleChange }) {
               }
             }}
           >
-            <MenuItem disabled value="">
+            <MenuItem value="">
               <em>Выбрать</em>
             </MenuItem>
             {_.sortBy(renters, ['company_name']).map((r) => (

@@ -181,7 +181,7 @@ const SessionsPage = () => {
         ]}
         onScroll={handleSessionsListScroll}
       >
-        <EventManager />
+        <EventManager offset={!openForm ? 0 : isMobile ? 0 : 270} />
         <SessionsSpacer />
 
         {isMobile && (

@@ -166,7 +166,7 @@ export const Applications = () => {
         ]}
         onScroll={handleApplicationsListScroll}
       >
-        <EventManager />
+        <EventManager offset={!openForm ? 0 : isMobile ? 0 : 270} />
         <ApplicationsSpacer />
         {isMobile && (
           <>
