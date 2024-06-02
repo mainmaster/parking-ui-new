@@ -163,6 +163,7 @@ const Settings = () => {
     free_access_emergency: false,
     car_score_vl_recognition: 0,
     plate_score_vl_recognition: 0,
+    plate_symbols_score_vl_recognition: 0,
     regno_score_vl_recognition: 0,
     emergency_car_score_vl_recognition: 0,
     car_brand_model_score_vl_recognition: 0,
@@ -1770,6 +1771,29 @@ const Settings = () => {
                                 name="plate_score_vl_recognition"
                                 value={
                                   globalSettings.plate_score_vl_recognition
+                                }
+                                onChange={handleGlobalSettings}
+                              />
+                            </Stack>
+                            <Stack>
+                              <InputLabel
+                                htmlFor="plate_symbols_score_vl_recognition"
+                                sx={labelStyle}
+                              >
+                                plate_symbols_score_vl_recognition
+                              </InputLabel>
+                              <CarNumberInput
+                                fullWidth
+                                InputProps={{
+                                  type: 'number',
+                                  disableUnderline: true,
+                                  sx: { paddingLeft: '12px' }
+                                }}
+                                variant="filled"
+                                id="plate_symbols_score_vl_recognition"
+                                name="plate_symbols_score_vl_recognition"
+                                value={
+                                  globalSettings.plate_symbols_score_vl_recognition
                                 }
                                 onChange={handleGlobalSettings}
                               />
