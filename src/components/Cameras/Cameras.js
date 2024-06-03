@@ -305,7 +305,7 @@ const Cameras = ({ accessOptions }) => {
             <>
               <CameraManagementItem
                 camera={camera}
-                key={camera.id + formatISO(Date.now())}
+                key={camera.id}
                 src={
                   cameras.find((item) => item.id === camera.cameras[0])
                     ?.mjpeg_url
