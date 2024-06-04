@@ -33,8 +33,9 @@ import {
   DateInputStyle,
   selectMenuStyle
 } from '../../theme/styles';
-import { eventCodes } from '../../constants';
+//import { eventCodes } from '../../constants';
 import { getAccessPointsRequest } from '../../api/access-points';
+import { getEventCodesRequest } from '../../api/events';
 import { formatISO } from 'date-fns';
 import _ from 'lodash';
 
@@ -54,6 +55,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
   const [accessPoints, setAccessPoints] = useState([]);
+  const [eventCodes, setEventCodes] = useState([]);
   const [selectedAccessPoint, setSelectedAccessPoint] = useState('');
   const [submited, setSubmited] = useState(true);
   const [numberInChange, setNumberInChange] = useState(false);
@@ -76,6 +78,15 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         };
       });
       setAccessPoints([...access]);
+    });
+  }, []);
+
+  useEffect(() => {
+    getEventCodesRequest().then((r) => {
+      const codes = Object.keys(r.data).map((key) => {
+        return { value: key, name: r.data[key] };
+      });
+      setEventCodes(codes);
     });
   }, []);
 

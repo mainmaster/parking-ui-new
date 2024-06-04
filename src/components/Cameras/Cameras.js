@@ -231,9 +231,7 @@ const Cameras = ({ accessOptions }) => {
         <HeaderSpacer />
         {isMobile && (
           <>
-            <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
-              <ParkingInfo />
-            </Box>
+            <ParkingInfo fullWidth={true} />
 
             <Stack
               direction={'row'}

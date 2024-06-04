@@ -499,7 +499,7 @@ const EventsPage = ({ onlyLog }) => {
             <>
               {eventsList.map((item, index) => (
                 <LogEventCard
-                  key={item.id + formatISO(Date.now())}
+                  key={item.id + index}
                   event={item}
                   onClickImage={changeActiveImageModal}
                   selected={item.id === selectedEventId}

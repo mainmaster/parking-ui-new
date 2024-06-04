@@ -43,3 +43,7 @@ export const getEventsRequest = async ({
     }
   });
 };
+
+export const getEventCodesRequest = async () => {
+  return $api.get('/events/eventCodes');
+};

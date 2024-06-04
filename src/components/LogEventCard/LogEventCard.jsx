@@ -121,7 +121,7 @@ export default forwardRef(function LogEventCard(
 
   return (
     <Box
-      id={event.id}
+      id={event.id.toString() + event.event_code.toString()}
       ref={ref}
       component={'div'}
       sx={[

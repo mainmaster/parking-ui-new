@@ -100,6 +100,12 @@ export const vlcolors = {
       background: '#FFCCCD'
     }
   },
+  chart: {
+    free: '#FFFFFF',
+    one_time: '#A6F2C4',
+    subscribers: '#C7ADEB',
+    tenants: '#FD9B9B'
+  },
   session: {
     payment: {
       paid: '#138641',
