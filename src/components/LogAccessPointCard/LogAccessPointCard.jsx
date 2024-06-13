@@ -24,6 +24,7 @@ export default function LogAccessPointCard({ point }) {
   const dispatch = useDispatch();
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const cameras = useSelector((state) => state.cameras.cameras);
+
   const [filteredCameras, setFilteredCameras] = useState([]);
   const controllers = useSelector((state) => state.controllers.controllers);
   const leds = useSelector((state) => state.leds.leds);
@@ -159,6 +160,7 @@ export default function LogAccessPointCard({ point }) {
             <Typography sx={labelTextStyle}>Контроллер</Typography>
             <Typography sx={{ fontWeight: 500 }}>{controllerName}</Typography>
           </Stack>
+
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>LED табло</Typography>
             <Typography sx={{ fontWeight: 500 }}>{ledName}</Typography>
@@ -214,6 +216,14 @@ export default function LogAccessPointCard({ point }) {
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>Реверс</Typography>
             <Typography sx={{ fontWeight: 500 }}>{reverseName}</Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Сценарий распознования</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{point.recognition_scenario_id}</Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Сценарий подтвержения</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{point.confirmation_scenario_id}</Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'12px'}>

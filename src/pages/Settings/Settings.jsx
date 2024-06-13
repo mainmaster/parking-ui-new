@@ -140,6 +140,7 @@ const Settings = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [globalSettings, setGlobalSettings] = useState({
+    vizor_vl_websocket_address: '',
     company_info: '',
     company_name: '',
     count_free_places: 0,
@@ -1709,6 +1710,29 @@ const Settings = () => {
                                 onChange={handleGlobalSettings}
                               />
                             </Stack>
+                            <Stack>
+                              <InputLabel
+                                htmlFor="vizor_vl_websocket_address"
+                                sx={labelStyle}
+                              >
+                                Вебсокет-адрес
+                              </InputLabel>
+                              <CarNumberInput
+                                fullWidth
+                                InputProps={{
+                                  type: 'str',
+                                  disableUnderline: true,
+                                  sx: { paddingLeft: '12px' }
+                                }}
+                                variant="filled"
+                                id="vizor_vl_websocket_address"
+                                name="vizor_vl_websocket_address"
+                                value={
+                                  globalSettings.vizor_vl_websocket_address
+                                }
+                                onChange={handleGlobalSettings}
+                              />
+                            </Stack>
                             <FormGroup>
                               <FormControlLabel
                                 control={
@@ -1798,6 +1822,7 @@ const Settings = () => {
                                 onChange={handleGlobalSettings}
                               />
                             </Stack>
+                     
                             <Stack>
                               <InputLabel
                                 htmlFor="regno_score_vl_recognition"

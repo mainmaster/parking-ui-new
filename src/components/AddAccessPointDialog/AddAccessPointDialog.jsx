@@ -114,6 +114,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
       open_relay_number: accessPointEdit?.open_relay_number || '',
       close_relay_number: accessPointEdit?.close_relay_number || '',
       status_contact_number: accessPointEdit?.status_contact_number || '',
+      recognition_scenario_id : accessPointEdit?.recognition_scenario_id || '',
+      confirmation_scenario_id: accessPointEdit?.confirmation_scenario_id || '',
       seconds_before_close_laurent:
         accessPointEdit?.seconds_before_close_laurent || '',
       seconds_between_laurent_checks:
@@ -185,7 +187,9 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         laurent_checks_amount,
         terminal_id,
         is_reverse_access_point,
-        working_modes
+        working_modes,
+        recognition_scenario_id,
+        confirmation_scenario_id
       } = values;
       if (edit) {
         const payload = {
@@ -197,6 +201,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           open_relay_number: open_relay_number,
           close_relay_number: close_relay_number,
           status_contact_number: status_contact_number,
+          confirmation_scenario_id: confirmation_scenario_id,
+          recognition_scenario_id: recognition_scenario_id,
           seconds_before_close_laurent: seconds_before_close_laurent,
           seconds_between_laurent_checks: seconds_between_laurent_checks,
           seconds_before_laurent_checks: seconds_before_laurent_checks,
@@ -221,6 +227,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           close_relay_number: close_relay_number,
           status_contact_number: status_contact_number,
           seconds_before_close_laurent: seconds_before_close_laurent,
+          confirmation_scenario_id: confirmation_scenario_id,
+          recognition_scenario_id: recognition_scenario_id,
           seconds_between_laurent_checks: seconds_between_laurent_checks,
           seconds_before_laurent_checks: seconds_before_laurent_checks,
           laurent_checks_amount: laurent_checks_amount,
@@ -363,6 +371,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               }
             />
           </Stack>
+   
           <Stack>
             <InputLabel htmlFor="direction" sx={labelStyle}>
               Направление
@@ -1073,6 +1082,48 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               }}
             />
           </FormGroup>
+          <Stack>
+            <InputLabel htmlFor="description" sx={labelStyle}>
+            Сценарий распознования
+            </InputLabel>
+            <CarNumberInput
+              fullWidth
+              InputProps={{
+                disableUnderline: true,
+                sx: { paddingLeft: '12px' }
+              }}
+              variant="filled"
+              id="description"
+              name="description"
+              value={formik.values.recognition_scenario_id}
+              onChange={handleValueChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.recognition_scenario_id && Boolean(formik.errors.recognition_scenario_id )
+              }
+            />
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor="description" sx={labelStyle}>
+            Сценарий подтвержения
+            </InputLabel>
+            <CarNumberInput
+              fullWidth
+              InputProps={{
+                disableUnderline: true,
+                sx: { paddingLeft: '12px' }
+              }}
+              variant="filled"
+              id="description"
+              name="description"
+              value={formik.values.confirmation_scenario_id}
+              onChange={handleValueChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.confirmation_scenario_id && Boolean(formik.errors.confirmation_scenario_id )
+              }
+            />
+          </Stack>
           <Stack>
             <InputLabel htmlFor="working_modes" sx={labelStyle}>
               Режимы

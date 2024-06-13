@@ -26,11 +26,23 @@ const AccessPointsItem = ({
   reverse_access_point,
   status_contact_number,
   seconds_before_close_laurent,
+  recognition_scenario_id,
+  confirmation_scenario_id,
   seconds_between_laurent_checks
 }) => {
   const cameraName = useMemo(() => {
     return cameras.length !== 0
       ? cameras?.find((item) => item.id === cam_id).description
+      : ''
+  }, [cameras, cam_id])
+  const recognition_scenario_id = useMemo(() => {
+    return recognition_scenario_id.length !== 0
+      ? recognition_scenario_id?.find((item) => item.id === cam_id).description
+      : ''
+  }, [cameras, cam_id])
+  const confirmation_scenario_id = useMemo(() => {
+    return cameconfirmation_scenario_idras.length !== 0
+      ? confirmation_scenario_id?.find((item) => item.id === cam_id).description
       : ''
   }, [cameras, cam_id])
 
