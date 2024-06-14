@@ -182,9 +182,10 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     if (parseValue) {
       const values = {
         ...filters,
-        createDateFrom: formatISO(parseValue)
+        createDateFrom: parseValue
       };
-      dispatch(setFilters(values.createDateFrom?.split('T')[0]));
+      console.log(values)
+      dispatch(setFilters(values));
       setFromValue(parseValue);
       setSubmited(false);
     }
@@ -195,9 +196,10 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     if (parseValue) {
       const values = {
         ...filters,
-        createDateTo: formatISO(parseValue)
-      };
-      dispatch(setFilters(values.createDateFrom?.split('T')[0]));
+        createDateTo: parseValue
+      }; 
+      const parseValues = values.createDateTo
+      dispatch(setFilters(values));
       setToValue(parseValue);
       setSubmited(false);
     }

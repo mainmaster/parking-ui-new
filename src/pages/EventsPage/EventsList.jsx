@@ -211,17 +211,21 @@ const EventsList = memo(({ onlyLog }) => {
   });
 
 
-  let scrollTop = eventsListRef.current?.scrollTop;
+  const scrollTop =  eventsListRef.current ? eventsListRef.current.scrollTop : 0
 
   const changeActiveImageModal = (src) => {
+    if (imageModal.isOpen) {
+      eventsListRef.current.scrollTo({ top: scrollTop, behavior: 'smooth' });
+    }
 
-    eventsListRef.current.scrollTo({ top: scrollTop, behavior: 'smooth' });
     setImageModal({
       src: src,
       isOpen: !imageModal.isOpen
     });
+
   };
   const handleImageButtonHover = (src) => {
+
     if (src) {
       setImageModal({
         src: src,
