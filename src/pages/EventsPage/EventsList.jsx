@@ -61,7 +61,7 @@ const initialAccessOptions = {
 };
 
 const EventsList = memo(({ onlyLog }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
   const [mobileCameras, setMobileCameras] = useState(true);
@@ -88,7 +88,6 @@ const EventsList = memo(({ onlyLog }) => {
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
 
   const mobileHeaderStyle = useMemo(() => {
-
     return {
       backgroundColor: theme.colors.surface.high,
       borderBottom: `1px solid ${theme.colors.outline.surface}`,
@@ -210,14 +209,18 @@ const EventsList = memo(({ onlyLog }) => {
     isOpen: false,
     src: ''
   });
-  let scrollTop = (eventsListRef.current.scrollTop)
-  const changeActiveImageModal = (src) =>{
+
+
+  let scrollTop = eventsListRef.current?.scrollTop;
+
+  const changeActiveImageModal = (src) => {
+
     eventsListRef.current.scrollTo({ top: scrollTop, behavior: 'smooth' });
     setImageModal({
       src: src,
       isOpen: !imageModal.isOpen
     });
-  }
+  };
   const handleImageButtonHover = (src) => {
     if (src) {
       setImageModal({
@@ -240,7 +243,6 @@ const EventsList = memo(({ onlyLog }) => {
       setIsActiveModal(true);
     }
   };
-
 
   useEffect(() => {
     if (!accessOptions.disableEvents && userType) {
@@ -303,8 +305,8 @@ const EventsList = memo(({ onlyLog }) => {
     }
   };
   return (
-    <div >
-          {!isMobile && !accessOptions.disableEvents && (
+    <div>
+      {!isMobile && !accessOptions.disableEvents && (
         <Drawer
           sx={{
             width: spacers.events,
@@ -498,8 +500,9 @@ const EventsList = memo(({ onlyLog }) => {
             />
           )}
         </Stack>
-      )}</div>
-  )
-})
+      )}
+    </div>
+  );
+});
 
-export default memo(EventsList)
+export default memo(EventsList);
