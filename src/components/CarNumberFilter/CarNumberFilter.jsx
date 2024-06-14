@@ -62,7 +62,6 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const filters = useSelector((state) => state.events.filters);
   const dispatch = useDispatch();
   const theme = useTheme();
-
   useEffect(() => {
     return () => {
       dispatch(setFilters(null));
@@ -172,32 +171,34 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         ...filters,
         eventCode: ''
       };
-      dispatch(setFilters(values));
+      dispatch(setFilters(values?.toISOString().split('T')[0]));
       setSubmited(false);
     }
     setSelectedEventCode(event.target.value);
   };
 
   const handleFromDateChanged = (newValue) => {
-    if (newValue) {
+    const parseValue = newValue.toISOString().split('T')[0]
+    if (parseValue) {
       const values = {
         ...filters,
-        createDateFrom: formatISO(newValue)
+        createDateFrom: formatISO(parseValue)
       };
-      dispatch(setFilters(values));
-      setFromValue(newValue);
+      dispatch(setFilters(values.createDateFrom?.split('T')[0]));
+      setFromValue(parseValue);
       setSubmited(false);
     }
   };
 
   const handleToDateChanged = (newValue) => {
-    if (newValue) {
+    const parseValue = newValue.toISOString().split('T')[0]
+    if (parseValue) {
       const values = {
         ...filters,
-        createDateTo: formatISO(newValue)
+        createDateTo: formatISO(parseValue)
       };
-      dispatch(setFilters(values));
-      setToValue(newValue);
+      dispatch(setFilters(values.createDateFrom?.split('T')[0]));
+      setToValue(parseValue);
       setSubmited(false);
     }
   };
@@ -416,6 +417,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   slots={{
                     openPickerIcon: DateIcon
                   }}
+                  views={['day', 'month', 'year']}
                 />
                 <DatePicker
                   value={toValue}

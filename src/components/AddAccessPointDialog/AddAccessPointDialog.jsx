@@ -243,7 +243,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
       }
     }
   });
-
+  console.log(formik)
   const handleValidate = useCallback(() => {
     if (!_.isEmpty(formik.errors)) {
       Object.entries(formik.errors).map((error) => {
@@ -1093,8 +1093,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 sx: { paddingLeft: '12px' }
               }}
               variant="filled"
-              id="description"
-              name="description"
+              id="recognition_scenario_id"
+              name="recognition_scenario_id"
               value={formik.values.recognition_scenario_id}
               onChange={handleValueChange}
               onBlur={formik.handleBlur}
@@ -1114,8 +1114,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 sx: { paddingLeft: '12px' }
               }}
               variant="filled"
-              id="description"
-              name="description"
+              id="confirmation_scenario_id"
+              name="confirmation_scenario_id"
               value={formik.values.confirmation_scenario_id}
               onChange={handleValueChange}
               onBlur={formik.handleBlur}

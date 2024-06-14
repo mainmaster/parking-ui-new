@@ -87,6 +87,7 @@ const EventsPage = ({ onlyLog }) => {
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
 
   const mobileHeaderStyle = useMemo(() => {
+
     return {
       backgroundColor: theme.colors.surface.high,
       borderBottom: `1px solid ${theme.colors.outline.surface}`,

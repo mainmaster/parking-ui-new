@@ -95,7 +95,7 @@ const FilterForm = () => {
                         label="От"
                         name="createDateFrom"
                         onChange={(e) =>
-                            props.setFieldValue('createDateFrom', e.target.value)
+                            props.setFieldValue('createDateFrom', e.target.value.toISOString().split('T')[0])
                         }
                         className={css.input}
                         type='date'
@@ -104,7 +104,7 @@ const FilterForm = () => {
                         label="До"
                         name="createDateTo"
                         onChange={(e) =>
-                            props.setFieldValue('createDateTo', e.target.value)
+                            props.setFieldValue('createDateTo', e.target.value.toISOString().split('T')[0])
                         }
                         className={css.input}
                         type='date'
