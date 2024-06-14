@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
@@ -33,7 +33,7 @@ import { spacers } from '../../theme/spacers';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import { EVENTS_ON_PAGE } from '../../constants';
 import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
-import EventsList from './EventsList';
+import { element } from 'prop-types';
 
 const mobileMenuItemStyle = {
   width: '100%',
@@ -60,8 +60,8 @@ const initialAccessOptions = {
   disableResetDuty: false
 };
 
-const EventsPage = ({ onlyLog }) => {
-  const dispatch = useDispatch();
+const EventsList = memo(({ onlyLog }) => {
+    const dispatch = useDispatch();
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
   const [mobileCameras, setMobileCameras] = useState(true);
@@ -210,13 +210,14 @@ const EventsPage = ({ onlyLog }) => {
     isOpen: false,
     src: ''
   });
-
-  const changeActiveImageModal = (src) =>
+  let scrollTop = (eventsListRef.current.scrollTop)
+  const changeActiveImageModal = (src) =>{
+    eventsListRef.current.scrollTo({ top: scrollTop, behavior: 'smooth' });
     setImageModal({
       src: src,
       isOpen: !imageModal.isOpen
     });
-
+  }
   const handleImageButtonHover = (src) => {
     if (src) {
       setImageModal({
@@ -239,6 +240,7 @@ const EventsPage = ({ onlyLog }) => {
       setIsActiveModal(true);
     }
   };
+
 
   useEffect(() => {
     if (!accessOptions.disableEvents && userType) {
@@ -281,7 +283,7 @@ const EventsPage = ({ onlyLog }) => {
 
   const handleEventsListScroll = () => {
     if (eventsListRef.current) {
-      const { scrollTop } = eventsListRef.current;
+      const { scrollTop } = eventsListRef.current.scrollTop;
       if (scrollTop > 0) {
         setEventsListScrolled(true);
       } else if (eventsListScrolled) {
@@ -300,74 +302,204 @@ const EventsPage = ({ onlyLog }) => {
       }
     }
   };
-
   return (
-    // <Grid container sx={{ maxHeight: '100dvh' }}>
-    <>
-      {!onlyLog && isMobile && (
-        <AppBar position="absolute" sx={mobileHeaderStyle}>
-          <Box
+    <div >
+          {!isMobile && !accessOptions.disableEvents && (
+        <Drawer
+          sx={{
+            width: spacers.events,
+            maxHeight: '100dvh',
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: spacers.events,
+              boxSizing: 'border-box',
+              zIndex: 1
+            }
+          }}
+          variant="permanent"
+          anchor="right"
+        >
+          <AppBar
+            sx={{
+              width: spacers.events,
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              backgroundColor: theme.colors.surface.high,
+              boxShadow: !eventsListScrolled && 'none',
+              zIndex: 1
+            }}
+          >
+            <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
+          </AppBar>
+          <Stack
+            ref={eventsListRef}
             sx={[
-              mobileMenuItemStyle,
+              listWithScrollStyle({ ...theme }),
               {
-                borderBottom: mobileCameras
-                  ? `2px solid ${theme.colors.button.primary.default}`
-                  : 'none'
+                width: `calc(${spacers.events} - 1px)`,
+                backgroundColor: theme.colors.surface.high
               }
             ]}
-            onClick={handleMobileMenuItemClick}
+            onScroll={handleEventsListScroll}
           >
-            <Typography
-              sx={[
-                mobileMenuItemTextStyle,
-                {
-                  color: mobileCameras
-                    ? theme.colors.button.primary.default
-                    : theme.colors.element.secondary
-                }
-              ]}
-            >
-              Наблюдение
-            </Typography>
-          </Box>
-          <Box
-            sx={[
-              mobileMenuItemStyle,
-              {
-                borderBottom: !mobileCameras
-                  ? `2px solid ${theme.colors.button.primary.default}`
-                  : 'none'
-              }
-            ]}
-            onClick={handleMobileMenuItemClick}
-          >
-            <Typography
-              sx={[
-                mobileMenuItemTextStyle,
-                {
-                  color: !mobileCameras
-                    ? theme.colors.button.primary.default
-                    : theme.colors.element.secondary
-                }
-              ]}
-            >
-              Отчёты
-            </Typography>
-          </Box>
-        </AppBar>
-      )}
-      {!onlyLog && ((isMobile && mobileCameras) || !isMobile) && (
-        <Cameras accessOptions={accessOptions} />
-      )}
-      <EventsList onlyLog={onlyLog}/>
-      {isOpenApModal && (
-        <CarNumberDialog
-          show={isOpenApModal}
-          handleClose={() => dispatch(changeActiveOpenApModal())}
-        />
-      )}
-    </>
-  );
-};
+            <CarNumberFilterSpacer openForm={openForm} />
+            {eventsList.length > 0 ? (
+              <>
+                {eventsList.map((item, index) => (
+                  <LogEventCard
+                    key={item.id + formatISO(Date.now())}
+                    event={item}
+                    onClickImage={changeActiveImageModal}
+                    // onHoverImageButton={handleImageButtonHover}
+                    selected={item.id === selectedEventId}
+                    ref={addToRefs}
+                    accessOptions={accessOptions}
+                  />
+                ))}
+                <Box
+                  sx={{
+                    height: '48px'
+                  }}
+                >
+                  <PaginationCustom
+                    pages={Math.ceil(pages / EVENTS_ON_PAGE)}
+                    changePage={changePage}
+                    currentPage={currentPage}
+                  />
+                </Box>
+              </>
+            ) : (
+              <Stack
+                justifyContent={'center'}
+                alignItems={'center'}
+                height={'100%'}
+                gap={'16px'}
+              >
+                <img
+                  style={{ height: '40px' }}
+                  src={logEventEmptyIcon}
+                  alt="нет отчётов"
+                />
+                <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+              </Stack>
+            )}
 
-export default EventsPage;
+            <FooterSpacer />
+          </Stack>
+          {/* <CardEventModal
+            show={isActiveModalMobile}
+            handleClose={changeMobileModal}
+          /> */}
+          {imageModal.isOpen && (
+            // <Modal
+            //   open={imageModal.isOpen}
+            //   onClose={changeActiveImageModal}
+            //   sx={{
+            //     position: 'absolute',
+            //     zIndex: 1000,
+            //     left: '72px',
+            //     right: spacers.events,
+            //     display: 'flex',
+            //     justifyContent: 'center'
+            //   }}
+            //   slotProps={{
+            //     backdrop: {
+            //       sx: {
+            //         backgroundColor: colors.blackout,
+            //         left: '72px',
+            //         right: spacers.events
+            //       }
+            //     }
+            //   }}
+            // >
+            //   <img
+            //     src={imageModal.src}
+            //     alt="car"
+            //     style={{ width: '100%', padding: '16px', margin: 'auto 0' }}
+            //   />
+            // </Modal>
+
+            <Lightbox
+              onCloseRequest={changeActiveImageModal}
+              mainSrc={imageModal.src}
+              reactModalStyle={{
+                overlay: { zIndex: 1300 }
+              }}
+            />
+          )}
+        </Drawer>
+      )}
+      {isMobile && !accessOptions.disableEvents && (!mobileCameras || onlyLog) && (
+        <Stack
+          ref={mobileEventsListRef}
+          sx={[
+            listWithScrollStyle({ ...theme }),
+            { width: '100%', backgroundColor: theme.colors.surface.low }
+          ]}
+          onScroll={handleMobileEventsListScroll}
+        >
+          {!onlyLog && <HeaderSpacer />}
+          <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
+
+          {eventsList.length > 0 ? (
+            <>
+              {eventsList.map((item, index) => (
+                <LogEventCard
+                  key={item.id + index}
+                  event={item}
+                  onClickImage={changeActiveImageModal}
+                  selected={item.id === selectedEventId}
+                  ref={addToRefs}
+                  accessOptions={accessOptions}
+                />
+              ))}
+              <Box
+                sx={{
+                  height: '48px'
+                }}
+              >
+                <PaginationCustom
+                  pages={Math.ceil(pages / EVENTS_ON_PAGE)}
+                  changePage={changePage}
+                  currentPage={currentPage}
+                />
+              </Box>
+            </>
+          ) : (
+            <Stack
+              justifyContent={'center'}
+              height={'100%'}
+              alignItems={'center'}
+              gap={'16px'}
+            >
+              {isLoading ? (
+                <SpinerLogo />
+              ) : (
+                <>
+                  <img
+                    style={{ height: '40px' }}
+                    src={logEventEmptyIcon}
+                    alt="нет отчётов"
+                  />
+                  <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+                </>
+              )}
+            </Stack>
+          )}
+
+          <FooterSpacer />
+
+          {imageModal.isOpen && (
+            <Lightbox
+              onCloseRequest={changeActiveImageModal}
+              mainSrc={imageModal.src}
+              imagePadding={100}
+            />
+          )}
+        </Stack>
+      )}</div>
+  )
+})
+
+export default memo(EventsList)
