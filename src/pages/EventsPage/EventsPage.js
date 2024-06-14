@@ -353,13 +353,14 @@ const EventsPage = ({ onlyLog }) => {
             >
               Отчёты
             </Typography>
+
           </Box>
         </AppBar>
       )}
       {!onlyLog && ((isMobile && mobileCameras) || !isMobile) && (
         <Cameras accessOptions={accessOptions} />
       )}
-      <EventsList onlyLog={onlyLog}/>
+            <EventsList onlyLog={onlyLog} mobileCameras={mobileCameras}/>
       {isOpenApModal && (
         <CarNumberDialog
           show={isOpenApModal}

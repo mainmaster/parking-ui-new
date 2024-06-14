@@ -60,11 +60,10 @@ const initialAccessOptions = {
   disableResetDuty: false
 };
 
-const EventsList = memo(({ onlyLog }) => {
+const EventsList = memo(({ onlyLog, mobileCameras }) => {
   const dispatch = useDispatch();
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
-  const [mobileCameras, setMobileCameras] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [eventsListScrolled, setEventsListScrolled] = useState(false);
   const operator = useSelector((state) => state.parkingInfo.operator);
@@ -191,7 +190,7 @@ const EventsList = memo(({ onlyLog }) => {
       eventRef.current.push(node);
     }
   };
-
+  
   useEffect(() => {
     if (selectedEventId) {
       const id = selectedEventId;
@@ -283,9 +282,7 @@ const EventsList = memo(({ onlyLog }) => {
     }
   };
 
-  const handleMobileMenuItemClick = () => {
-    setMobileCameras(!mobileCameras);
-  };
+
 
   const handleEventsListScroll = () => {
     if (eventsListRef.current) {
