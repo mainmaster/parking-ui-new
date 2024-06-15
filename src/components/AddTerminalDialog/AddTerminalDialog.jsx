@@ -367,7 +367,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
                 value={formik.values.ssh_port}
                 onChange={handleValueChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.port && Boolean(formik.errors.port)}
+                error={formik.touched.ssh_port && Boolean(formik.errors.ssh_port)}
             />
           </Stack>
           <Stack>

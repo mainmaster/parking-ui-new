@@ -225,6 +225,10 @@ export default function LogAccessPointCard({ point }) {
             <Typography sx={labelTextStyle}>Сценарий подтвержения</Typography>
             <Typography sx={{ fontWeight: 500 }}>{point.confirmation_scenario_id}</Typography>
           </Stack>
+          <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>Количество мест</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{point.number_of_places ?? 1}</Typography>
+          </Stack>
         </Stack>
         <Stack direction={'row'} gap={'12px'}>
           <Typography sx={labelTextStyle}>Режимы</Typography>

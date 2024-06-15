@@ -74,6 +74,10 @@ export default function LogRenterCard({ renter }) {
           <Typography sx={{ fontWeight: 500 }}>{renter.contacts}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
+          <Typography sx={labelTextStyle}>Количество мест</Typography>
+          <Typography sx={{ fontWeight: 500 }}>{renter.number_of_places ?? 1}</Typography>
+        </Stack>
+        <Stack direction={'row'} gap={'8px'}>
           <Button
             disableRipple
             variant="contained"

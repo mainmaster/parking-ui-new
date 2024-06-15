@@ -70,7 +70,8 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
       return {
         company_name: renterEdit.company_name,
         contacts: renterEdit.contacts,
-        access_points: renterEdit.access_points.join(',')
+        access_points: renterEdit.access_points.join(','),
+        number_of_places: renterEdit.number_of_places
       };
     } else {
       return {
@@ -78,7 +79,8 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         password: '',
         company_name: '',
         contacts: '',
-        access_points: accessPoints.map(({id}) => id).join(',')
+        access_points: accessPoints.map(({id}) => id).join(','),
+        number_of_places: 1,
       };
     }
   }, [renterEdit, show]);
@@ -426,6 +428,26 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                   );
                 })}
             </Select>
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor='number_of_places' sx={labelStyle}>
+              Количество мест
+            </InputLabel>
+            <CarNumberInput
+                fullWidth
+                InputProps={{
+                  type: 'number',
+                  disableUnderline: true,
+                  sx: { paddingLeft: '12px' }
+                }}
+                variant="filled"
+                id="number_of_places"
+                name="number_of_places"
+                value={formik.values.number_of_places}
+                onChange={handleValueChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.number_of_places && Boolean(formik.errors.number_of_places)}
+            />
           </Stack>
           <Button
             disableRipple

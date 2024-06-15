@@ -128,7 +128,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         accessPointEdit?.is_reverse_access_point || false,
       working_modes: accessPointEdit?.working_modes
         ? accessPointEdit?.working_modes.join(',')
-        : ''
+        : '',
+      number_of_places: accessPointEdit?.number_of_places || 1
     };
   }, [accessPointEdit]);
 
@@ -189,7 +190,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         is_reverse_access_point,
         working_modes,
         recognition_scenario_id,
-        confirmation_scenario_id
+        confirmation_scenario_id,
+        number_of_places
       } = values;
       if (edit) {
         const payload = {
@@ -213,7 +215,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
             .split(',')
             .map((i) => parseInt(i, 10))
             .filter((i) => !isNaN(i)),
-          id: accessPointEdit.id
+          id: accessPointEdit.id,
+          number_of_places: number_of_places
         };
         dispatch(editAccessPointFetch(payload));
       } else {
@@ -237,7 +240,8 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           working_modes: working_modes
             .split(',')
             .map((i) => parseInt(i, 10))
-            .filter((i) => !isNaN(i))
+            .filter((i) => !isNaN(i)),
+          number_of_places: number_of_places
         };
         dispatch(createAccessPointFetch(payload));
       }
@@ -1218,6 +1222,26 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   );
                 })}
             </Select>
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor='number_of_places' sx={labelStyle}>
+              Количество мест
+            </InputLabel>
+            <CarNumberInput
+                fullWidth
+                InputProps={{
+                  type: 'number',
+                  disableUnderline: true,
+                  sx: { paddingLeft: '12px' }
+                }}
+                variant="filled"
+                id="number_of_places"
+                name="number_of_places"
+                value={formik.values.number_of_places}
+                onChange={handleValueChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.number_of_places && Boolean(formik.errors.number_of_places)}
+            />
           </Stack>
           <Button
             disableRipple
