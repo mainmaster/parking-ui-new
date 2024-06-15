@@ -20,7 +20,7 @@ import {
   styled
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import {DatePicker, TimePicker} from '@mui/x-date-pickers';
+import {DatePicker, renderTimeViewClock, TimePicker} from '@mui/x-date-pickers';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
@@ -472,24 +472,25 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
               <Stack direction={'row'} gap={'8px'}>
                 <TimePicker
                     ampm={false}
-                    format={'hh:mm'}
-                    views={['hours', 'seconds']}
+                    views={['hours', 'minutes']}
                     value={timeFromValue ?? undefined}
                     maxTime={timeToValue ?? undefined}
                     onChange={handleTimeFromChanged}
+                    viewRenderers={{
+                      hours: renderTimeViewClock,
+                      minutes: renderTimeViewClock,
+                    }}
                     slotProps={{
                       textField: {
                         variant: 'filled',
                         sx: DateInputStyle({ ...theme }),
                         placeholder: 'От'
                       },
-                      openPickerButton: { disableRipple: true }
                     }}
                 />
                 <TimePicker
                     ampm={false}
-                    views={['hours', 'seconds']}
-                    format={'hh:mm'}
+                    views={['hours', 'minutes']}
                     value={timeToValue ?? undefined}
                     minTime={timeFromValue ?? undefined}
                     onChange={handleTimeToChanged}
