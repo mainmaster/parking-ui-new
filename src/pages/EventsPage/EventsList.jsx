@@ -213,7 +213,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
   const scrollTop =  eventsListRef.current ? eventsListRef.current.scrollTop : 0
 
   const changeActiveImageModal = (src) => {
-    if (imageModal.isOpen) {
+    if (imageModal.isOpen && eventsListRef.current) {
       eventsListRef.current.scrollTo({ top: scrollTop, behavior: 'smooth' });
     }
 
@@ -449,7 +449,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
             <>
               {eventsList.map((item, index) => (
                 <LogEventCard
-                  key={item.id + index}
+                  key={item.id}
                   event={item}
                   onClickImage={changeActiveImageModal}
                   selected={item.id === selectedEventId}

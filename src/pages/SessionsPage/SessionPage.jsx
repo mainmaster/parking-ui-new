@@ -231,6 +231,7 @@ export const SessionPage = () => {
                   if (event.car_img_path && event.car_img_path !== '') {
                     return (
                       <IconButton
+                        key={event.car_img_path}
                         disableRipple
                         sx={{
                           maxWidth: '560px',
@@ -427,6 +428,7 @@ export const SessionPage = () => {
               <Stack gap={'16px'}>
                 {session.events.map((event) => (
                   <NavLink
+                    key={event.id}
                     to={`/events/${event.id}`}
                     style={{ lineHeight: '1.125rem' }}
                   >
