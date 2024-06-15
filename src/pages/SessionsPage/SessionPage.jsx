@@ -289,7 +289,7 @@ export const SessionPage = () => {
                       src={
                         process.env.REACT_APP_API_URL +
                         '/' +
-                        session.event[0].plate_img_path
+                        session.event?.[0]?.plate_img_path
                       }
                       alt="Фото номера"
                     />
