@@ -20,7 +20,7 @@ import {
   styled
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { DatePicker } from '@mui/x-date-pickers';
+import {DatePicker, TimePicker} from '@mui/x-date-pickers';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
@@ -54,6 +54,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const [selectedEventCode, setSelectedEventCode] = useState('');
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
+  const [timeFromValue, setTimeFromValue] = useState(null);
+  const [timeToValue, setTimeToValue] = useState(null);
   const [accessPoints, setAccessPoints] = useState([]);
   const [eventCodes, setEventCodes] = useState([]);
   const [selectedAccessPoint, setSelectedAccessPoint] = useState('');
@@ -171,7 +173,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         ...filters,
         eventCode: ''
       };
-      dispatch(setFilters(values?.toISOString().split('T')[0]));
+      dispatch(setFilters(values));
       setSubmited(false);
     }
     setSelectedEventCode(event.target.value);
@@ -184,7 +186,6 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         ...filters,
         createDateFrom: parseValue
       };
-      console.log(values)
       dispatch(setFilters(values));
       setFromValue(parseValue);
       setSubmited(false);
@@ -198,12 +199,37 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         ...filters,
         createDateTo: parseValue
       }; 
-      const parseValues = values.createDateTo
       dispatch(setFilters(values));
       setToValue(parseValue);
       setSubmited(false);
     }
   };
+
+  const handleTimeFromChanged = (newValue) => {
+    const parseValue = newValue.toISOString().split('T')[1].split('.')[0];
+    if (parseValue) {
+      const values = {
+        ...filters,
+        createTimeFrom: parseValue
+      };
+      dispatch(setFilters(values));
+      setTimeFromValue(parseValue);
+      setSubmited(false);
+    }
+  }
+
+  const handleTimeToChanged = (newValue) => {
+    const parseValue = newValue.toISOString().split('T')[1].split('.')[0];
+    if (parseValue) {
+      const values = {
+        ...filters,
+        createTimeTo: parseValue
+      };
+      dispatch(setFilters(values));
+      setTimeToValue(parseValue);
+      setSubmited(false);
+    }
+  }
 
   const handleAccessPointChange = (event) => {
     const accessPoint = accessPoints.find(
@@ -438,6 +464,43 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                   slots={{
                     openPickerIcon: DateIcon
                   }}
+                />
+              </Stack>
+            </Stack>
+            <Stack>
+              <Typography sx={labelStyle}>Время</Typography>
+              <Stack direction={'row'} gap={'8px'}>
+                <TimePicker
+                    ampm={false}
+                    format={'hh:mm'}
+                    views={['hours', 'seconds']}
+                    value={timeFromValue ?? undefined}
+                    maxTime={timeToValue ?? undefined}
+                    onChange={handleTimeFromChanged}
+                    slotProps={{
+                      textField: {
+                        variant: 'filled',
+                        sx: DateInputStyle({ ...theme }),
+                        placeholder: 'От'
+                      },
+                      openPickerButton: { disableRipple: true }
+                    }}
+                />
+                <TimePicker
+                    ampm={false}
+                    views={['hours', 'seconds']}
+                    format={'hh:mm'}
+                    value={timeToValue ?? undefined}
+                    minTime={timeFromValue ?? undefined}
+                    onChange={handleTimeToChanged}
+                    slotProps={{
+                      textField: {
+                        variant: 'filled',
+                        sx: DateInputStyle({ ...theme }),
+                        placeholder: 'До'
+                      },
+                      openPickerButton: { disableRipple: true }
+                    }}
                 />
               </Stack>
             </Stack>

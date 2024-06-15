@@ -29,7 +29,9 @@ export const getEventsRequest = async ({
   accessPoint,
   createDateTo,
   createDateFrom,
-  eventCode
+  eventCode,
+  createTimeFrom,
+  createTimeTo,
 }) => {
   return $api.get('/events/', {
     params: {
@@ -39,7 +41,9 @@ export const getEventsRequest = async ({
       accessPoint,
       createDateTo,
       createDateFrom,
-      eventCode
+      eventCode,
+      createTimeFrom,
+      createTimeTo
     }
   });
 };
