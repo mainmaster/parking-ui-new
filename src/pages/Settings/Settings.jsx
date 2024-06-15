@@ -46,7 +46,6 @@ import {
   CarNumberInput,
   switchInputStyle,
   selectMenuStyle,
-  secondaryButtonStyle,
   tabStyle
 } from '../../theme/styles';
 import SettingsSpacer from './SettingsSpacer';
@@ -57,7 +56,6 @@ import { ExpandIcon } from '../../components/Icons/ExpandIcon';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
-import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
 import uploadIcon from '../../assets/svg/settings_upload_icon.svg';
 
 const titleTextStyle = {
@@ -302,6 +300,7 @@ const Settings = () => {
     if (data && submited) {
       setGlobalSettings(data);
       setEditParkingInfo(parkingInfo);
+      setChangedSettings(data);
     }
   }, [data, parkingInfo, submited]);
 
