@@ -75,7 +75,7 @@ export default function LogRenterCard({ renter }) {
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
           <Typography sx={labelTextStyle}>Количество мест</Typography>
-          <Typography sx={{ fontWeight: 500 }}>{renter.number_of_places ?? 1}</Typography>
+          <Typography sx={{ fontWeight: 500 }}>{renter.number_of_places ?? 100}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
           <Button

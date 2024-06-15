@@ -80,7 +80,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         company_name: '',
         contacts: '',
         access_points: accessPoints.map(({id}) => id).join(','),
-        number_of_places: 1,
+        number_of_places: 100,
       };
     }
   }, [renterEdit, show]);

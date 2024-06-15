@@ -226,8 +226,8 @@ export default function LogAccessPointCard({ point }) {
             <Typography sx={{ fontWeight: 500 }}>{point.confirmation_scenario_id}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Количество мест</Typography>
-            <Typography sx={{ fontWeight: 500 }}>{point.number_of_places ?? 1}</Typography>
+            <Typography sx={labelTextStyle}>Учитывать количество мест арендатора</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{point.consider_renter_number_of_places ? 'Да' : 'Нет'}</Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'12px'}>
