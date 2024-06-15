@@ -473,13 +473,9 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 <TimePicker
                     ampm={false}
                     views={['hours', 'minutes']}
-                    value={timeFromValue ?? undefined}
-                    maxTime={timeToValue ?? undefined}
+                    value={timeFromValue ?? null}
+                    maxTime={timeToValue ?? null}
                     onChange={handleTimeFromChanged}
-                    viewRenderers={{
-                      hours: renderTimeViewClock,
-                      minutes: renderTimeViewClock,
-                    }}
                     slotProps={{
                       textField: {
                         variant: 'filled',
@@ -491,8 +487,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 <TimePicker
                     ampm={false}
                     views={['hours', 'minutes']}
-                    value={timeToValue ?? undefined}
-                    minTime={timeFromValue ?? undefined}
+                    value={timeToValue ?? null}
+                    minTime={timeFromValue ?? null}
                     onChange={handleTimeToChanged}
                     slotProps={{
                       textField: {
