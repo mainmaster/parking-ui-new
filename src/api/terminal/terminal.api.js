@@ -40,6 +40,12 @@ export const terminalsApi = createApi({
         method: 'DELETE'
       }),
       invalidatesTags: ['Terminals']
+    }),
+    rebootTerminal: builder.mutation({
+      query:(id) => ({
+        url: `terminal/${id}/reboot`,
+        method: 'POST'
+      })
     })
   })
 });
@@ -49,5 +55,6 @@ export const {
   useCreateTerminalMutation,
   useDeleteTerminalMutation,
   useEditTerminalMutation,
-  useActivateTerminalMutation
+  useActivateTerminalMutation,
+  useRebootTerminalMutation
 } = terminalsApi;

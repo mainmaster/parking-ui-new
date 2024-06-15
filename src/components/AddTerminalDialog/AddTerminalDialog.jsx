@@ -51,7 +51,8 @@ const initialValues = {
   automat_number: '',
   ip_address: '',
   terminal_type: '',
-  port: 4455
+  port: 4455,
+  ssh_port: 22,
 };
 
 const labelStyle = {
@@ -80,7 +81,8 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
         automat_number: terminalEdit.automat_number,
         ip_address: terminalEdit.ip_address,
         terminal_type: terminalEdit.terminal_type,
-        port: terminalEdit.port
+        port: terminalEdit.port,
+        ssh_port: terminalEdit.ssh_port
       };
     } else {
       return initialValues;
@@ -346,6 +348,26 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
               onChange={handleValueChange}
               onBlur={formik.handleBlur}
               error={formik.touched.port && Boolean(formik.errors.port)}
+            />
+          </Stack>
+          <Stack>
+            <InputLabel htmlFor='ssh_port' sx={labelStyle}>
+              ssh-порт
+            </InputLabel>
+            <CarNumberInput
+                fullWidth
+                InputProps={{
+                  type: 'number',
+                  disableUnderline: true,
+                  sx: { paddingLeft: '12px' }
+                }}
+                variant="filled"
+                id="ssh_port"
+                name="ssh_port"
+                value={formik.values.ssh_port}
+                onChange={handleValueChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.port && Boolean(formik.errors.port)}
             />
           </Stack>
           <Stack>

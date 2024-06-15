@@ -5,7 +5,7 @@ import { secondaryButtonStyle, cardContainerStyle } from '../../theme/styles';
 import { setEditTerminal } from '../../store/terminals/terminalsSlice';
 import {
   useDeleteTerminalMutation,
-  useActivateTerminalMutation
+  useActivateTerminalMutation, useRebootTerminalMutation
 } from '../../api/terminal/terminal.api';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -21,6 +21,7 @@ export default function LogTerminalCard({ terminal }) {
   const { enqueueSnackbar } = useSnackbar();
   const [deleteTerminal] = useDeleteTerminalMutation();
   const [activateTerminal] = useActivateTerminalMutation();
+  const [rebootTerminal] = useRebootTerminalMutation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -56,6 +57,20 @@ export default function LogTerminalCard({ terminal }) {
     deleteTerminal(terminal.id);
   };
 
+  const handleRebootModeClick = () => {
+    rebootTerminal(terminal.id).unwrap()
+        .then((result) => {
+          console.log(result);
+          enqueueSnackbar('Терминал перезапущен', { variant: 'success' });
+        })
+        .catch(() => {
+          enqueueSnackbar('Ошибка, попробуйте позже', {
+            variant: 'error',
+            iconVariant: 'warning'
+          });
+        });
+  }
+
   return (
     <Box
       sx={[cardContainerStyle({ ...theme }), isMobile && { minWidth: '320px' }]}
@@ -84,40 +99,59 @@ export default function LogTerminalCard({ terminal }) {
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
+            <Typography sx={labelTextStyle}>ssh-порт</Typography>
+            <Typography sx={{ fontWeight: 500 }}>
+              {`${terminal.ssh_port}`}
+            </Typography>
+          </Stack>
+          <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>Тип</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {terminal.terminal_type}
             </Typography>
           </Stack>
         </Stack>
-        <Stack direction={'row'} gap={'8px'}>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth
-            sx={secondaryButtonStyle({ ...theme })}
-            onClick={handleActivateModeClick}
-          >
-            Тест
-          </Button>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth
-            sx={secondaryButtonStyle({ ...theme })}
-            onClick={handleEditModeClick}
-          >
-            Изменить
-          </Button>
-          <Button
-            disableRipple
-            variant="contained"
-            fullWidth
-            sx={secondaryButtonStyle({ ...theme })}
-            onClick={handleDeleteModeClick}
-          >
-            Удалить
-          </Button>
+        <Stack direction={'column'} gap={'8px'}>
+          <Stack direction={'row'} gap={'8px'}>
+            <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle({ ...theme })}
+                onClick={handleActivateModeClick}
+            >
+              Тест
+            </Button>
+            <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle({ ...theme })}
+                onClick={handleRebootModeClick}
+            >
+              Перезагрузить
+            </Button>
+          </Stack>
+          <Stack direction={'row'} gap={'8px'}>
+            <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle({ ...theme })}
+                onClick={handleEditModeClick}
+            >
+              Изменить
+            </Button>
+            <Button
+                disableRipple
+                variant="contained"
+                fullWidth
+                sx={secondaryButtonStyle({ ...theme })}
+                onClick={handleDeleteModeClick}
+            >
+              Удалить
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
     </Box>
