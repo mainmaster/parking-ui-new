@@ -78,10 +78,10 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         password: '',
         company_name: '',
         contacts: '',
-        access_points: ''
+        access_points: accessPoints.map(({id}) => id).join(',')
       };
     }
-  }, [renterEdit]);
+  }, [renterEdit, show]);
 
   const formik = useFormik({
     initialValues: defaultValues,

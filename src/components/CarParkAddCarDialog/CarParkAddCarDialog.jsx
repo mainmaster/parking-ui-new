@@ -79,10 +79,10 @@ export default function AddCarDialog({ show, handleClose, edit }) {
       return {
         description: '',
         vehicle_plate: '',
-        access_points: ''
+        access_points: accessPoints.map(({id}) => id).join(',')
       };
     }
-  }, [carParkEdit]);
+  }, [carParkEdit, show]);
 
   useEffect(() => {
     if (show && edit && carParkEdit) {
