@@ -38,6 +38,7 @@ import { getAccessPointsRequest } from '../../api/access-points';
 import { getEventCodesRequest } from '../../api/events';
 import { formatISO } from 'date-fns';
 import _ from 'lodash';
+import moment from "moment";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -50,6 +51,7 @@ const labelStyle = {
 const defaultValues = {
   vehiclePlate: ''
 };
+
 export default function CarNumberFilter({ openForm, setOpenForm }) {
   const [selectedEventCode, setSelectedEventCode] = useState('');
   const [fromValue, setFromValue] = useState(null);
@@ -213,7 +215,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         createTimeFrom: parseValue
       };
       dispatch(setFilters(values));
-      setTimeFromValue(parseValue);
+      setTimeFromValue(newValue);
       setSubmited(false);
     }
   }
@@ -226,7 +228,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         createTimeTo: parseValue
       };
       dispatch(setFilters(values));
-      setTimeToValue(parseValue);
+      setTimeToValue(newValue);
       setSubmited(false);
     }
   }
@@ -471,9 +473,9 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
               <Typography sx={labelStyle}>Время</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <TimePicker
+                    value={timeFromValue}
                     ampm={false}
                     views={['hours', 'minutes']}
-                    value={timeFromValue ?? null}
                     maxTime={timeToValue ?? null}
                     onChange={handleTimeFromChanged}
                     slotProps={{
@@ -485,9 +487,9 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                     }}
                 />
                 <TimePicker
+                    value={timeToValue}
                     ampm={false}
                     views={['hours', 'minutes']}
-                    value={timeToValue ?? null}
                     minTime={timeFromValue ?? null}
                     onChange={handleTimeToChanged}
                     slotProps={{
