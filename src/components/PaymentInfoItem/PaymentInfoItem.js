@@ -1,4 +1,4 @@
-// import css from './PaymentInfoItem.module.scss'
+import css from './PaymentInfoItem.module.scss'
 import PropTypes from 'prop-types'
 import { Button, Card, Form } from 'react-bootstrap'
 import Modal from 'components/Modal'
@@ -10,7 +10,7 @@ import React, {Fragment, useState} from 'react'
 import { useSubscriptionsQuery } from '../../api/payments.api'
 import { useSearchParams } from 'react-router-dom'
 import {CarNumberCard} from "../CarNumberCard/CarNumberCard";
-import {IconButton, Stack} from "@mui/material";
+import { Stack} from "@mui/material";
 import {KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 
@@ -74,7 +74,6 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId }) => {
 }
 
 const PaymentInfoItem = ({
-  Name,
   Amount,
   TotalTimeMin,
   ImgPath,
@@ -96,8 +95,8 @@ const PaymentInfoItem = ({
 
   const detailComponent = ({start, end, format, amount, description}) => {
     return (
-      <div key={start} style={{display: 'flex', gap: 8, fontSize: 16}}>
-        <div style={{color:'rgb(126, 122, 131)', width: '30%'}}>
+      <div key={start} className={css.detail_container}>
+        <div className={css.detail_container_time}>
           {moment(start).format(format)}-{moment(end).format(format)}
         </div>
         <div style={{color: `${amount !== 0 ? '' : 'rgb(77, 143, 89)'}`}}>
@@ -138,7 +137,7 @@ const PaymentInfoItem = ({
                 <div style={{color: 'rgb(126, 122, 131)', width: '30%'}}>
                   {moment(SessionCreatedAt).format('hh:mm, DD.MM')}
                 </div>
-                <img style={{width: '18px'}} src={eventInIcon}/>
+                <img alt={'нет изображения'} style={{width: '18px'}} src={eventInIcon}/>
                 <div>
                   Въезд
                 </div>
