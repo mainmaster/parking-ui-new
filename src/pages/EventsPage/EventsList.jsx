@@ -306,7 +306,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
     }
   };
   return (
-    <div>
+    <>
       {!isMobile && !accessOptions.disableEvents && (
         <Drawer
           sx={{
@@ -502,7 +502,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
           )}
         </Stack>
       )}
-    </div>
+    </>
   );
 });
 
