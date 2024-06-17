@@ -27,6 +27,7 @@ import EventManager from '../../components/EventManager/EventManager';
 import CloseSessionsDialog from '../../components/CloseSessionsDialog/CloseSessionsDialog';
 
 const titleTextStyle = {
+  width: '25%',
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500
@@ -157,7 +158,7 @@ const SessionsPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Сессии</Typography>
+            <Typography sx={titleTextStyle}>Сессии: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} всего</span></Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -186,9 +187,10 @@ const SessionsPage = () => {
 
         {isMobile && (
           <>
-            <Box sx={{ height: '86px', p: '16px', pb: '8px' }}>
-              <ParkingInfo fullWidth />
-            </Box>
+            <Stack direction={'column'} sx={{ p: '16px', pb: '8px', width: '100%', }}>
+              <Typography sx={{...titleTextStyle, padding: '16px', width: '100%'}}>Сессии: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} всего</span></Typography>
+              <ParkingInfo fullWidth={true} />
+            </Stack>
             <Box
               sx={{
                 height: openForm ? '327px' : '56px',

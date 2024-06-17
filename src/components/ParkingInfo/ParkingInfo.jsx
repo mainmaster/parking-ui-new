@@ -29,7 +29,8 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 const mobileBoxStyle = {
   height: '86px',
   p: '16px',
-  pb: '8px'
+  pb: '8px',
+  width: '100%'
 };
 
 const detailSquareStyle = {
