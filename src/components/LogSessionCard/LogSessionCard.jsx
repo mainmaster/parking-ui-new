@@ -233,7 +233,7 @@ export default function LogSessionCard({
             <TypeAuto type={session.events[0].access_status_code} />
           )}
           <TypeAuto type={session.status} />
-          <TypeAuto type={session.is_paid ? 'paid' : 'not_paid'} />
+          {session.payment_amount !== 0 && <TypeAuto type={session.is_paid ? 'paid' : 'not_paid'} />}
         </Stack>
         <Stack gap={'4px'}>
           <Stack direction={'row'} gap={'8px'}>
