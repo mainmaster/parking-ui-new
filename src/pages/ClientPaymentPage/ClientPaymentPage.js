@@ -31,6 +31,11 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {getPaymentsPageImage} from "../../api/settings/paymentsPageImage";
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import { logoIconWithoutBG } from 'icons/index'
+import mir from '../../assets/svg/Mir.svg'
+import master from '../../assets/svg/Mastercard.svg'
+import visa from '../../assets/svg/Visa.svg'
+import jcb from '../../assets/svg/JCB.svg'
+import DoneIcon from '@mui/icons-material/Done';
 import {useTheme} from "@mui/material/styles";
 import sessionSkeleton from "../../assets/svg/session_skeleton.svg";
 import Lightbox from "react-18-image-lightbox";
@@ -546,10 +551,17 @@ const ClientPaymentPage = () => {
         </div>
     )
 
+  const nullContent = (
+    <div className={css.nullContent}>
+      <DoneIcon/>
+      Оплат не требуется
+    </div>
+  )
+
     const hasData = !(isLoadingFetch || isErrorFetch) && isSubmit
     const errorMessage = isErrorFetch ? errorContent : null
     const spinner = isLoadingFetch ? spinnerContent : null
-    const content = hasData ? contentResult : null
+    const content = paymentInfo && paymentInfo.length ? contentResult : isSubmit ? nullContent : null
     let freeTime = tariffs?.tariffs[0].freeMins;
 
     useEffect(()=>{
@@ -650,8 +662,12 @@ const ClientPaymentPage = () => {
         <div className={css.footer}>
           <div className={css.footerLogo}>
             {logoIconWithoutBG}
-            <div>
+            <div className={css.paymentsLogo}>
               Оплата онлайн
+              <img src={mir} alt=''/>
+              <img src={master} alt=''/>
+              <img src={visa} alt=''/>
+              <img src={jcb} alt=''/>
             </div>
           </div>
           <div className={css.offer}>
@@ -667,54 +683,6 @@ const ClientPaymentPage = () => {
           </div>
         </div>
       </div>
-      // <ClientLayout parkingID={parkingID} title={parkingData?.payment_page_header} isHideMenu>
-      //     {subscriptions?.supportSubscribe &&
-        //         <Button className="mb-3" onClick={()=>setBuyModal(true)}>Купить абонемент</Button>}
-        //     <div className={css.price}>
-        //         <div className={css.green}>{freeTime}мин 0&#8381;</div>
-        //         {tariffs?.tariffs?.map((item) => (
-        //             <>
-        //                <div>
-        //                     {item.passMode === 'pay_by_hour' ?  ` 1ч ${item.price}₽`:  `${item.interval}ч ${item.price}₽ `}
-        //                 </div>
-        //
-        //             </>
-        //         ))}
-        //     </div>
-        //     <Modal
-        //         show={buyModal}
-        //         handleClose={()=>setBuyModal(false)}
-        //         header={ <h3>Покупка абонемента</h3>}
-        //         body={<SubscriptionModal subscriptions={subscriptions}/>}
-        //     />
-        //     <Formik
-        //         initialValues={{
-        //             number: '',
-        //         }}
-        //         onSubmit={onSubmit}
-        //         validationSchema={validationSchema}
-        //     >
-        //         {(props) => (
-        //             <form onSubmit={props.handleSubmit} className={css.form}>
-        //                 <Input
-        //                     label="Номер машины"
-        //                     name="number"
-        //                     type="text"
-        //                     onChange={(e) => props.setFieldValue('number', e.target.value)}
-        //                     className={css.input}
-        //                     placeholder="123"
-        //                 />
-        //                 <Button variant="success" type="submit" className={css.btn}>
-        //                     Найти
-        //                 </Button>
-        //             </form>
-        //         )}
-        //     </Formik>
-        //
-        //     {errorMessage}
-        //     {spinner}
-        //     {content}
-        // </ClientLayout>
     )
 }
 

@@ -138,6 +138,19 @@
       }
     }
   }
+
+  & .nullContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24px;
+
+    & svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
   & .footer {
     display: flex;
     flex-direction: column;
@@ -154,6 +167,13 @@
     & .footerLogo {
       display: flex;
       justify-content: space-between;
+
+      & .paymentsLogo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 33px;
+      }
     }
 
     & .offer {

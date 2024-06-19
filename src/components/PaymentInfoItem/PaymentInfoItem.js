@@ -10,8 +10,8 @@ import React, {Fragment, useMemo, useState} from 'react'
 import { useSubscriptionsQuery } from '../../api/payments.api'
 import { useSearchParams } from 'react-router-dom'
 import {CarNumberCard} from "../CarNumberCard/CarNumberCard";
-import {Box, Stack} from "@mui/material";
-import {KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
+import {Box, Dialog, DialogContent, DialogTitle, IconButton, Stack} from "@mui/material";
+import {Close, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import sessionSkeleton from '../../assets/svg/session_skeleton.svg';
 import {useTheme} from "@mui/material/styles";
@@ -48,18 +48,38 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId }) => {
   }
 
   return (
-    <Modal
-      show={show}
-      handleClose={handleClose}
-      header={<h3>Оплата</h3>}
-      body={
-        <Formik 
+    <Dialog
+      open={show}
+      onClose={handleClose}
+      PaperProps={{
+        sx: {borderRadius: '16px'}
+      }}
+    >
+      <DialogTitle
+        style={{textAlign: 'center', width: 400}}
+      >
+        Оплата
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 7,
+            top: 5,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <Formik
           onSubmit={handleSubmit}
           initialValues={{ email: '', no_check_needed: false }}>
           {(props) => (
             <form onSubmit={props.handleSubmit} id="pay-handler">
               <Input
-                label="Укажите ваш e-mail для отправки фискального чека"
+                label="E-mail для чека"
                 name="email"
                 required
                 type="text"
@@ -75,15 +95,52 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId }) => {
                 className='mt-2 mb-2'
                 onChange={(e) => props.setFieldValue('no_check_needed', e.target.checked)}
               />
-              
-              <Button variant="primary" className='mt-2' type='submit'>
-                Оплатить
+
+              <Button variant="primary" className='mt-2' type='submit' style={{width: '100%'}}>
+                К оплате
               </Button>
             </form>
           )}
         </Formik>
-      }
-    />
+      </DialogContent>
+    </Dialog>
+    // <Modal
+    //   show={show}
+    //   handleClose={handleClose}
+    //   header={<h3>Оплата</h3>}
+    //   divider={}
+    //   body={
+    //     <Formik
+    //       onSubmit={handleSubmit}
+    //       initialValues={{ email: '', no_check_needed: false }}>
+    //       {(props) => (
+    //         <form onSubmit={props.handleSubmit} id="pay-handler">
+    //           <Input
+    //             label="Укажите ваш e-mail для отправки фискального чека"
+    //             name="email"
+    //             required
+    //             type="text"
+    //             value={props.values.no_check_needed ? '' : props.values.email}
+    //             disabled={props.values.no_check_needed}
+    //             onChange={(e) => props.setFieldValue('email', e.target.value)}
+    //           />
+    //
+    //           <Form.Check
+    //             label='Чек не нужен'
+    //             name='no_check_needed'
+    //             type='checkbox'
+    //             className='mt-2 mb-2'
+    //             onChange={(e) => props.setFieldValue('no_check_needed', e.target.checked)}
+    //           />
+    //
+    //           <Button variant="primary" className='mt-2' type='submit'>
+    //             Оплатить
+    //           </Button>
+    //         </form>
+    //       )}
+    //     </Formik>
+    //   }
+    // />
   )
 }
 
@@ -143,6 +200,12 @@ const PaymentInfoItem = ({
 
   return (
     <div className={css.item}>
+         <SubmitModal
+          payHandler={payHandler}
+          show={show}
+          sessionId={sessionId}
+          handleClose={() => setShow(false)}
+        />
       <Box
         sx={[
           imageContainerStyle,
