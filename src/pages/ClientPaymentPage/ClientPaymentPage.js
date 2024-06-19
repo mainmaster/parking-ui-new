@@ -3,7 +3,7 @@ import css from './ClientPaymentPage.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik } from 'formik'
 import { Button } from 'react-bootstrap'
-import { useEffect, useRef, useState} from 'react'
+import {useEffect, useMemo, useRef, useState} from 'react'
 // Store
 import {
     paymentInfoFetch,
@@ -23,6 +23,17 @@ import {useBuySubscriptionMutation} from "../../api/payments.api";
 import {registerOrderRequest} from "../../api/payment";
 import {useSnackbar} from "notistack";
 import { useGetInfoFooterQuery } from 'api/apiSlice'
+import {Box, InputAdornment, Stack, TextField, Typography} from "@mui/material";
+import visaImg from 'icons/visa.png'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import SearchIcon from "@mui/icons-material/Search";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import {getPaymentsPageImage} from "../../api/settings/paymentsPageImage";
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import { logoIconWithoutBG } from 'icons/index'
+import {useTheme} from "@mui/material/styles";
+import sessionSkeleton from "../../assets/svg/session_skeleton.svg";
+import Lightbox from "react-18-image-lightbox";
 
 const SubscriptionModal = ({subscriptions}) =>{
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
@@ -427,6 +438,47 @@ const SubscriptionModal = ({subscriptions}) =>{
     )
 }
 
+const ABONIMENTS = [
+  {
+    price: 400,
+    title: 'Неделя',
+  },
+  {
+    price: 1500,
+    title: 'Месяц',
+  },
+  {
+    price: 3000,
+    title: '3 месяца',
+  },
+  {
+    price: 10000,
+    title: '1 год',
+  },
+];
+
+const FIRST_TIME = [
+  {
+    price: 0,
+    title: '30 минут',
+  },
+  {
+    price: 250,
+    title: '3 часа',
+  },
+];
+
+const TARIF = [
+  {
+    price: 100,
+    title: '1 час',
+  },
+  {
+    price: 1000,
+    title: '24 часа',
+  },
+]
+
 const ClientPaymentPage = () => {
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
     const dispatch = useDispatch()
@@ -435,7 +487,9 @@ const ClientPaymentPage = () => {
     const isLoadingFetch = useSelector((state) => state.payments.isLoadingInfoFetch)
     const isErrorFetch = useSelector((state) => state.payments.isErrorInfoFetch)
     const [isSubmit, setIsSubmit] = useState(false)
-    const {data: parkingData} = useGetInfoFooterQuery(parkingID)
+    const [bannerPicture ,setBannerPicture] = useState('');
+    const {data: parkingData} = useGetInfoFooterQuery(parkingID);
+    const [inputText, setInputText] = useState('');
 
     const {data: tariffs} = useGetAllTariffsQuery(parkingID)
     const {data: subscriptions} = useSubscriptionsQuery(parkingID)
@@ -474,7 +528,7 @@ const ClientPaymentPage = () => {
     )
 
     const contentResult = (
-        <div className={css.result}>
+        <div className={css.content}>
             <div className={css.text}>
                 Найдено: {paymentInfo === 0 ? "Оплата на ваш автомобиль не требуется" : paymentInfo?.length}
             </div>
@@ -496,58 +550,171 @@ const ClientPaymentPage = () => {
     const errorMessage = isErrorFetch ? errorContent : null
     const spinner = isLoadingFetch ? spinnerContent : null
     const content = hasData ? contentResult : null
-    let freeTime = tariffs?.tariffs[0].freeMins
+    let freeTime = tariffs?.tariffs[0].freeMins;
 
+    useEffect(()=>{
+      getPaymentsPageImage(parkingID).then((res)=>{
+        setBannerPicture(res.config.baseURL + res.config.url)
+      })
+    },[]);
+
+    const handleSearch = () => {
+      dispatch(paymentInfoFetch({number: inputText, parkingID: parkingID}))
+      setIsSubmit(true);
+    }
 
     return (
-        <ClientLayout parkingID={parkingID} title={parkingData?.payment_page_header} isHideMenu>
-            {subscriptions?.supportSubscribe &&
-                <Button className="mb-3" onClick={()=>setBuyModal(true)}>Купить абонемент</Button>}
-            <div className={css.price}>
-                <div className={css.green}>{freeTime}мин 0&#8381;</div>
-                {tariffs?.tariffs?.map((item) => (
-                    <> 
-                       <div>
-                            {item.passMode === 'pay_by_hour' ?  ` 1ч ${item.price}₽`:  `${item.interval}ч ${item.price}₽ `}
-                        </div>
-                       
-                    </>
-                ))}
+      <div className={css.clientPaymentPageWrapper}>
+        <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
+          <div className={css.bannerContainer}>
+            <img className={css.logo} src={bannerPicture} alt=''/>
+            <div className={css.dispatcher}>
+              <PhoneOutlinedIcon/>
+              <Typography>Диспетчер</Typography>
             </div>
-            <Modal
-                show={buyModal}
-                handleClose={()=>setBuyModal(false)}
-                header={ <h3>Покупка абонемента</h3>}
-                body={<SubscriptionModal subscriptions={subscriptions}/>}
-            />
-            <Formik
-                initialValues={{
-                    number: '',
+          </div>
+          <Stack direction={'column'} gap={'24px'}>
+            <Stack direction={'column'} gap={'12px'}>
+              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонимент</Typography>
+              <Stack direction={'row'} gap={'12px'}>
+                {ABONIMENTS.map((aboniment) => (
+                  <div className={css.aboniment} key={aboniment.price}>
+                    <Typography sx={{fontWeight: 600}}>{aboniment.title}</Typography>
+                    <div className={css.abonimentPrice}>{aboniment.price}₽ <KeyboardArrowRightIcon/></div>
+                  </div>
+                ))}
+              </Stack>
+            </Stack>
+            <Stack direction={'column'} gap={'8px'}>
+              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Оплатить парковку</Typography>
+              <TextField
+                value={inputText}
+                onChange={(event) => {
+                  setInputText(event.target.value);
+                  setIsSubmit(false);
                 }}
-                onSubmit={onSubmit}
-                validationSchema={validationSchema}
-            >
-                {(props) => (
-                    <form onSubmit={props.handleSubmit} className={css.form}>
-                        <Input
-                            label="Номер машины"
-                            name="number"
-                            type="text"
-                            onChange={(e) => props.setFieldValue('number', e.target.value)}
-                            className={css.input}
-                            placeholder="123"
-                        />
-                        <Button variant="success" type="submit" className={css.btn}>
-                            Найти
-                        </Button>
-                    </form>
-                )}
-            </Formik>
+                onKeyDown={(event) => {
+                  if (event.code.toLowerCase() === 'enter' && !isSubmit) {
+                    handleSearch();
+                  }
+                }}
+                className={css.searchInput}
+                placeholder='Ваш гос.номер, например а012аа'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment
+                      position="end"
+                    >
+                      <HighlightOffIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Stack>
+            <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
+              <Stack direction={'column'} gap={'4px'}>
+                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Первые</Typography>
+                <Stack direction={'row'} gap={'8px'}>
+                  {FIRST_TIME.map((item) => (
+                    <div className={css.aboniment} key={item.price}>
+                      <Typography sx={{fontWeight: 600}}>{item.title}</Typography>
+                      <div className={`${css.abonimentPrice} ${item.price === 0 ? css.zero : ''}`}>{item.price}₽</div>
+                    </div>
+                  ))}
+                </Stack>
+              </Stack>
+              <div className={css.borderBetweenPrice}>
 
-            {errorMessage}
-            {spinner}
-            {content}
-        </ClientLayout>
+              </div>
+              <Stack direction={'column'} gap={'4px'}>
+                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Далее по тарифу</Typography>
+                <Stack direction={'row'} gap={'8px'}>
+                  {TARIF.map((item) => (
+                    <div className={css.aboniment} key={item.price}>
+                      <Typography sx={{fontWeight: 600}}>{item.title}</Typography>
+                      <div className={`${css.abonimentPrice} ${item.price === 0 ? css.zero : ''}`}>{item.price}₽</div>
+                    </div>
+                  ))}
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
+          {content}
+        </Stack>
+
+        <div className={css.footer}>
+          <div className={css.footerLogo}>
+            {logoIconWithoutBG}
+            <div>
+              Оплата онлайн
+            </div>
+          </div>
+          <div className={css.offer}>
+            <div className={css.offerUnp}>
+              ООО «Спорт Плюс»<br/>
+              Юридический адрес: 119334, г. Москва, 5-й Донской проезд, д.15/7. Почтовый адрес: 119334, г. Москва, 5-й
+              Донской проезд, д.15/7. ИНН/КПП: 7722810381/ 772501001. ОГРН: 1137746480630. Генеральный директор (на
+              основании Устава): Крикунов Дмитрий Анатольевич. Телефон, факс, электронная почта, иные контактные данные
+              компании: + 7 (499) 653-93-66, hello@citysport.pro, https://citysport.pro/
+            </div>
+            <a href='#'>Политика возврата и обмена</a>
+            <a href='#'>Пользовательское соглашение и политика обработки данных</a>
+          </div>
+        </div>
+      </div>
+      // <ClientLayout parkingID={parkingID} title={parkingData?.payment_page_header} isHideMenu>
+      //     {subscriptions?.supportSubscribe &&
+        //         <Button className="mb-3" onClick={()=>setBuyModal(true)}>Купить абонемент</Button>}
+        //     <div className={css.price}>
+        //         <div className={css.green}>{freeTime}мин 0&#8381;</div>
+        //         {tariffs?.tariffs?.map((item) => (
+        //             <>
+        //                <div>
+        //                     {item.passMode === 'pay_by_hour' ?  ` 1ч ${item.price}₽`:  `${item.interval}ч ${item.price}₽ `}
+        //                 </div>
+        //
+        //             </>
+        //         ))}
+        //     </div>
+        //     <Modal
+        //         show={buyModal}
+        //         handleClose={()=>setBuyModal(false)}
+        //         header={ <h3>Покупка абонемента</h3>}
+        //         body={<SubscriptionModal subscriptions={subscriptions}/>}
+        //     />
+        //     <Formik
+        //         initialValues={{
+        //             number: '',
+        //         }}
+        //         onSubmit={onSubmit}
+        //         validationSchema={validationSchema}
+        //     >
+        //         {(props) => (
+        //             <form onSubmit={props.handleSubmit} className={css.form}>
+        //                 <Input
+        //                     label="Номер машины"
+        //                     name="number"
+        //                     type="text"
+        //                     onChange={(e) => props.setFieldValue('number', e.target.value)}
+        //                     className={css.input}
+        //                     placeholder="123"
+        //                 />
+        //                 <Button variant="success" type="submit" className={css.btn}>
+        //                     Найти
+        //                 </Button>
+        //             </form>
+        //         )}
+        //     </Formik>
+        //
+        //     {errorMessage}
+        //     {spinner}
+        //     {content}
+        // </ClientLayout>
     )
 }
 
