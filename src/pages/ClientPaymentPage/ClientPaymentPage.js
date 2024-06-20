@@ -690,7 +690,7 @@ const ClientPaymentPage = () => {
           </div>
         </div>
 
-        <SubscriptionPaymentModal show={buyModal} handleClose={handleClose} subscription={subscription}/>
+        {buyModal && <SubscriptionPaymentModal show={buyModal} handleClose={handleClose} subscription={subscription}/>}
       </div>
     )
 }

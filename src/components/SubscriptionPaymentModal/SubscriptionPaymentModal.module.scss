@@ -1,0 +1,37 @@
+.dialogWrapper {
+  width: 500px;
+
+  & .title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    text-align: center;
+
+    & .subTitle {
+      display: flex;
+      align-items: center;
+      width: 300px;
+      margin: 0 auto;
+      font-size: 16px;
+      color: #7F7A84;
+    }
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .dialogWrapper {
+    width: 360px;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .dialogWrapper {
+    width: 320px;
+  }
+}
