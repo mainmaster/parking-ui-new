@@ -36,9 +36,7 @@ import master from '../../assets/svg/Mastercard.svg'
 import visa from '../../assets/svg/Visa.svg'
 import jcb from '../../assets/svg/JCB.svg'
 import DoneIcon from '@mui/icons-material/Done';
-import {useTheme} from "@mui/material/styles";
-import sessionSkeleton from "../../assets/svg/session_skeleton.svg";
-import Lightbox from "react-18-image-lightbox";
+import SubscriptionPaymentModal from 'components/SubscriptionPaymentModal'
 
 const SubscriptionModal = ({subscriptions}) =>{
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
@@ -495,6 +493,7 @@ const ClientPaymentPage = () => {
     const [bannerPicture ,setBannerPicture] = useState('');
     const {data: parkingData} = useGetInfoFooterQuery(parkingID);
     const [inputText, setInputText] = useState('');
+    const [subscription, setSubscription] = useState({});
 
     const {data: tariffs} = useGetAllTariffsQuery(parkingID)
     const {data: subscriptions} = useSubscriptionsQuery(parkingID)
@@ -522,16 +521,6 @@ const ClientPaymentPage = () => {
             })
     }
 
-    const spinnerContent = (
-        <div className={css.spinner}>
-            <Spinner animation="border" />
-        </div>
-    )
-
-    const errorContent = (
-        <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
-    )
-
     const contentResult = (
         <div className={css.content}>
             <div className={css.text}>
@@ -558,11 +547,7 @@ const ClientPaymentPage = () => {
     </div>
   )
 
-    const hasData = !(isLoadingFetch || isErrorFetch) && isSubmit
-    const errorMessage = isErrorFetch ? errorContent : null
-    const spinner = isLoadingFetch ? spinnerContent : null
-    const content = paymentInfo && paymentInfo.length ? contentResult : isSubmit ? nullContent : null
-    let freeTime = tariffs?.tariffs[0].freeMins;
+    const content = paymentInfo && paymentInfo.length ? contentResult : isSubmit && !isLoadingFetch ? nullContent : null
 
     useEffect(()=>{
       getPaymentsPageImage(parkingID).then((res)=>{
@@ -573,6 +558,18 @@ const ClientPaymentPage = () => {
     const handleSearch = () => {
       dispatch(paymentInfoFetch({number: inputText, parkingID: parkingID}))
       setIsSubmit(true);
+    }
+
+    const handleClose = () => {
+      setBuyModal(false);
+    }
+
+    const handleOpen = ({price, subscription}) => {
+      setSubscription({
+        price,
+        subscription
+      })
+      setBuyModal(true);
     }
 
     return (
@@ -587,10 +584,14 @@ const ClientPaymentPage = () => {
           </div>
           <Stack direction={'column'} gap={'24px'}>
             <Stack direction={'column'} gap={'12px'}>
-              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонимент</Typography>
+              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонемент</Typography>
               <Stack direction={'row'} gap={'12px'}>
                 {ABONIMENTS.map((aboniment) => (
-                  <div className={css.aboniment} key={aboniment.price}>
+                  <div
+                    className={css.aboniment}
+                    key={aboniment.price}
+                    onClick={() => handleOpen({price: aboniment.price, subscription: aboniment.title})}
+                  >
                     <Typography sx={{fontWeight: 600}}>{aboniment.title}</Typography>
                     <div className={css.abonimentPrice}>{aboniment.price}₽ <KeyboardArrowRightIcon/></div>
                   </div>
@@ -618,13 +619,19 @@ const ClientPaymentPage = () => {
                       <SearchIcon />
                     </InputAdornment>
                   ),
-                  endAdornment: (
+                  endAdornment: inputText ? (
                     <InputAdornment
                       position="end"
+                      onClick={() => {
+                        setInputText('')
+                      }}
+                      sx={{
+                        cursor: 'pointer'
+                      }}
                     >
                       <HighlightOffIcon />
                     </InputAdornment>
-                  )
+                  ) : null
                 }}
               />
             </Stack>
@@ -682,6 +689,8 @@ const ClientPaymentPage = () => {
             <a href='#'>Пользовательское соглашение и политика обработки данных</a>
           </div>
         </div>
+
+        <SubscriptionPaymentModal show={buyModal} handleClose={handleClose} subscription={subscription}/>
       </div>
     )
 }

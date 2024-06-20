@@ -1,32 +1,76 @@
 @import '../../styles/mixins.scss';
 
-.success {
-  font-size: 20px;
-  color: rgb(1, 167, 1);
-  padding-top: 10px;
-  text-align: center;
-}
-
-.icon {
-  width: 200px;
-  height: 200px;
-}
-
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
+  gap: 20px;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  overflow: auto;
+  background: #fff;
 
-.text {
-  font-size: 20px;
-  margin-top: 30px;
-  text-align: center;
-}
+  & .bannerContainer {
+    position: relative;
+    height: 140px;
 
-.time {
-  font-size: 40px;
+    & .logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+    }
+
+    & .dispatcher {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      font-weight: 500;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    & .icon {
+      width: 144px;
+      height: 144px;
+      color: #D2F9E2;
+      background: #128742;
+      border-radius: 50%;
+    }
+
+    & .success {
+      font-size: 32px;
+      color: rgb(1, 167, 1);
+      padding-top: 10px;
+      text-align: center;
+    }
+
+    & .text {
+      font-size: 24px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    & .time {
+      font-size: 50px;
+    }
+  }
 }
 
 .datenow {

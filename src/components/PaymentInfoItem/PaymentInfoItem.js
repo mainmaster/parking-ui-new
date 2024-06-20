@@ -104,43 +104,6 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId }) => {
         </Formik>
       </DialogContent>
     </Dialog>
-    // <Modal
-    //   show={show}
-    //   handleClose={handleClose}
-    //   header={<h3>Оплата</h3>}
-    //   divider={}
-    //   body={
-    //     <Formik
-    //       onSubmit={handleSubmit}
-    //       initialValues={{ email: '', no_check_needed: false }}>
-    //       {(props) => (
-    //         <form onSubmit={props.handleSubmit} id="pay-handler">
-    //           <Input
-    //             label="Укажите ваш e-mail для отправки фискального чека"
-    //             name="email"
-    //             required
-    //             type="text"
-    //             value={props.values.no_check_needed ? '' : props.values.email}
-    //             disabled={props.values.no_check_needed}
-    //             onChange={(e) => props.setFieldValue('email', e.target.value)}
-    //           />
-    //
-    //           <Form.Check
-    //             label='Чек не нужен'
-    //             name='no_check_needed'
-    //             type='checkbox'
-    //             className='mt-2 mb-2'
-    //             onChange={(e) => props.setFieldValue('no_check_needed', e.target.checked)}
-    //           />
-    //
-    //           <Button variant="primary" className='mt-2' type='submit'>
-    //             Оплатить
-    //           </Button>
-    //         </form>
-    //       )}
-    //     </Formik>
-    //   }
-    // />
   )
 }
 

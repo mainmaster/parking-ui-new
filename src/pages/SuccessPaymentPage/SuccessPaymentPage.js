@@ -7,7 +7,10 @@ import ClientLayout from 'components/ClientLayout'
 import {getSuccessPayment, getSuccessPaymentSubs} from "../../api/successPayment/successPayment.api";
 import Cookies from 'universal-cookie';
 import { useGetInfoFooterQuery } from 'api/apiSlice'
-
+import {Stack, Typography} from "@mui/material";
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import {getPaymentsPageImage} from "../../api/settings/paymentsPageImage";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 const formatTime = (num) => {
@@ -25,7 +28,7 @@ const SuccessPaymentPage = () => {
   const [seconds, setSeconds] = useState(0)
   const [timerActive] = useState(true)
   const {data: parkingData} = useGetInfoFooterQuery(parkingID)
-
+  const [banner, setBanner] = useState('');
 
   const cookies = new Cookies();
 
@@ -36,6 +39,9 @@ const SuccessPaymentPage = () => {
 
   useEffect(()=>{
     getSuccessPayment(parkingID)
+    getPaymentsPageImage(parkingID).then(res => {
+      setBanner(res.config.baseURL + res.config.url)
+    })
     document.title = parkingData?.payment_page_header
 
   },[parkingData?.payment_page_header, parkingID])
@@ -52,14 +58,23 @@ const SuccessPaymentPage = () => {
   }, [dataNow, moment(moment(cookies.get('timeByWhichCanLeave'))), seconds, timerActive])
 
   return (
-      <ClientLayout title={parkingData?.payment_page_header} parkingID={parkingID}>
-        <div className={css.wrapper}>
-          <CheckCircleFill className={css.icon} fill="rgb(1, 167, 1)" />
-          <div className={css.success}>Оплата успешно проведена</div>
-          <div className={css.text}>Бесплатное время для выезда:</div>
+      <div className={css.wrapper}>
+        <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
+          <div className={css.bannerContainer}>
+            <img className={css.logo} src={banner} alt=''/>
+            <div className={css.dispatcher}>
+              <PhoneOutlinedIcon/>
+              <Typography>Диспетчер</Typography>
+            </div>
+          </div>
+        </Stack>
+        <div className={css.content}>
+          <CheckCircleFill className={css.icon} />
+          <div className={css.success}>Оплата проведена</div>
+          <div className={css.text}>Бесплатное время для выезда</div>
           <div className={css.time}>{formatTime(seconds)}</div>
         </div>
-      </ClientLayout>
+      </div>
   )
 }
 
