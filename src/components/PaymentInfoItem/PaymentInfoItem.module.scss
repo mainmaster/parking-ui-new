@@ -63,3 +63,19 @@
     flex: 0 0 100%;
   }
 }
+
+.dialogWrapper {
+  width: 400px;
+}
+
+@media screen and (max-width: 400px) {
+  .dialogWrapper {
+    width: 360px;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .dialogWrapper {
+    width: 320px;
+  }
+}

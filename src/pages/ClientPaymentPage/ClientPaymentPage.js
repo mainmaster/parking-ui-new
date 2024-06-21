@@ -3,7 +3,7 @@ import css from './ClientPaymentPage.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik } from 'formik'
 import { Button } from 'react-bootstrap'
-import {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 // Store
 import {
     paymentInfoFetch,
@@ -37,6 +37,8 @@ import visa from '../../assets/svg/Visa.svg'
 import jcb from '../../assets/svg/JCB.svg'
 import DoneIcon from '@mui/icons-material/Done';
 import SubscriptionPaymentModal from 'components/SubscriptionPaymentModal'
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {useTheme} from "@mui/material/styles";
 
 const SubscriptionModal = ({subscriptions}) =>{
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
@@ -540,6 +542,9 @@ const ClientPaymentPage = () => {
         </div>
     )
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const nullContent = (
     <div className={css.nullContent}>
       <DoneIcon/>
@@ -556,6 +561,10 @@ const ClientPaymentPage = () => {
     },[]);
 
     const handleSearch = () => {
+      if (!inputText) {
+        return;
+      }
+
       dispatch(paymentInfoFetch({number: inputText, parkingID: parkingID}))
       setIsSubmit(true);
     }
@@ -600,40 +609,45 @@ const ClientPaymentPage = () => {
             </Stack>
             <Stack direction={'column'} gap={'8px'}>
               <Typography sx={{fontSize: '24px', fontWeight: 500}}>Оплатить парковку</Typography>
-              <TextField
-                value={inputText}
-                onChange={(event) => {
-                  setInputText(event.target.value);
-                  setIsSubmit(false);
-                }}
-                onKeyDown={(event) => {
-                  if (event.code.toLowerCase() === 'enter' && !isSubmit) {
-                    handleSearch();
-                  }
-                }}
-                className={css.searchInput}
-                placeholder='Ваш гос.номер, например а012аа'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: inputText ? (
-                    <InputAdornment
-                      position="end"
-                      onClick={() => {
-                        setInputText('')
-                      }}
-                      sx={{
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <HighlightOffIcon />
-                    </InputAdornment>
-                  ) : null
-                }}
-              />
+              <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
+                <TextField
+                  value={inputText}
+                  onChange={(event) => {
+                    setInputText(event.target.value);
+                    setIsSubmit(false);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.code.toLowerCase() === 'enter' && !isSubmit) {
+                      handleSearch();
+                    }
+                  }}
+                  className={css.searchInput}
+                  placeholder='Ваш гос.номер, например а012аа'
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: inputText ? (
+                      <InputAdornment
+                        position="end"
+                        onClick={() => {
+                          setInputText('')
+                        }}
+                        sx={{
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <HighlightOffIcon />
+                      </InputAdornment>
+                    ) : null
+                  }}
+                />
+                {isMobile ?<Button onClick={handleSearch} type='submit' style={{width: '200px', height: '100%', background: 'green', border: "none"}}>
+                  Найти
+                </Button> : <></>}
+              </Stack>
             </Stack>
             <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
               <Stack direction={'column'} gap={'4px'}>

@@ -52,11 +52,12 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
       open={show}
       onClose={handleClose}
       PaperProps={{
-        sx: {borderRadius: '16px'}
+        sx: {borderRadius: '16px'},
+        className: css.dialogWrapper,
       }}
     >
       <DialogTitle
-        style={{textAlign: 'center', width: 400}}
+        style={{textAlign: 'center'}}
       >
         Оплата
         <IconButton
