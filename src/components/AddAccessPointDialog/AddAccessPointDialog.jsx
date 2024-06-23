@@ -51,7 +51,7 @@ import theme from '../../theme/normal';
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
   direction: yup.string().required('Выберите направление'),
-  cam_id: yup.number().required('Выберите камеру'),
+  cam_id: yup.array().required('Выберите камеру'),
   laurent_id: yup.number().required('Выберите контроллер'),
   led_board_id: yup.number().required('Выберите LED табло'),
   open_relay_number: yup.number().required('Выберите реле для открытия'),
@@ -109,7 +109,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
     return {
       description: accessPointEdit?.description || '',
       direction: accessPointEdit?.direction || '',
-      cam_id: accessPointEdit?.cameras ? accessPointEdit?.cameras[0] : '',
+      cam_id: accessPointEdit?.cameras ? accessPointEdit?.cameras : [],
       laurent_id: accessPointEdit?.laurent_id || '',
       led_board_id: accessPointEdit?.led_board_id || '',
       open_relay_number: accessPointEdit?.open_relay_number || '',
@@ -198,7 +198,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         const payload = {
           description: description,
           direction: direction,
-          cameras: [cam_id],
+          cameras: cam_id,
           laurent_id: laurent_id,
           led_board_id: led_board_id,
           open_relay_number: open_relay_number,
@@ -224,7 +224,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         const payload = {
           description: description,
           direction: direction,
-          cameras: [cam_id],
+          cameras: cam_id,
           laurent_id: laurent_id,
           led_board_id: led_board_id,
           open_relay_number: open_relay_number,
@@ -248,7 +248,6 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
       }
     }
   });
-  console.log(formik)
   const handleValidate = useCallback(() => {
     if (!_.isEmpty(formik.errors)) {
       Object.entries(formik.errors).map((error) => {
@@ -459,6 +458,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               id="cam_id"
               name="cam_id"
               displayEmpty
+              multiple
               value={formik.values.cam_id}
               onChange={handleValueChange}
               onBlur={formik.handleBlur}
@@ -491,12 +491,12 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                 }
               }}
               renderValue={(selected) => {
-                const selectedName = camerasOptions.find(
-                  (item) => item.value === selected
+                const selectedNames = camerasOptions.filter(
+                  (item) => selected.includes(item.value)
                 );
                 return (
                   <Typography component={'h5'} noWrap sx={{ fontWeight: 500 }}>
-                    {selectedName?.name}
+                    {selectedNames?.map((item) => item.name).join(', ')}
                   </Typography>
                 );
               }}
