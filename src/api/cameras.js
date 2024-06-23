@@ -16,7 +16,9 @@ export const createCameraRequest = async ({
   password,
   mjpeg_url,
   snapshot_url,
-  port
+  port,
+  emergency_car_only,
+  is_display,
 }) => {
   return $api.post('/cameras/', {
     description,
@@ -25,7 +27,9 @@ export const createCameraRequest = async ({
     password,
     mjpeg_url,
     snapshot_url,
-    port
+    port,
+    emergency_car_only,
+    is_display,
   });
 };
 
@@ -37,7 +41,9 @@ export const updateCameraRequest = async ({
   id,
   mjpeg_url,
   snapshot_url,
-  port
+  port,
+  emergency_car_only,
+  is_display,
 }) => {
   return $api.put('/cameras/' + id, {
     description,
@@ -46,7 +52,9 @@ export const updateCameraRequest = async ({
     password,
     mjpeg_url,
     snapshot_url,
-    port
+    port,
+    emergency_car_only,
+    is_display,
   });
 };
 

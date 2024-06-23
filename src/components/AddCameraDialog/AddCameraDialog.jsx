@@ -16,7 +16,7 @@ import {
   IconButton,
   TextField,
   Typography,
-  InputLabel
+  InputLabel, Checkbox, FormGroup, FormControlLabel
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
@@ -43,7 +43,9 @@ const initialValues = {
   password: '',
   mjpeg_url: '',
   snapshot_url: '',
-  port: 80
+  port: 80,
+  emergency_car_only: false,
+  is_display: false,
 };
 
 const labelStyle = {
@@ -59,6 +61,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
   const cameraEdit = useSelector((state) => state.cameras.cameraEdit);
   const theme = useTheme();
 
+  console.log(cameraEdit?.emergency_car_only)
   const defaultValues = useMemo(() => {
     if (!_.isEmpty(cameraEdit)) {
       return {
@@ -68,7 +71,9 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
         password: cameraEdit.password,
         mjpeg_url: cameraEdit.mjpeg_url,
         snapshot_url: cameraEdit.snapshot_url,
-        port: cameraEdit.port
+        port: cameraEdit.port,
+        emergency_car_only: cameraEdit.emergency_car_only,
+        is_display: cameraEdit.is_display,
       };
     } else {
       return initialValues;
@@ -335,6 +340,34 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
                 Boolean(formik.errors.snapshot_url)
               }
             />
+          </Stack>
+          <Stack>
+            <FormGroup>
+              <FormControlLabel control={
+                <Checkbox
+                  id="emergency_car_only"
+                  name="emergency_car_only"
+                  checked={formik.values.emergency_car_only}
+                  onChange={handleValueChange}
+                  error={
+                    formik.touched.emergency_car_only &&
+                    Boolean(formik.errors.emergency_car_only)
+                  }
+                />
+              } label="Камера только для спецтранспорта" />
+              <FormControlLabel control={
+                <Checkbox
+                  id="is_display"
+                  name="is_display"
+                  checked={formik.values.is_display}
+                  onChange={handleValueChange}
+                  error={
+                    formik.touched.is_display &&
+                    Boolean(formik.errors.is_display)
+                  }
+                />
+              } label="Отображать видео на главной странце" />
+            </FormGroup>
           </Stack>
 
           <Button
