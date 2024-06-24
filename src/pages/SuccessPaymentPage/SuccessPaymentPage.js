@@ -1,6 +1,6 @@
 import css from './SuccessPaymentPage.module.scss'
 import { CheckCircleFill } from 'react-bootstrap-icons'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 // Components
 import ClientLayout from 'components/ClientLayout'
@@ -57,19 +57,21 @@ const SuccessPaymentPage = () => {
     }
   }, [dataNow, moment(moment(cookies.get('timeByWhichCanLeave'))), seconds, timerActive])
 
+  const { data: footerInfo } = useGetInfoFooterQuery(parkingID)
+
   return (
       <div className={css.wrapper}>
         <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
           <div className={css.bannerContainer}>
             <img className={css.logo} src={banner} alt=''/>
-            <div className={css.dispatcher}>
+            <a className={css.dispatcher} href={`tel:${footerInfo?.operator_phone_number}`}>
               <PhoneOutlinedIcon/>
               <Typography>Диспетчер</Typography>
-            </div>
+            </a>
           </div>
         </Stack>
         <div className={css.content}>
-          <CheckCircleFill className={css.icon} />
+          <CheckCircleFill className={css.icon}/>
           <div className={css.success}>Оплата проведена</div>
           <div className={css.text}>Бесплатное время для выезда</div>
           <div className={css.time}>{formatTime(seconds)}</div>

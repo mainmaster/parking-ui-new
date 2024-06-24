@@ -39,6 +39,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import SubscriptionPaymentModal from 'components/SubscriptionPaymentModal'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
+import {Telephone} from "react-bootstrap-icons";
 
 
 const ABONIMENTS = [
@@ -148,15 +149,18 @@ const ClientPaymentPage = () => {
       setBuyModal(true);
     }
 
+  const { data: footerInfo } = useGetInfoFooterQuery(parkingID)
+
+
   return (
       <div className={css.clientPaymentPageWrapper}>
         <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
           <div className={css.bannerContainer}>
             <img className={css.logo} src={bannerPicture} alt=''/>
-            <div className={css.dispatcher}>
+            <a className={css.dispatcher} href={`tel:${footerInfo?.operator_phone_number}`}>
               <PhoneOutlinedIcon/>
               <Typography>Диспетчер</Typography>
-            </div>
+            </a>
           </div>
           <Stack direction={'column'} gap={'24px'}>
             {subscriptions?.supportSubscribe && (
