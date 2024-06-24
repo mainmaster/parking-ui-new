@@ -116,7 +116,8 @@ const PaymentInfoItem = ({
   SessionCreatedAt,
   sessionId,
   AmountDetails,
-  VehiclePlate
+  VehiclePlate,
+  freeTime
 }) => {
 
   const payment = () =>{
@@ -210,7 +211,7 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'hh:mm',
                      amount: detail.amount,
-                     description: 'первые 30м'
+                     description: `первые ${freeTime}м`
                    })
                  )
                }

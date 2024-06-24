@@ -111,7 +111,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
                 name="vehiclePlate"
                 required
                 type="text"
-                placeholder='a111i77'
+                placeholder='А001АА 777'
                 value={props.values.vehiclePlate}
                 onChange={(e) => props.setFieldValue('vehiclePlate', e.target.value)}
               />

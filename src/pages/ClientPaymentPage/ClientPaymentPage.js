@@ -40,408 +40,6 @@ import SubscriptionPaymentModal from 'components/SubscriptionPaymentModal'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 
-const SubscriptionModal = ({subscriptions}) =>{
-    let parkingID = new URLSearchParams(window.location.search).get('parkingID')
-    const {enqueueSnackbar} = useSnackbar()
-    const [buy] = useBuySubscriptionMutation()
-
-    const submitWeek = (data) => {
-        buy(data)
-            .then(r=>{
-                if(r.data.error){
-                    enqueueSnackbar('Оплата временно недоступна',{
-                        variant: 'error'
-                    })
-                }else{
-                    window.location.href = r.data.redirectURL
-                }
-            })
-    }
-    const submitMonth = (data) => {
-        buy(data)
-            .then(r=>{
-                if(r.data.error){
-                    enqueueSnackbar('Оплата временно недоступна',{
-                        variant: 'error'
-                    })
-                }else{
-                    window.location.href = r.data.redirectURL
-                }
-            })
-    }
-    const submitQuarter= (data) => {
-        buy(data)
-            .then(r=>{
-                if(r.data.error){
-                    enqueueSnackbar('Оплата временно недоступна',{
-                        variant: 'error'
-                    })
-                }else{
-                    window.location.href = r.data.redirectURL
-                }
-            })
-    }
-    const submitYear = (data) => {
-        buy(data)
-            .then(r=>{
-                if(r.data.error){
-                    enqueueSnackbar('Оплата временно недоступна',{
-                        variant: 'error'
-                    })
-                }else{
-                    window.location.href = r.data.redirectURL
-                }
-            })
-    }
-
-    // monthSubscriptionPrice
-    //
-    // quarterSubscriptionPrice
-    // weekSubscriptionPrice
-    //
-    // yearSubscriptionPrice
-    //
-
-    const buyMonth = useRef()
-    const buyQuarter = useRef()
-    const buyWeek = useRef()
-    const buyYear = useRef()
-
-
-    return (
-      <div>
-        {
-          subscriptions && (
-            <>
-              {subscriptions.weekSubscriptionPrice > 0 && (
-                <Accordion>
-                  <Accordion.Header>
-                    1 Неделя - {subscriptions.weekSubscriptionPrice}₽
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <Formik
-                      initialValues={{
-                        fullName: '',
-                        vehiclePlate: '',
-                        duration: 'week',
-                        parkingID: parkingID,
-                      }}
-                      onSubmit={submitWeek}
-                      innerRef={buyWeek}
-                    >
-                      {(props) => (
-                        <form onSubmit={props.handleSubmit}>
-                          <DateRangePicker
-                            format="yyyy-MM-dd"
-                            id="datepicker"
-                            readOnly
-                            className="mb-2"
-                            placeholder="Дата"
-                            defaultValue={[
-                              new Date(moment().toISOString()),
-                              new Date(moment().add('1', 'week').toISOString()),
-                            ]}
-                          />
-                          <Input
-                            label="Имя и телефон"
-                            name="fullName"
-                            type="text"
-                            required
-                            className="mb-2"
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            label="Номер машины"
-                            name="vehiclePlate"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                          />
-                           {
-                            subscriptions.emailForPayment &&
-                            <Input
-                              label="Email"
-                            name="email"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'email',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                            />
-                          }
-                          <Button type="submit">Оплатить</Button>
-                        </form>
-                      )}
-                    </Formik>
-                  </Accordion.Body>
-                </Accordion>
-              )}
-
-              {subscriptions.monthSubscriptionPrice > 0 && (
-                <Accordion>
-                  <Accordion.Header>
-                    1 Месяц - {subscriptions.monthSubscriptionPrice}₽
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <Formik
-                      initialValues={{
-                        fullName: '',
-                        vehiclePlate: '',
-                        duration: 'month',
-                        parkingID: parkingID,
-                      }}
-                      onSubmit={submitMonth}
-                      innerRef={buyMonth}
-                    >
-                      {(props) => (
-                        <form onSubmit={props.handleSubmit}>
-                          <DateRangePicker
-                            format="yyyy-MM-dd"
-                            id="datepicker"
-                            readOnly
-                            className="mb-2"
-                            placeholder="Дата"
-                            defaultValue={[
-                              new Date(moment().toISOString()),
-                              new Date(
-                                moment().add('1', 'month').toISOString()
-                              ),
-                            ]}
-                          />
-                          <Input
-                            label="Имя и телефон"
-                            name="fullName"
-                            type="text"
-                            required
-                            className="mb-2"
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            label="Номер машины"
-                            name="vehiclePlate"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                          />
-                           {
-                            subscriptions.emailForPayment &&
-                            <Input
-                              label="Email"
-                            name="email"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'email',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                            />
-                          }
-                          <Button type="submit">Оплатить</Button>
-                        </form>
-                      )}
-                    </Formik>
-                  </Accordion.Body>
-                </Accordion>
-              )}
-
-              {subscriptions.quarterSubscriptionPrice > 0 && (
-                <Accordion>
-                  <Accordion.Header>
-                    3 Месяца - {subscriptions.quarterSubscriptionPrice}₽
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <Formik
-                      initialValues={{
-                        fullName: '',
-                        vehiclePlate: '',
-                        duration: 'quarter',
-                        parkingID: parkingID,
-                      }}
-                      onSubmit={submitQuarter}
-                      innerRef={buyQuarter}
-                    >
-                      {(props) => (
-                        <form onSubmit={props.handleSubmit}>
-                          <DateRangePicker
-                            format="yyyy-MM-dd"
-                            id="datepicker"
-                            readOnly
-                            className="mb-2"
-                            placeholder="Дата"
-                            defaultValue={[
-                              new Date(moment().toISOString()),
-                              new Date(
-                                moment().add('3', 'month').toISOString()
-                              ),
-                            ]}
-                          />
-                          <Input
-                            label="Имя и телефон"
-                            name="fullName"
-                            type="text"
-                            required
-                            className="mb-2"
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            label="Номер машины"
-                            name="vehiclePlate"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                          />
-                           {
-                            subscriptions.emailForPayment &&
-                            <Input
-                              label="Email"
-                            name="email"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'email',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                            />
-                          }
-                          <Button type="submit">Оплатить</Button>
-                        </form>
-                      )}
-                    </Formik>
-                  </Accordion.Body>
-                </Accordion>
-              )}
-
-              {subscriptions.yearSubscriptionPrice > 0 && (
-                <Accordion>
-                  <Accordion.Header>
-                    1 Год - {subscriptions.yearSubscriptionPrice}₽
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <Formik
-                      initialValues={{
-                        fullName: '',
-                        vehiclePlate: '',
-                        duration: 'year',
-                        parkingID: parkingID,
-                      }}
-                      onSubmit={submitYear}
-                      innerRef={buyYear}
-                    >
-                      {(props) => (
-                        <form onSubmit={props.handleSubmit}>
-                          <DateRangePicker
-                            format="yyyy-MM-dd"
-                            id="datepicker"
-                            readOnly
-                            className="mb-2"
-                            placeholder="Дата"
-                            defaultValue={[
-                              new Date(moment().toISOString()),
-                              new Date(moment().add('1', 'year').toISOString()),
-                            ]}
-                          />
-                          <Input
-                            label="Имя и телефон"
-                            name="fullName"
-                            type="text"
-                            className="mb-2"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            label="Номер машины"
-                            name="vehiclePlate"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'vehiclePlate',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                          />
-                          {
-                            subscriptions.emailForPayment &&
-                            <Input
-                              label="Email"
-                            name="email"
-                            type="text"
-                            required
-                            onChange={(e) =>
-                              props.setFieldValue(
-                                'email',
-                                e.target.value
-                              )
-                            }
-                            className="mb-3"
-                            />
-                          }
-                          <Button type="submit">Оплатить</Button>
-                        </form>
-                      )}
-                    </Formik>
-                  </Accordion.Body>
-                </Accordion>
-              )}
-            </>
-          )
-
-          // <div>1 Месяц</div>
-          // <div>6 Месяцев</div>
-          // <div>1 Год</div>
-        }
-      </div>
-    )
-}
 
 const ABONIMENTS = [
   {
@@ -461,28 +59,6 @@ const ABONIMENTS = [
     title: '1 год',
   },
 ];
-
-const FIRST_TIME = [
-  {
-    price: 0,
-    title: '30 минут',
-  },
-  {
-    price: 250,
-    title: '3 часа',
-  },
-];
-
-const TARIF = [
-  {
-    price: 100,
-    title: '1 час',
-  },
-  {
-    price: 1000,
-    title: '24 часа',
-  },
-]
 
 const ClientPaymentPage = () => {
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
@@ -522,6 +98,7 @@ const ClientPaymentPage = () => {
                 }
             })
     }
+    let freeTime = tariffs?.tariffs[0].freeMins
 
     const contentResult = (
         <div className={css.content}>
@@ -536,6 +113,7 @@ const ClientPaymentPage = () => {
                             sessionId={item.SessionId}
                             payHandler={payHandler}
                             key={item.SessionId}
+                            freeTime={freeTime}
                         />
                     ))}
             </div>
@@ -581,7 +159,7 @@ const ClientPaymentPage = () => {
       setBuyModal(true);
     }
 
-    return (
+  return (
       <div className={css.clientPaymentPageWrapper}>
         <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
           <div className={css.bannerContainer}>
@@ -651,28 +229,27 @@ const ClientPaymentPage = () => {
             </Stack>
             <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
               <Stack direction={'column'} gap={'4px'}>
-                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Первые</Typography>
+                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Тарифы</Typography>
                 <Stack direction={'row'} gap={'8px'}>
-                  {FIRST_TIME.map((item) => (
-                    <div className={css.aboniment} key={item.price}>
-                      <Typography sx={{fontWeight: 600}}>{item.title}</Typography>
-                      <div className={`${css.abonimentPrice} ${item.price === 0 ? css.zero : ''}`}>{item.price}₽</div>
-                    </div>
-                  ))}
-                </Stack>
-              </Stack>
-              <div className={css.borderBetweenPrice}>
-
-              </div>
-              <Stack direction={'column'} gap={'4px'}>
-                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Далее по тарифу</Typography>
-                <Stack direction={'row'} gap={'8px'}>
-                  {TARIF.map((item) => (
-                    <div className={css.aboniment} key={item.price}>
-                      <Typography sx={{fontWeight: 600}}>{item.title}</Typography>
-                      <div className={`${css.abonimentPrice} ${item.price === 0 ? css.zero : ''}`}>{item.price}₽</div>
-                    </div>
-                  ))}
+                  <div
+                    className={css.aboniment}
+                    key={freeTime}
+                  >
+                    <Typography sx={{fontWeight: 600}}>{freeTime} Мин</Typography>
+                    <div className={`${css.abonimentPrice} ${css.zero}`}>0₽ <KeyboardArrowRightIcon/></div>
+                  </div>
+                  {tariffs?.tariffs?.map((item) => {
+                    const title = item.passMode === 'pay_by_hour' ? ` 1 час` : `${item.interval} часа `
+                    return (
+                      <div
+                        className={css.aboniment}
+                        key={item.price + item.interval}
+                      >
+                        <Typography sx={{fontWeight: 600}}>{title}</Typography>
+                        <div className={css.abonimentPrice}>{item.price}₽ <KeyboardArrowRightIcon/></div>
+                      </div>
+                    )
+                  })}
                 </Stack>
               </Stack>
             </Stack>
