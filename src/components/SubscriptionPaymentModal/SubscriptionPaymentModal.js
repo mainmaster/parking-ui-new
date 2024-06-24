@@ -115,15 +115,17 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
                 value={props.values.vehiclePlate}
                 onChange={(e) => props.setFieldValue('vehiclePlate', e.target.value)}
               />
-              <Input
-                label="E-mail"
-                name="email"
-                required
-                type="text"
-                placeholder='E-mail'
-                value={props.values.email}
-                onChange={(e) => props.setFieldValue('email', e.target.value)}
-              />
+              {subscription.isEmailNeed && (
+                <Input
+                  label="E-mail"
+                  name="email"
+                  required
+                  type="text"
+                  placeholder='E-mail'
+                  value={props.values.email}
+                  onChange={(e) => props.setFieldValue('email', e.target.value)}
+                />
+              )}
               <Button variant="primary" className='mt-2' type='submit' style={{width: '100%'}}>
                 Оплатить {subscription.price}₽
               </Button>

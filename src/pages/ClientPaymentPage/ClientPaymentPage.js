@@ -42,22 +42,10 @@ import {useTheme} from "@mui/material/styles";
 
 
 const ABONIMENTS = [
-  {
-    price: 400,
-    title: 'Неделя',
-  },
-  {
-    price: 1500,
-    title: 'Месяц',
-  },
-  {
-    price: 3000,
-    title: '3 месяца',
-  },
-  {
-    price: 10000,
-    title: '1 год',
-  },
+  'weekSubscriptionPrice',
+  'monthSubscriptionPrice',
+'quarterSubscriptionPrice',
+'yearSubscriptionPrice',
 ];
 
 const ClientPaymentPage = () => {
@@ -151,10 +139,11 @@ const ClientPaymentPage = () => {
       setBuyModal(false);
     }
 
-    const handleOpen = ({price, subscription}) => {
+    const handleOpen = ({price, subscription, isEmailNeed}) => {
       setSubscription({
         price,
-        subscription
+        subscription,
+        isEmailNeed
       })
       setBuyModal(true);
     }
@@ -170,21 +159,44 @@ const ClientPaymentPage = () => {
             </div>
           </div>
           <Stack direction={'column'} gap={'24px'}>
-            <Stack direction={'column'} gap={'12px'}>
-              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонемент</Typography>
-              <Stack direction={'row'} gap={'12px'}>
-                {ABONIMENTS.map((aboniment) => (
-                  <div
-                    className={css.aboniment}
-                    key={aboniment.price}
-                    onClick={() => handleOpen({price: aboniment.price, subscription: aboniment.title})}
-                  >
-                    <Typography sx={{fontWeight: 600}}>{aboniment.title}</Typography>
-                    <div className={css.abonimentPrice}>{aboniment.price}₽ <KeyboardArrowRightIcon/></div>
-                  </div>
-                ))}
+            {subscriptions?.supportSubscribe && (
+              <Stack direction={'column'} gap={'12px'}>
+                <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонемент</Typography>
+                <Stack direction={'row'} gap={'12px'}>
+                  {ABONIMENTS.map((aboniment) => {
+                    if (!subscriptions[aboniment]) {
+                      return;
+                    }
+
+                    let title = '';
+                    switch (aboniment) {
+                      case 'weekSubscriptionPrice':
+                        title = 'Неделя';
+                        break;
+                      case 'monthSubscriptionPrice':
+                        title = 'Месяц';
+                        break;
+                      case 'quarterSubscriptionPrice':
+                        title = '3 месяца';
+                        break;
+                      case 'yearSubscriptionPrice':
+                        title = '1 год';
+                        break;
+                    }
+                    return (
+                      <div
+                        className={css.aboniment}
+                        key={subscriptions[aboniment]}
+                        onClick={() => handleOpen({price: subscriptions[aboniment], subscription: title, isEmailNeed: subscriptions.emailForPayment})}
+                      >
+                        <Typography sx={{fontWeight: 600}}>{title}</Typography>
+                        <div className={css.abonimentPrice}>{subscriptions[aboniment]}₽ <KeyboardArrowRightIcon/></div>
+                      </div>
+                    )
+                  })}
+                </Stack>
               </Stack>
-            </Stack>
+            )}
             <Stack direction={'column'} gap={'8px'}>
               <Typography sx={{fontSize: '24px', fontWeight: 500}}>Оплатить парковку</Typography>
               <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
@@ -261,7 +273,6 @@ const ClientPaymentPage = () => {
           <div className={css.footerLogo}>
             {logoIconWithoutBG}
             <div className={css.paymentsLogo}>
-              Оплата онлайн
               <img src={mir} alt=''/>
               <img src={master} alt=''/>
               <img src={visa} alt=''/>
