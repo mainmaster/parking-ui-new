@@ -18,6 +18,9 @@ export const camerasSlice = createSlice({
     camerasFetch: (state, action) => {
       return { ...state, isLoadingFetch: true, isErrorFetch: false }
     },
+    camerasStatusFetch: (state, action) => {
+      return { ...state, isLoadingFetch: true, isErrorFetch: false }
+    },
     editCameraFetch: (state, action) => {},
     createCameraFetch: (state, action) => {},
     deleteCameraFetch: (state, action) => {},
@@ -81,6 +84,7 @@ export const {
   getPreviewCamerasSuccess,
   previewCamerasPut,
   changeActiveOpenApTimeModal,
+  camerasStatusFetch
 } = camerasSlice.actions
 
 export default camerasSlice.reducer

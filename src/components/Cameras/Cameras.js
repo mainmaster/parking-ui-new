@@ -68,7 +68,7 @@ const Cameras = ({ accessOptions }) => {
   const isOpenApTimeModal = useSelector(
     (state) => state.cameras.isOpenApTimeModal
   );
-  const { data: parkingData } = useParkingInfoQuery();
+  const { data: parkingData, refetch: refetchParkingData } = useParkingInfoQuery();
   const cameras = useSelector((state) => state.cameras.cameras);
   const wsLedMessages = useRef(null);
   const [titlesLed, setTitlesLed] = useState({});
@@ -76,10 +76,21 @@ const Cameras = ({ accessOptions }) => {
   const camerasListRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const intervalAccessStatus = useRef(null);
+  const intervalParkingInfo = useRef(null);
 
   useEffect(() => {
     dispatch(camerasFetch());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    intervalParkingInfo.current = setInterval(() => {
+      refetchParkingData()
+    }, 5000)
+
+    return () => {
+      clearInterval(intervalParkingInfo.current);
+    }
   }, []);
 
   useEffect(() => {
@@ -121,7 +132,17 @@ const Cameras = ({ accessOptions }) => {
 
   useEffect(() => {
     if (isFetched) {
-      dispatch(getStatusesAccessPointsFetch());
+      if (!intervalAccessStatus.current) {
+        dispatch(getStatusesAccessPointsFetch());
+      }
+
+      intervalAccessStatus.current = setInterval(() => {
+        dispatch(getStatusesAccessPointsFetch());
+      }, 5000)
+    }
+
+    return () => {
+      clearInterval(intervalAccessStatus.current);
     }
   }, [isFetched, dispatch, isChangedStatus]);
 

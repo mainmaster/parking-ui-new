@@ -8,7 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Camera from '../Camera/Camera';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
@@ -110,7 +110,6 @@ export default function CameraManagementItem({
   };
 
   const handleCreateLedMessage = (values) => {
-    console.log(values);
     const { line2 } = values;
     if (line2) {
       postLedBoardMessage({
