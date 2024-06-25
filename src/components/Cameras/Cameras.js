@@ -310,21 +310,26 @@ const Cameras = ({ accessOptions }) => {
             gap: isMobile ? '16px' : 0
           }}
         >
-          {_.sortBy(accessPoints, ['id']).map((camera, index) => (
-            <>
-              <CameraManagementItem
-                camera={camera}
-                key={camera.id}
-                src={
-                  cameras.find((item) => item.id === camera.cameras[0])
-                    ?.mjpeg_url
-                }
-                titlesLed={titlesLed}
-                setTitlesLed={setTitlesLed}
-                accessOptions={accessOptions}
-              />
-            </>
-          )) || (
+          {_.sortBy(accessPoints, ['id']).map((camera, index) => {
+            const oldCamera = cameras.find((item) => item.id === camera.cameras[0])
+            return (
+              <>
+                {(oldCamera?.is_display === undefined || oldCamera?.is_display) && (
+                  <CameraManagementItem
+                    camera={camera}
+                    key={camera.id}
+                    src={
+                      oldCamera
+                        ?.mjpeg_url
+                    }
+                    titlesLed={titlesLed}
+                    setTitlesLed={setTitlesLed}
+                    accessOptions={accessOptions}
+                  />
+                )}
+              </>
+            )
+          }) || (
             <Stack
               justifyContent={'center'}
               alignItems={'center'}
