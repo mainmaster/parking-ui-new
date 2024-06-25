@@ -11,7 +11,7 @@ import _ from 'lodash';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParkingInfoQuery } from '../../api/settings/settings';
-import React, { useMemo, useState } from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import detailsIcon from '../../assets/svg/parkinfo_details_open_icon.svg';
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -40,11 +40,22 @@ const detailSquareStyle = {
 };
 
 export default function ParkingInfo({ fullWidth }) {
-  const { data: parkingInfo } = useParkingInfoQuery();
+  const { data: parkingInfo, refetch: refetchParkingData } = useParkingInfoQuery();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [details, setDetails] = useState(false);
   const [renterDetails, setRenterDetails] = useState(false);
+  const interval = useRef(null);
+
+  useEffect(() => {
+    interval.current = setInterval(() => {
+      refetchParkingData();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval.current);
+    }
+  }, []);
 
   const ocupied = useMemo(
     () =>

@@ -68,7 +68,7 @@ const Cameras = ({ accessOptions }) => {
   const isOpenApTimeModal = useSelector(
     (state) => state.cameras.isOpenApTimeModal
   );
-  const { data: parkingData, refetch: refetchParkingData } = useParkingInfoQuery();
+  const { data: parkingData } = useParkingInfoQuery();
   const cameras = useSelector((state) => state.cameras.cameras);
   const wsLedMessages = useRef(null);
   const [titlesLed, setTitlesLed] = useState({});
@@ -81,16 +81,6 @@ const Cameras = ({ accessOptions }) => {
 
   useEffect(() => {
     dispatch(camerasFetch());
-  }, []);
-
-  useEffect(() => {
-    intervalParkingInfo.current = setInterval(() => {
-      refetchParkingData()
-    }, 5000)
-
-    return () => {
-      clearInterval(intervalParkingInfo.current);
-    }
   }, []);
 
   useEffect(() => {
