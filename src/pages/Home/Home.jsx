@@ -109,7 +109,9 @@ export const Home = () => {
       };
 
       ws.current.onmessage = (event) => {
-        switch (event.code) {
+        let data = JSON.parse(event.data);
+
+        switch (data.event_code) {
           case 1007:
             dispatch(getStatusesAccessPointsFetch());
             break;
@@ -125,7 +127,6 @@ export const Home = () => {
             break;
         }
 
-        let data = JSON.parse(event.data);
         let vehicle_plate =
           data.vehicle_plate.number + data.vehicle_plate?.region;
 
