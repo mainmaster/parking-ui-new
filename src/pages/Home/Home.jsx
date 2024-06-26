@@ -10,11 +10,13 @@ import { putEvent, changeDataModal } from 'store/events/eventsSlice';
 import {
   setParkingUserType,
   setOperator,
-  setUsername
+  setUsername,
+  setIsNeedFetch
 } from '../../store/parkingInfo/parkingInfo';
 import { getUserData } from '../../api/auth/login';
 import { operatorAccessOptions } from '../../constants';
 import React from 'react';
+import {getStatusesAccessPointsFetch} from "../../store/events/eventsSlice";
 
 export const Home = () => {
   const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery();
@@ -107,6 +109,22 @@ export const Home = () => {
       };
 
       ws.current.onmessage = (event) => {
+        switch (event.code) {
+          case 1007:
+            dispatch(getStatusesAccessPointsFetch());
+            break;
+          case 1014:
+          case 1015:
+          case 1016:
+          case 1017:
+          case 1018:
+          case 1019:
+            dispatch(setIsNeedFetch(true))
+            break;
+          default:
+            break;
+        }
+
         let data = JSON.parse(event.data);
         let vehicle_plate =
           data.vehicle_plate.number + data.vehicle_plate?.region;

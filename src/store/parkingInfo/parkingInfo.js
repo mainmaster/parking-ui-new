@@ -6,7 +6,8 @@ export const parkingInfo = createSlice({
     parkingID: 0,
     userType: '',
     username: '',
-    operator: {}
+    operator: {},
+    isNeedFetch: false,
   },
   reducers: {
     setParkingID: (state, action) => {
@@ -20,10 +21,13 @@ export const parkingInfo = createSlice({
     },
     setUsername: (state, action) => {
       return { ...state, username: action.payload };
+    },
+    setIsNeedFetch: (state, action) => {
+      return { ...state, isNeedFetch: action.payload };
     }
   }
 });
 
-export const { setParkingID, setParkingUserType, setOperator, setUsername } =
+export const { setParkingID, setParkingUserType, setOperator, setUsername, setIsNeedFetch } =
   parkingInfo.actions;
 export default parkingInfo.reducer;

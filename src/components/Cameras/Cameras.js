@@ -52,6 +52,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import cameraEmptyIcon from '../../assets/svg/camera_empty_icon.svg';
 import { formatISO } from 'date-fns';
+import soundNotification from "../../pages/EventsPage/notofication.mp3";
 
 const titleTextStyle = {
   fontSiza: '1.5rem',
@@ -77,7 +78,6 @@ const Cameras = ({ accessOptions }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const intervalAccessStatus = useRef(null);
-  const intervalParkingInfo = useRef(null);
 
   useEffect(() => {
     dispatch(camerasFetch());

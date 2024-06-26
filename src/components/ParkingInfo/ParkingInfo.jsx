@@ -13,6 +13,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import detailsIcon from '../../assets/svg/parkinfo_details_open_icon.svg';
+import {useDispatch, useSelector} from "react-redux";
+import {setIsNeedFetch} from "../../store/parkingInfo/parkingInfo";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -41,11 +43,13 @@ const detailSquareStyle = {
 
 export default function ParkingInfo({ fullWidth }) {
   const { data: parkingInfo, refetch: refetchParkingData } = useParkingInfoQuery();
+  const isNeedFetch = useSelector((state) => state.parkingInfo.isNeedFetch)
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [details, setDetails] = useState(false);
   const [renterDetails, setRenterDetails] = useState(false);
   const interval = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     interval.current = setInterval(() => {
@@ -56,6 +60,13 @@ export default function ParkingInfo({ fullWidth }) {
       clearInterval(interval.current);
     }
   }, []);
+
+  useEffect(() => {
+    if (isNeedFetch) {
+      refetchParkingData();
+      dispatch(setIsNeedFetch(false))
+    }
+  }, [isNeedFetch]);
 
   const ocupied = useMemo(
     () =>
