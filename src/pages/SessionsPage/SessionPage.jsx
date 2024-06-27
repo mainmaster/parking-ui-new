@@ -437,6 +437,23 @@ export const SessionPage = () => {
                 ))}
               </Stack>
             </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>Оплаты</Typography>
+              <Stack gap={'16px'}>
+                {session.payments.map((payment) => (
+                  <NavLink
+                    key={payment.id}
+                    to={`/payments/${payment.id}`}
+                    style={{ lineHeight: '1.125rem' }}
+                  >
+                    Оплата №{payment.id}
+                  </NavLink>
+                ))}
+              </Stack>
+            </Stack>
           </>
         )}
         <FooterSpacer />

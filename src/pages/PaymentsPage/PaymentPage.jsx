@@ -230,6 +230,18 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
+              <Typography sx={labelTextStyle}>Сессия</Typography>
+              <NavLink
+                to={`/sessions/${payment.session_id}`}
+                style={{ lineHeight: '1.125rem' }}
+              >
+                Сессия №{payment.session_id}
+              </NavLink>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
               <Typography sx={labelTextStyle}>Действие</Typography>
               <Stack direction={'row'}>
                 <Stack direction={'row'} gap={'8px'}>
