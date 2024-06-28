@@ -108,6 +108,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     setSelectedAccessPoint('');
     setFromValue(null);
     setToValue(null);
+    setTimeToValue(null);
+    setTimeFromValue(null);
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     dispatch(eventsOnlyFetch());
