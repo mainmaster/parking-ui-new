@@ -137,73 +137,73 @@ export const operatorAccessOptions = [
     name: 'События и отчёты (главная)',
     route: '/events',
     value: 'access_to_events',
-    child: false
-    // children: [
-    //   'access_to_open_access_point',
-    //   'access_to_close_access_point',
-    //   'access_to_working_mode_access_point',
-    //   'access_to_send_message_led_board',
-    //   'access_to_clear_led_board'
-    // ]
+    child: false,
+    children: [
+      'access_to_open_access_point',
+      'access_to_close_access_point',
+      'access_to_working_mode_access_point',
+      'access_to_send_message_led_board',
+      'access_to_clear_led_board'
+    ]
   },
   {
     name: 'Открытие шлагбаумов',
     value: 'access_to_open_access_point',
-    child: true
-    // parent: 'access_to_events'
+    child: true,
+    parent: 'access_to_events'
   },
   {
     name: 'Закрытие шлагбаумов',
     value: 'access_to_close_access_point',
-    child: true
-    // parent: 'access_to_events'
+    child: true,
+    parent: 'access_to_events'
   },
   {
     name: 'Смена режимов шлагбаумов',
     value: 'access_to_working_mode_access_point',
-    child: true
-    // parent: 'access_to_events'
+    child: true,
+    parent: 'access_to_events'
   },
   {
     name: 'Отправка сообщений на LED-панель',
     value: 'access_to_send_message_led_board',
-    child: true
-    // parent: 'access_to_events'
+    child: true,
+    parent: 'access_to_events'
   },
   {
     name: 'Очистка LED-панели',
     value: 'access_to_clear_led_board',
-    child: true
-    // parent: 'access_to_events'
+    child: true,
+    parent: 'access_to_events'
   },
   {
     name: 'Сессии',
     route: '/sessions',
     value: 'access_to_sessions',
-    child: false
-    // children: [
-    //   'access_to_close_session',
-    //   'access_to_close_sessions_before_date',
-    //   'access_to_reset_duty_session'
-    // ]
+    child: false,
+    children: [
+      'access_to_close_session',
+      'access_to_close_sessions_before_date',
+      'access_to_reset_duty_session'
+    ]
   },
   {
     name: 'Штучное закрытие',
     value: 'access_to_close_session',
-    child: true
-    // parent: 'access_to_sessions'
+    child: true,
+    parent: 'access_to_sessions'
   },
   {
     name: 'Массовое закрытие',
     value: 'access_to_close_sessions_before_date',
-    child: true
-    // parent: 'access_to_sessions'
+    child: true,
+    parent: 'access_to_sessions'
   },
   {
     name: 'Сброс долга',
     value: 'access_to_reset_duty_session',
-    child: true
-    // parent: 'access_to_sessions'
+    child: true,
+    parent: 'access_to_sessions'
   },
   {
     name: 'Автопарк',

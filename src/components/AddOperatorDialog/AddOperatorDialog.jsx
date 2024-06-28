@@ -126,6 +126,9 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
           if (changeParent) {
             values = { ...values, [parent.value]: Boolean(e.target.checked) };
           }
+          if (accessValues[parent.value] === true && Boolean(e.target.checked) === false) {
+            values = { ...values, [parent.value]: false }
+          }
         }
       }
       values = { ...values, [e.target.name]: Boolean(e.target.checked) };
