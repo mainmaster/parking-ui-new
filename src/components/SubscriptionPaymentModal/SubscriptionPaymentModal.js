@@ -35,12 +35,12 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
       case 'неделя':
         dateTo.setDate(dateTo.getDate() + 7);
         setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
-        setDuratation('month');
+        setDuratation('week');
         return;
       case 'месяц':
         dateTo.setMonth(dateTo.getMonth() + 1);
         setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
-        setDuratation('week');
+        setDuratation('month');
         return;
     }
 
