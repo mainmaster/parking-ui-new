@@ -96,7 +96,6 @@ export const Home = () => {
 
     if (
       parkingData &&
-      !ws.current &&
       parkingData?.userType !== 'renter' &&
       !(parkingData?.userType === 'operator' && disableEvents)
     ) {
@@ -111,7 +110,7 @@ export const Home = () => {
       ws.current.onmessage = (event) => {
         let data = JSON.parse(event.data);
 
-        switch (data.event_code) {
+        switch (data?.event_code) {
           case 1007:
             dispatch(getStatusesAccessPointsFetch());
             break;
