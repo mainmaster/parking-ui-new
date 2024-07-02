@@ -267,8 +267,7 @@ export const SessionPage = () => {
                   }
                 })}
               </Stack>
-              {session.events && session.events.length && session.events[0]?.plate_img_path &&
-                session.events[0].plate_img_path !== '' && (
+              {session.events && session.events.length && session.events.some(({plate_img_path}) => !!plate_img_path) && (
                   <IconButton
                     disableRipple
                     sx={{ maxWidth: '560px', width: '100%' }}
@@ -276,7 +275,7 @@ export const SessionPage = () => {
                       changeActiveImageModal(
                         process.env.REACT_APP_API_URL +
                           '/' +
-                          session.event[0].plate_img_path
+                        session.events.find(({plate_img_path}) => !!plate_img_path).plate_img_path
                       )
                     }
                   >
@@ -289,7 +288,7 @@ export const SessionPage = () => {
                       src={
                         process.env.REACT_APP_API_URL +
                         '/' +
-                        session.event?.[0]?.plate_img_path
+                        session.events.find(({plate_img_path}) => !!plate_img_path).plate_img_path
                       }
                       alt="Фото номера"
                     />
