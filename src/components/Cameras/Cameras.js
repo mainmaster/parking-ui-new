@@ -311,22 +311,29 @@ const Cameras = ({ accessOptions }) => {
           }}
         >
           {_.sortBy(accessPoints, ['id']).map((camera, index) => {
-            const oldCamera = cameras.find((item) => camera.cameras.includes(item.id));
+            const oldCameras = cameras.filter((item) => camera.cameras.includes(item.id));
             return (
               <>
-                {(oldCamera?.is_display === undefined || oldCamera?.is_display) && (
-                  <CameraManagementItem
-                    camera={camera}
-                    key={camera.id}
-                    src={
-                      oldCamera
-                        ?.mjpeg_url
-                    }
-                    titlesLed={titlesLed}
-                    setTitlesLed={setTitlesLed}
-                    accessOptions={accessOptions}
-                  />
-                )}
+                {
+                  oldCameras.map((findCamera) => (
+                    <>
+                      {(findCamera?.is_display === undefined || findCamera?.is_display) && (
+                        <CameraManagementItem
+                          camera={camera}
+                          key={camera.id}
+                          src={
+                            findCamera
+                              ?.mjpeg_url
+                          }
+                          titlesLed={titlesLed}
+                          setTitlesLed={setTitlesLed}
+                          accessOptions={accessOptions}
+                        />
+                      )}
+                    </>
+                  ))
+                }
+
               </>
             )
           }) || (
