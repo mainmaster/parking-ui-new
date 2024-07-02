@@ -96,6 +96,7 @@ export const Home = () => {
 
     if (
       parkingData &&
+      !ws.current &&
       parkingData?.userType !== 'renter' &&
       !(parkingData?.userType === 'operator' && disableEvents)
     ) {
@@ -161,6 +162,7 @@ export const Home = () => {
     return () => {
       if (ws.current) {
         ws.current.close();
+        ws.current = null;
       }
     };
   }, [parkingData]);
