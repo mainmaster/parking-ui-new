@@ -320,7 +320,7 @@ const Cameras = ({ accessOptions }) => {
                       {(findCamera?.is_display === undefined || findCamera?.is_display) && (
                         <CameraManagementItem
                           camera={camera}
-                          key={camera.id}
+                          key={findCamera.id}
                           src={
                             findCamera
                               ?.mjpeg_url
