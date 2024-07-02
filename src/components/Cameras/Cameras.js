@@ -311,7 +311,7 @@ const Cameras = ({ accessOptions }) => {
           }}
         >
           {_.sortBy(accessPoints, ['id']).map((camera, index) => {
-            const oldCamera = cameras.find((item) => item.id === camera.cameras[0])
+            const oldCamera = cameras.find((item) => camera.cameras.includes(item.id));
             return (
               <>
                 {(oldCamera?.is_display === undefined || oldCamera?.is_display) && (
