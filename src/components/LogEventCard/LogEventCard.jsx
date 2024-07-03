@@ -168,7 +168,8 @@ export default forwardRef(function LogEventCard(
               >
                 {!event.is_recognition &&
                 event.event_code !== 1003 &&
-                event.event_code !== 1013 ? (
+                event.event_code !== 1013 &&
+                event.event_code !== 1042 ? (
                   <img
                     style={{
                       width: 24
