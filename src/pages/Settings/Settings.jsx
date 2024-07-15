@@ -187,7 +187,8 @@ const Settings = () => {
     seconds_before_close_laurent: 0,
     seconds_between_laurent_checks: 0,
     terminal_payment_ttl: 60,
-    terminal_payment_refund_type: 1
+    terminal_payment_refund_type: 1,
+    pass_if_no_places: false
   });
   const [changedSettings, setChangedSettings] = useState({});
   let location = useLocation();
@@ -876,6 +877,28 @@ const Settings = () => {
                                   />
                                 }
                                 label="Вывод количества свободных мест"
+                                labelPlacement="end"
+                                sx={{
+                                  m: 0,
+                                  justifyContent: 'flex-start',
+                                  gap: '16px',
+                                  pl: '12px'
+                                }}
+                              />
+                            </FormGroup>
+                            <FormGroup>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={Boolean(
+                                      globalSettings.pass_if_no_places
+                                    )}
+                                    onChange={handleGlobalSettings}
+                                    name="pass_if_no_places"
+                                    sx={switchInputStyle({ ...theme })}
+                                  />
+                                }
+                                label="Впускать на парковку машины, если нет мест."
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
