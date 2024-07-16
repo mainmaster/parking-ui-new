@@ -2501,6 +2501,7 @@ const Settings = () => {
                                 setNotificationsSound(
                                   e.target.checked.toString()
                                 );
+                                setSubmited(false);
                               }}
                               name="sound"
                               sx={switchInputStyle({ ...theme })}
