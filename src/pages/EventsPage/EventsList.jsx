@@ -34,6 +34,7 @@ import FooterSpacer from '../../components/Header/FooterSpacer';
 import { EVENTS_ON_PAGE } from '../../constants';
 import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
 import { element } from 'prop-types';
+import {useTranslation} from "react-i18next";
 
 const mobileMenuItemStyle = {
   width: '100%',
@@ -61,6 +62,7 @@ const initialAccessOptions = {
 };
 
 const EventsList = memo(({ onlyLog, mobileCameras }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
@@ -384,7 +386,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
                   src={logEventEmptyIcon}
                   alt="нет отчётов"
                 />
-                <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.eventList.noReport')}</Typography>
               </Stack>
             )}
 
@@ -483,9 +485,9 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
                   <img
                     style={{ height: '40px' }}
                     src={logEventEmptyIcon}
-                    alt="нет отчётов"
+                    alt={t('pages.eventList.noReport')}
                   />
-                  <Typography sx={titleTextStyle}>Нет отчётов</Typography>
+                  <Typography sx={titleTextStyle}>{t('pages.eventList.noReport')}</Typography>
                 </>
               )}
             </Stack>

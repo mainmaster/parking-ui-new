@@ -25,6 +25,7 @@ import { SESSIONS_ON_PAGE } from '../../constants';
 import LogSessionCard from '../../components/LogSessionCard/LogSessionCard';
 import EventManager from '../../components/EventManager/EventManager';
 import CloseSessionsDialog from '../../components/CloseSessionsDialog/CloseSessionsDialog';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   width: '25%',
@@ -40,6 +41,7 @@ const initialAccessOptions = {
 };
 
 const SessionsPage = () => {
+  const { t } = useTranslation();
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions.sessions);
@@ -158,7 +160,7 @@ const SessionsPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Сессии: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} всего</span></Typography>
+            <Typography sx={titleTextStyle}>{t('pages.sessionsPage.sessions')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} {t('pages.sessionsPage.all')}</span></Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -188,7 +190,7 @@ const SessionsPage = () => {
         {isMobile && (
           <>
             <Stack direction={'column'} sx={{ p: '16px', pb: '8px', width: '100%', }}>
-              <Typography sx={{...titleTextStyle, padding: '16px', width: '100%'}}>Сессии: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} всего</span></Typography>
+              <Typography sx={{...titleTextStyle, padding: '16px', width: '100%'}}>{t('pages.sessionsPage.sessions')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} {t('pages.sessionsPage.all')}</span></Typography>
               <ParkingInfo fullWidth={true} />
             </Stack>
             <Box
@@ -223,7 +225,7 @@ const SessionsPage = () => {
                   sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleCloseSessionsClick}
                 >
-                  Закрыть сессии старше даты
+                  {t('pages.sessionsPage.closeSessions')}
                 </Button>
               </Box>
             )}
@@ -241,7 +243,7 @@ const SessionsPage = () => {
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleCloseSessionsClick}
               >
-                Закрыть сессии старше даты
+                {t('pages.sessionsPage.closeSessions')}
               </Button>
             </Stack>
           )}
@@ -290,9 +292,9 @@ const SessionsPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={sessionsListIcon}
-                  alt="нет сессий"
+                  alt={t('pages.sessionsPage.noSessions')}
                 />
-                <Typography sx={titleTextStyle}>Нет сессий</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.sessionsPage.noSessions')}</Typography>
               </>
             )}
           </Stack>

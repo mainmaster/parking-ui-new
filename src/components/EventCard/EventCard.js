@@ -7,8 +7,10 @@ import { useSelector } from 'react-redux'
 import { formatDate, isEmptyObject } from 'utils'
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard'
 import { Link, NavLink } from 'react-router-dom'
+import {useTranslation} from "react-i18next";
 
 const EventCard = ({ className, onClickImage }) => {
+  const { t } = useTranslation();
   const dataModal = useSelector((state) => state.events.dataModal)
   return (
     <Card className={cn(css.card, className)}>
@@ -45,7 +47,7 @@ const EventCard = ({ className, onClickImage }) => {
             dataModal?.scores === undefined ? null : (
               <Accordion>
                 <Accordion.Item eventKey="">
-                  <Accordion.Header>Детали</Accordion.Header>
+                  <Accordion.Header>{t('components.eventCard.details')}</Accordion.Header>
                   <Accordion.Body>
                     <pre style={{ height: '300px' }}>
                       {Object.entries(dataModal?.scores).map((item) => {
@@ -75,27 +77,27 @@ const EventCard = ({ className, onClickImage }) => {
             )}
             <Card.Text>
               <NavLink to={`${dataModal.id}`}>Ссылка на событие</NavLink><br/>
-              <span>Описание:</span> {dataModal?.description}
+              <span>{t('components.eventCard.description')}:</span> {dataModal?.description}
               <br />
               {dataModal?.car_brand && (
                 <>
-                  <span>Марка:</span> {dataModal?.car_brand}
+                  <span>{t('components.eventCard.carBrand')}:</span> {dataModal?.car_brand}
                   <br />
                 </>
               )}
               {dataModal?.initiator && (
                 <>
-                  <span>Инициатор:</span> {dataModal?.initiator}
+                  <span>{t('components.eventCard.initiator')}:</span> {dataModal?.initiator}
                   <br />
                 </>
               )}
-              <span>Время создания:</span>{' '}
+              <span>{t('components.eventCard.createTime')}:</span>{' '}
               {formatDate(dataModal?.create_datetime)}
             </Card.Text>
           </Card.Body>
         </>
       ) : (
-        <div className={css.card_empty}>Выберите событие</div>
+        <div className={css.card_empty}>{t('components.eventCard.chooseEvent')}</div>
       )}
     </Card>
   )

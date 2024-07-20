@@ -10,8 +10,10 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 export default function LogCarParkCard({ car, renter }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const validDateString = format(parseISO(car.valid_until), 'dd.MM.yyyy');
   const theme = useTheme();
@@ -50,18 +52,18 @@ export default function LogCarParkCard({ car, renter }) {
         </Stack>
         <Stack gap={'4px'}>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Описание</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCarParkCard.description')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{car.description}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Арендатор</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCarParkCard.renter')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {renter?.company_name || ''}
             </Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Доступ до</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logCarParkCard.accessTo')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{validDateString}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -72,7 +74,7 @@ export default function LogCarParkCard({ car, renter }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditCarClick}
           >
-            Изменить
+            {t('components.logCarParkCard.change')}
           </Button>
           <Button
             disableRipple
@@ -81,7 +83,7 @@ export default function LogCarParkCard({ car, renter }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteCarClick}
           >
-            Удалить
+            {t('components.logCarParkCard.delete')}
           </Button>
         </Stack>
       </Stack>

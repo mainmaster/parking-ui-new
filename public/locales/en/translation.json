@@ -1,0 +1,60 @@
+{
+  "pages": {
+    "events": {
+
+    }
+  },
+  "components": {
+    "cameras": {
+      "openAll": "Открыть все",
+      "closeAll": "Закрыть все",
+      "autoAll": "Авто - все",
+      "noCameras": "Нет камер"
+    },
+    "parkingInfo": {
+      "sits": "Мест",
+      "collapseButton": "Свернуть детали",
+      "expandButton": "Развернуть детали",
+      "renters": "Арендаторы",
+      "busy": "Занято",
+      "free": "Свободно",
+      "oneTime": "Разовые",
+      "aboniments": "Абонементы"
+    }
+  },
+  "routesTitle": {
+    "visor": "VISOR",
+    "session": "Сессии",
+    "park": "Автопарк",
+    "blackList": "Черный список",
+    "request": "Заявки",
+    "setting": "Настройки",
+    "points": "Точки доступа",
+    "cameras": "Камеры",
+    "led": "LED Табло",
+    "terminal": "Терминалы",
+    "modes": "Режимы",
+    "controllers": "Контроллеры",
+    "access": "Доступы"
+  },
+  "events": {
+    "cameras": {
+      "openAll": "Открыть все",
+      "closeAll": "Закрыть все",
+      "autoAll": "Авто - все",
+      "noCameras": "Нет камер",
+      "parkingInfo": {
+        "sits": "Мест",
+        "detailButton": {
+          "collapse": "Свернуть детали",
+          "expand": "Развернуть детали"
+        },
+        "renters": "Арендаторы",
+        "busy": "Занято",
+        "free": "Свободно",
+        "oneTime": "Разовые",
+        "aboniments": "Абонементы",
+      }
+    }
+  }
+}

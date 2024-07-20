@@ -47,6 +47,7 @@ import {
   statusContactOptions
 } from 'constants';
 import theme from '../../theme/normal';
+import {useTranslation} from "react-i18next";
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -84,6 +85,7 @@ const labelStyle = {
 };
 
 export default function AddAccessPointDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -334,7 +336,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать точку доступа' : 'Добавить точку доступа'}
+        {edit ? t('components.addAccessPointDialog.titleUpdateAccess') : t('components.addAccessPointDialog.titleAddAccess')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -356,7 +358,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addAccessPointDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -378,7 +380,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
    
           <Stack>
             <InputLabel htmlFor="direction" sx={labelStyle}>
-              Направление
+              {t('components.addAccessPointDialog.direction')}
             </InputLabel>
             <Select
               id="direction"
@@ -452,7 +454,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="cam_id" sx={labelStyle}>
-              Камеры
+              {t('components.addAccessPointDialog.cameras')}
             </InputLabel>
             <Select
               id="cam_id"
@@ -525,7 +527,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="laurent_id" sx={labelStyle}>
-              Контроллер
+              {t('components.addAccessPointDialog.controller')}
             </InputLabel>
             <Select
               id="laurent_id"
@@ -599,7 +601,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="led_board_id" sx={labelStyle}>
-              LED табло
+              {t('components.addAccessPointDialog.ledName')}
             </InputLabel>
             <Select
               id="led_board_id"
@@ -674,7 +676,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="open_relay_number" sx={labelStyle}>
-              Номер реле для открытия
+              {t('components.addAccessPointDialog.numberRelayForOpen')}
             </InputLabel>
             <Select
               id="open_relay_number"
@@ -749,7 +751,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="close_relay_number" sx={labelStyle}>
-              Номер реле для закрытия
+              {t('components.addAccessPointDialog.numberRelayForClose')}
             </InputLabel>
             <Select
               id="close_relay_number"
@@ -824,7 +826,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="status_contact_number" sx={labelStyle}>
-              Номер контакта статуса открытия
+              {t('components.addAccessPointDialog.numberContactStatusOpen')}
             </InputLabel>
             <Select
               id="status_contact_number"
@@ -899,7 +901,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="seconds_before_close_laurent" sx={labelStyle}>
-              Задержка перед закрытием (cекунд)
+              {t('components.addAccessPointDialog.secondsBeforeLaurentClose')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -925,7 +927,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               htmlFor="seconds_between_laurent_checks"
               sx={labelStyle}
             >
-              Задержка между проверкой статуса шлагбаума (секунд)
+              {t('components.addAccessPointDialog.secondsBetweenLaurentChecks')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -948,7 +950,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="seconds_before_laurent_checks" sx={labelStyle}>
-              Задержка перед проверкой статуса шлагбаума (секунд)
+              {t('components.addAccessPointDialog.secondsBeforeLaurentChecks')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -971,7 +973,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="laurent_checks_amount" sx={labelStyle}>
-              Кол-во проверок статуса шлагбаума
+              {t('components.addAccessPointDialog.laurentChecksAmount')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -994,7 +996,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="terminal_id" sx={labelStyle}>
-              Терминал
+              {t('components.addAccessPointDialog.terminalId')}
             </InputLabel>
             <Select
               id="terminal_id"
@@ -1077,7 +1079,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                   sx={switchInputStyle({ ...theme })}
                 />
               }
-              label="Включить реверс"
+              label={t('components.addAccessPointDialog.enableRevers')}
               labelPlacement="end"
               sx={{
                 m: 0,
@@ -1089,7 +1091,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </FormGroup>
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-            Сценарий распознования
+              {t('components.addAccessPointDialog.recognitionScript')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -1110,7 +1112,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-            Сценарий подтвержения
+              {t('components.addAccessPointDialog.confirmationScript')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -1131,7 +1133,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="working_modes" sx={labelStyle}>
-              Режимы
+              {t('components.addAccessPointDialog.modes')}
             </InputLabel>
             <Select
               id="working_modes"
@@ -1234,7 +1236,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                       sx={switchInputStyle({ ...theme })}
                   />
                 }
-                label="Yчитывать количество мест арендатора"
+                label={t('components.addAccessPointDialog.considerRenterNumberOfPlaces')}
                 labelPlacement="end"
                 sx={{
                   m: 0,
@@ -1251,7 +1253,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addAccessPointDialog.save') : t('components.addAccessPointDialog.add')}
           </Button>
         </Box>
       </DialogActions>

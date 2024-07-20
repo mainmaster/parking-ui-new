@@ -19,6 +19,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddControllerDialog from '../../components/AddControllerDialog/AddControllerDialog';
 import LogControllerCard from '../../components/LogControllerCard/LogControllerCard';
 import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -28,6 +29,7 @@ const titleTextStyle = {
 };
 
 const ControllersPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const controllers = useSelector((state) => state.controllers.controllers);
   const isLoading = useSelector((state) => state.controllers.isLoadingFetch);
@@ -110,7 +112,7 @@ const ControllersPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Контроллеры</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.controllerPage.controllers')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -123,7 +125,7 @@ const ControllersPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddControllerClick}
               >
-                Добавить контроллер
+                {t('pages.controllerPage.addController')}
               </Button>
             </Stack>
           </Stack>
@@ -154,7 +156,7 @@ const ControllersPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Контроллеры</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.controllerPage.controllers')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -162,7 +164,7 @@ const ControllersPage = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddControllerClick}
             >
-              Добавить контроллер
+              {t('pages.controllerPage.addController')}
             </Button>
           </Stack>
         )}
@@ -208,10 +210,10 @@ const ControllersPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={controllerEmptyIcon}
-                  alt="Нет контроллеров"
+                  alt={t('pages.controllerPage.noController')}
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет контроллеров
+                  {t('pages.controllerPage.noController')}
                 </Typography>
               </>
             )}

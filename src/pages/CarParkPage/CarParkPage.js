@@ -45,6 +45,7 @@ import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import AddCarDialog from '../../components/CarParkAddCarDialog/CarParkAddCarDialog';
 import { accessPointsOnlyFetch } from '../../store/accessPoints/accessPointsSlice';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -65,6 +66,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const CarParkPage = () => {
+  const { t } = useTranslation();
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -171,7 +173,7 @@ const CarParkPage = () => {
       formData.append('file', file);
       formData.append('name', file.name);
       uploadCarParkReport(formData).then((response) => {
-        enqueueSnackbar('Файл отправлен', { variant: 'success' });
+        enqueueSnackbar(t('pages.carParkPage.fileSent'), { variant: 'success' });
         setFile(null);
       });
     }
@@ -228,7 +230,7 @@ const CarParkPage = () => {
               gap={'16px'}
               sx={{ width: '100%' }}
             >
-              <Typography sx={titleTextStyle}>Автопарк</Typography>
+              <Typography sx={titleTextStyle}>{t('pages.carParkPage.carPark')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <Button
                   component="label"
@@ -237,7 +239,7 @@ const CarParkPage = () => {
                   fullWidth={false}
                   sx={secondaryButtonStyle({ ...theme })}
                 >
-                  Импорт
+                  {t('pages.carParkPage.import')}
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleImportClick}
@@ -250,7 +252,7 @@ const CarParkPage = () => {
                   sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleExportClick}
                 >
-                  Экспорт
+                  {t('pages.carParkPage.export')}
                 </Button>
               </Stack>
             </Stack>
@@ -266,7 +268,7 @@ const CarParkPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCarClick}
               >
-                Добавить машину
+                {t('pages.carParkPage.addCar')}
               </Button>
 
               <CarParkFilter openForm={openForm} setOpenForm={setOpenForm} />
@@ -285,16 +287,16 @@ const CarParkPage = () => {
               }}
               sx={{ minHeight: '42px' }}
             >
-              <Tab sx={tabStyle({ ...theme })} disableRipple label="Активные" />
+              <Tab sx={tabStyle({ ...theme })} disableRipple label={t('pages.carParkPage.active')} />
               <Tab
                 sx={tabStyle({ ...theme })}
                 disableRipple
-                label="Неактивные"
+                label={t('pages.carParkPage.noActive')}
               />
               <Tab
                 sx={tabStyle({ ...theme })}
                 disableRipple
-                label="Абонементы"
+                label={t('pages.carParkPage.aboniment')}
               />
             </Tabs>
           </Stack>
@@ -338,7 +340,7 @@ const CarParkPage = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>Автопарк</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.carParkPage.carPark')}</Typography>
                 <Button
                   disableRipple
                   variant="contained"
@@ -346,7 +348,7 @@ const CarParkPage = () => {
                   sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddCarClick}
                 >
-                  Добавить машину
+                  {t('pages.carParkPage.addCar')}
                 </Button>
               </Stack>
               <Stack
@@ -367,7 +369,7 @@ const CarParkPage = () => {
                   fullWidth
                   sx={secondaryButtonStyle({ ...theme })}
                 >
-                  Импорт
+                  {t('pages.carParkPage.import')}
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleImportClick}
@@ -380,7 +382,7 @@ const CarParkPage = () => {
                   sx={secondaryButtonStyle({ ...theme })}
                   onClick={handleExportClick}
                 >
-                  Экспорт
+                  {t('pages.carParkPage.export')}
                 </Button>
               </Stack>
               <Box
@@ -407,17 +409,17 @@ const CarParkPage = () => {
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Активные"
+                    label={t('pages.carParkPage.active')}
                   />
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Неактивные"
+                    label={t('pages.carParkPage.noActive')}
                   />
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Абонементы"
+                    label={t('pages.carParkPage.aboniment')}
                   />
                 </Tabs>
               </Stack>
@@ -486,18 +488,18 @@ const CarParkPage = () => {
                   src={parkEmptyIcon}
                   alt={
                     currentTab === 0
-                      ? 'Нет активных машин в автопарке'
+                      ? t('pages.carParkPage.noActiveCarInPark')
                       : currentTab === 1
-                      ? 'Нет неактивных машин в автопарке'
-                      : 'нет абонементов'
+                      ? t('pages.carParkPage.noActiveCarInPark')
+                      : t('pages.carParkPage.noAboniment')
                   }
                 />
                 <Typography sx={titleTextStyle}>
                   {currentTab === 0
-                    ? 'Нет активных машин в автопарке'
+                    ? t('pages.carParkPage.noActiveCarInPark')
                     : currentTab === 1
-                    ? 'Нет неактивных машин в автопарке'
-                    : 'нет абонементов'}
+                    ? t('pages.carParkPage.noActiveCarInPark')
+                    : t('pages.carParkPage.noAboniment')}
                 </Typography>
               </>
             )}

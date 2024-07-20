@@ -32,6 +32,7 @@ import {
   DateInputStyle
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   description: '',
@@ -44,6 +45,7 @@ const labelStyle = {
 };
 
 export default function AddCarDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
@@ -177,7 +179,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать машину' : 'Добавить в ЧС'}
+        {edit ? t('components.blackListAddCarDialog.editCar') : t('components.blackListAddCarDialog.addBlackList')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -199,7 +201,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="date" sx={labelStyle}>
-              Доступ запрещён до
+              {t('components.blackListAddCarDialog.accessDeniedTo')}
             </InputLabel>
             <DatePicker
               id="date"
@@ -211,7 +213,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 textField: {
                   variant: 'filled',
                   sx: DateInputStyle({ ...theme }),
-                  placeholder: 'Дата'
+                  placeholder: t('components.blackListAddCarDialog.date')
                 },
                 openPickerButton: { disableRipple: true }
               }}
@@ -222,7 +224,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Описание
+              {t('components.blackListAddCarDialog.description')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -243,7 +245,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="vehiclePlate" sx={labelStyle}>
-              Номер машины
+              {t('components.blackListAddCarDialog.vehiclePlate')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -270,7 +272,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.blackListAddCarDialog.save') : t('components.blackListAddCarDialog.add')}
           </Button>
         </Box>
       </DialogActions>

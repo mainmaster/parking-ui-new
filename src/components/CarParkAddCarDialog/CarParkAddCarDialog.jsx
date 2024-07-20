@@ -42,6 +42,7 @@ import {
   selectMenuStyle
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   pb: '4px',
@@ -55,6 +56,7 @@ const validationSchema = yup.object({
 });
 
 export default function AddCarDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
@@ -242,7 +244,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать машину' : 'Добавить машину'}
+        {edit ? t('components.carParkAddCarDialog.edtiCar') : t('components.carParkAddCarDialog.addCar')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -264,7 +266,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="date" sx={labelStyle}>
-              Пропуск активен до
+              {t('components.carParkAddCarDialog.permitActiveTo')}
             </InputLabel>
             <DatePicker
               id="date"
@@ -276,7 +278,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
                 textField: {
                   variant: 'filled',
                   sx: DateInputStyle({ ...theme }),
-                  placeholder: 'Дата'
+                  placeholder: t('components.carParkAddCarDialog.date')
                 },
                 openPickerButton: { disableRipple: true }
               }}
@@ -287,7 +289,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Описание
+              {t('components.carParkAddCarDialog.description')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -308,7 +310,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="vehicle_plate" sx={labelStyle}>
-              Номер машины
+              {t('components.carParkAddCarDialog.vehiclePlate')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -330,7 +332,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="renter" sx={labelStyle}>
-              Арендатор
+              {t('components.carParkAddCarDialog.renter')}
             </InputLabel>
             <Select
               id="renter"
@@ -406,7 +408,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="access_points" sx={labelStyle}>
-              Доступ к точкам доступа
+              {t('components.carParkAddCarDialog.accessPoints')}
             </InputLabel>
             <Select
               id="access_points"
@@ -516,7 +518,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.carParkAddCarDialog.save') : t('components.carParkAddCarDialog.add')}
           </Button>
         </Box>
       </DialogActions>

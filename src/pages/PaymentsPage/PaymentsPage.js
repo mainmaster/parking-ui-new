@@ -24,6 +24,7 @@ import LogPaymentCard from '../../components/LogPaymentCard/LogPaymentCard';
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import { format, parseISO } from 'date-fns';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -32,6 +33,7 @@ const titleTextStyle = {
 };
 
 const PaymentsPage = () => {
+  const { t } = useTranslation();
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.payments.payments);
@@ -169,7 +171,7 @@ const PaymentsPage = () => {
               sx={{ width: '100%' }}
               gap={'16px'}
             >
-              <Typography sx={titleTextStyle}>Оплаты</Typography>
+              <Typography sx={titleTextStyle}>{t('pages.paymentsPage.payments')}</Typography>
               <Typography sx={totalTextStyle}>{totalString}</Typography>
             </Stack>
             <Stack
@@ -184,7 +186,7 @@ const PaymentsPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleGetPaymentsReport}
               >
-                Выгрузить
+                {t('pages.paymentsPage.export')}
               </Button>
               <PaymentFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Stack>
@@ -235,7 +237,7 @@ const PaymentsPage = () => {
                     width: '100%'
                   }}
                 >
-                  <Typography sx={titleTextStyle}>Оплаты</Typography>
+                  <Typography sx={titleTextStyle}>{t('pages.paymentsPage.payments')}</Typography>
                   <Typography sx={mobileTotalTextStyle}>
                     {totalString}
                   </Typography>
@@ -247,7 +249,7 @@ const PaymentsPage = () => {
                   sx={primaryButtonStyle({ ...theme })}
                   onClick={handleGetPaymentsReport}
                 >
-                  Выгрузить
+                  {t('pages.paymentsPage.export')}
                 </Button>
               </Stack>
               <Box
@@ -317,9 +319,9 @@ const PaymentsPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={paymentsEmptyIcon}
-                  alt="Нет оплат"
+                  alt={t('pages.paymentsPage.noPayment')}
                 />
-                <Typography sx={titleTextStyle}>Нет оплат</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.paymentsPage.noPayment')}</Typography>
               </>
             )}
           </Stack>

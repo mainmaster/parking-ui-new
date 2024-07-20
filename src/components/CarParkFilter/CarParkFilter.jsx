@@ -36,6 +36,7 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import _ from 'lodash';
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   vehiclePlate: '',
@@ -51,6 +52,7 @@ const labelStyle = {
 };
 
 export default function CarParkFilter({ openForm, setOpenForm }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState('');
   const [submited, setSubmited] = useState(true);
@@ -183,7 +185,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                       height: 24
                     }}
                     src={searchIcon}
-                    alt="Найти по номеру"
+                    alt={t('components.carParkFilter.searchByNumber')}
                   />
                 </InputAdornment>
               ),
@@ -200,7 +202,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                         height: 24
                       }}
                       src={searchCancelIcon}
-                      alt={'Очистить'}
+                      alt={t('components.carParkFilter.clear')}
                     />
                   </IconButton>
                 </InputAdornment>
@@ -209,7 +211,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Найти по номеру"
+            placeholder={t('components.carParkFilter.searchByNumber')}
             value={formik.values.vehiclePlate}
             onChange={handleChangeField}
             onBlur={formik.handleBlur}
@@ -249,7 +251,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
           >
             <Stack>
               <InputLabel htmlFor="company-select" sx={labelStyle}>
-                Арендатор
+                {t('components.carParkFilter.renter')}
               </InputLabel>
               <Select
                 id="company-select"
@@ -286,7 +288,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.carParkFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -301,7 +303,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.carParkFilter.choose')}</em>
                 </MenuItem>
                 {_.sortBy(renters, ['company_name']).map((r) => (
                   <MenuItem
@@ -331,7 +333,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                 sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
-                Применить
+                {t('components.carParkFilter.submit')}
               </Button>
               <Button
                 disabled={!filters}
@@ -341,7 +343,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
                 sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
-                Сбросить
+                {t('components.carParkFilter.reset')}
               </Button>
             </Stack>
           </Stack>

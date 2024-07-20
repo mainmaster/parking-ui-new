@@ -10,6 +10,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { passModeOptions } from 'constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -18,6 +19,7 @@ const titleTextStyle = {
 };
 
 export default function LogWorkModeCard({ mode }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -55,14 +57,14 @@ export default function LogWorkModeCard({ mode }) {
         <Typography sx={titleTextStyle}>{mode.description}</Typography>
         <Stack gap={'12px'} sx={{ minHeight: '216px' }}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Пропускной режим</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.passMode')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {passModeName?.name}
             </Typography>
           </Stack>
           {mode.pass_mode !== 'closed' && (
             <Stack direction={'row'} gap={'12px'}>
-              <Typography sx={labelTextStyle}>Цена</Typography>
+              <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.price')}</Typography>
               <Typography sx={{ fontWeight: 500 }}>
                 {RURuble.format(mode.price)}
               </Typography>
@@ -70,7 +72,7 @@ export default function LogWorkModeCard({ mode }) {
           )}
           {mode.pass_mode === 'pay_by_hour' && (
             <Stack direction={'row'} gap={'12px'}>
-              <Typography sx={labelTextStyle}>Входная плата</Typography>
+              <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.entryFee')}</Typography>
               <Typography sx={{ fontWeight: 500 }}>
                 {RURuble.format(mode.entry_fee)}
               </Typography>
@@ -78,29 +80,29 @@ export default function LogWorkModeCard({ mode }) {
           )}
           {mode.pass_mode === 'pay_by_interval' && (
             <Stack direction={'row'} gap={'12px'}>
-              <Typography sx={labelTextStyle}>Интервал</Typography>
+              <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.interval')}</Typography>
               <Typography sx={{ fontWeight: 500 }}>
-                {`${mode.interval} мин`}
+                {`${mode.interval} ${t('components.logWorkModeCard.min')}`}
               </Typography>
             </Stack>
           )}
           {mode.pass_mode === 'pay_by_day' && (
             <Stack direction={'row'} gap={'12px'}>
               <Typography sx={labelTextStyle}>
-                Задержка для запуска суточного режима
+                {t('components.logWorkModeCard.dayCountsFromMin')}
               </Typography>
               <Typography sx={{ fontWeight: 500 }}>
-                {`${mode.day_counts_from_mins} мин`}
+                {`${mode.day_counts_from_mins} ${t('components.logWorkModeCard.min')}`}
               </Typography>
             </Stack>
           )}
           {mode.pass_mode === 'pay_by_first_hours' && (
             <Stack direction={'row'} gap={'12px'}>
               <Typography sx={labelTextStyle}>
-                Количество первых N минут
+                {t('components.logWorkModeCard.numberOfFirstMin')}
               </Typography>
               <Typography sx={{ fontWeight: 500 }}>
-                {`${mode.number_of_first_mins} мин`}
+                {`${mode.number_of_first_mins} ${t('components.logWorkModeCard.min')}`}
               </Typography>
             </Stack>
           )}
@@ -109,18 +111,18 @@ export default function LogWorkModeCard({ mode }) {
             mode.pass_mode === 'closed') && (
             <Stack direction={'row'} gap={'12px'}>
               <Typography sx={labelTextStyle}>
-                Время транзитной блокировки
+                {t('components.logWorkModeCard.transitBlockMin')}
               </Typography>
               <Typography sx={{ fontWeight: 500 }}>
-                {`${mode.transit_block_time_min} мин`}
+                {`${mode.transit_block_time_min} ${t('components.logWorkModeCard.min')}`}
               </Typography>
             </Stack>
           )}
           {mode.pass_mode === 'pay_by_hour' && (
             <Stack direction={'row'} gap={'12px'}>
-              <Typography sx={labelTextStyle}>Свободное время</Typography>
+              <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.freeTime')}</Typography>
               <Typography sx={{ fontWeight: 500 }}>
-                {`${mode.free_time_min} мин`}
+                {`${mode.free_time_min} ${t('components.logWorkModeCard.min')}`}
               </Typography>
             </Stack>
           )}
@@ -128,7 +130,7 @@ export default function LogWorkModeCard({ mode }) {
             mode.pass_mode === 'closed') && (
             <>
               <Stack direction={'row'} gap={'12px'}>
-                <Typography sx={labelTextStyle}>Время от</Typography>
+                <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.timeFrom')}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
                   {`${mode.time_lte_hour}`.padStart(2, '0') +
                     ':' +
@@ -136,7 +138,7 @@ export default function LogWorkModeCard({ mode }) {
                 </Typography>
               </Stack>
               <Stack direction={'row'} gap={'12px'}>
-                <Typography sx={labelTextStyle}>Время до</Typography>
+                <Typography sx={labelTextStyle}>{t('components.logWorkModeCard.timeTo')}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
                   {`${mode.time_gte_hour}`.padStart(2, '0') +
                     ':' +
@@ -154,7 +156,7 @@ export default function LogWorkModeCard({ mode }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
-            Изменить
+            {t('components.logWorkModeCard.change')}
           </Button>
           <Button
             disableRipple
@@ -163,7 +165,7 @@ export default function LogWorkModeCard({ mode }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
-            Удалить
+            {t('components.logWorkModeCard.delete')}
           </Button>
         </Stack>
       </Stack>

@@ -13,8 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 export default function LogApplicationCard({ application }) {
+  const { t } = useTranslation();
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const dateString = format(parseISO(application.valid_for_date), 'dd.MM.yyyy');
@@ -69,13 +71,13 @@ export default function LogApplicationCard({ application }) {
           )}
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Арендатор</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logApplicationCard.renter')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>
             {application.company_name}
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Дата</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logApplicationCard.date')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{dateString}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -87,7 +89,7 @@ export default function LogApplicationCard({ application }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleSessionClick}
           >
-            Сессия
+            {t('components.logApplicationCard.session')}
           </Button>
           <Button
             disableRipple
@@ -97,7 +99,7 @@ export default function LogApplicationCard({ application }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditApplicationClick}
           >
-            Изменить
+            {t('components.logApplicationCard.change')}
           </Button>
           <Button
             disableRipple
@@ -107,7 +109,7 @@ export default function LogApplicationCard({ application }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteApplicationClick}
           >
-            Удалить
+            {t('components.logApplicationCard.delete')}
           </Button>
         </Stack>
       </Stack>

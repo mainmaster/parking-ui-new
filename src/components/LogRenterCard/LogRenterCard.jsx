@@ -14,6 +14,7 @@ import {
 } from '../../api/renters/renters.api';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -23,6 +24,7 @@ const titleTextStyle = {
 };
 
 export default function LogRenterCard({ renter }) {
+  const { t } = useTranslation();
   const [deactivateRenter] = useDeactivateRenterMutation();
   const [activateRenter] = useActivateRenterMutation();
   const dispatch = useDispatch();
@@ -64,17 +66,17 @@ export default function LogRenterCard({ renter }) {
           >{`№ ${renter.id}`}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Арендатор</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logRenterCard.renter')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>
             {renter.company_name}
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Контакты</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logRenterCard.contacts')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{renter.contacts}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Количество мест</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logRenterCard.numberOfPlace')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{renter.number_of_places ?? 100}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -85,7 +87,7 @@ export default function LogRenterCard({ renter }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditRenterClick}
           >
-            Изменить
+            {t('components.logRenterCard.change')}
           </Button>
           <Button
             disableRipple
@@ -102,7 +104,7 @@ export default function LogRenterCard({ renter }) {
                 : handleActivateRenterClick
             }
           >
-            {renter.is_active ? 'Деактивировать' : 'Активировать'}
+            {renter.is_active ? t('components.logRenterCard.deactive') : t('components.logRenterCard.active')}
           </Button>
         </Stack>
       </Stack>

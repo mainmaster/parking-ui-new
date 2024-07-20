@@ -35,6 +35,7 @@ import {
   selectMenuStyle
 } from '../../theme/styles';
 import _ from 'lodash';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   pb: '4px',
@@ -56,6 +57,7 @@ const validationSchemaEdit = yup.object({
 });
 
 export default function AddRenterDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -105,10 +107,10 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         updateRenter(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Данные сохранены', { variant: 'success' });
+            enqueueSnackbar(t('components.addRenterDialog.dataSave'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addRenterDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -117,10 +119,10 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         createRenter(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Арендатор добавлен', { variant: 'success' });
+            enqueueSnackbar(t('components.addRenterDialog.correctAdd'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addRenterDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -216,7 +218,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать арендатора' : 'Добавить арендатора'}
+        {edit ? t('components.addRenterDialog.editRenter') : t('components.addRenterDialog.addRenter')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -240,7 +242,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
             <>
               <Stack>
                 <InputLabel htmlFor="username" sx={labelStyle}>
-                  Логин
+                  {t('components.addRenterDialog.login')}
                 </InputLabel>
                 <CarNumberInput
                   fullWidth
@@ -261,7 +263,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
               </Stack>
               <Stack>
                 <InputLabel htmlFor="password" sx={labelStyle}>
-                  Пароль
+                  {t('components.addRenterDialog.password')}
                 </InputLabel>
                 <CarNumberInput
                   fullWidth
@@ -284,7 +286,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           )}
           <Stack>
             <InputLabel htmlFor="contacts" sx={labelStyle}>
-              Контакты
+              {t('components.addRenterDialog.contacts')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -303,7 +305,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="company_name" sx={labelStyle}>
-              Арендатор
+              {t('components.addRenterDialog.renter')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -431,7 +433,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor='number_of_places' sx={labelStyle}>
-              Количество мест
+              {t('components.addRenterDialog.numberOfPlaces')}
             </InputLabel>
             <CarNumberInput
                 fullWidth
@@ -456,7 +458,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addRenterDialog.save') : t('components.addRenterDialog.add')}
           </Button>
         </Box>
       </DialogActions>

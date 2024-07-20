@@ -41,6 +41,9 @@ import {
   DateInputStyle
 } from '../../theme/styles';
 import { passModeOptions } from 'constants';
+import {useTranslation} from "react-i18next";
+import i18n from '../../translation/index'
+
 
 const validationSchemaHour = yup.object({
   description: yup.string().required('Введите название'),
@@ -126,6 +129,7 @@ const labelStyle = {
 };
 
 export default function AddWorkingModeDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -389,7 +393,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать режим' : 'Добавить режим'}
+        {edit ? t('components.addWorkingModeDialog.editMode') : t('components.addWorkingModeDialog.addMode')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -411,7 +415,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addWorkingModeDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -434,7 +438,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             <>
               <Stack>
                 <InputLabel htmlFor="pass_mode" sx={labelStyle}>
-                  Пропускной режим
+                  {t('components.addWorkingModeDialog.passMode')}
                 </InputLabel>
                 <Select
                   id="pass_mode"
@@ -516,7 +520,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode !== '' && passMode !== 'closed' && (
             <Stack>
               <InputLabel htmlFor="price" sx={labelStyle}>
-                Цена
+                {t('components.addWorkingModeDialog.price')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -538,7 +542,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode === 'pay_by_hour' && (
             <Stack>
               <InputLabel htmlFor="entry_fee" sx={labelStyle}>
-                Входная плата
+                {t('components.addWorkingModeDialog.entryFee')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -562,7 +566,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode === 'pay_by_interval' && (
             <Stack>
               <InputLabel htmlFor="interval" sx={labelStyle}>
-                Интервал
+                {t('components.addWorkingModeDialog.interval')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -586,7 +590,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode === 'pay_by_day' && (
             <Stack>
               <InputLabel htmlFor="day_counts_from_mins" sx={labelStyle}>
-                Задержка для запуска суточного режима (минут)
+                {t('components.addWorkingModeDialog.dayCountsFromMins')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -611,7 +615,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode === 'pay_by_first_hours' && (
             <Stack>
               <InputLabel htmlFor="number_of_first_mins" sx={labelStyle}>
-                Количество первых N минут
+                {t('components.addWorkingModeDialog.numberOfFirstMins')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -638,7 +642,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             passMode === 'closed') && (
             <Stack>
               <InputLabel htmlFor="transit_block_time_min" sx={labelStyle}>
-                Время транзитной блокировки (минут)
+                {t('components.addWorkingModeDialog.transitBlockTimeMin')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -663,7 +667,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
           {passMode === 'pay_by_hour' && (
             <Stack>
               <InputLabel htmlFor="free_time_min" sx={labelStyle}>
-                Свободное время (минут)
+                {t('components.addWorkingModeDialog.freeTimeMin')}
               </InputLabel>
               <CarNumberInput
                 fullWidth
@@ -690,7 +694,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
               {timeFrom && (
                 <Stack>
                   <InputLabel htmlFor="timeFrom" sx={labelStyle}>
-                    Время от (часов и минут)
+                    {t('components.addWorkingModeDialog.timeFrom')}
                   </InputLabel>
                   <TimeField
                     id="timeFrom"
@@ -710,7 +714,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
               {timeTo && (
                 <Stack>
                   <InputLabel htmlFor="timeTo" sx={labelStyle}>
-                    Время до (часов и минут)
+                    {t('components.addWorkingModeDialog.timeTo')}
                   </InputLabel>
                   <TimeField
                     id="timeTo"
@@ -737,7 +741,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addWorkingModeDialog.save') : t('components.addWorkingModeDialog.add')}
           </Button>
           {show && passMode === '' && (
             <Typography
@@ -747,7 +751,7 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
                 color: theme.colors.element.error
               }}
             >
-              Заполните поля, чтобы добавить режим
+              {t('components.addWorkingModeDialog.requiredFields')}
             </Typography>
           )}
         </Box>

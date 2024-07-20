@@ -26,12 +26,14 @@ import {
 } from '../../theme/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard';
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   vehiclePlate: ''
 };
 
 export default function CarNumberDialog({ show, handleClose }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const accessPointId = useSelector((state) => state.cameras.accessPointId);
   const [accessPoint, setAccessPoint] = useState(null);
@@ -158,7 +160,7 @@ export default function CarNumberDialog({ show, handleClose }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Введите номер"
+            placeholder={t('components.carNumberDialog.enterNumber')}
             value={selectedNumber}
             onChange={handleChangeNumber}
             onBlur={formik.handleBlur}
@@ -172,7 +174,7 @@ export default function CarNumberDialog({ show, handleClose }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            Открыть
+            {t('components.carNumberDialog.open')}
           </Button>
         </Box>
       </DialogActions>

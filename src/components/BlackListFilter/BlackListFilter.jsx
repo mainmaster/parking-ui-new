@@ -24,8 +24,10 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 export default function BlackListFilter() {
+  const { t } = useTranslation();
   const [carNumber, setCarNumber] = useState('');
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.carPark.filters);
@@ -93,7 +95,7 @@ export default function BlackListFilter() {
                     height: 24
                   }}
                   src={searchIcon}
-                  alt="Найти по номеру"
+                  alt={t('components.blackListFilter.searchByNumber')}
                 />
               </InputAdornment>
             ),
@@ -110,7 +112,7 @@ export default function BlackListFilter() {
                       height: 24
                     }}
                     src={searchCancelIcon}
-                    alt={'Очистить'}
+                    alt={t('components.blackListFilter.clear')}
                   />
                 </IconButton>
               </InputAdornment>
@@ -119,7 +121,7 @@ export default function BlackListFilter() {
           variant="filled"
           id="vehiclePlate"
           name="vehiclePlate"
-          placeholder="Найти по номеру"
+          placeholder={t('components.blackListFilter.searchByNumber')}
           value={carNumber}
           onChange={handleChangeField}
         />

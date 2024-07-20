@@ -11,8 +11,10 @@ import { useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 export default function LogBlackListCard({ car }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const urlStatus = useParams();
   const validDateString = format(parseISO(car.valid_until), 'dd.MM.yyyy');
@@ -56,11 +58,11 @@ export default function LogBlackListCard({ car }) {
           >{`№ ${car.id}`}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Описание</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logBlackListCard.description')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{car.description}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Бан до</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logApplicationCard.banTo')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{validDateString}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -71,7 +73,7 @@ export default function LogBlackListCard({ car }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditCarClick}
           >
-            Изменить
+            {t('components.logApplicationCard.change')}
           </Button>
           <Button
             disableRipple
@@ -80,7 +82,7 @@ export default function LogBlackListCard({ car }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteCarClick}
           >
-            Удалить
+            {t('components.logApplicationCard.delete')}
           </Button>
         </Stack>
       </Stack>

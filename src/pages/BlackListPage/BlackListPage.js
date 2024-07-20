@@ -37,6 +37,7 @@ import { CARS_ON_PAGE, ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
 import LogBlackListCard from '../../components/LogBlackListCard/LogBlackListCard';
 import EventManager from '../../components/EventManager/EventManager';
 import AddCarDialog from '../../components/BlackListAddCarDialog/BlackListAddCarDialog';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -46,6 +47,7 @@ const titleTextStyle = {
 };
 
 const BlackListPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const blackList = useSelector((state) => state.blackList.blackList);
   const pages = useSelector((state) => state.blackList.pages);
@@ -148,7 +150,7 @@ const BlackListPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Чёрный список</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.blackListPage.blackList')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -161,7 +163,7 @@ const BlackListPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCarClick}
               >
-                Добавить в ЧС
+                {t('pages.blackListPage.addToBlackList')}
               </Button>
 
               <BlackListFilter />
@@ -180,11 +182,11 @@ const BlackListPage = () => {
               }}
               sx={{ minHeight: '42px' }}
             >
-              <Tab sx={tabStyle({ ...theme })} disableRipple label="Активные" />
+              <Tab sx={tabStyle({ ...theme })} disableRipple label={t('pages.blackListPage.active')} />
               <Tab
                 sx={tabStyle({ ...theme })}
                 disableRipple
-                label="Неактивные"
+                label={t('pages.blackListPage.noActive')}
               />
             </Tabs>
           </Stack>
@@ -228,7 +230,7 @@ const BlackListPage = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>Чёрный список</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.blackListPage.blackList')}</Typography>
                 <Button
                   disableRipple
                   variant="contained"
@@ -236,7 +238,7 @@ const BlackListPage = () => {
                   sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddCarClick}
                 >
-                  Добавить в ЧС
+                  {t('pages.blackListPage.addToBlackList')}
                 </Button>
               </Stack>
               <Box
@@ -263,12 +265,12 @@ const BlackListPage = () => {
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Активные"
+                    label={t('pages.blackListPage.active')}
                   />
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Неактивные"
+                    label={t('pages.blackListPage.noActive')}
                   />
                 </Tabs>
               </Stack>
@@ -337,8 +339,8 @@ const BlackListPage = () => {
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
                   {currentTab === 0
-                    ? 'Нет машин в чёрном списке'
-                    : 'Нет машин с истёкшим запретом на доступ'}
+                    ? t('pages.blackListPage.noCarInBlackList')
+                    : t('pages.blackListPage.noCarWithAccess')}
                 </Typography>
               </>
             )}

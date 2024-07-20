@@ -7,8 +7,10 @@ import { useSelector } from 'react-redux'
 import { formatDate, isEmptyObject } from 'utils'
 import { CarNumberCard } from '../CarNumberCard/CarNumberCard'
 import { NavLink } from 'react-router-dom'
+import {useTranslation} from "react-i18next";
 
 const SessionsCard = ({ className, onClickImage }) => {
+  const { t } = useTranslation();
   const dataModal = useSelector((state) => state.sessions.dataModal)
 
   return (
@@ -18,7 +20,7 @@ const SessionsCard = ({ className, onClickImage }) => {
           <Card.Body className={css.card_body}>
             <CarNumberCard carNumber={dataModal?.events[0]?.vehicle_plate} />
 
-            <span>Въезд:</span>
+            <span>{t('components.sessionCard.in')}:</span>
             <br />
             <img
               src={
@@ -39,7 +41,7 @@ const SessionsCard = ({ className, onClickImage }) => {
             dataModal?.scores === undefined ? null : (
               <Accordion>
                 <Accordion.Item eventKey="">
-                  <Accordion.Header>Детали</Accordion.Header>
+                  <Accordion.Header>{t('components.sessionCard.details')}</Accordion.Header>
                   <Accordion.Body>
                     <pre>{JSON.stringify(dataModal?.events[0].scores)}</pre>
                   </Accordion.Body>
@@ -48,9 +50,9 @@ const SessionsCard = ({ className, onClickImage }) => {
             )}
 
             <Card.Text>
-              <NavLink to={`${dataModal.id}`}>Ссылка на сессию</NavLink><br/>
-              <span>Описание:</span> {dataModal.events[0].description}<br />
-              <span>Время:</span>{' '}
+              <NavLink to={`${dataModal.id}`}>{t('components.sessionCard.urlForSession')}</NavLink><br/>
+              <span>{t('components.sessionCard.description')}:</span> {dataModal.events[0].description}<br />
+              <span>{t('components.sessionCard.time')}:</span>{' '}
               {formatDate(dataModal.events[0].create_datetime)}
             </Card.Text>
             <div>
@@ -72,9 +74,9 @@ const SessionsCard = ({ className, onClickImage }) => {
                     }
                   />
                   <Card.Text>
-                    <span>Описание:</span> {dataModal.events[1].description}
+                    <span>{t('components.sessionCard.description')}:</span> {dataModal.events[1].description}
                     <br />
-                    <span>Время:</span>{' '}
+                    <span>{t('components.sessionCard.time')}:</span>{' '}
                     {formatDate(dataModal.events[1].create_datetime)}
                   </Card.Text>
                 </>
@@ -83,7 +85,7 @@ const SessionsCard = ({ className, onClickImage }) => {
           </Card.Body>
         </>
       ) : (
-        <div className={css.card_empty}>Выберите машину</div>
+        <div className={css.card_empty}>{t('components.sessionCard.chooseCar')}</div>
       )}
     </Card>
   )

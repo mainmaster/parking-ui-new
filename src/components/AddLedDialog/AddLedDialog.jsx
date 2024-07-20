@@ -31,6 +31,7 @@ import {
   selectMenuStyle
 } from '../../theme/styles';
 import { ledTypeOptions } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -52,6 +53,7 @@ const labelStyle = {
 };
 
 export default function AddLedDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -169,7 +171,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать LED Табло' : 'Добавить LED Табло'}
+        {edit ? t('components.addLegDialog.editLed') : t('components.addLegDialog.addLed')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -191,7 +193,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addLegDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -212,7 +214,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="ip_address" sx={labelStyle}>
-              IP адрес
+              {t('components.addLegDialog.ipAddress')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -233,7 +235,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="port" sx={labelStyle}>
-              Порт
+              {t('components.addLegDialog.port')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -253,7 +255,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="led_board_type" sx={labelStyle}>
-              Тип табло
+              {t('components.addLegDialog.ledType')}
             </InputLabel>
             <Select
               id="led_board_type"
@@ -334,7 +336,7 @@ export default function AddLedDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addLegDialog.save') : t('components.addLegDialog.add')}
           </Button>
         </Box>
       </DialogActions>

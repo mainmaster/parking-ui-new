@@ -12,6 +12,7 @@ import { useRentersQuery } from '../../api/renters/renters.api';
 import { selectMenuStyle } from '../../theme/styles';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import _ from 'lodash';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -22,6 +23,7 @@ const labelStyle = {
 };
 
 export default function RenterSelect({ selected, handleChange }) {
+  const { t } = useTranslation();
   const { data: renters } = useRentersQuery();
   const theme = useTheme();
 
@@ -30,7 +32,7 @@ export default function RenterSelect({ selected, handleChange }) {
       {renters && (
         <Stack>
           <InputLabel htmlFor="company-select" sx={labelStyle}>
-            Арендатор
+            {t('components.renterSelect.renter')}
           </InputLabel>
           <Select
             id="company-select"
@@ -67,7 +69,7 @@ export default function RenterSelect({ selected, handleChange }) {
             }}
             renderValue={(selectedId) => {
               if (selectedId === '') {
-                return <em>Выбрать</em>;
+                return <em>{t('components.renterSelect.choose')}</em>;
               } else {
                 const selectedCompany = renters.find(
                   (r) => r.id === selectedId
@@ -81,7 +83,7 @@ export default function RenterSelect({ selected, handleChange }) {
             }}
           >
             <MenuItem value="">
-              <em>Выбрать</em>
+              <em>{t('components.renterSelect.choose')}</em>
             </MenuItem>
             {_.sortBy(renters, ['company_name']).map((r) => (
               <MenuItem

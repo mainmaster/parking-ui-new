@@ -20,6 +20,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddWorkingModeDialog from '../../components/AddWorkingModeDialog/AddWorkingModeDialog';
 import LogWorkModeCard from '../../components/LogWorkModeCard/LogWorkModeCard';
 import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -29,6 +30,7 @@ const titleTextStyle = {
 };
 
 const WorkingModesPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const workingModes = useSelector((state) => state.workingModes.workingModes);
   const isLoading = useSelector((state) => state.workingModes.isLoadingFetch);
@@ -117,7 +119,7 @@ const WorkingModesPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Режимы</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.workingModesPage.modes')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -130,7 +132,7 @@ const WorkingModesPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddModeClick}
               >
-                Добавить режим
+                {t('pages.workingModesPage.addMode')}
               </Button>
             </Stack>
           </Stack>
@@ -161,7 +163,7 @@ const WorkingModesPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Режимы</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.workingModesPage.modes')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -169,7 +171,7 @@ const WorkingModesPage = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddModeClick}
             >
-              Добавить режим
+              {t('pages.workingModesPage.addMode')}
             </Button>
           </Stack>
         )}
@@ -215,10 +217,10 @@ const WorkingModesPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={pointsEmptyIcon}
-                  alt="Нет режимов"
+                  alt={t('pages.workingModesPage.noModes')}
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет режимов
+                  {t('pages.workingModesPage.noModes')}
                 </Typography>
               </>
             )}

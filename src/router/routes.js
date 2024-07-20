@@ -1,29 +1,67 @@
-export const operatorRoutes = [
-  { eventKey: '/events', title: 'VIZOR', vltitle: 'Vision Labs' },
-  { eventKey: '/sessions', title: 'Сессии' },
-  { eventKey: '/auto-park/active', title: 'Автопарк' },
-  { eventKey: '/black-list/active', title: 'Черный список' },
-  { eventKey: '/requests', title: 'Заявки' },
-  { eventKey: '/settings', title: 'Настройки' }
+import i18n from '../translation/index';
+
+export let operatorRoutes = [
+  { eventKey: '/events', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+  { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+  { eventKey: '/auto-park/active', title: i18n.t('routesTitle.park') },
+  { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
+  { eventKey: '/requests', title: i18n.t('routesTitle.request') },
+  { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
 ];
-export const renterRoutes = [
-  { eventKey: '/events-logs', title: 'VIZOR', vltitle: 'Vision Labs' },
-  { eventKey: '/sessions', title: 'Сессии' },
-  { eventKey: '/requests', title: 'Заявки' }
+export let renterRoutes = [
+  { eventKey: '/events-logs', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+  { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+  { eventKey: '/requests', title: i18n.t('routesTitle.request') },
 ];
-export const adminRoutes = [
-  { eventKey: '/events', title: 'VIZOR', vltitle: 'Vision Labs' },
-  { eventKey: '/sessions', title: 'Сессии' },
-  { eventKey: '/auto-park/active', title: 'Автопарк' },
-  { eventKey: '/black-list/active', title: 'Черный список' },
-  { eventKey: '/requests', title: 'Заявки' },
-  { eventKey: '/settings', title: 'Настройки' },
-  { eventKey: '/access-points', title: 'Точки доступа' },
-  { eventKey: '/cameras', title: 'Камеры' },
-  { eventKey: '/led', title: 'LED Табло' },
-  { eventKey: '/terminals', title: 'Терминалы' },
-  { eventKey: '/working-modes', title: 'Режимы' },
-  { eventKey: '/payments', title: 'Оплаты' },
-  { eventKey: '/controllers', title: 'Контроллеры' },
-  { eventKey: '/users/operators', title: 'Доступы' }
+export let adminRoutes = [
+  { eventKey: '/events', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+  { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+  { eventKey: '/auto-park/active', title: i18n.t('routesTitle.park') },
+  { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
+  { eventKey: '/requests', title: i18n.t('routesTitle.request') },
+  { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
+  { eventKey: '/access-points', title: i18n.t('routesTitle.points') },
+  { eventKey: '/cameras', title: i18n.t('routesTitle.cameras') },
+  { eventKey: '/led', title: i18n.t('routesTitle.led') },
+  { eventKey: '/terminals', title: i18n.t('routesTitle.terminal') },
+  { eventKey: '/working-modes', title: i18n.t('routesTitle.modes') },
+  { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
+  { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
+  { eventKey: '/users/operators', title: i18n.t('routesTitle.access') }
 ];
+
+const uploadRouterTile = () => {
+  adminRoutes = [
+    { eventKey: '/events', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+    { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+    { eventKey: '/auto-park/active', title: i18n.t('routesTitle.park') },
+    { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
+    { eventKey: '/requests', title: i18n.t('routesTitle.request') },
+    { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
+    { eventKey: '/access-points', title: i18n.t('routesTitle.points') },
+    { eventKey: '/cameras', title: i18n.t('routesTitle.cameras') },
+    { eventKey: '/led', title: i18n.t('routesTitle.led') },
+    { eventKey: '/terminals', title: i18n.t('routesTitle.terminal') },
+    { eventKey: '/working-modes', title: i18n.t('routesTitle.modes') },
+    { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
+    { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
+    { eventKey: '/users/operators', title: i18n.t('routesTitle.access') }
+  ];
+  renterRoutes = [
+    { eventKey: '/events-logs', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+    { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+    { eventKey: '/requests', title: i18n.t('routesTitle.request') },
+  ];
+  operatorRoutes = [
+    { eventKey: '/events', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
+    { eventKey: '/sessions', title: i18n.t('routesTitle.session') },
+    { eventKey: '/auto-park/active', title: i18n.t('routesTitle.park') },
+    { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
+    { eventKey: '/requests', title: i18n.t('routesTitle.request') },
+    { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
+  ];
+}
+
+i18n.on('loaded', () => {
+  uploadRouterTile()
+})

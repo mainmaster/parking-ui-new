@@ -5,8 +5,10 @@ import Select from 'react-select'
 import cn from 'classnames'
 import { ErrorMessage, useField } from 'formik'
 import { Form } from 'react-bootstrap'
+import {useTranslation} from "react-i18next";
 
 const MultiSelect = ({ options, label, className, onChange, ...props }) => {
+  const { t } = useTranslation();
   const [field, meta] = useField(props)
 
   const error = meta.touched && meta.error
@@ -34,7 +36,7 @@ const MultiSelect = ({ options, label, className, onChange, ...props }) => {
           name={field.name}
           value={field.value || ''}
           menuPlacement="auto"
-          noOptionsMessage={() => <div>Ничего не найдено</div>}
+          noOptionsMessage={() => <div>{t('components.multiSelect.nothing')}</div>}
           onChange={onChange}
           placeholder=""
         />

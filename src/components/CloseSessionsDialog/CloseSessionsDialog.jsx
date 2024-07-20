@@ -22,6 +22,7 @@ import {
   DateInputStyle
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   pb: '4px',
@@ -29,6 +30,7 @@ const labelStyle = {
 };
 
 export default function CloseSessionsDialog({ show, handleClose }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [date, setDate] = useState(null);
   const [submited, setSubmited] = useState(true);
@@ -106,7 +108,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
           textAlign: 'center'
         }}
       >
-        Закрыть сессии старше даты
+        {t('components.closeSessionDialog.closeSessionAfterDate')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -124,7 +126,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
         >
           <Stack>
             <InputLabel htmlFor="date" sx={labelStyle}>
-              Дата
+              {t('components.closeSessionDialog.date')}
             </InputLabel>
             <DatePicker
               id="date"
@@ -136,7 +138,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
                 textField: {
                   variant: 'filled',
                   sx: DateInputStyle({ ...theme }),
-                  placeholder: 'Дата'
+                  placeholder: t('components.closeSessionDialog.date')
                 },
                 openPickerButton: { disableRipple: true }
               }}
@@ -153,7 +155,7 @@ export default function CloseSessionsDialog({ show, handleClose }) {
             onClick={handleCloseSessions}
             sx={primaryButtonStyle({ ...theme })}
           >
-            Закрыть сессии
+            {t('components.closeSessionDialog.closeSessions')}
           </Button>
         </Box>
       </DialogActions>

@@ -38,6 +38,7 @@ import { useFormik } from 'formik';
 import { formatISO } from 'date-fns';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -62,6 +63,7 @@ const paymentStatusValues = [
 ];
 
 export default function SessionsFilter({ openForm, setOpenForm }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSessionStatus, setSelectedSessionStatus] = useState('');
   const [selectedPaymentStatus, setSelectedPaymentStatus] = useState('');
@@ -257,7 +259,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                       height: 24
                     }}
                     src={searchIcon}
-                    alt="Найти по номеру"
+                    alt={t('components.sessionsFilter.searchByNumber')}
                   />
                 </InputAdornment>
               ),
@@ -274,7 +276,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                         height: 24
                       }}
                       src={searchCancelIcon}
-                      alt={'Очистить'}
+                      alt={t('components.sessionsFilter.clear')}
                     />
                   </IconButton>
                 </InputAdornment>
@@ -283,7 +285,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Найти по номеру"
+            placeholder={t('components.sessionsFilter.searchByNumber')}
             value={formik.values.vehiclePlate}
             onChange={handleChangeField}
             onBlur={formik.handleBlur}
@@ -323,7 +325,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
           >
             <Stack>
               <InputLabel htmlFor="session-status-select" sx={labelStyle}>
-                Статус сессии
+                {t('components.sessionsFilter.sessionStatus')}
               </InputLabel>
               <Select
                 id="session-status-select"
@@ -360,7 +362,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.sessionsFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -375,7 +377,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.sessionsFilter.choose')}</em>
                 </MenuItem>
                 {sessionStatusValues.map((st) => (
                   <MenuItem
@@ -397,7 +399,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="payment-status-select" sx={labelStyle}>
-                Статус оплаты
+                {t('components.sessionsFilter.paymentStatus')}
               </InputLabel>
               <Select
                 id="payment-status-select"
@@ -434,7 +436,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.sessionsFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -449,7 +451,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.sessionsFilter.choose')}</em>
                 </MenuItem>
                 {paymentStatusValues.map((st) => (
                   <MenuItem
@@ -470,7 +472,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
               </Select>
             </Stack>
             <Stack>
-              <Typography sx={labelStyle}>Дата</Typography>
+              <Typography sx={labelStyle}>{t('components.sessionsFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <DatePicker
                   value={fromValue}
@@ -482,7 +484,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'От'
+                      placeholder: t('components.sessionsFilter.from')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -500,7 +502,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'До'
+                      placeholder: t('components.sessionsFilter.to')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -520,7 +522,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
-                Применить
+                {t('components.sessionsFilter.submit')}
               </Button>
               <Button
                 disabled={!filters}
@@ -530,7 +532,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
-                Сбросить
+                {t('components.sessionsFilter.reset')}
               </Button>
             </Stack>
           </Stack>

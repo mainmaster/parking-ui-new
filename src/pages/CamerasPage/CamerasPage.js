@@ -19,6 +19,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddCameraDialog from '../../components/AddCameraDialog/AddCameraDialog';
 import LogCameraCard from '../../components/LogCameraCard/LogCameraCard';
 import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -28,6 +29,7 @@ const titleTextStyle = {
 };
 
 const CamerasPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const cameras = useSelector((state) => state.cameras.cameras);
   const isLoading = useSelector((state) => state.cameras.isLoadingFetch);
@@ -110,7 +112,7 @@ const CamerasPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Камеры</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.camerasPage.cameras')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -123,7 +125,7 @@ const CamerasPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddCameraClick}
               >
-                Добавить камеру
+                {t('pages.camerasPage.addCamera')}
               </Button>
             </Stack>
           </Stack>
@@ -154,7 +156,7 @@ const CamerasPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Камеры</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.camerasPage.cameras')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -162,7 +164,7 @@ const CamerasPage = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddCameraClick}
             >
-              Добавить камеру
+              {t('pages.camerasPage.addCamera')}
             </Button>
           </Stack>
         )}
@@ -211,7 +213,7 @@ const CamerasPage = () => {
                   alt="Нет камер"
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет камер
+                  {t('pages.camerasPage.noCameras')}
                 </Typography>
               </>
             )}

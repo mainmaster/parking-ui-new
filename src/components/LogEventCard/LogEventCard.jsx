@@ -37,11 +37,13 @@ import { resetDebtRequest } from '../../api/sessions';
 import { useNavigate } from 'react-router-dom';
 import { typeText } from '../TypeAuto/types';
 import { useSnackbar } from 'notistack';
+import {useTranslation} from "react-i18next";
 
 export default forwardRef(function LogEventCard(
   { event, onClickImage, onHoverImageButton, selected, accessOptions },
   ref
 ) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [debtPaid, setDebtPaid] = useState(false);
@@ -79,7 +81,7 @@ export default forwardRef(function LogEventCard(
     navigator.clipboard
       .writeText(window.location.href + '/' + event.id)
       .then(() => {
-        enqueueSnackbar('Ссылка скопирована');
+        enqueueSnackbar(t('components.logEventCard.irlIsCopy'));
       });
     setAnchorEl(null);
   };
@@ -113,7 +115,7 @@ export default forwardRef(function LogEventCard(
       resetDebtRequest(event.vehicle_plate.full_plate).then((res) => {
         if (res) {
           setDebtPaid(true);
-          enqueueSnackbar('Долг обнулён');
+          enqueueSnackbar(t('components.logEventCard.dolgFree'));
         }
       });
     }
@@ -175,7 +177,7 @@ export default forwardRef(function LogEventCard(
                       width: 24
                     }}
                     src={eventBarrierIcon}
-                    alt="шлагбаум"
+                    alt={t('components.logEventCard.laurent')}
                   />
                 ) : (
                   <img
@@ -183,7 +185,7 @@ export default forwardRef(function LogEventCard(
                       width: 20
                     }}
                     src={eventCarIcon}
-                    alt="автомобиль"
+                    alt={t('components.logEventCard.car')}
                   />
                 )}
               </IconButton>
@@ -237,9 +239,9 @@ export default forwardRef(function LogEventCard(
                   height: 24
                 }}
                 src={eventMenuOpenIcon}
-                alt={'Открыть'}
+                alt={t('components.logEventCard.open')}
               />
-              <Typography>Открыть</Typography>
+              <Typography>{t('components.logEventCard.open')}</Typography>
             </MenuItem>
             <MenuItem
               id="copy"
@@ -253,9 +255,9 @@ export default forwardRef(function LogEventCard(
                   height: 24
                 }}
                 src={eventMenuCopyIcon}
-                alt={'Скопировать ссылку'}
+                alt={t('components.logEventCard.copyUrl')}
               />
-              <Typography>Коп. ссылку</Typography>
+              <Typography>{t('components.logEventCard.cUrl')}</Typography>
             </MenuItem>
           </Menu>
         </Stack>
@@ -280,7 +282,7 @@ export default forwardRef(function LogEventCard(
                 width: 23.5
               }}
               src={eventPlateIcon}
-              alt="номер"
+              alt={t('components.logEventCard.number')}
             />
           </IconButton>
         )}
@@ -364,11 +366,11 @@ export default forwardRef(function LogEventCard(
                 width: '18px'
               }}
               src={eventCardIcon}
-              alt={`Долг ${event.debt} руб`}
+              alt={`${t('components.logEventCard.dolg')} ${event.debt} ${t('components.logEventCard.rub')}`}
             />
             <Typography>{RURuble.format(event.debt)}</Typography>
             <Typography sx={{ color: theme.colors.element.secondary }}>
-              {event.event_code === 1026 ? 'долга обнулено' : 'долг'}
+              {event.event_code === 1026 ? t('components.logEventCard.zeroDolg') : t('components.logEventCard.dolg')}
             </Typography>
           </Stack>
         ) : null}
@@ -398,7 +400,7 @@ export default forwardRef(function LogEventCard(
                     dispatch(changeActiveOpenApModal(event.access_point))
                   }
                 >
-                  Ввести номер
+                  {t('components.logEventCard.enterNumber')}
                 </Button>
               )}
             {event.access_status_code === '1004' && (
@@ -408,7 +410,7 @@ export default forwardRef(function LogEventCard(
                 fullWidth={false}
                 sx={[secondaryButtonStyle, { mt: '4px' }]}
               >
-                Убрать из Чёрного списка
+                {t('components.logEventCard.removeFromBlackList')}
               </Button>
             )}
             {event.debt &&
@@ -423,7 +425,7 @@ export default forwardRef(function LogEventCard(
                   sx={[secondaryButtonStyle, { mt: '4px' }]}
                   onClick={handleResetDebtClick}
                 >
-                  Обнулить долг
+                  {t('components.logEventCard.freeDolg')}
                 </Button>
               )}
           </Stack>

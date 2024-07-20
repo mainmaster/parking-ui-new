@@ -26,6 +26,7 @@ import {
   secondaryButtonStyle,
   CarNumberInput
 } from '../../theme/styles';
+import {useTranslation} from "react-i18next";
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -55,6 +56,7 @@ const labelStyle = {
 };
 
 export default function AddCameraDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -178,7 +180,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать камеру' : 'Добавить камеру'}
+        {edit ? t('components.addCameraDialog.updateCamera') : t('components.addCameraDialog.addCamera')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -200,7 +202,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addCameraDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -221,7 +223,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="ip_address" sx={labelStyle}>
-              IP адрес
+              {t('components.addCameraDialog.ipAddress')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -242,7 +244,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="port" sx={labelStyle}>
-              Порт
+              {t('components.addCameraDialog.port')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -262,7 +264,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="login" sx={labelStyle}>
-              Логин
+              {t('components.addCameraDialog.login')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -281,7 +283,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="password" sx={labelStyle}>
-              Пароль
+              {t('components.addCameraDialog.password')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -300,7 +302,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="mjpeg_url" sx={labelStyle}>
-              Ссылка на трансляцию
+              {t('components.addCameraDialog.mjpegUrl')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -321,7 +323,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="snapshot_url" sx={labelStyle}>
-              Ссылка на снапшот
+              {t('components.addCameraDialog.snapshotUrl')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -354,7 +356,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
                     Boolean(formik.errors.emergency_car_only)
                   }
                 />
-              } label="Камера только для спецтранспорта" />
+              } label={t('components.addCameraDialog.emergencyCarOnly')} />
               <FormControlLabel control={
                 <Checkbox
                   id="is_display"
@@ -366,7 +368,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
                     Boolean(formik.errors.is_display)
                   }
                 />
-              } label="Отображать видео на главной странце" />
+              } label={t('components.addCameraDialog.isDisplay')} />
             </FormGroup>
           </Stack>
 
@@ -377,7 +379,7 @@ export default function AddCameraDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addCameraDialog.save') : t('components.addCameraDialog.add')}
           </Button>
         </Box>
       </DialogActions>

@@ -34,6 +34,7 @@ import {
   selectMenuStyle
 } from '../../theme/styles';
 import { terminalTypeOptions } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -62,6 +63,7 @@ const labelStyle = {
 };
 
 export default function AddTerminalDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -105,10 +107,10 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
         updateTerminal(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Данные сохранены', { variant: 'success' });
+            enqueueSnackbar(t('components.addTerminalDialog.dataSave'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addTerminalDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -117,10 +119,10 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
         createTerminal(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Терминал добавлен', { variant: 'success' });
+            enqueueSnackbar(t('components.addTerminalDialog.correctAdd'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addTerminalDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -207,7 +209,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать терминал' : 'Добавить терминал'}
+        {edit ? t('components.addTerminalDialog.editTerminal') : t('components.addTerminalDialog.addTerminal')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -229,7 +231,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addTerminalDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -250,7 +252,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="address" sx={labelStyle}>
-              Адрес
+              {t('components.addTerminalDialog.address')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -269,7 +271,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="place" sx={labelStyle}>
-              Место
+              {t('components.addTerminalDialog.place')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -288,7 +290,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="automat_number" sx={labelStyle}>
-              Номер автомата
+              {t('components.addTerminalDialog.automatNumber')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -311,7 +313,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="ip_address" sx={labelStyle}>
-              IP адрес
+              {t('components.addTerminalDialog.ipAddress')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -332,7 +334,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="port" sx={labelStyle}>
-              Порт
+              {t('components.addTerminalDialog.port')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -352,7 +354,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor='ssh_port' sx={labelStyle}>
-              ssh-порт
+              {t('components.addTerminalDialog.sshPort')}
             </InputLabel>
             <CarNumberInput
                 fullWidth
@@ -372,7 +374,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="terminal_type" sx={labelStyle}>
-              Тип
+              {t('components.addTerminalDialog.type')}
             </InputLabel>
             <Select
               id="terminal_type"
@@ -453,7 +455,7 @@ export default function AddTerminalDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addTerminalDialog.save') : t('components.addTerminalDialog.add')}
           </Button>
         </Box>
       </DialogActions>

@@ -11,8 +11,10 @@ import { logoIcon } from 'icons/index'
 import { useGetInfoFooterQuery } from 'api/apiSlice'
 import {getPaymentsPageImage} from "../../api/settings/paymentsPageImage";
 import {useEffect, useLayoutEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 const ClientLayout = ({ children, parkingID, title }) => {
+  const { t } = useTranslation();
   const { data } = useGetInfoFooterQuery(parkingID)
   const [bannerPicture, setBannerPicture] = useState(null);
 
@@ -27,10 +29,10 @@ const ClientLayout = ({ children, parkingID, title }) => {
       <div className={css.content}>
         <div className={css.client}>
           <img src={bannerPicture} alt={data?.name} />
-          <div className={css.client_title}>{title || 'Загрузка'}</div>
+          <div className={css.client_title}>{title || t('components.clientLayout.loading')}</div>
           <a className={css.phone} href={`tel:${data?.operator_phone_number}`}>
             <Telephone fill="rgba(28, 128, 241, 1)" />
-            <div className={css.phone_title}>Диспетчер</div>
+            <div className={css.phone_title}>{t('components.clientLayout.operator')}</div>
           </a>
         </div>
         <div className={css.layout_content}>
@@ -43,14 +45,14 @@ const ClientLayout = ({ children, parkingID, title }) => {
           <span>{data?.name}</span>
           <span>{data?.info}</span>
           <a href={data?.refund} target="_blank" rel="noreferrer">
-            Политика возврата и обмена
+            {t('components.clientLayout.refund')}
           </a>
           <br/>
           <a href={data?.oferta} target="_blank" rel="noreferrer">
-            Пользовательское соглашение и политика обработки данных
+            {t('components.clientLayout.oferta')}
           </a>
           <div className={css.payments}>
-            <span>Оплата только по карте</span>
+            <span>{t('components.clientLayout.paymentOnlyCard')}</span>
             <img src={mirImg} alt="mir" />
             <img src={visaImg} alt="visa" />
             <img src={mastercardImg} alt="mastercard" />

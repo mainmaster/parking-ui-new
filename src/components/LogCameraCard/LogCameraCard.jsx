@@ -8,6 +8,7 @@ import {
 } from 'store/cameras/camerasSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -16,6 +17,7 @@ const titleTextStyle = {
 };
 
 export default function LogCameraCard({ camera }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -44,27 +46,27 @@ export default function LogCameraCard({ camera }) {
         <Typography sx={titleTextStyle}>{camera.description}</Typography>
         <Stack gap={'12px'} sx={{ minHeight: '216px' }}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>IP адрес</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCameraCard.ipAddress')}</Typography>
             <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
               {`${camera.ip_address}:${camera.port}`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Логин</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCameraCard.login')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{camera.login}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Пароль</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCameraCard.password')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{camera.password}</Typography>
           </Stack>
           <Stack gap={'4px'}>
-            <Typography sx={labelTextStyle}>Ссылка на трансляцию</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCameraCard.mjpegUrl')}</Typography>
             <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
               {camera.mjpeg_url}
             </Typography>
           </Stack>
           <Stack gap={'4px'}>
-            <Typography sx={labelTextStyle}>Ссылка на снапшот</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logCameraCard.snapshotUrl')}</Typography>
             <Typography sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}>
               {camera.snapshot_url}
             </Typography>
@@ -78,7 +80,7 @@ export default function LogCameraCard({ camera }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
-            Изменить
+            {t('components.logCameraCard.change')}
           </Button>
           <Button
             disableRipple
@@ -87,7 +89,7 @@ export default function LogCameraCard({ camera }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
-            Удалить
+            {t('components.logCameraCard.delete')}
           </Button>
         </Stack>
       </Stack>

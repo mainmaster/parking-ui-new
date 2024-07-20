@@ -1,13 +1,15 @@
 import styles from '../Settings/settings.module.css';
 import { Button } from 'react-bootstrap';
 import { enqueueSnackbar } from 'notistack';
+import i18n from '../../translation/index'
+import {useTranslation} from "react-i18next";
 
 export let rentersTitles = [
   { id: 1, name: '#' },
-  { id: 2, name: 'Логин' },
-  { id: 4, name: 'Арендатор' },
-  { id: 5, name: 'Контакты' },
-  { id: 6, name: 'Действие' }
+  { id: 2, name: i18n.t('pages.renterTableData.login') },
+  { id: 4, name: i18n.t('pages.renterTableData.renter') },
+  { id: 5, name: i18n.t('pages.renterTableData.contacts') },
+  { id: 6, name: i18n.t('pages.renterTableData.action') }
 ];
 
 export let rentersRows = (
@@ -16,6 +18,7 @@ export let rentersRows = (
   deactivateRenter,
   editRenter
 ) => {
+  const { t } = useTranslation();
   return renters?.map((renter) => {
     return (
       <tr key={renter.id} className={styles.operatorCard}>
@@ -43,19 +46,19 @@ export let rentersRows = (
               renter.is_active
                 ? deactivateRenter(renter.id).then(() => {
                     enqueueSnackbar(
-                      `Арендатор ${renter.username} деактивирован`,
+                      `${t('pages.renterTableData.renter')} ${renter.username} ${t('pages.renterTableData.inactive')}`,
                       { variant: 'success' }
                     );
                   })
                 : activateRenter(renter.id).then(() => {
                     enqueueSnackbar(
-                      `Арендатор ${renter.username} активирован`,
+                      `${t('pages.renterTableData.renter')} ${renter.username} ${t('pages.renterTableData.activated')}`,
                       { variant: 'success' }
                     );
                   });
             }}
           >
-            {renter.is_active ? 'Деактивировать' : 'Активировать'}
+            {renter.is_active ? t('pages.renterTableData.deactive') : t('pages.renterTableData.active')}
           </Button>
 
           <Button
@@ -65,7 +68,7 @@ export let rentersRows = (
             }}
             onClick={() => editRenter(renter)}
           >
-            Изменить
+            {t('pages.renterTableData.change')}
           </Button>
         </td>
       </tr>

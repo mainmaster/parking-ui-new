@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Modal from 'components/Modal'
 import Input from 'components/Input'
 import { editApplicationFetch } from '../../store/applications/applicationSlice'
+import {useTranslation} from "react-i18next";
 
 const EditApplicationModal = ({ show, handleClose }) => {
+  const { t } = useTranslation();
   const formikRef = useRef()
   const dispatch = useDispatch()
 
@@ -38,7 +40,7 @@ const EditApplicationModal = ({ show, handleClose }) => {
     <Modal
       show={show}
       handleClose={handleClose}
-      header={<CustomModal.Title>Редактировать заявку</CustomModal.Title>}
+      header={<CustomModal.Title>{t('pages.editApplicationModal.editRequest')}</CustomModal.Title>}
       body={
         <Formik
           initialValues={{}}
@@ -49,7 +51,7 @@ const EditApplicationModal = ({ show, handleClose }) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="edit-application">
               <Input
-                label="Номер машины"
+                label={t('pages.editApplicationModal.vehiclePlate')}
                 name="vehicle_plate"
                 type="text"
                 onChange={(e) =>
@@ -58,7 +60,7 @@ const EditApplicationModal = ({ show, handleClose }) => {
               />
               <Input
                 required
-                label="Дата"
+                label={t('pages.editApplicationModal.date')}
                 className='mb-3'
                 name="valid_for_date"
                 onChange={(e) => props.setFieldValue('valid_for_date', e.target.value)}
@@ -70,7 +72,7 @@ const EditApplicationModal = ({ show, handleClose }) => {
       }
       footer={
         <Button type="submit" form="edit-application">
-          Редактировать
+          {t('pages.editApplicationModal.edit')}
         </Button>
       }
     />

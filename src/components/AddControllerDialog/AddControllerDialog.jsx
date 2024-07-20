@@ -29,6 +29,7 @@ import {
   secondaryButtonStyle,
   CarNumberInput
 } from '../../theme/styles';
+import {useTranslation} from "react-i18next";
 
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
@@ -50,6 +51,7 @@ const labelStyle = {
 };
 
 export default function AddControllerDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -169,7 +171,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать контроллер' : 'Добавить контроллер'}
+        {edit ? t('components.addControllerDialog.editController') : t('components.addControllerDialog.addController')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -191,7 +193,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="description" sx={labelStyle}>
-              Название
+              {t('components.addControllerDialog.name')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -212,7 +214,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="ip_address" sx={labelStyle}>
-              IP адрес
+              {t('components.addControllerDialog.ipAddress')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -233,7 +235,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="port" sx={labelStyle}>
-              Порт
+              {t('components.addControllerDialog.port')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -253,7 +255,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="password" sx={labelStyle}>
-              Пароль
+              {t('components.addControllerDialog.password')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -278,7 +280,7 @@ export default function AddControllerDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addControllerDialog.save') : t('components.addControllerDialog.add')}
           </Button>
         </Box>
       </DialogActions>

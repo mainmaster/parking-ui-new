@@ -10,8 +10,10 @@ import {enqueueSnackbar} from "notistack";
 import { Button } from 'react-bootstrap';
 import { ru } from 'date-fns/locale'
 import {useSearchParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
+  const { t } = useTranslation();
   setDefaultOptions({ locale: ru })
   const [params] = useSearchParams()
   const parkingID = params.get('parkingID')
@@ -24,22 +26,22 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
     switch (subscription.subscription.split(' ')[0].toLowerCase()) {
       case '1':
         dateTo.setFullYear(dateTo.getFullYear() + 1);
-        setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
+        setTitle(`${t('components.subscriptionPaymentModal.fromM')} ${format(new Date, 'dd MMM yyyy')} ${t('components.subscriptionPaymentModal.toM')} ${format(dateTo, 'dd MMM yyyy')}`);
         setDuratation('year');
         return;
       case '3':
         dateTo.setMonth(dateTo.getMonth() + 3);
-        setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
+        setTitle(`${t('components.subscriptionPaymentModal.fromM')} ${format(new Date, 'dd MMM yyyy')} ${t('components.subscriptionPaymentModal.toM')} ${format(dateTo, 'dd MMM yyyy')}`);
         setDuratation('quarter');
         return;
       case 'неделя':
         dateTo.setDate(dateTo.getDate() + 7);
-        setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
+        setTitle(`${t('components.subscriptionPaymentModal.fromM')} ${format(new Date, 'dd MMM yyyy')} ${t('components.subscriptionPaymentModal.toM')} ${format(dateTo, 'dd MMM yyyy')}`);
         setDuratation('week');
         return;
       case 'месяц':
         dateTo.setMonth(dateTo.getMonth() + 1);
-        setTitle(`от ${format(new Date, 'dd MMM yyyy')} до ${format(dateTo, 'dd MMM yyyy')}`);
+        setTitle(`${t('components.subscriptionPaymentModal.fromM')} ${format(new Date, 'dd MMM yyyy')} ${t('components.subscriptionPaymentModal.toM')} ${format(dateTo, 'dd MMM yyyy')}`);
         setDuratation('month');
         return;
     }
@@ -50,7 +52,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
     buy({...data, duration, parkingID})
       .then(r=>{
         if(r.data.error){
-          enqueueSnackbar('Оплата временно недоступна',{
+          enqueueSnackbar(t('components.subscriptionPaymentModal.paymentNotAvailable'),{
             variant: 'error'
           })
         }else{
@@ -72,7 +74,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
         className={css.title}
       >
         <div>
-          Покупка абонимента
+          {t('components.subscriptionPaymentModal.buyAboniment')}
           <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -87,7 +89,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
           </IconButton>
         </div>
         <div className={css.subTitle}>
-          Абонемент на {subscription.subscription?.toLowerCase()} за {subscription.price}₽,
+          {t('components.subscriptionPaymentModal.abonimentFor')} {subscription.subscription?.toLowerCase()} {t('components.subscriptionPaymentModal.by')} {subscription.price}₽,
           {title}
         </div>
       </DialogTitle>
@@ -98,16 +100,16 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="pay-handler">
               <Input
-                label="Имя и телефон, для связи"
+                label={t('components.subscriptionPaymentModal.nameAndPhone')}
                 name="fullName"
                 required
                 type="text"
-                placeholder='Иван +79219876543'
+                placeholder={`${t('components.subscriptionPaymentModal.ivan')} +79219876543`}
                 value={props.values.fullName}
                 onChange={(e) => props.setFieldValue('fullName', e.target.value)}
               />
               <Input
-                label="Полный гос номер"
+                label={t('components.subscriptionPaymentModal.fullGosNumber')}
                 name="vehiclePlate"
                 required
                 type="text"
@@ -117,7 +119,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
               />
               {subscription.isEmailNeed && (
                 <Input
-                  label="E-mail"
+                  label={t('components.subscriptionPaymentModal.email')}
                   name="email"
                   required
                   type="text"
@@ -127,7 +129,7 @@ const SubscriptionPaymentModal = ({show, handleClose, subscription, }) => {
                 />
               )}
               <Button variant="primary" className='mt-2' type='submit' style={{width: '100%'}}>
-                Оплатить {subscription.price}₽
+                {t('components.subscriptionPaymentModal.pay')} {subscription.price}₽
               </Button>
             </form>
           )}

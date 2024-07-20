@@ -11,6 +11,7 @@ import { useSnackbar } from 'notistack';
 import getParkingData from '../../api/auth/parking-data';
 import Logo from '../../assets/svg/theme/login_logo.svg';
 import VlLogo from '../../assets/svg/vltheme/login_logo.svg';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   pb: '4px',
@@ -24,6 +25,7 @@ const defaultValues = {
 };
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [username, setUsername] = useState('');
@@ -47,7 +49,7 @@ const LoginPage = () => {
             document.location.href = '/';
           })
           .catch(() => {
-            enqueueSnackbar('Неверный логин или пароль', {
+            enqueueSnackbar(t('pages.loginPage.incorrectLogin'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -101,11 +103,11 @@ const LoginPage = () => {
           }}
         >
           <Typography sx={{ fontSize: '2.5rem', lineHeight: '2.875rem' }}>
-            Вход
+            {t('pages.loginPage.enter')}
           </Typography>
           <Stack sx={{ width: '100%', maxWidth: '500px' }}>
             <InputLabel htmlFor="username" sx={labelStyle}>
-              Логин
+              {t('pages.loginPage.login')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -125,7 +127,7 @@ const LoginPage = () => {
           </Stack>
           <Stack sx={{ width: '100%', maxWidth: '500px' }}>
             <InputLabel htmlFor="password" sx={labelStyle}>
-              Пароль
+              {t('pages.loginPage.password')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -153,7 +155,7 @@ const LoginPage = () => {
             ]}
             type="submit"
           >
-            Войти
+            {t('pages.loginPage.in')}
           </Button>
         </Box>
       </Stack>

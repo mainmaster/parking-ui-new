@@ -34,6 +34,7 @@ import FooterSpacer from '../../components/Header/FooterSpacer';
 import { EVENTS_ON_PAGE } from '../../constants';
 import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
 import EventsList from './EventsList';
+import {useTranslation} from "react-i18next";
 
 const mobileMenuItemStyle = {
   width: '100%',
@@ -61,6 +62,7 @@ const initialAccessOptions = {
 };
 
 const EventsPage = ({ onlyLog }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isActiveModal, setIsActiveModal] = useState(false);
   const [isActiveModalMobile, setIsActiveModalMobile] = useState(false);
@@ -327,7 +329,7 @@ const EventsPage = ({ onlyLog }) => {
                 }
               ]}
             >
-              Наблюдение
+              {t('pages.eventPage.monitoring')}
             </Typography>
           </Box>
           <Box
@@ -351,7 +353,7 @@ const EventsPage = ({ onlyLog }) => {
                 }
               ]}
             >
-              Отчёты
+              {t('pages.eventPage.reports')}
             </Typography>
 
           </Box>

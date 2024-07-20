@@ -11,6 +11,7 @@ import {Stack, Typography} from "@mui/material";
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import {getPaymentsPageImage} from "../../api/settings/paymentsPageImage";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {useTranslation} from "react-i18next";
 
 
 const formatTime = (num) => {
@@ -23,6 +24,7 @@ const formatTime = (num) => {
 }
 
 const SuccessPaymentPage = () => {
+  const { t } = useTranslation();
 
   let parkingID = new URLSearchParams(window.location.search).get('parkingID')
   const [seconds, setSeconds] = useState(0)
@@ -66,14 +68,14 @@ const SuccessPaymentPage = () => {
             <img className={css.logo} src={banner} alt=''/>
             <a className={css.dispatcher} href={`tel:${footerInfo?.operator_phone_number}`}>
               <PhoneOutlinedIcon/>
-              <Typography>Диспетчер</Typography>
+              <Typography>{t('pages.successPaymentPage.manager')}</Typography>
             </a>
           </div>
         </Stack>
         <div className={css.content}>
           <CheckCircleFill className={css.icon}/>
-          <div className={css.success}>Оплата проведена</div>
-          <div className={css.text}>Бесплатное время для выезда</div>
+          <div className={css.success}>{t('pages.successPaymentPage.success')}</div>
+          <div className={css.text}>{t('pages.successPaymentPage.timeToOut')}</div>
           <div className={css.time}>{formatTime(seconds)}</div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import eventInnerIcon from '../../assets/svg/log_event_inner_icon.svg';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -21,6 +22,7 @@ const titleTextStyle = {
 };
 
 export default function LogAccessPointCard({ point }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const cameras = useSelector((state) => state.cameras.cameras);
@@ -92,7 +94,7 @@ export default function LogAccessPointCard({ point }) {
     return accessPoints.length > 0 && point.reverse_access_point !== null
       ? accessPoints.find((item) => item.id === point.reverse_access_point)
           .description
-      : 'Нет';
+      : t('components.logAccessPointCard.no');
   }, [accessPoints, point]);
 
   const handleEditPointClick = () => {
@@ -120,7 +122,7 @@ export default function LogAccessPointCard({ point }) {
         </Stack>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Направление</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.direction')}</Typography>
             {point.description ? (
               <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
                 {point.direction && (
@@ -147,7 +149,7 @@ export default function LogAccessPointCard({ point }) {
             )}
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Камеры</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.cameras')}"</Typography>
             <Stack>
               {filteredCameras.map((camera) => (
                 <Typography key={camera.id} sx={{ fontWeight: 500 }}>
@@ -157,29 +159,29 @@ export default function LogAccessPointCard({ point }) {
             </Stack>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Контроллер</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.controller')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{controllerName}</Typography>
           </Stack>
 
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>LED табло</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.led')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{ledName}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Номер реле для открытия</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.numberRelayForOpen')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {point.open_relay_number}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Номер реле для закрытия</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.numberRelayForClose')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {point.close_relay_number}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>
-              Номер контакта статуса открытия
+              {t('components.logAccessPointCard.numberContactStatus')}
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {point.status_contact_number}
@@ -187,7 +189,7 @@ export default function LogAccessPointCard({ point }) {
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>
-              Задержка перед закрытием
+              {t('components.logAccessPointCard.timeBeforeClose')}
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${point.seconds_before_close_laurent} сек`}
@@ -195,7 +197,7 @@ export default function LogAccessPointCard({ point }) {
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>
-              Задержка между проверкой статуса шлагбаума
+              {t('components.logAccessPointCard.timeBetweenLaurentCheck')}
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${point.seconds_between_laurent_checks} сек`}
@@ -203,35 +205,35 @@ export default function LogAccessPointCard({ point }) {
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
             <Typography sx={labelTextStyle}>
-              Задержка перед проверкой статуса шлагбаума
+              {t('components.logAccessPointCard.timeBeforeLaurentCheck')}
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${point.seconds_before_laurent_checks} сек`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Терминал</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.terminal')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{terminalName}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Реверс</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.reverse')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{reverseName}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Сценарий распознования</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.recognitionScenario')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{point.recognition_scenario_id}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Сценарий подтвержения</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.confirmationScenario')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{point.confirmation_scenario_id}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Учитывать количество мест арендатора</Typography>
-            <Typography sx={{ fontWeight: 500 }}>{point.consider_renter_number_of_places ? 'Да' : 'Нет'}</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.considerRenterNumberPlace')}</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{point.consider_renter_number_of_places ? t(t('components.logAccessPointCard.yes')) : t('components.logAccessPointCard.no')}</Typography>
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'12px'}>
-          <Typography sx={labelTextStyle}>Режимы</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.modes')}</Typography>
           <Stack>
             {filteredModes.map((mode, index) => (
               <Typography key={mode.id} sx={{ fontWeight: 500 }}>
@@ -248,7 +250,7 @@ export default function LogAccessPointCard({ point }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditPointClick}
           >
-            Изменить
+            {t('components.logAccessPointCard.change')}
           </Button>
           <Button
             disableRipple
@@ -257,7 +259,7 @@ export default function LogAccessPointCard({ point }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeletePointClick}
           >
-            Удалить
+            {t('components.logAccessPointCard.delete')}
           </Button>
         </Stack>
       </Stack>

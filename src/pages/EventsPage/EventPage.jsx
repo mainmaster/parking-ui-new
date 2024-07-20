@@ -37,6 +37,7 @@ import CarNumberDialog from '../../components/CarNumberDialog/CarNumberDialog';
 import EventManager from '../../components/EventManager/EventManager';
 import '@fontsource-variable/roboto-mono';
 import { useSnackbar } from 'notistack';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -59,6 +60,7 @@ const initialAccessOptions = {
 };
 
 export const EventPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const operator = useSelector((state) => state.parkingInfo.operator);
   const userType = useSelector((state) => state.parkingInfo.userType);
@@ -97,7 +99,7 @@ export const EventPage = () => {
         setLoading(false);
         setErrorEvent(true);
       });
-    document.title = `Событие №${id}` || 'Загрузка';
+    document.title = `${t('pages.eventPage.event')} №${id}` || t('pages.eventPage.loading');
     return () => {
       document.title = 'Parking';
     };
@@ -171,7 +173,7 @@ export const EventPage = () => {
       resetDebtRequest(event.vehicle_plate.full_plate).then((res) => {
         if (res) {
           setDebtPaid(true);
-          enqueueSnackbar('Долг обнулён');
+          enqueueSnackbar(t('pages.eventPage.debtReset'));
         }
       });
     }
@@ -226,7 +228,7 @@ export const EventPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? 0 : '0.5rem'}
             >
-              <Typography sx={titleTextStyle}>Событие </Typography>
+              <Typography sx={titleTextStyle}>{t('pages.eventPage.event')} </Typography>
               <Typography
                 sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
               >
@@ -234,7 +236,7 @@ export const EventPage = () => {
               </Typography>
             </Stack>
           </Stack>
-          <Tooltip title={copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}>
+          <Tooltip title={copied ? t('pages.eventPage.urlIsCopy') : t('pages.eventPage.copyUrl')}>
             <Button
               disableRipple
               variant="contained"
@@ -254,7 +256,7 @@ export const EventPage = () => {
               endIcon={
                 <img
                   src={linkIcon}
-                  alt="Скопировать ссылку"
+                  alt={t('pages.eventPage.copyUrl')}
                   style={{
                     width: '24px',
                     height: '24px'
@@ -262,7 +264,7 @@ export const EventPage = () => {
                 />
               }
             >
-              {isMobile ? '' : 'Скопировать ссылку'}
+              {isMobile ? '' : t('pages.eventPage.copyUrl')}
             </Button>
           </Tooltip>
         </Stack>
@@ -335,7 +337,7 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Госномер</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.gosNumber')}</Typography>
                 {event.vehicle_plate.full_plate !== '' && (
                   <Stack direction={'row'}>
                     <CarNumberCard carNumber={event.vehicle_plate} isTable />
@@ -346,14 +348,14 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Описание</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.description')}</Typography>
                 <Typography sx={valueTextStyle}>{event.description}</Typography>
               </Stack>
               <Stack
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Дата и время</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.dateAndTime')}</Typography>
                 <Typography sx={valueTextStyle}>
                   {formatDate(event.create_datetime)}
                 </Typography>
@@ -369,7 +371,7 @@ export const EventPage = () => {
                   sx={labelTextStyle}
                 >
                   <Typography sx={{ color: theme.colors.element.secondary }}>
-                    Авто
+                    {t('pages.eventPage.car')}
                   </Typography>
                   <img
                     style={{
@@ -385,7 +387,7 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Список авто</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.carList')}</Typography>
                 <Stack direction={'row'}>
                   <TypeAuto type={event.access_status_code} />
                 </Stack>
@@ -394,7 +396,7 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Направление</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.direction')}</Typography>
                 <Stack direction={'row'} gap={'8px'} alignItems={'center'}>
                   {event.direction && (
                     <img
@@ -425,7 +427,7 @@ export const EventPage = () => {
                   sx={labelTextStyle}
                 >
                   <Typography sx={{ color: theme.colors.element.secondary }}>
-                    Автор
+                    {t('pages.eventPage.author')}
                   </Typography>
                   <img
                     style={{
@@ -443,7 +445,7 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Действие</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.action')}</Typography>
                 <Stack
                   direction={'row'}
                   gap={'8px'}
@@ -462,7 +464,7 @@ export const EventPage = () => {
                           dispatch(changeActiveOpenApModal(event.access_point))
                         }
                       >
-                        Ввести номер
+                        {t('pages.eventPage.enterNumber')}
                       </Button>
                     )}
                   {event.access_status_code === '1004' && (
@@ -472,7 +474,7 @@ export const EventPage = () => {
                       fullWidth={false}
                       sx={[secondaryButtonStyle({ ...theme }), { mt: '8px' }]}
                     >
-                      Убрать из Чёрного списка
+                      {t('pages.eventPage.removeFromBlackList')}
                     </Button>
                   )}
                   {event.debt && !accessOptions.disableResetDuty && (
@@ -484,7 +486,7 @@ export const EventPage = () => {
                       sx={[secondaryButtonStyle({ ...theme }), { mt: '8px' }]}
                       onClick={handleResetDebtClick}
                     >
-                      Обнулить долг
+                      {t('pages.eventPage.resetDebt')}
                     </Button>
                   )}
                 </Stack>
@@ -493,7 +495,7 @@ export const EventPage = () => {
                 direction={isMobile ? 'column' : 'row'}
                 gap={isMobile ? '4px' : '16px'}
               >
-                <Typography sx={labelTextStyle}>Детали</Typography>
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.details')}</Typography>
                 {event.scores && (
                   <Stack
                     direction={'row'}
@@ -533,8 +535,8 @@ export const EventPage = () => {
                     <Tooltip
                       title={
                         detailsCopied
-                          ? 'Детали скопированы'
-                          : 'Скопировать детали'
+                          ? t('pages.eventPage.detailsIsCopy')
+                          : t('pages.eventPage.copyDetail')
                       }
                     >
                       <Button
@@ -554,7 +556,7 @@ export const EventPage = () => {
                         startIcon={
                           <img
                             src={eventCopyIcon}
-                            alt="Скопировать"
+                            alt={t('pages.eventPage.copy')}
                             style={{ width: '24px', height: '24px' }}
                           />
                         }

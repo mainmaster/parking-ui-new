@@ -10,8 +10,10 @@ import Input from 'components/Input'
 import { openApTimeFetch } from 'store/events/eventsSlice'
 // Utils
 import { openApSchema } from './utils'
+import {useTranslation} from "react-i18next";
 
 const OpenApByTimeModal = ({ show, handleClose }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch()
   const accessPointId = useSelector((state) => state.cameras.accessPointId)
 
@@ -29,7 +31,7 @@ const OpenApByTimeModal = ({ show, handleClose }) => {
       handleClose={handleClose}
       header={
         <CustomModal.Title>
-          Открыть на N секунд и закрыть после этого
+          {t('components.openApByTimeModal.openForNSeconds')}
         </CustomModal.Title>
       }
       body={
@@ -43,7 +45,7 @@ const OpenApByTimeModal = ({ show, handleClose }) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="open-ap-plate">
               <Input
-                label="Количество секунд"
+                label={t('components.openApByTimeModal.secondsCount')}
                 name="time"
                 type="text"
                 onChange={(e) => props.setFieldValue('time', e.target.value)}
@@ -55,7 +57,7 @@ const OpenApByTimeModal = ({ show, handleClose }) => {
       }
       footer={
         <Button type="submit" form="open-ap-plate">
-          Открыть
+          {t('components.openApByTimeModal.open')}
         </Button>
       }
     />

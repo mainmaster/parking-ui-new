@@ -15,6 +15,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import detailsIcon from '../../assets/svg/parkinfo_details_open_icon.svg';
 import {useDispatch, useSelector} from "react-redux";
 import {setIsNeedFetch} from "../../store/parkingInfo/parkingInfo";
+import {useTranslation} from "react-i18next";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -42,6 +43,7 @@ const detailSquareStyle = {
 };
 
 export default function ParkingInfo({ fullWidth }) {
+  const { t, i18n } = useTranslation();
   const { data: parkingInfo, refetch: refetchParkingData } = useParkingInfoQuery();
   const isNeedFetch = useSelector((state) => state.parkingInfo.isNeedFetch)
   const theme = useTheme();
@@ -102,7 +104,7 @@ export default function ParkingInfo({ fullWidth }) {
               <Typography
                 sx={{ fontWeight: 500 }}
               >{`${parkingInfo?.carsOnParking.totalPlaces}`}</Typography>
-              <Typography sx={{ fontWeight: 500 }}>мест:</Typography>
+              <Typography sx={{ fontWeight: 500 }}>{t('components.parkingInfo.sits').toLowerCase()}:</Typography>
             </Stack>
             {isMobile && (
               <Stack direction={'row'} gap={'5px'}>
@@ -112,7 +114,7 @@ export default function ParkingInfo({ fullWidth }) {
                     color: theme.colors.element.secondary
                   }}
                 >
-                  {details ? 'Свернуть детали' : 'Развернуть детали'}
+                  {details ? t('components.parkingInfo.collapseButton') : t('components.parkingInfo.expandButton')}
                 </Typography>
                 <IconButton
                   sx={{ padding: 0 }}
@@ -155,13 +157,13 @@ export default function ParkingInfo({ fullWidth }) {
                       lineHeight: '1.75rem'
                     }}
                   >
-                    {`${renters} мест`}
+                    {`${renters} ${t('components.parkingInfo.sits').toLowerCase()}`}
                   </Typography>
                   <Typography
                     color={theme.colors.element.secondary}
                     sx={{ fontWeight: 500 }}
                   >
-                    Арендаторы
+                    {t('components.parkingInfo.renters')}
                   </Typography>
                   {parkingInfo?.carsOnParking?.renters_places_detail &&
                     Object.keys(
@@ -175,7 +177,7 @@ export default function ParkingInfo({ fullWidth }) {
                               fontWeight: 500
                             }}
                           >
-                            {`${parkingInfo.carsOnParking.renters_places_detail[key]} мест`}
+                            {`${parkingInfo.carsOnParking.renters_places_detail[key]} ${t('components.parkingInfo.sits').toLowerCase()}`}
                           </Typography>
                           <Typography
                             color={theme.colors.element.secondary}
@@ -216,13 +218,13 @@ export default function ParkingInfo({ fullWidth }) {
                         lineHeight: '1.75rem'
                       }}
                     >
-                      {`${parkingInfo?.carsOnParking?.subscribe} мест`}
+                      {`${parkingInfo?.carsOnParking?.subscribe} ${t('components.parkingInfo.sits').toLowerCase()}`}
                     </Typography>
                     <Typography
                       color={theme.colors.element.secondary}
                       sx={{ fontWeight: 500 }}
                     >
-                      Абонементы
+                      {t('components.parkingInfo.renters')}
                     </Typography>
                   </React.Fragment>
                 }
@@ -260,13 +262,13 @@ export default function ParkingInfo({ fullWidth }) {
                         lineHeight: '1.75rem'
                       }}
                     >
-                      {`${parkingInfo?.carsOnParking?.single} мест`}
+                      {`${parkingInfo?.carsOnParking?.single} ${t('components.parkingInfo.sits').toLowerCase()}`}
                     </Typography>
                     <Typography
                       color={theme.colors.element.secondary}
                       sx={{ fontWeight: 500 }}
                     >
-                      Разовые
+                      {t('components.parkingInfo.oneTime')}
                     </Typography>
                   </React.Fragment>
                 }
@@ -304,7 +306,7 @@ export default function ParkingInfo({ fullWidth }) {
             >{`${
               parkingInfo?.carsOnParking.totalPlaces -
               parkingInfo?.carsOnParking.freePlaces
-            } занято`}</Typography>
+            } ${t('components.parkingInfo.busy').toLowerCase()}`}</Typography>
             <Typography
               sx={{
                 position: 'absolute',
@@ -313,7 +315,7 @@ export default function ParkingInfo({ fullWidth }) {
                 fontWeight: 500,
                 pointerEvents: 'none'
               }}
-            >{`${parkingInfo?.carsOnParking.freePlaces} свободно`}</Typography>
+            >{`${parkingInfo?.carsOnParking.freePlaces} ${t('components.parkingInfo.free').toLowerCase()}`}</Typography>
           </Stack>
         </Stack>
       </Box>
@@ -341,11 +343,11 @@ export default function ParkingInfo({ fullWidth }) {
                   }
                 ]}
               ></Box>
-              <Typography>Свободно</Typography>
+              <Typography>{t('components.parkingInfo.free')}</Typography>
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
               <Typography sx={{ fontWeight: 500 }}>
-                {parkingInfo?.carsOnParking?.freePlaces} мест
+                {parkingInfo?.carsOnParking?.freePlaces} {t('components.parkingInfo.sits').toLowerCase()}
               </Typography>
             </Stack>
           </Stack>
@@ -365,7 +367,7 @@ export default function ParkingInfo({ fullWidth }) {
                   }
                 ]}
               ></Box>
-              <Typography>Разовые</Typography>
+              <Typography>{t('components.parkingInfo.oneTime')}</Typography>
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
               <Typography sx={{ fontWeight: 500 }}>
@@ -389,11 +391,11 @@ export default function ParkingInfo({ fullWidth }) {
                   }
                 ]}
               ></Box>
-              <Typography>Абонементы</Typography>
+              <Typography>{t('components.parkingInfo.aboniments')}</Typography>
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
               <Typography sx={{ fontWeight: 500 }}>
-                {parkingInfo?.carsOnParking?.subscribe} мест
+                {parkingInfo?.carsOnParking?.subscribe} {t('components.parkingInfo.sits').toLowerCase()}
               </Typography>
             </Stack>
           </Stack>
@@ -413,7 +415,7 @@ export default function ParkingInfo({ fullWidth }) {
                   }
                 ]}
               ></Box>
-              <Typography>Арендаторы</Typography>
+              <Typography>{t('components.parkingInfo.renters')}</Typography>
               {parkingInfo?.carsOnParking?.renters_places_detail &&
                 !_.isEmpty(parkingInfo.carsOnParking.renters_places_detail) && (
                   <IconButton
@@ -433,7 +435,7 @@ export default function ParkingInfo({ fullWidth }) {
                 )}
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
-              <Typography sx={{ fontWeight: 500 }}>{renters} мест</Typography>
+              <Typography sx={{ fontWeight: 500 }}>{renters} {t('components.parkingInfo.sits').toLowerCase()}</Typography>
             </Stack>
           </Stack>
           {parkingInfo?.carsOnParking?.renters_places_detail &&
@@ -463,7 +465,7 @@ export default function ParkingInfo({ fullWidth }) {
                     <Stack direction={'row'} gap={'4px'}>
                       <Typography
                         sx={{ fontWeight: 500 }}
-                      >{`${parkingInfo.carsOnParking.renters_places_detail[key]} мест`}</Typography>
+                      >{`${parkingInfo.carsOnParking.renters_places_detail[key]} ${t('components.parkingInfo.sits').toLowerCase()}`}</Typography>
                     </Stack>
                   </Stack>
                 );
