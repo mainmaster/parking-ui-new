@@ -1,7 +1,7 @@
 {
   "pages": {
     "accessPointsPage": {
-      "accessPoints": "Точки доступы",
+      "accessPoints": "Точки доступа",
       "addAccessPoint": "Добавить точку доступа",
       "add": "Добавить",
       "notAccessPoints": "Нет точек доступа"
@@ -125,7 +125,7 @@
       "noRenter": "Нет арендаторов"
     },
     "paymentPage": {
-      "refundBy": "Возварт по",
+      "refundBy": "Возврат по",
       "payment": "Оплата",
       "loading": "Загрузка",
       "paymentFrom": "Оплаты с",
@@ -148,7 +148,7 @@
       "noPayment": "Нет оплат"
     },
     "editRenterModal": {
-      "editRenter": "Редактировать арендтора",
+      "editRenter": "Редактировать арендатора",
       "contacts": "Контакты",
       "renter": "Арендатор",
       "change": "Изменить"
@@ -166,7 +166,7 @@
     },
     "renterTableData": {
       "login": "Логин",
-      "renter": "Аренадатор",
+      "renter": "Арендатор",
       "contacts": "Контакты",
       "action": "Действие",
       "inactive": "деактивировать",
@@ -203,7 +203,7 @@
     "successPaymentPage": {
       "manager": "Диспетчер",
       "success": "Оплата проведена",
-      "timeToOut": "Беслпатное время для выезда"
+      "timeToOut": "Бесплатное время для выезда"
     },
     "terminals": {
       "terminals": "Терминалы",
@@ -254,7 +254,7 @@
       "paymentTitle": "Заголовок для онлайн-оплаты",
       "vendotekId": "ID продутка (Vendotek)",
       "vendotekName": "Имя продукта (Vendotek)",
-      "refundTypeTerminal": "Тип возварта оплат через терминал",
+      "refundTypeTerminal": "Тип возврата оплат через терминал",
       "contacting": "Контактный",
       "noContacting": "Бесконтактый",
       "yookassaTaxSystem": "Система налогообложения (Юкасса)",
@@ -296,6 +296,7 @@
       "input": "Въезд",
       "output": "Выезд",
       "notifications": "Уведомления",
+      "chooseLanguage": "Выберите из списка",
       "soundNotifications": "Звук уведомлений",
       "oferta": "Политика обработки персональных данных",
       "upload": "Загрузить",
@@ -305,7 +306,9 @@
       "fileNoChosen": "Файл не выбран",
       "refund": "Политика возврата и обмена",
       "photoOnPaymentPage": "Фото на страницу оплаты",
-      "name": "Имя"
+      "name": "Имя",
+      "russian": "Русский",
+      "english": "Английский"
     }
   },
   "components": {
@@ -352,7 +355,7 @@
       "numberRelayForOpen": "Номер реле для открытия",
       "numberRelayForClose": "Номер реле для закрытия",
       "numberContactStatusOpen": "Номер контакта статуса открытия",
-      "secondsBeforeLaurentClose": "Задержка передзакрытием (секунд)",
+      "secondsBeforeLaurentClose": "Задержка перед закрытием (секунд)",
       "secondsBetweenLaurentChecks": "Задержка между проверкой статуса шлагбаума (секунд)",
       "secondsBeforeLaurentChecks": "Задержка перед проверкой статуса шлагбаума (секунд)",
       "laurentChecksAmount": "Кол-во проверок статуса шлагбаума",
@@ -385,8 +388,8 @@
       "port": "Порт",
       "login": "Логин",
       "password": "Пароль",
-      "mjpegUrl": "Сслыка на трансляцию",
-      "snapshotUrl": "Сслыка на снапшот",
+      "mjpegUrl": "Ссылка на трансляцию",
+      "snapshotUrl": "Ссылка на снапшот",
       "emergencyCarOnly": "Камера только для спецтранспорта",
       "isDisplay": "Отображать видео на главной странице",
       "save": "Сохранить",
@@ -502,9 +505,6 @@
     "blackListFilter": {
       "searchByNumber": "Найти по номеру",
       "clear": "Очистить"
-    },
-    "camera": {
-
     },
     "cameraManagementItem": {
       "messageFromAdmin": "Сообщение от админа",
@@ -725,7 +725,7 @@
       "interval": "Интервал",
       "min": "мин",
       "dayCountsFromMin": "Задержка для запуска суточного режима",
-      "numberOfFirstMin": "Количество перх N минут",
+      "numberOfFirstMin": "Количество первых N минут",
       "transitBlockMin": "Время транзитной блокировки",
       "freeTime": "Свободное время",
       "timeFrom": "Время от",
@@ -797,7 +797,7 @@
     },
     "settingConfirmDialog": {
       "outWithoutSave": "Выйти без сохранения",
-      "changeDontSave": "Изменения не будут применены, пока не будет нажата кнопка \"Сохранить\"\n          в верхнеи правом углу",
+      "changeDontSave": "Изменения не будут применены, пока не будет нажата кнопка \"Сохранить\"\n          в верхнем правом углу",
       "exit": "Выйти",
       "stay": "Остаться"
     },

@@ -84,7 +84,7 @@ const accordionTitleStyle = {
 };
 
 const Settings = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const yookassaTaxSystemCodeValues = [
     { value: 1, name: t('pages.settings.generalOsn')},
@@ -1741,7 +1741,7 @@ const Settings = () => {
                                 htmlFor="vizor_vl_websocket_address"
                                 sx={labelStyle}
                               >
-                                {t('pages.settings.websockerAddressF')}
+                                {t('pages.settings.websocketAddress')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2516,6 +2516,106 @@ const Settings = () => {
                             gap: '16px'
                           }}
                         />
+                      </FormGroup>
+                    </Stack>
+                  </Box>
+                  <Box sx={sectionContainerStyle}>
+                    <Stack gap={'16px'}>
+                      <Typography sx={titleTextStyle}>Language / Язык</Typography>
+                      <FormGroup>
+                        <InputLabel
+                          htmlFor="language"
+                          sx={labelStyle}
+                        >
+                          {t('pages.settings.chooseLanguage')}
+                        </InputLabel>
+                        <Select
+                          id="language"
+                          name="language"
+                          displayEmpty
+                          value={
+                            i18n.language
+                          }
+                          onChange={(event) => {
+                            localStorage.setItem('language', event.target.value);
+                            i18n.changeLanguage(event.target.value);
+                          }}
+                          variant="filled"
+                          IconComponent={(props) => (
+                            <IconButton
+                              disableRipple
+                              {...props}
+                              sx={{
+                                top: `${0} !important`,
+                                right: `4px !important`
+                              }}
+                            >
+                              <img
+                                style={{
+                                  width: '24px'
+                                }}
+                                src={selectIcon}
+                                alt="select"
+                              />
+                            </IconButton>
+                          )}
+                          sx={selectMenuStyle({ ...theme })}
+                          MenuProps={{
+                            PaperProps: {
+                              sx: {
+                                borderRadius: '8px',
+                                border:
+                                  '1px solid ' +
+                                  theme.colors.outline.default
+                              }
+                            },
+                            MenuListProps: {
+                              sx: { py: '4px' }
+                            }
+                          }}
+                          renderValue={(selected) => (
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {selected === 'en'
+                                ? t('pages.settings.english')
+                                : t('pages.settings.russian')}
+                            </Typography>
+                          )}
+                        >
+                          <MenuItem
+                            id="Английский"
+                            selected={
+                              i18n.language === 'en'
+                            }
+                            value={'en'}
+                          >
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500, p: 0 }}
+                            >
+                              {t('pages.settings.english')}
+                            </Typography>
+                          </MenuItem>
+                          <MenuItem
+                            id="Русский"
+                            value={'ru'}
+                            selected={
+                              i18n.language === 'ru'
+                            }
+                          >
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500, p: 0 }}
+                            >
+                              {t('pages.settings.russian')}
+                            </Typography>
+                          </MenuItem>
+                        </Select>
                       </FormGroup>
                     </Stack>
                   </Box>

@@ -8,8 +8,7 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'ru',
-    debug: true,
+    fallbackLng: localStorage.getItem('language') ?? 'ru',
     interpolation: {
       escapeValue: false,
     },

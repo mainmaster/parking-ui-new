@@ -1,0 +1,33 @@
+@import '../../styles/mixins.scss';
+
+.header {
+
+  @include media-sm {
+    justify-content: center !important;
+  }
+
+  & .desktopTranslate {
+    display: flex;
+
+    @include media-sm {
+      display: none !important;
+    }
+  }
+}
+
+.form {
+  @include media-sm {
+    justify-content: space-between !important;
+  }
+
+  & .tabletTranslate {
+    display: none !important;
+
+    @include media-sm {
+      display: flex !important;
+    }
+  }
+}
+
+
+
