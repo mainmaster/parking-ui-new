@@ -29,6 +29,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EventManager from '../../components/EventManager/EventManager';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -42,6 +43,7 @@ const initialAccessOptions = {
 };
 
 export const SessionPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const session = useSelector((state) => state.sessions.selectSession);
   const loading = useSelector((state) => state.sessions.isLoadingSelect);
@@ -126,7 +128,7 @@ export const SessionPage = () => {
 
   useLayoutEffect(() => {
     dispatch(sessionSelectFetch(id));
-    document.title = `Сессия №${id}` || 'Загрузка';
+    document.title = `${t('pages.sessionPage.session')} №${id}` || t('pages.sessionPage.loading');
     return () => {
       document.title = 'Parking';
     };
@@ -159,7 +161,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? 0 : '0.5rem'}
             >
-              <Typography sx={titleTextStyle}>Сессия </Typography>
+              <Typography sx={titleTextStyle}>{t('pages.sessionPage.session')} </Typography>
               <Typography
                 sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
               >
@@ -167,7 +169,7 @@ export const SessionPage = () => {
               </Typography>
             </Stack>
           </Stack>
-          <Tooltip title={copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}>
+          <Tooltip title={copied ? t('pages.sessionPage.urlIsCopy') : t('pages.sessionPage.copyUrl')}>
             <Button
               disableRipple
               variant="contained"
@@ -187,7 +189,7 @@ export const SessionPage = () => {
               endIcon={
                 <img
                   src={linkIcon}
-                  alt="Скопировать ссылку"
+                  alt={t('pages.sessionPage.copyUrl')}
                   style={{
                     width: '24px',
                     height: '24px'
@@ -195,7 +197,7 @@ export const SessionPage = () => {
                 />
               }
             >
-              {isMobile ? '' : 'Скопировать ссылку'}
+              {isMobile ? '' : t('pages.sessionPage.copyUrl')}
             </Button>
           </Tooltip>
         </Stack>
@@ -258,7 +260,7 @@ export const SessionPage = () => {
                             '/' +
                             event.car_img_path
                           }
-                          alt={`Событие № ${event.id}`}
+                          alt={`${t('pages.sessionPage.session')} № ${event.id}`}
                         />
                       </IconButton>
                     );
@@ -299,7 +301,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Госномер</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.gosNumber')}</Typography>
               {session.events[0].vehicle_plate &&
                 session.events[0].vehicle_plate.full_plate !== '' && (
                   <Stack direction={'row'}>
@@ -314,7 +316,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Список авто</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.carList')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={session.events[0].access_status_code} />
               </Stack>
@@ -323,7 +325,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Статус</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.status')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={session.status} />
               </Stack>
@@ -332,7 +334,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Оплата</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.payment')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={session.is_paid ? 'paid' : 'not_paid'} />
               </Stack>
@@ -341,7 +343,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Проведено</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.timeOnParking')}</Typography>
               <Typography>
                 {getDayMinuteSecondsByNumber(session.time_on_parking)}
               </Typography>
@@ -350,14 +352,14 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Создана</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.created')}</Typography>
               <Typography>{formatDate(session.create_datetime)}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Закрыта</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.closed')}</Typography>
               <Typography>
                 {session.closed_datetime
                   ? formatDate(session.closed_datetime)
@@ -368,7 +370,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Оплата до</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.paymentTo')}</Typography>
               <Typography>
                 {session.payment_is_valid_until
                   ? formatDate(session.payment_is_valid_until)
@@ -379,14 +381,14 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Долг</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.debt')}</Typography>
               <Typography>{`${session.payment_amount} ₽`}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Действие</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.action')}</Typography>
               <Stack direction={'row'}>
                 <Stack direction={'row'} gap={'8px'}>
                   {session.payment_amount > 0 &&
@@ -401,7 +403,7 @@ export const SessionPage = () => {
                         ]}
                         onClick={handlePaidClick}
                       >
-                        Обнулить долг
+                        {t('pages.sessionPage.freeDebt')}
                       </Button>
                     )}
                   {session.status === 'open' &&
@@ -413,7 +415,7 @@ export const SessionPage = () => {
                         sx={secondaryButtonStyle({ ...theme })}
                         onClick={handleCloseClick}
                       >
-                        Закрыть
+                        {t('pages.sessionPage.close')}
                       </Button>
                     )}
                 </Stack>
@@ -423,7 +425,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>События</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.session')}</Typography>
               <Stack gap={'16px'}>
                 {session.events.map((event) => (
                   <NavLink
@@ -431,7 +433,7 @@ export const SessionPage = () => {
                     to={`/events/${event.id}`}
                     style={{ lineHeight: '1.125rem' }}
                   >
-                    Событие №{event.id}
+                    {t('pages.sessionPage.session')} №{event.id}
                   </NavLink>
                 ))}
               </Stack>
@@ -440,7 +442,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Оплаты</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.payments')}</Typography>
               <Stack gap={'16px'}>
                 {session.payments.map((payment) => (
                   <NavLink
@@ -448,7 +450,7 @@ export const SessionPage = () => {
                     to={`/payments/${payment.id}`}
                     style={{ lineHeight: '1.125rem' }}
                   >
-                    Оплата №{payment.id}
+                    {t('pages.sessionPage.payment')} №{payment.id}
                   </NavLink>
                 ))}
               </Stack>

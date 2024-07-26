@@ -8,6 +8,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -16,6 +17,7 @@ const titleTextStyle = {
 };
 
 export default function LogControllerCard({ controller }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -44,13 +46,13 @@ export default function LogControllerCard({ controller }) {
         <Typography sx={titleTextStyle}>{controller.description}</Typography>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>IP адрес</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logControllerCard.ipAddress')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${controller.ip_address}:${controller.port}`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Пароль</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logControllerCard.password')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {controller.password}
             </Typography>
@@ -64,7 +66,7 @@ export default function LogControllerCard({ controller }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
-            Изменить
+            {t('components.logControllerCard.change')}
           </Button>
           <Button
             disableRipple
@@ -73,7 +75,7 @@ export default function LogControllerCard({ controller }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
-            Удалить
+            {t('components.logControllerCard.delete')}
           </Button>
         </Stack>
       </Stack>

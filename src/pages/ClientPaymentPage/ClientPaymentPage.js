@@ -40,6 +40,7 @@ import SubscriptionPaymentModal from 'components/SubscriptionPaymentModal'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import {Telephone} from "react-bootstrap-icons";
+import {useTranslation} from "react-i18next";
 
 
 const ABONIMENTS = [
@@ -50,6 +51,7 @@ const ABONIMENTS = [
 ];
 
 const ClientPaymentPage = () => {
+    const { t } = useTranslation();
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
     const dispatch = useDispatch()
     const {enqueueSnackbar} = useSnackbar()
@@ -67,7 +69,7 @@ const ClientPaymentPage = () => {
     const [buyModal, setBuyModal] = useState(false)
 
     useEffect(()=>{
-        document.title = parkingData?.payment_page_header || 'Загрузка'
+        document.title = parkingData?.payment_page_header || t('pages.clientPaymentPage.loading')
     },[parkingData])
 
     const onSubmit = (values) => {
@@ -79,7 +81,7 @@ const ClientPaymentPage = () => {
         registerOrderRequest(data)
             .then(r=>{
                 if(r.data.error){
-                    enqueueSnackbar('Оплата временно недоступна',{
+                    enqueueSnackbar(t('pages.clientPaymentPage.paymentNoActive'),{
                         variant: 'error'
                     })
                 }else{
@@ -92,7 +94,7 @@ const ClientPaymentPage = () => {
     const contentResult = (
         <div className={css.content}>
             <div className={css.text}>
-                Найдено: {paymentInfo === 0 ? "Оплата на ваш автомобиль не требуется" : paymentInfo?.length}
+                Найдено: {paymentInfo === 0 ? t('pages.clientPaymentPage.paymentForCarNotNeed') : paymentInfo?.length}
             </div>
             <div className={css.items}>
                 {paymentInfo !== 0 &&
@@ -115,7 +117,7 @@ const ClientPaymentPage = () => {
   const nullContent = (
     <div className={css.nullContent}>
       <DoneIcon/>
-      Оплат не требуется
+      {t('pages.clientPaymentPage.paymentNotNeed')}
     </div>
   )
 
@@ -183,13 +185,13 @@ const ClientPaymentPage = () => {
             <img className={css.logo} src={bannerPicture} alt=''/>
             <a className={css.dispatcher} href={`tel:${footerInfo?.operator_phone_number}`}>
               <PhoneOutlinedIcon/>
-              <Typography>Диспетчер</Typography>
+              <Typography>{t('pages.clientPaymentPage.manager')}</Typography>
             </a>
           </div>
           <Stack direction={'column'} gap={'24px'}>
             {subscriptions?.supportSubscribe && (
               <Stack direction={'column'} gap={'12px'}>
-                <Typography sx={{fontSize: '24px', fontWeight: 500}}>Купить абонемент</Typography>
+                <Typography sx={{fontSize: '24px', fontWeight: 500}}>{t('pages.clientPaymentPage.buyAboniment')}</Typography>
                 <Stack direction={'row'} gap={'12px'}>
                   {ABONIMENTS.map((aboniment) => {
                     if (!subscriptions[aboniment]) {
@@ -199,16 +201,16 @@ const ClientPaymentPage = () => {
                     let title = '';
                     switch (aboniment) {
                       case 'weekSubscriptionPrice':
-                        title = 'Неделя';
+                        title = t('pages.clientPaymentPage.week');
                         break;
                       case 'monthSubscriptionPrice':
-                        title = 'Месяц';
+                        title = t('pages.clientPaymentPage.month');
                         break;
                       case 'quarterSubscriptionPrice':
-                        title = '3 месяца';
+                        title = `3 ${t('pages.clientPaymentPage.monts')}`;
                         break;
                       case 'yearSubscriptionPrice':
-                        title = '1 год';
+                        title = `1 ${t('pages.clientPaymentPage.year')}`;
                         break;
                     }
                     return (
@@ -226,7 +228,7 @@ const ClientPaymentPage = () => {
               </Stack>
             )}
             <Stack direction={'column'} gap={'8px'}>
-              <Typography sx={{fontSize: '24px', fontWeight: 500}}>Оплатить парковку</Typography>
+              <Typography sx={{fontSize: '24px', fontWeight: 500}}>{t('pages.clientPaymentPage.payPark')}</Typography>
               <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
                 <TextField
                   value={inputText}
@@ -240,7 +242,7 @@ const ClientPaymentPage = () => {
                     }
                   }}
                   className={css.searchInput}
-                  placeholder='Ваш гос.номер, например а012аа'
+                  placeholder={`${t('pages.clientPaymentPage.yourGosNumber')} а012аа`}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -263,23 +265,23 @@ const ClientPaymentPage = () => {
                   }}
                 />
                 {isMobile ?<Button onClick={handleSearch} type='submit' style={{width: '200px', height: '100%', background: 'green', border: "none"}}>
-                  Найти
+                  {t('pages.clientPaymentPage.search')}
                 </Button> : <></>}
               </Stack>
             </Stack>
             <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
               <Stack direction={'column'} gap={'4px'}>
-                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>Тарифы</Typography>
+                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>{t('pages.clientPaymentPage.tarif')}</Typography>
                 <Stack direction={'row'} gap={'8px'}>
                   <div
                     className={css.aboniment}
                     key={freeTime}
                   >
-                    <Typography sx={{fontWeight: 600}}>{freeTime} Мин</Typography>
+                    <Typography sx={{fontWeight: 600}}>{freeTime} {t('pages.clientPaymentPage.min')}</Typography>
                     <div className={`${css.abonimentPrice} ${css.zero}`}>0₽ <KeyboardArrowRightIcon/></div>
                   </div>
                   {tariffs?.tariffs?.map((item) => {
-                    const title = item.passMode === 'pay_by_hour' ? ` 1 час` : `${item.interval} часа `
+                    const title = item.passMode === 'pay_by_hour' ? ` 1 ${t('pages.clientPaymentPage.hour')}` : `${item.interval} ${t('pages.clientPaymentPage.hours')} `
                     return (
                       <div
                         className={css.aboniment}
@@ -312,8 +314,8 @@ const ClientPaymentPage = () => {
               {footerInfo?.name}<br/>
               {footerInfo?.info}
             </div>
-            <a href={footerInfo?.refund} target="_blank" rel="noreferrer">Политика возврата и обмена</a>
-            <a href={footerInfo?.oferta} target="_blank" rel="noreferrer">Пользовательское соглашение и политика обработки данных</a>
+            <a href={footerInfo?.refund} target="_blank" rel="noreferrer">{t('pages.clientPaymentPage.refund')}</a>
+            <a href={footerInfo?.oferta} target="_blank" rel="noreferrer">{t('pages.clientPaymentPage.oferta')}</a>
           </div>
         </div>
 

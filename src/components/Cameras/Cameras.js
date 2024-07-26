@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import css from './Cameras.module.scss';
-import Skeleton from 'react-loading-skeleton';
-import { Tooltip } from 'react-tooltip';
-import { QuestionCircle } from 'react-bootstrap-icons';
-import ReactDOMServer from 'react-dom/server';
-import cn from 'classnames';
 import _ from 'lodash';
 // Store
 import {
@@ -16,30 +9,16 @@ import {
   getStatusesAccessPointsFetch
 } from 'store/events/eventsSlice';
 import {
-  changeActiveOpenApModal,
   changeActiveOpenApTimeModal
 } from 'store/cameras/camerasSlice';
 // Components
-import OpenApByVehiclePlateModal from 'components/Modals/OpenApByVehiclePlateModal';
-import Camera from 'components/Camera';
 import OpenApByTimeModal from 'components/Modals/OpenApByTimeModal';
 import { camerasFetch } from '../../store/cameras/camerasSlice';
-import { Formik } from 'formik';
-import {
-  clearLedBoardMessage,
-  postLedBoardMessage
-} from '../../api/access-points';
-import { useSnackbar } from 'notistack';
-import {
-  ArrowLeftSquareFill,
-  ArrowRightSquareFill
-} from 'react-bootstrap-icons';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { AppBar, Box, Button, Stack, Typography } from '@mui/material';
 import React from 'react';
 import {
   listStyle,
-  positiveButtonStyle,
   secondaryButtonStyle
 } from '../../theme/styles';
 import { spacers } from '../../theme/spacers';
@@ -51,8 +30,7 @@ import FooterSpacer from '../Header/FooterSpacer';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import cameraEmptyIcon from '../../assets/svg/camera_empty_icon.svg';
-import { formatISO } from 'date-fns';
-import soundNotification from "../../pages/EventsPage/notofication.mp3";
+import { useTranslation } from 'react-i18next';
 
 const titleTextStyle = {
   fontSiza: '1.5rem',
@@ -61,6 +39,7 @@ const titleTextStyle = {
 };
 
 const Cameras = ({ accessOptions }) => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const isFetched = useSelector((state) => state.events.isAccessPointsFetched);
@@ -190,7 +169,7 @@ const Cameras = ({ accessOptions }) => {
                 onClick={() => dispatch(openApAllFetch())}
               >
                 <Typography noWrap sx={{ color: 'inherit' }}>
-                  Открыть все
+                  {t('components.cameras.openAll')}
                 </Typography>
               </Button>
               <Button
@@ -204,7 +183,7 @@ const Cameras = ({ accessOptions }) => {
                 onClick={() => dispatch(closeApAllFetch())}
               >
                 <Typography noWrap sx={{ color: 'inherit' }}>
-                  Закрыть все
+                  {t('components.cameras.closeAll')}
                 </Typography>
               </Button>
               <Button
@@ -218,7 +197,7 @@ const Cameras = ({ accessOptions }) => {
                 onClick={() => dispatch(normalApAllFetch())}
               >
                 <Typography noWrap sx={{ color: 'inherit' }}>
-                  Авто- все
+                  {t('components.cameras.autoAll')}
                 </Typography>
               </Button>
             </Stack>
@@ -271,7 +250,7 @@ const Cameras = ({ accessOptions }) => {
                   onClick={() => dispatch(openApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>
-                    Открыть все
+                    {t('components.cameras.openAll')}
                   </Typography>
                 </Button>
                 <Button
@@ -283,7 +262,7 @@ const Cameras = ({ accessOptions }) => {
                   onClick={() => dispatch(closeApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>
-                    Закрыть все
+                    {t('components.cameras.closeAll')}
                   </Typography>
                 </Button>
                 <Button
@@ -295,7 +274,7 @@ const Cameras = ({ accessOptions }) => {
                   onClick={() => dispatch(normalApAllFetch())}
                 >
                   <Typography noWrap sx={{ color: 'inherit' }}>
-                    Авто- все
+                    {t('components.cameras.autoAll')}
                   </Typography>
                 </Button>
               </Stack>
@@ -348,7 +327,7 @@ const Cameras = ({ accessOptions }) => {
                 src={cameraEmptyIcon}
                 alt="нет камер"
               />
-              <Typography sx={titleTextStyle}>Нет камер</Typography>
+              <Typography sx={titleTextStyle}>{t('components.cameras.noCameras')}</Typography>
             </Stack>
           )}
           <OpenApByTimeModal

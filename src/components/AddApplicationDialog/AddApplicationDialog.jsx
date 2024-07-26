@@ -37,6 +37,7 @@ import {
   DateInputStyle
 } from '../../theme/styles';
 import { DateIcon } from '../Icons/DateIcon';
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   vehiclePlate: ''
@@ -48,6 +49,7 @@ const labelStyle = {
 };
 
 export default function AddApplicationDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [date, setDate] = useState(null);
@@ -201,7 +203,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать заявку' : 'Добавить заявку'}
+        {edit ? t('components.addApplicationDialog.updateRequest') : t('components.addApplicationDialog.addRequest')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -223,7 +225,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
         >
           <Stack>
             <InputLabel htmlFor="vehiclePlate" sx={labelStyle}>
-              Номер машины
+              {t('components.addApplicationDialog.vehiclePlate')}
             </InputLabel>
             <CarNumberInput
               fullWidth
@@ -245,7 +247,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="date" sx={labelStyle}>
-              Дата
+              {t('components.addApplicationDialog.date')}
             </InputLabel>
             <DatePicker
               id="date"
@@ -257,7 +259,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
                 textField: {
                   variant: 'filled',
                   sx: DateInputStyle({ ...theme }),
-                  placeholder: 'Дата'
+                  placeholder: t('components.addApplicationDialog.date')
                 },
                 openPickerButton: { disableRipple: true }
               }}
@@ -281,7 +283,7 @@ export default function AddApplicationDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addApplicationDialog.save') : t('components.addApplicationDialog.add')}
           </Button>
         </Box>
       </DialogActions>

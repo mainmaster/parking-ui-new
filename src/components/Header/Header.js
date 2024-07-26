@@ -48,6 +48,7 @@ import { useParkingInfoQuery } from '../../api/settings/settings';
 import { spacers } from '../../theme/spacers';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const menuIconStyle = {
   padding: '4px',
@@ -60,6 +61,7 @@ const mobileMenuIconStyle = {
 };
 
 const Header = ({ title, userType, isHideMenu = false }) => {
+  const { t } = useTranslation();
   const { data: parkingData } = useParkingInfoQuery();
   const operator = useSelector((state) => state.parkingInfo.operator);
   const username = useSelector((state) => state.parkingInfo.username);
@@ -322,11 +324,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
             >
               <Typography sx={mobileProfileTextStyle({ ...theme })}>
                 {userType === 'admin'
-                  ? 'Админ'
+                  ? t('components.header.admin')
                   : userType === 'operator'
-                  ? 'Оператор'
+                  ? t('components.header.operator')
                   : userType === 'renter'
-                  ? 'Арендатор'
+                  ? t('components.header.renter')
                   : ''}
               </Typography>
               <IconButton disableRipple disabled sx={{ p: 0 }}>
@@ -335,7 +337,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     height: 10
                   }}
                   src={AddressIcon}
-                  alt="Адрес"
+                  alt={t('components.header.address')}
                 />
               </IconButton>
               {parkingData && (
@@ -367,7 +369,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       pt: '6px'
                     }}
                   >
-                    Ещё
+                    {t('components.header.more')}
                   </Typography>
                   <Button
                     disableRipple
@@ -376,7 +378,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                     onClick={handleLogout}
                     sx={secondaryButtonStyle({ ...theme })}
                   >
-                    Выход
+                    {t('components.header.exit')}
                   </Button>
                 </Stack>
               </AppBar>
@@ -395,7 +397,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           width: '24px'
                         }}
                       >
-                        ID:
+                        {t('components.header.id')}:
                       </Typography>
                       <Typography>{parkingData.parkingID}</Typography>
                     </Stack>
@@ -417,7 +419,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                           color: theme.colors.element.primary
                         }}
                         src={MoreHomeIcon}
-                        alt="Адрес"
+                        alt={t('components.header.address')}
                       />
                       <Typography>{parkingData.address}</Typography>
                     </Stack>
@@ -433,7 +435,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             color: theme.colors.element.primary
                           }}
                           src={MoreUserIcon}
-                          alt="Пользователь"
+                          alt={t('components.header.user')}
                         />
                         <Typography>{username}</Typography>
                       </Stack>
@@ -512,11 +514,11 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 }}
               >
                 {userType === 'admin'
-                  ? 'Админ'
+                  ? t('components.header.admin')
                   : userType === 'operator'
-                  ? 'Оператор'
+                  ? t('components.header.operator')
                   : userType === 'renter'
-                  ? 'Арендатор'
+                  ? t('components.header.renter')
                   : ''}
               </Typography>
             </Box>
@@ -717,7 +719,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 {parkingData && (
                   <>
                     <Typography sx={menuTextStyle({ ...theme })}>
-                      ID: {parkingData.parkingID}
+                      {t('components.header.id')}: {parkingData.parkingID}
                     </Typography>
                     <Stack>
                       <IconButton disableRipple disabled sx={{ p: 0 }}>
@@ -726,7 +728,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             height: 24
                           }}
                           src={IdIcon}
-                          alt="Идентификатор"
+                          alt={t('components.header.identificator')}
                         />
                       </IconButton>
                       <Typography sx={menuTextStyle({ ...theme })}>
@@ -740,7 +742,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             height: 24
                           }}
                           src={AddressIcon}
-                          alt="Адрес"
+                          alt={t('components.header.address')}
                         />
                       </IconButton>
                       <Typography sx={menuTextStyle({ ...theme })}>
@@ -758,7 +760,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                             height: 24
                           }}
                           src={ProfileIcon}
-                          alt="Профиль"
+                          alt={t('components.header.profile')}
                         />
                       </IconButton>
                       <Typography sx={menuTextStyle({ ...theme })}>
@@ -777,7 +779,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                       <Typography
                         sx={{ color: theme.colors.button.visited_link.default }}
                       >
-                        Выйти
+                        {t('components.header.exit')}
                       </Typography>
                     </Box>
                   </>

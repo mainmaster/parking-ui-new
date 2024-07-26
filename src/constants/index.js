@@ -1,3 +1,5 @@
+import i18n from '../translation/index'
+
 export const BREAKPOINT_SM = 768;
 export const BREAKPOINT_MD = 991;
 
@@ -21,9 +23,9 @@ export const directionOptions = [
   { name: 'Внутренняя', value: 'inner' }
 ];
 
-export const ledTypeOptions = [
-  { name: 'Магнит', value: 'magnit' },
-  { name: 'Запуск', value: 'zapusk' }
+export let ledTypeOptions = [
+  { name: i18n.t('constants.magnit'), value: 'magnit' },
+  { name: i18n.t('constants.zapusk'), value: 'zapusk' }
 ];
 
 export const terminalTypeOptions = [
@@ -132,9 +134,9 @@ export const statusPaidName = (status) => {
   return name;
 };
 
-export const operatorAccessOptions = [
+export let operatorAccessOptions = [
   {
-    name: 'События и отчёты (главная)',
+    name: i18n.t('constants.eventsAndReport'),
     route: '/events',
     value: 'access_to_events',
     child: false,
@@ -147,37 +149,37 @@ export const operatorAccessOptions = [
     ]
   },
   {
-    name: 'Открытие шлагбаумов',
+    name: i18n.t('constants.openLaurent'),
     value: 'access_to_open_access_point',
     child: true,
     parent: 'access_to_events'
   },
   {
-    name: 'Закрытие шлагбаумов',
+    name: i18n.t('constants.closeLaurent'),
     value: 'access_to_close_access_point',
     child: true,
     parent: 'access_to_events'
   },
   {
-    name: 'Смена режимов шлагбаумов',
+    name: i18n.t('constants.changeModeLaurent'),
     value: 'access_to_working_mode_access_point',
     child: true,
     parent: 'access_to_events'
   },
   {
-    name: 'Отправка сообщений на LED-панель',
+    name: i18n.t('constants.sendMessageToLed'),
     value: 'access_to_send_message_led_board',
     child: true,
     parent: 'access_to_events'
   },
   {
-    name: 'Очистка LED-панели',
+    name: i18n.t('constants.clearLed'),
     value: 'access_to_clear_led_board',
     child: true,
     parent: 'access_to_events'
   },
   {
-    name: 'Сессии',
+    name: i18n.t('constants.sessions'),
     route: '/sessions',
     value: 'access_to_sessions',
     child: false,
@@ -188,105 +190,105 @@ export const operatorAccessOptions = [
     ]
   },
   {
-    name: 'Штучное закрытие',
+    name: i18n.t('constants.oneClose'),
     value: 'access_to_close_session',
     child: true,
     parent: 'access_to_sessions'
   },
   {
-    name: 'Массовое закрытие',
+    name: i18n.t('constants.allClose'),
     value: 'access_to_close_sessions_before_date',
     child: true,
     parent: 'access_to_sessions'
   },
   {
-    name: 'Сброс долга',
+    name: i18n.t('constants.resetDuty'),
     value: 'access_to_reset_duty_session',
     child: true,
     parent: 'access_to_sessions'
   },
   {
-    name: 'Автопарк',
+    name: i18n.t('constants.autoPark'),
     route: '/auto-park/active',
     value: 'access_to_car_park',
     child: false
   },
   {
-    name: 'Чёрный список',
+    name: i18n.t('constants.blackList'),
     route: '/black-list/active',
     value: 'access_to_black_list',
     child: false
   },
   {
-    name: 'Заявки',
+    name: i18n.t('constants.request'),
     route: '/requests',
     value: 'access_to_requests',
     child: false
   },
   {
-    name: 'Настройки',
+    name: i18n.t('constants.setting'),
     route: '/settings',
     value: 'access_to_settings',
     child: false
   },
   {
-    name: 'Точки доступа',
+    name: i18n.t('constants.accessPoint'),
     route: '/access-points',
     value: 'access_to_access_points',
     child: false
   },
   {
-    name: 'Камеры',
+    name: i18n.t('constants.cameras'),
     route: '/cameras',
     value: 'access_to_cameras',
     child: false
   },
   {
-    name: 'LED табло',
+    name: i18n.t('constants.led'),
     route: '/led',
     value: 'access_to_led_boards',
     child: false
   },
   {
-    name: 'Терминалы',
+    name: i18n.t('constants.terminal'),
     route: '/terminals',
     value: 'access_to_terminals',
     child: false
   },
   {
-    name: 'Режимы',
+    name: i18n.t('constants.modes'),
     route: '/working-modes',
     value: 'access_to_working_modes',
     child: false
   },
   {
-    name: 'Оплаты',
+    name: i18n.t('constants.payments'),
     route: '/payments',
     value: 'access_to_payments',
     child: false
   },
   {
-    name: 'Контроллеры',
+    name: i18n.t('constants.controller'),
     route: '/controllers',
     value: 'access_to_laurents',
     child: false
   },
   {
-    name: 'Доступы',
+    name: i18n.t('constants.access'),
     virtual: true,
     value: 'access_to_operators, access_to_renters',
     child: false,
     children: ['access_to_operators', 'access_to_renters']
   },
   {
-    name: 'Операторы',
+    name: i18n.t('constants.operator'),
     route: '/users/operators',
     value: 'access_to_operators',
     child: true,
     parent: 'access_to_operators, access_to_renters'
   },
   {
-    name: 'Арендаторы',
+    name: i18n.t('constants.renter'),
     route: '/users/renters',
     value: 'access_to_renters',
     child: true,
@@ -294,3 +296,176 @@ export const operatorAccessOptions = [
   }
   //{ name: 'Логи поиска', value: 'access_to_search_logs' }
 ];
+
+const updateConst = () => {
+  operatorAccessOptions = [
+    {
+      name: i18n.t('constants.eventsAndReport'),
+      route: '/events',
+      value: 'access_to_events',
+      child: false,
+      children: [
+        'access_to_open_access_point',
+        'access_to_close_access_point',
+        'access_to_working_mode_access_point',
+        'access_to_send_message_led_board',
+        'access_to_clear_led_board'
+      ]
+    },
+    {
+      name: i18n.t('constants.openLaurent'),
+      value: 'access_to_open_access_point',
+      child: true,
+      parent: 'access_to_events'
+    },
+    {
+      name: i18n.t('constants.closeLaurent'),
+      value: 'access_to_close_access_point',
+      child: true,
+      parent: 'access_to_events'
+    },
+    {
+      name: i18n.t('constants.changeModeLaurent'),
+      value: 'access_to_working_mode_access_point',
+      child: true,
+      parent: 'access_to_events'
+    },
+    {
+      name: i18n.t('constants.sendMessageToLed'),
+      value: 'access_to_send_message_led_board',
+      child: true,
+      parent: 'access_to_events'
+    },
+    {
+      name: i18n.t('constants.clearLed'),
+      value: 'access_to_clear_led_board',
+      child: true,
+      parent: 'access_to_events'
+    },
+    {
+      name: i18n.t('constants.sessions'),
+      route: '/sessions',
+      value: 'access_to_sessions',
+      child: false,
+      children: [
+        'access_to_close_session',
+        'access_to_close_sessions_before_date',
+        'access_to_reset_duty_session'
+      ]
+    },
+    {
+      name: i18n.t('constants.oneClose'),
+      value: 'access_to_close_session',
+      child: true,
+      parent: 'access_to_sessions'
+    },
+    {
+      name: i18n.t('constants.allClose'),
+      value: 'access_to_close_sessions_before_date',
+      child: true,
+      parent: 'access_to_sessions'
+    },
+    {
+      name: i18n.t('constants.resetDuty'),
+      value: 'access_to_reset_duty_session',
+      child: true,
+      parent: 'access_to_sessions'
+    },
+    {
+      name: i18n.t('constants.autoPark'),
+      route: '/auto-park/active',
+      value: 'access_to_car_park',
+      child: false
+    },
+    {
+      name: i18n.t('constants.blackList'),
+      route: '/black-list/active',
+      value: 'access_to_black_list',
+      child: false
+    },
+    {
+      name: i18n.t('constants.request'),
+      route: '/requests',
+      value: 'access_to_requests',
+      child: false
+    },
+    {
+      name: i18n.t('constants.setting'),
+      route: '/settings',
+      value: 'access_to_settings',
+      child: false
+    },
+    {
+      name: i18n.t('constants.accessPoint'),
+      route: '/access-points',
+      value: 'access_to_access_points',
+      child: false
+    },
+    {
+      name: i18n.t('constants.cameras'),
+      route: '/cameras',
+      value: 'access_to_cameras',
+      child: false
+    },
+    {
+      name: i18n.t('constants.led'),
+      route: '/led',
+      value: 'access_to_led_boards',
+      child: false
+    },
+    {
+      name: i18n.t('constants.terminal'),
+      route: '/terminals',
+      value: 'access_to_terminals',
+      child: false
+    },
+    {
+      name: i18n.t('constants.modes'),
+      route: '/working-modes',
+      value: 'access_to_working_modes',
+      child: false
+    },
+    {
+      name: i18n.t('constants.payments'),
+      route: '/payments',
+      value: 'access_to_payments',
+      child: false
+    },
+    {
+      name: i18n.t('constants.controller'),
+      route: '/controllers',
+      value: 'access_to_laurents',
+      child: false
+    },
+    {
+      name: i18n.t('constants.access'),
+      virtual: true,
+      value: 'access_to_operators, access_to_renters',
+      child: false,
+      children: ['access_to_operators', 'access_to_renters']
+    },
+    {
+      name: i18n.t('constants.operator'),
+      route: '/users/operators',
+      value: 'access_to_operators',
+      child: true,
+      parent: 'access_to_operators, access_to_renters'
+    },
+    {
+      name: i18n.t('constants.renter'),
+      route: '/users/renters',
+      value: 'access_to_renters',
+      child: true,
+      parent: 'access_to_operators, access_to_renters'
+    }
+    //{ name: 'Логи поиска', value: 'access_to_search_logs' }
+  ];
+  ledTypeOptions =  [
+    { name: i18n.t('constants.magnit'), value: 'magnit' },
+    { name: i18n.t('constants.zapusk'), value: 'zapusk' }
+  ];
+}
+
+i18n.on('loaded', () => {
+  updateConst()
+})

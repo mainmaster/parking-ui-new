@@ -17,9 +17,11 @@ import { getUserData } from '../../api/auth/login';
 import { operatorAccessOptions } from '../../constants';
 import React from 'react';
 import {getStatusesAccessPointsFetch} from "../../store/events/eventsSlice";
+import {useTranslation} from "react-i18next";
 
 export const Home = () => {
   const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery();
+  const { t, i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
   const [disableEvents, setDisableEvents] = useState(false);
   const dispatch = useDispatch();
@@ -101,7 +103,7 @@ export const Home = () => {
       !(parkingData?.userType === 'operator' && disableEvents)
     ) {
       ws.current = new WebSocket(
-        address + `/wsEvents?parkingID=${parkingData.parkingID}`
+        address + `/wsEvents?parkingID=${parkingData.parkingID}&lang=${i18n.language}`
       );
 
       ws.current.onopen = () => {
@@ -165,7 +167,7 @@ export const Home = () => {
         ws.current = null;
       }
     };
-  }, [parkingData]);
+  }, [parkingData, i18n.language]);
 
   return (
     <>

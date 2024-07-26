@@ -39,6 +39,7 @@ import EventManager from '../../components/EventManager/EventManager';
 import AddRenterDialog from '../../components/AddRenterDialog/AddRenterDialog';
 import AddOperatorDialog from '../../components/AddOperatorDialog/AddOperatorDialog';
 import { accessPointsOnlyFetch } from '../../store/accessPoints/accessPointsSlice';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -48,6 +49,7 @@ const titleTextStyle = {
 };
 
 export const Operators = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [getOperators, { data: operators, isLoading: operatorsLoading }] =
     useLazyOperatorsQuery();
@@ -194,7 +196,7 @@ export const Operators = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Доступы</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.operators.access')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -212,8 +214,8 @@ export const Operators = () => {
                 }
               >
                 {currentTab === 0
-                  ? 'Добавить оператора'
-                  : 'Добавить арендатора'}
+                  ? t('pages.operators.addOperator')
+                  : t('pages.operators.addRenter')}
               </Button>
             </Stack>
           </Stack>
@@ -234,13 +236,13 @@ export const Operators = () => {
                 sx={tabStyle({ ...theme })}
                 disableRipple
                 disabled={disableOperators}
-                label="Операторы"
+                label={t('pages.operators.operators')}
               />
               <Tab
                 sx={tabStyle({ ...theme })}
                 disableRipple
                 disabled={disableRenters}
-                label="Арендаторы"
+                label={t('pages.operators.renters')}
               />
             </Tabs>
           </Stack>
@@ -284,7 +286,7 @@ export const Operators = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>Доступы</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.operators.access')}</Typography>
                 <Button
                   disableRipple
                   variant="contained"
@@ -297,8 +299,8 @@ export const Operators = () => {
                   }
                 >
                   {currentTab === 0
-                    ? 'Добавить оператора'
-                    : 'Добавить арендатора'}
+                    ? t('pages.operators.addOperator')
+                    : t('pages.operators.addRenter')}
                 </Button>
               </Stack>
               <Stack direction={'row'}>
@@ -317,12 +319,12 @@ export const Operators = () => {
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Операторы"
+                    label={t('pages.operators.operators')}
                   />
                   <Tab
                     sx={tabStyle({ ...theme })}
                     disableRipple
-                    label="Арендаторы"
+                    label={t('pages.operators.renters')}
                   />
                 </Tabs>
               </Stack>
@@ -377,10 +379,10 @@ export const Operators = () => {
                 <img
                   style={{ height: '40px' }}
                   src={usersEmptyIcon}
-                  alt={currentTab === 0 ? 'Нет операторов' : 'Нет арендаторов'}
+                  alt={currentTab === 0 ? t('pages.operators.noOperator') : t('pages.operators.noRenter')}
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  {currentTab === 0 ? 'Нет операторов' : 'Нет арендаторов'}
+                  {currentTab === 0 ? t('pages.operators.noOperator') : t('pages.operators.noRenter')}
                 </Typography>
               </>
             )}

@@ -5,15 +5,16 @@ import css from './App.module.scss';
 import Router from 'router';
 // Components
 import Layout from 'components/Layout';
-
+import {useTranslation} from "react-i18next";
+import i18n from '../../translation/index'
 class App extends Component {
   state = {
-    error: false
+    error: false,
   };
 
   componentDidCatch() {
     this.setState({
-      error: true
+      error: true,
     });
   }
 
@@ -21,7 +22,7 @@ class App extends Component {
     if (this.state.error) {
       return (
         <Layout>
-          <div className={css.error}>Что-то пошло не так! Попробуйте позже</div>
+          <div className={css.error}>{i18n.t('components.app.error')}</div>
         </Layout>
       );
     } else {

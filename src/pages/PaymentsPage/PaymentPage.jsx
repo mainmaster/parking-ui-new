@@ -26,6 +26,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import EventManager from '../../components/EventManager/EventManager';
 import { format, parseISO } from 'date-fns';
 import { useSnackbar } from 'notistack';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -34,6 +35,7 @@ const titleTextStyle = {
 };
 
 export const PaymentPage = () => {
+  const { t } = useTranslation();
   const [addRefund] = usePostPaymentRefundMutation();
   const { id } = useParams();
   const [copied, setCopied] = useState(false);
@@ -75,7 +77,7 @@ export const PaymentPage = () => {
     addRefund(id)
       .unwrap()
       .then(() => {
-        enqueueSnackbar(`Возврат по ID - ${id}`, {
+        enqueueSnackbar(`${t('pages.paymentPage.refundBy')} ID - ${id}`, {
           variant: 'success'
         });
         dispatch(paymentSelectFetch());
@@ -83,7 +85,7 @@ export const PaymentPage = () => {
   };
 
   useLayoutEffect(() => {
-    document.title = `Оплата №${id}` || 'Загрузка';
+    document.title = `${t('pages.paymentPage.payment')} №${id}` || t('pages.paymentPage.loading');
     dispatch(paymentSelectFetch(id));
 
     return () => {
@@ -91,7 +93,7 @@ export const PaymentPage = () => {
     };
   }, [dispatch, id]);
 
-  const errorContent = <h1>Оплаты с №{id} не найдено</h1>;
+  const errorContent = <h1>{t('pages.paymentPage.paymentFrom')} №{id} {t('pages.paymentPage.noFound')}</h1>;
 
   return (
     <>
@@ -123,7 +125,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? 0 : '0.5rem'}
             >
-              <Typography sx={titleTextStyle}>Оплата </Typography>
+              <Typography sx={titleTextStyle}>{t('pages.paymentPage.payment')} </Typography>
               <Typography
                 sx={isMobile ? captionTextStyle({ ...theme }) : titleTextStyle}
               >
@@ -131,7 +133,7 @@ export const PaymentPage = () => {
               </Typography>
             </Stack>
           </Stack>
-          <Tooltip title={copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}>
+          <Tooltip title={copied ? t('pages.paymentPage.urlIsCopy') : t('pages.paymentPage.copyUrl')}>
             <Button
               disableRipple
               variant="contained"
@@ -151,7 +153,7 @@ export const PaymentPage = () => {
               endIcon={
                 <img
                   src={linkIcon}
-                  alt="Скопировать ссылку"
+                  alt={t('pages.paymentPage.copyUrl')}
                   style={{
                     width: '24px',
                     height: '24px'
@@ -159,7 +161,7 @@ export const PaymentPage = () => {
                 />
               }
             >
-              {isMobile ? '' : 'Скопировать ссылку'}
+              {isMobile ? '' : t('pages.paymentPage.copyUrl')}
             </Button>
           </Tooltip>
         </Stack>
@@ -170,7 +172,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Госномер</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.gosNumber')}</Typography>
               {payment.vehicle_plate &&
                 payment.vehicle_plate.full_plate !== '' && (
                   <Stack direction={'row'}>
@@ -182,7 +184,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Способ</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.typeTo')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={payment.paymentType} />
               </Stack>
@@ -191,7 +193,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Тип</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.type')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={payment.paymentFor} />
               </Stack>
@@ -200,7 +202,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Возврат</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.refund')}</Typography>
               <Stack direction={'row'}>
                 <TypeAuto type={payment.isRefund ? 'refund' : ''} />
               </Stack>
@@ -209,28 +211,28 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Сумма</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.amount')}</Typography>
               <Typography>{RURuble.format(payment.totalPayedSum)}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Дата</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.date')}</Typography>
               <Typography>{dateString}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>E-mail</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.email')}</Typography>
               <Typography>{payment.email}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Сессия</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.session')}</Typography>
               <NavLink
                 to={`/sessions/${payment.session_id}`}
                 style={{ lineHeight: '1.125rem' }}
@@ -242,7 +244,7 @@ export const PaymentPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>Действие</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.action')}</Typography>
               <Stack direction={'row'}>
                 <Stack direction={'row'} gap={'8px'}>
                   <Button
@@ -252,7 +254,7 @@ export const PaymentPage = () => {
                     sx={secondaryButtonStyle({ ...theme })}
                     onClick={handleRefundPayment}
                   >
-                    Возврат
+                    {t('pages.paymentPage.refund')}
                   </Button>
                 </Stack>
               </Stack>

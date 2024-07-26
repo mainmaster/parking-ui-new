@@ -35,6 +35,7 @@ import _ from 'lodash';
 import { operatorAccessOptions } from '../../constants';
 import { CheckedIcon } from '../Icons/CheckedIcon';
 import theme from '../../theme/normal';
+import {useTranslation} from "react-i18next";
 
 const initialValues = {
   username: '',
@@ -58,6 +59,7 @@ const validationSchema = yup.object({
 });
 
 export default function AddOperatorDialog({ show, handleClose, edit }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [submited, setSubmited] = useState(true);
@@ -168,10 +170,10 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
         updateOperator(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Данные сохранены', { variant: 'success' });
+            enqueueSnackbar(t('components.addOperatorDialog.dataSave'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addOperatorDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -180,10 +182,10 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
         createOperator(payload)
           .unwrap()
           .then((result) => {
-            enqueueSnackbar('Оператор добавлен', { variant: 'success' });
+            enqueueSnackbar(t('components.addOperatorDialog.correctAdd'), { variant: 'success' });
           })
           .catch(() => {
-            enqueueSnackbar('Ошибка, попробуйте позже', {
+            enqueueSnackbar(t('components.addOperatorDialog.errorSave'), {
               variant: 'error',
               iconVariant: 'warning'
             });
@@ -279,7 +281,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? 'Редактировать оператора' : 'Добавить оператора'}
+        {edit ? t('components.addOperatorDialog.editOperator') : t('components.addOperatorDialog.addOperator')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
@@ -303,7 +305,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
             <>
               <Stack>
                 <InputLabel htmlFor="username" sx={labelStyle}>
-                  Логин
+                  {t('components.addOperatorDialog.login')}
                 </InputLabel>
                 <CarNumberInput
                   fullWidth
@@ -324,7 +326,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
               </Stack>
               <Stack>
                 <InputLabel htmlFor="password" sx={labelStyle}>
-                  Пароль
+                  {t('components.addOperatorDialog.password')}
                 </InputLabel>
                 <CarNumberInput
                   fullWidth
@@ -346,7 +348,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
             </>
           )}
           <FormGroup>
-            <Typography sx={[labelStyle, { pb: '8px' }]}>Доступ</Typography>
+            <Typography sx={[labelStyle, { pb: '8px' }]}>{t('components.addOperatorDialog.access')}</Typography>
             {operatorAccessOptions.map((option) => (
               <Stack direction={'row'} key={option.value}>
                 <Box sx={{ minWidth: '8px' }} />
@@ -374,7 +376,7 @@ export default function AddOperatorDialog({ show, handleClose, edit }) {
             type="submit"
             sx={primaryButtonStyle({ ...theme })}
           >
-            {edit ? 'Сохранить' : 'Добавить'}
+            {edit ? t('components.addOperatorDialog.save') : t('components.addOperatorDialog.add')}
           </Button>
         </Box>
       </DialogActions>

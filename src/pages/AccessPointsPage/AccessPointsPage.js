@@ -19,6 +19,8 @@ import EventManager from '../../components/EventManager/EventManager';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddAccessPointDialog from '../../components/AddAccessPointDialog/AddAccessPointDialog';
 import LogAccessPointCard from '../../components/LogAccessPointCard/LogAccessPointCard';
+import {useTranslation} from "react-i18next";
+import i18n from "../../translation";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -28,6 +30,7 @@ const titleTextStyle = {
 };
 
 const AccessPointsPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const accessPoints = useSelector((state) => state.accessPoints.accessPoints);
   const cameras = useSelector((state) => state.cameras.cameras);
@@ -92,7 +95,7 @@ const AccessPointsPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Точки доступа</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.accessPointsPage.accessPoints')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -105,7 +108,7 @@ const AccessPointsPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddPointClick}
               >
-                Добавить точку доступа
+                {t('pages.accessPointsPage.addAccessPoint')}
               </Button>
             </Stack>
           </Stack>
@@ -136,7 +139,7 @@ const AccessPointsPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Точки доступа</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.accessPointsPage.accessPoints')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -144,7 +147,7 @@ const AccessPointsPage = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddPointClick}
             >
-              Добавить
+              {t('pages.accessPointsPage.add')}
             </Button>
           </Stack>
         )}
@@ -180,7 +183,7 @@ const AccessPointsPage = () => {
                   alt="Нет точек доступа"
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет точек доступа
+                  {t('pages.accessPointsPage.notAccessPoints')}
                 </Typography>
               </>
             )}

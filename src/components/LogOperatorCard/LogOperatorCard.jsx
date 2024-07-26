@@ -9,6 +9,7 @@ import { useDeleteOperatorMutation } from '../../api/operator/operator.api';
 import { useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -18,6 +19,7 @@ const titleTextStyle = {
 };
 
 export default function LogOperatorCard({ operator }) {
+  const { t } = useTranslation();
   const [deleteOperator] = useDeleteOperatorMutation();
   const dispatch = useDispatch();
   const urlStatus = useParams();
@@ -70,7 +72,7 @@ export default function LogOperatorCard({ operator }) {
             >{`№ ${operator.id}`}</Typography>
           </Stack>
           <Stack gap={'4px'}>
-            <Typography sx={labelTextStyle}>Доступ</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logOperatorCard.access')}</Typography>
             {filteredAccessOptions && (
               <Typography sx={{ fontWeight: 500 }}>
                 {filteredAccessOptions.map((option) => option.name).join(', ')}
@@ -86,7 +88,7 @@ export default function LogOperatorCard({ operator }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditOperatorClick}
           >
-            Изменить
+            {t('components.logOperatorCard.change')}
           </Button>
           <Button
             disableRipple
@@ -95,7 +97,7 @@ export default function LogOperatorCard({ operator }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteOperatorClick}
           >
-            Удалить
+            {t('components.logOperatorCard.delete')}
           </Button>
         </Stack>
       </Stack>

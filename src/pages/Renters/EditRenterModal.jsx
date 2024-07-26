@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'components/Modal';
 import Input from 'components/Input';
 import { useUpdateRenterMutation } from '../../api/renters/renters.api';
+import {useTranslation} from "react-i18next";
 
 const EditRenterModal = ({ show, handleClose }) => {
+  const { t } = useTranslation();
   const { renter } = useSelector((state) => state.renters.editRenter);
   const formikRef = useRef();
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ const EditRenterModal = ({ show, handleClose }) => {
     <Modal
       show={show}
       handleClose={handleClose}
-      header={<CustomModal.Title>Редактировать арендатора</CustomModal.Title>}
+      header={<CustomModal.Title>{t('pages.editRenterModal.editRenter')}</CustomModal.Title>}
       body={
         <Formik
           innerRef={formikRef}
@@ -48,7 +50,7 @@ const EditRenterModal = ({ show, handleClose }) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="edit-application">
               <Input
-                label="Контакты"
+                label={t('pages.editRenterModal.contacts')}
                 name="contacts"
                 type="text"
                 onChange={(e) =>
@@ -56,7 +58,7 @@ const EditRenterModal = ({ show, handleClose }) => {
                 }
               />
               <Input
-                label="Арендатор"
+                label={t('pages.editRenterModal.renter')}
                 name="company_name"
                 type="text"
                 onChange={(e) =>
@@ -69,7 +71,7 @@ const EditRenterModal = ({ show, handleClose }) => {
       }
       footer={
         <Button type="submit" form="edit-application">
-          Изменить
+          {t('pages.editRenterModal.change')}
         </Button>
       }
     />

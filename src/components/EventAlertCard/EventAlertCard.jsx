@@ -151,7 +151,7 @@ export default function EventAlertCard({
                           borderRadius: '8px'
                         }}
                         src={image}
-                        alt="автомобиль"
+                        alt="auto"
                       />
                     </IconButton>
                   )}

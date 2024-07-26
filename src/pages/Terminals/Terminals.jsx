@@ -18,6 +18,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddTerminalDialog from '../../components/AddTerminalDialog/AddTerminalDialog';
 import LogTerminalCard from '../../components/LogTerminalCard/LogTerminalCard';
 import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -27,6 +28,7 @@ const titleTextStyle = {
 };
 
 export const Terminals = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { data: terminals, isLoading } = useTerminalsQuery();
   const editTerminal = useSelector((state) => state.terminals.editTerminal);
@@ -98,7 +100,7 @@ export const Terminals = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Терминалы</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.terminals.terminals')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -111,7 +113,7 @@ export const Terminals = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddTerminalClick}
               >
-                Добавить терминал
+                {t('pages.terminals.addTerminal')}
               </Button>
             </Stack>
           </Stack>
@@ -142,7 +144,7 @@ export const Terminals = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Терминалы</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.terminals.terminals')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -150,7 +152,7 @@ export const Terminals = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddTerminalClick}
             >
-              Добавить
+              {t('pages.terminals.add')}
             </Button>
           </Stack>
         )}
@@ -196,10 +198,10 @@ export const Terminals = () => {
                 <img
                   style={{ height: '40px' }}
                   src={terminalEmptyIcon}
-                  alt="Нет терминалов"
+                  alt={t('pages.terminals.noTerminals')}
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет терминалов
+                  {t('pages.terminals.noTerminals')}
                 </Typography>
               </>
             )}

@@ -39,6 +39,8 @@ import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg'
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import { format } from 'date-fns';
 import RenterSelect from './RenterSelect';
+import i18n from '../../translation/index'
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   vehiclePlate: '',
@@ -54,11 +56,12 @@ const labelStyle = {
 };
 
 const applicationStatusValues = [
-  { value: 'true', name: 'Использована' },
-  { value: 'false', name: 'Не использована' }
+  { value: 'true', name: i18n.t('components.applicationFilter.statusUsed') },
+  { value: 'false', name: i18n.t('components.applicationFilter.statusUsed') }
 ];
 
 export default function ApplicationFilter({ openForm, setOpenForm }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
@@ -245,7 +248,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                       height: 24
                     }}
                     src={searchIcon}
-                    alt="Найти по номеру"
+                    alt={t('components.applicationFilter.searchByNumber')}
                   />
                 </InputAdornment>
               ),
@@ -262,7 +265,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                         height: 24
                       }}
                       src={searchCancelIcon}
-                      alt={'Очистить'}
+                      alt={t('components.applicationFilter.clear')}
                     />
                   </IconButton>
                 </InputAdornment>
@@ -271,7 +274,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Найти по номеру"
+            placeholder={t('components.applicationFilter.searchByNumber')}
             value={formik.values.vehiclePlate}
             onChange={handleChangeField}
             onBlur={formik.handleBlur}
@@ -310,7 +313,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
             gap={'8px'}
           >
             <Stack>
-              <Typography sx={labelStyle}>Дата</Typography>
+              <Typography sx={labelStyle}>{t('components.applicationFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <DatePicker
                   value={fromValue}
@@ -322,7 +325,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'От'
+                      placeholder: t('components.applicationFilter.from')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -340,7 +343,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'До'
+                      placeholder: t('components.applicationFilter.to')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -358,7 +361,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
             )}
             <Stack>
               <InputLabel htmlFor="application-status-select" sx={labelStyle}>
-                Статус заявки
+                {t('components.applicationFilter.requestStatus')}
               </InputLabel>
               <Select
                 id="application-status-select"
@@ -395,7 +398,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.applicationFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -410,7 +413,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.applicationFilter.choose')}</em>
                 </MenuItem>
                 {applicationStatusValues.map((st) => (
                   <MenuItem
@@ -440,7 +443,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
-                Применить
+                {t('components.applicationFilter.submit')}
               </Button>
               <Button
                 disabled={!filters}
@@ -450,7 +453,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
                 sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
-                Сбросить
+                {t('components.applicationFilter.reset')}
               </Button>
             </Stack>
           </Stack>

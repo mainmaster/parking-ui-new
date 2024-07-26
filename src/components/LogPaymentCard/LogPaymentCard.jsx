@@ -11,8 +11,10 @@ import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 export default function LogPaymentCard({ payment }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [addRefund] = usePostPaymentRefundMutation();
   const { enqueueSnackbar } = useSnackbar();
@@ -77,17 +79,17 @@ export default function LogPaymentCard({ payment }) {
           {payment.isRefund && <TypeAuto type="refund" />}
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Сумма</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logPaymentCard.amount')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>
             {RURuble.format(payment.totalPayedSum)}
           </Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Дата</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logPaymentCard.date')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{dateString}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>E-mail</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logPaymentCard.e-mail')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{payment.email}</Typography>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
@@ -99,7 +101,7 @@ export default function LogPaymentCard({ payment }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleRefundClick}
           >
-            Возврат
+            {t('components.logPaymentCard.refund')}
           </Button>
           <Button
             disableRipple
@@ -115,7 +117,7 @@ export default function LogPaymentCard({ payment }) {
               />
             }
           >
-            Открыть
+            {t('components.logPaymentCard.open')}
           </Button>
         </Stack>
       </Stack>

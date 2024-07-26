@@ -1,3 +1,4 @@
+import {useTranslation} from "react-i18next";
 import css from './PaymentInfoItem.module.scss'
 import PropTypes from 'prop-types'
 import { Button, Card, Form } from 'react-bootstrap'
@@ -39,7 +40,7 @@ function getTimeFromMins(time) {
 }
 
 const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
-
+  const { t } = useTranslation();
   const handleSubmit = (values) =>{
     if(values.no_check_needed){
       values.email = ''
@@ -59,7 +60,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
       <DialogTitle
         style={{textAlign: 'center'}}
       >
-        Оплата
+        {t('components.paymentIntoSubmitModal.payment')}
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -80,7 +81,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="pay-handler">
               <Input
-                label="E-mail для чека"
+                label={t('components.paymentIntoSubmitModal.emailForCheck')}
                 name="email"
                 required
                 type="text"
@@ -90,7 +91,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
               />
 
               <Form.Check
-                label='Чек не нужен'
+                label={t('components.paymentIntoSubmitModal.checkNotNeed')}
                 name='no_check_needed'
                 type='checkbox'
                 className='mt-2 mb-2'
@@ -98,7 +99,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
               />
 
               <Button variant="primary" className='mt-2' type='submit' style={{width: '100%'}}>
-                К оплате
+                {t('components.paymentIntoSubmitModal.forPayment')}
               </Button>
             </form>
           )}
@@ -120,6 +121,7 @@ const PaymentInfoItem = ({
   freeTime
 }) => {
 
+  const { t } = useTranslation();
   const payment = () =>{
     payHandler({sessionId: sessionId, email: ''})
   }
@@ -211,7 +213,7 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'hh:mm',
                      amount: detail.amount,
-                     description: `первые ${freeTime}м`
+                     description: `${t('components.paymentInfoItem.first')} ${freeTime}${t('components.paymentInfoItem.м')}`
                    })
                  )
                }
@@ -223,7 +225,7 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'hh:mm',
                      amount: detail.amount,
-                     description: 'первые 3ч'
+                     description: `${t('components.paymentInfoItem.first')} 3${t('components.paymentInfoItem.h')}`
                    })
                  )
                }
@@ -235,7 +237,7 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'hh:mm',
                      amount: detail.amount,
-                     description: '100₽/ч'
+                     description: `100₽/${t('components.paymentInfoItem.h')}`
                    })
                  )
                }
@@ -247,12 +249,12 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'DD.MM',
                      amount: detail.amount,
-                     description: '1000₽/д'
+                     description: `1000₽/${t('components.paymentInfoItem.d')}`
                    })
                  )
                }
              })}
-             <span>Время проведенное на парковке: {getTimeFromMins(TotalTimeMin)}</span>
+             <span>{t('components.paymentInfoItem.timeSpentOnParking')}: {getTimeFromMins(TotalTimeMin)}</span>
            </Stack>
            : <></>}
          <Button variant="primary" style={{width: '100%'}} onClick={()=>{
@@ -262,7 +264,7 @@ const PaymentInfoItem = ({
              payment()
            }
          }}>
-           Оплатить {Amount} ₽
+           {t('components.paymentInfoItem.pay')} {Amount} ₽
          </Button>
        </Stack>
       {imageModal.isOpen && (

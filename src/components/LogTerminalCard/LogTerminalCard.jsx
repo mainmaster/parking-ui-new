@@ -10,6 +10,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -18,6 +19,7 @@ const titleTextStyle = {
 };
 
 export default function LogTerminalCard({ terminal }) {
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const [deleteTerminal] = useDeleteTerminalMutation();
   const [activateTerminal] = useActivateTerminalMutation();
@@ -43,10 +45,10 @@ export default function LogTerminalCard({ terminal }) {
       .unwrap()
       .then((result) => {
         console.log(result);
-        enqueueSnackbar('Терминал активирован', { variant: 'success' });
+        enqueueSnackbar(t('components.logTerminalCard.terminalActivated'), { variant: 'success' });
       })
       .catch(() => {
-        enqueueSnackbar('Ошибка, попробуйте позже', {
+        enqueueSnackbar(t('components.logTerminalCard.error'), {
           variant: 'error',
           iconVariant: 'warning'
         });
@@ -61,10 +63,10 @@ export default function LogTerminalCard({ terminal }) {
     rebootTerminal(terminal.id).unwrap()
         .then((result) => {
           console.log(result);
-          enqueueSnackbar('Терминал перезапущен', { variant: 'success' });
+          enqueueSnackbar(t('components.logTerminalCard.terminalRebooted'), { variant: 'success' });
         })
         .catch(() => {
-          enqueueSnackbar('Ошибка, попробуйте позже', {
+          enqueueSnackbar(t('components.logTerminalCard.error'), {
             variant: 'error',
             iconVariant: 'warning'
           });
@@ -79,33 +81,33 @@ export default function LogTerminalCard({ terminal }) {
         <Typography sx={titleTextStyle}>{terminal.description}</Typography>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Адрес</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.address')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{terminal.address}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Место</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.place')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>{terminal.place}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Номер</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.number')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {terminal.automat_number}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>IP адрес</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.ipAddress')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${terminal.ip_address}:${terminal.port}`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>ssh-порт</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.sshPort')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${terminal.ssh_port}`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Тип</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logTerminalCard.type')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {terminal.terminal_type}
             </Typography>
@@ -120,7 +122,7 @@ export default function LogTerminalCard({ terminal }) {
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleActivateModeClick}
             >
-              Тест
+              {t('components.logTerminalCard.test')}
             </Button>
             <Button
                 disableRipple
@@ -129,7 +131,7 @@ export default function LogTerminalCard({ terminal }) {
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleRebootModeClick}
             >
-              Перезагрузить
+              {t('components.logTerminalCard.reboot')}
             </Button>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
@@ -140,7 +142,7 @@ export default function LogTerminalCard({ terminal }) {
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleEditModeClick}
             >
-              Изменить
+              {t('components.logTerminalCard.change')}
             </Button>
             <Button
                 disableRipple
@@ -149,7 +151,7 @@ export default function LogTerminalCard({ terminal }) {
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleDeleteModeClick}
             >
-              Удалить
+              {t('components.logTerminalCard.delete')}
             </Button>
           </Stack>
         </Stack>

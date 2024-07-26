@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './Camera.module.scss';
 import { Button } from 'react-bootstrap';
 import React from 'react';
+import {useTranslation} from "react-i18next";
 
 const Camera = ({ src, id }) => {
+  const { t } = useTranslation();
   const stream = useRef({});
   const pc = useRef();
   const ws = useRef();

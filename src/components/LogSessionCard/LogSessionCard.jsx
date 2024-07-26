@@ -32,6 +32,7 @@ import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
 import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTranslation} from "react-i18next";
 
 const imageStyle = {
   objectFit: 'contain',
@@ -49,6 +50,7 @@ export default function LogSessionCard({
   onClickImage,
   accessOptions
 }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -103,7 +105,7 @@ export default function LogSessionCard({
     navigator.clipboard
       .writeText(window.location.href + '/' + session.id)
       .then(() => {
-        enqueueSnackbar('Ссылка скопирована');
+        enqueueSnackbar(t('components.logSessionCard.urlIsCopy'));
       });
     setAnchorEl(null);
   };
@@ -205,9 +207,9 @@ export default function LogSessionCard({
                     height: 24
                   }}
                   src={eventMenuOpenIcon}
-                  alt={'Открыть'}
+                  alt={t('components.logSessionCard.open')}
                 />
-                <Typography>Открыть</Typography>
+                <Typography>{t('components.logSessionCard.open')}</Typography>
               </MenuItem>
               <MenuItem
                 id="copy"
@@ -221,9 +223,9 @@ export default function LogSessionCard({
                     height: 24
                   }}
                   src={eventMenuCopyIcon}
-                  alt={'Скопировать ссылку'}
+                  alt={t('components.logSessionCard.copyUrl')}
                 />
-                <Typography>Коп. ссылку</Typography>
+                <Typography>{t('components.logSessionCard.cUrl')}</Typography>
               </MenuItem>
             </Menu>
           </Stack>
@@ -237,17 +239,17 @@ export default function LogSessionCard({
         </Stack>
         <Stack gap={'4px'}>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Проведено</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logSessionCard.correct')}</Typography>
             <Typography>
               {getDayMinuteSecondsByNumber(session.time_on_parking)}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Создана</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logSessionCard.created')}</Typography>
             <Typography>{formatDate(session.create_datetime)}</Typography>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Закрыта</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logSessionCard.closed')}</Typography>
             <Typography>
               {session.closed_datetime
                 ? formatDate(session.closed_datetime)
@@ -255,7 +257,7 @@ export default function LogSessionCard({
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'8px'}>
-            <Typography sx={labelTextStyle}>Оплата до</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logSessionCard.paymentTo')}</Typography>
             <Typography>
               {session.payment_is_valid_until
                 ? formatDate(session.payment_is_valid_until)
@@ -264,7 +266,7 @@ export default function LogSessionCard({
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
-          <Typography sx={labelTextStyle}>Долг</Typography>
+          <Typography sx={labelTextStyle}>{t('components.logSessionCard.dolg')}</Typography>
           <Typography>{`${session.payment_amount} ₽`}</Typography>
         </Stack>
         {(!accessOptions.disableResetDuty ||
@@ -278,7 +280,7 @@ export default function LogSessionCard({
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handlePaidClick}
               >
-                Обнулить долг
+                {t('components.logSessionCard.freeDolg')}
               </Button>
             ) : (
               <Box sx={{ width: '100%' }} />
@@ -291,7 +293,7 @@ export default function LogSessionCard({
                 sx={secondaryButtonStyle({ ...theme })}
                 onClick={handleCloseClick}
               >
-                Закрыть
+                {t('components.logSessionCard.close')}
               </Button>
             )}
           </Stack>

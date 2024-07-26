@@ -3,6 +3,7 @@ import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useParkingInfoQuery } from '../../api/settings/settings';
 import { CarNumberCard } from '../../components/CarNumberCard/CarNumberCard';
 import { Link } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 export let titles = [
   { id: 1, name: '#' },
@@ -13,6 +14,7 @@ export let titles = [
   { id: 7, name: 'Действие' }
 ];
 export let rows = (applications, deleteApplication, editApplication) => {
+  const { t } = useTranslation();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: parkingInfo } = useParkingInfoQuery();
   return applications?.map((application) => {
@@ -23,7 +25,7 @@ export let rows = (applications, deleteApplication, editApplication) => {
           <CarNumberCard carNumber={application.vehicle_plate} isTable />
         </td>
         <td style={{ width: '25%' }}>{application.company_name}</td>
-        <td style={{ width: '5%' }}>{application.is_used ? 'Да' : 'Нет'}</td>
+        <td style={{ width: '5%' }}>{application.is_used ? t('pages.tableData.yes') : t('pages.tableData.no')}</td>
         <td style={{ width: '100%' }}>{application.valid_for_date}</td>
         <td style={{ width: '20%', display: 'flex', gap: '10px' }}>
           <Button
@@ -40,7 +42,7 @@ export let rows = (applications, deleteApplication, editApplication) => {
               fontSize: 13
             }}
           >
-            Удалить
+            {t('pages.tableData.delete')}
           </Button>
           <Button
             variant="success"
@@ -57,15 +59,15 @@ export let rows = (applications, deleteApplication, editApplication) => {
               fontSize: 13
             }}
           >
-            Изменить
+            {t('pages.tableData.change')}
           </Button>
 
           {application?.session_id ? (
             <Link to={`/sessions/${application?.session_id}`}>
-              <Button variant="danger">Сессия</Button>
+              <Button variant="danger">{t('pages.tableData.session')}</Button>
             </Link>
           ) : (
-            <OverlayTrigger overlay={<Tooltip>Сессия не найдена</Tooltip>}>
+            <OverlayTrigger overlay={<Tooltip>{t('pages.tableData.sessionNotFound')}</Tooltip>}>
               <span className="d-inline-block">
                 <Button
                   style={{
@@ -76,7 +78,7 @@ export let rows = (applications, deleteApplication, editApplication) => {
                   disabled
                   variant="danger"
                 >
-                  Сессия
+                  {t('pages.tableData.session')}
                 </Button>
               </span>
             </OverlayTrigger>

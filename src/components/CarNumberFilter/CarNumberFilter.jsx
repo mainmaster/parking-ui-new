@@ -39,6 +39,7 @@ import { getEventCodesRequest } from '../../api/events';
 import { formatISO } from 'date-fns';
 import _ from 'lodash';
 import moment from "moment";
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -53,6 +54,7 @@ const defaultValues = {
 };
 
 export default function CarNumberFilter({ openForm, setOpenForm }) {
+  const { t } = useTranslation();
   const [selectedEventCode, setSelectedEventCode] = useState('');
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
@@ -291,7 +293,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                       height: 24
                     }}
                     src={searchIcon}
-                    alt="Найти по номеру"
+                    alt={t('components.carNumberFilter.searchByNumber')}
                   />
                 </InputAdornment>
               ),
@@ -308,7 +310,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                         height: 24
                       }}
                       src={searchCancelIcon}
-                      alt={'Очистить'}
+                      alt={t('components.carNumberFilter.clear')}
                     />
                   </IconButton>
                 </InputAdornment>
@@ -317,7 +319,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Найти по номеру"
+            placeholder={t('components.carNumberFilter.searchByNumber')}
             value={formik.values.vehiclePlate}
             onChange={handleChangeField}
             onBlur={formik.handleBlur}
@@ -357,7 +359,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
           >
             <Stack>
               <InputLabel htmlFor="eventcode-select" sx={labelStyle}>
-                Тип события
+                {t('components.carNumberFilter.eventType')}
               </InputLabel>
               <Select
                 id="eventcode-select"
@@ -394,7 +396,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.carNumberFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -409,7 +411,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.carNumberFilter.choose')}</em>
                 </MenuItem>
                 {_.sortBy(eventCodes, ['name']).map((code) => (
                   <MenuItem
@@ -430,7 +432,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
               </Select>
             </Stack>
             <Stack>
-              <Typography sx={labelStyle}>Дата</Typography>
+              <Typography sx={labelStyle}>{t('components.carNumberFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <DatePicker
                   value={fromValue}
@@ -442,7 +444,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'От'
+                      placeholder: t('components.carNumberFilter.from')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -461,7 +463,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'До'
+                      placeholder: t('components.carNumberFilter.to')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -472,7 +474,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
               </Stack>
             </Stack>
             <Stack>
-              <Typography sx={labelStyle}>Время</Typography>
+              <Typography sx={labelStyle}>{t('components.carNumberFilter.time')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <TimePicker
                     value={timeFromValue}
@@ -484,7 +486,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                       textField: {
                         variant: 'filled',
                         sx: DateInputStyle({ ...theme }),
-                        placeholder: 'От'
+                        placeholder: t('components.carNumberFilter.from')
                       },
                     }}
                 />
@@ -498,7 +500,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                       textField: {
                         variant: 'filled',
                         sx: DateInputStyle({ ...theme }),
-                        placeholder: 'До'
+                        placeholder: t('components.carNumberFilter.to')
                       },
                       openPickerButton: { disableRipple: true }
                     }}
@@ -507,7 +509,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="accesspoint-select" sx={labelStyle}>
-                Точка доступа
+                {t('components.carNumberFilter.accessPoint')}
               </InputLabel>
               <Select
                 id="accesspoint-select"
@@ -544,7 +546,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.carNumberFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -559,7 +561,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.carNumberFilter.choose')}</em>
                 </MenuItem>
                 {accessPoints.map((apoint) => (
                   <MenuItem
@@ -588,7 +590,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
-                Применить
+                {t('components.carNumberFilter.submit')}
               </Button>
               <Button
                 disabled={!filters}
@@ -598,7 +600,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
                 sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
-                Сбросить
+                {t('components.carNumberFilter.reset')}
               </Button>
             </Stack>
           </Stack>

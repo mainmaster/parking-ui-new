@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Button, Card } from 'react-bootstrap'
 // Constants
 import { directionName } from 'constants'
+import {useTranslation} from "react-i18next";
 
 const AccessPointsItem = ({
   cam_id,
@@ -30,6 +31,7 @@ const AccessPointsItem = ({
   confirmation_scenario_id,
   seconds_between_laurent_checks
 }) => {
+  const { t } = useTranslation();
   const cameraName = useMemo(() => {
     return cameras.length !== 0
       ? cameras?.find((item) => item.id === cam_id).description
@@ -79,53 +81,53 @@ const AccessPointsItem = ({
       <Card.Body>
         <Card.Text>
           <span className={css.text}>
-            <span className={css.text_value}>Камера:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.camera')}:</span>
             <span>{cameraName}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Контроллер:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.controller')}:</span>
             <span>{controllerName}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Направление:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.direction')}:</span>
             <span>{directionName(direction)}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Номер реле для открытия:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.openRelayNumber')}:</span>
             <span>{open_relay_number}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Номер реле для закрытия:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.closeRelayNumber')}:</span>
             <span>{close_relay_number}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Номер контакта статуса открытия:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.statusContactNumber')}:</span>
             <span>{status_contact_number}</span>
           </span>
           {ledName && (
             <span className={css.text}>
-              <span className={css.text_value}>LED Табло:</span>
+              <span className={css.text_value}>{t('components.accessPointsItem.ledName')}:</span>
               <span>{ledName}</span>
             </span>
           )}
           <span className={css.text}>
-            <span className={css.text_value}>Задержка перед закрытием (cекунд):</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.secondsBeforeCloseLaurent')}:</span>
             <span>{seconds_before_close_laurent}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Секунд между проверкой статуса шлагбаума:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.secondsBetweenLaurentChecks')}:</span>
             <span>{seconds_between_laurent_checks}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Терминал:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.terminalName')}:</span>
             <span>{terminalName}</span>
           </span>
           <span className={css.text}>
-            <span className={css.text_value}>Реверс:</span>
+            <span className={css.text_value}>{t('components.accessPointsItem.reverseName')}:</span>
             <span>{reverseName}</span>
           </span>
         </Card.Text>
-        <Card.Title>Режимы</Card.Title>
+        <Card.Title>{t('components.accessPointsItem.regimes')}</Card.Title>
         <Card.Text>
           {working_modes.map((id, index) => (
             <Fragment key={id}>
@@ -139,10 +141,10 @@ const AccessPointsItem = ({
         </Card.Text>
         <div className={css.btns}>
           <Button variant="success" onClick={editHandler}>
-            Изменить
+            {t('components.accessPointsItem.update')}
           </Button>
           <Button variant="danger" onClick={deleteHandler}>
-            Удалить
+            {t('components.accessPointsItem.delete')}
           </Button>
         </div>
       </Card.Body>

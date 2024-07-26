@@ -57,6 +57,8 @@ import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
 import eventInIcon from '../../assets/svg/log_event_in_icon.svg';
 import eventOutIcon from '../../assets/svg/log_event_out_icon.svg';
 import uploadIcon from '../../assets/svg/settings_upload_icon.svg';
+import i18n from '../../translation/index';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   margin: 0,
@@ -81,43 +83,45 @@ const accordionTitleStyle = {
   whiteSpace: 'nowrap'
 };
 
-const yookassaTaxSystemCodeValues = [
-  { value: 1, name: 'Общая, ОСН' },
-  { value: 2, name: 'Упрощенная доход,УСН доход' },
-  { value: 3, name: 'Упрощенная доход минус расход, УСН доход - расход' },
-  { value: 4, name: 'Единый налог на вмененный доход, ЕНВД' },
-  { value: 5, name: 'Единый сельскохозяйственный налог, ЕСН' },
-  { value: 6, name: 'Патентная система налогообложения, Патент' }
-];
-
-const yookassaVatCodeValues = [
-  { value: 1, name: 'Без НДС' },
-  { value: 2, name: 'НДС по ставке 0%' },
-  { value: 3, name: 'НДС по ставке 10%' },
-  { value: 4, name: 'НДС чека по ставке 20%' },
-  { value: 5, name: 'НДС чека по расчетной ставке 10/110' },
-  { value: 6, name: 'НДС чека по расчетной ставке 20/120' }
-];
-
-const aqsiTaxSystemCodeValues = [
-  { value: 1, name: 'Общая, ОСН' },
-  { value: 2, name: 'Упрощенная доход,УСН доход' },
-  { value: 4, name: 'Упрощенная доход минус расход, УСН доход - расход' },
-  { value: 8, name: 'Единый налог на вмененный доход, ЕНВД' },
-  { value: 16, name: 'Единый сельскохозяйственный налог, ЕСН' },
-  { value: 32, name: 'Патентная система налогообложения, Патент' }
-];
-
-const aqsiVatCodeValues = [
-  { value: 1, name: '20%' },
-  { value: 2, name: '10%' },
-  { value: 3, name: 'Ставка расч. 20/120' },
-  { value: 4, name: 'Ставка расч. 10/110' },
-  { value: 5, name: '0%' },
-  { value: 6, name: 'Без НДС' }
-];
-
 const Settings = () => {
+  const { t, i18n } = useTranslation();
+
+  const yookassaTaxSystemCodeValues = [
+    { value: 1, name: t('pages.settings.generalOsn')},
+    { value: 2, name: t('pages.settings.simplyIncome') },
+    { value: 3, name: t('pages.settings.simplyIncomeMin') },
+    { value: 4, name: t('pages.settings.endv') },
+    { value: 5, name: t('pages.settings.esn') },
+    { value: 6, name: t('pages.settings.patent') }
+  ];
+
+  const yookassaVatCodeValues = [
+    { value: 1, name: t('pages.settings.withoutNds') },
+    { value: 2, name: t('pages.settings.nds0') },
+    { value: 3, name: t('pages.settings.nds10') },
+    { value: 4, name: t('pages.settings.nds20') },
+    { value: 5, name: t('pages.settings.nds10/110') },
+    { value: 6, name: t('pages.settings.nds20/120') }
+  ];
+
+  const aqsiTaxSystemCodeValues = [
+    { value: 1, name: t('pages.settings.generalOsn') },
+    { value: 2, name: t('pages.settings.simplyIncome') },
+    { value: 4, name: t('pages.settings.simplyIncomeMin') },
+    { value: 8, name: t('pages.settings.endv') },
+    { value: 16, name: t('pages.settings.esn') },
+    { value: 32, name: t('pages.settings.patent') }
+  ];
+
+  const aqsiVatCodeValues = [
+    { value: 1, name: '20%' },
+    { value: 2, name: '10%' },
+    { value: 3, name: `${t('pages.settings.bet')} 20/120` },
+    { value: 4, name: `${t('pages.settings.bet')} 10/110` },
+    { value: 5, name: '0%' },
+    { value: 6, name: t('pages.settings.withoutNds')}
+  ];
+
   const { enqueueSnackbar } = useSnackbar();
   const [personalInfoFile, setPersonalInfoFile] = useState(null);
   const [returnPolicyFile, setReturnPolicyFile] = useState(null);
@@ -560,7 +564,7 @@ const Settings = () => {
     let formData = new FormData();
     formData.append('file', e.target.files[0]);
     setPersonalInfoPolicy(formData).then(() =>
-      enqueueSnackbar('Файл успешно загружен', { variant: 'success' })
+      enqueueSnackbar(t('pages.settings.fileSuccessUpload'), { variant: 'success' })
     );
   };
 
@@ -571,7 +575,7 @@ const Settings = () => {
     if (result.error) {
       enqueueSnackbar(result.error, { variant: 'error' });
     } else {
-      enqueueSnackbar('Данные успешно измененны', { variant: 'success' });
+      enqueueSnackbar(t('pages.settings.dataSuccessChange'), { variant: 'success' });
       setSubmited(true);
     }
   };
@@ -581,7 +585,7 @@ const Settings = () => {
     let formData = new FormData();
     formData.append('file', e.target.files[0]);
     setReturnPolicy(formData).then(() =>
-      enqueueSnackbar('Файл успешно загружен', { variant: 'success' })
+      enqueueSnackbar(t('pages.settings.fileSuccessUpload'), { variant: 'success' })
     );
   };
 
@@ -590,7 +594,7 @@ const Settings = () => {
     let formData = new FormData();
     formData.append('file', e.target.files[0]);
     setPaymentsPageImage(formData).then(() =>
-      enqueueSnackbar('Файл успешно загружен', { variant: 'success' })
+      enqueueSnackbar(t('pages.settings.fileSuccessUpload'), { variant: 'success' })
     );
   };
 
@@ -602,7 +606,7 @@ const Settings = () => {
     if (result.error) {
       enqueueSnackbar(result.error, { variant: 'error' });
     } else {
-      enqueueSnackbar('Данные успешно измененны', { variant: 'success' });
+      enqueueSnackbar(t('pages.settings.dataSuccessChange'), { variant: 'success' });
       setSubmited(true);
     }
   };
@@ -613,7 +617,7 @@ const Settings = () => {
 
     localStorage.setItem('notificationsSound', notificationsSound);
 
-    enqueueSnackbar('Данные успешно измененны', { variant: 'success' });
+    enqueueSnackbar(t('pages.settings.dataSuccessChange'), { variant: 'success' });
     setSubmited(true);
   };
 
@@ -655,7 +659,7 @@ const Settings = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Настройки</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.settings.settings')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -669,7 +673,7 @@ const Settings = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 type="submit"
               >
-                Сохранить
+                {t('pages.settings.save')}
               </Button>
             </Stack>
           </Stack>
@@ -690,12 +694,12 @@ const Settings = () => {
                 <Tab
                   sx={tabStyle({ ...theme })}
                   disableRipple
-                  label="Основные"
+                  label={t('pages.settings.general')}
                 />
                 <Tab
                   sx={tabStyle({ ...theme })}
                   disableRipple
-                  label="О парковке"
+                  label={t('pages.settings.aboutPark')}
                 />
               </Tabs>
             </Stack>
@@ -734,7 +738,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Общее
+                          {t('pages.settings.generalSet')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -743,7 +747,7 @@ const Settings = () => {
                                 htmlFor="company_name"
                                 sx={labelStyle}
                               >
-                                Имя компании
+                                {t('pages.settings.companyName')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -763,7 +767,7 @@ const Settings = () => {
                                 htmlFor="company_info"
                                 sx={labelStyle}
                               >
-                                Описание
+                                {t('pages.settings.companyInfo')}
                               </InputLabel>
                               <CarNumberInput
                                 sx={{ height: '72px', overflow: 'hidden' }}
@@ -786,7 +790,7 @@ const Settings = () => {
                                 htmlFor="operator_phone_number"
                                 sx={labelStyle}
                               >
-                                Номер телефона оператора
+                                {t('pages.settings.operatorPhoneNumber')}
                               </InputLabel>
                               <InputMask
                                 mask="+7 (999) 999-99-99"
@@ -818,7 +822,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Места на парковке
+                          {t('pages.settings.placeOnPark')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -827,7 +831,7 @@ const Settings = () => {
                                 htmlFor="count_free_places"
                                 sx={labelStyle}
                               >
-                                Количество свободных мест
+                                {t('pages.settings.countFreePlaces')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -848,7 +852,7 @@ const Settings = () => {
                                 htmlFor="total_places_for_cars"
                                 sx={labelStyle}
                               >
-                                Общее количество мест на парковке
+                                {t('pages.settings.totalPlacesForCar')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -876,7 +880,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Вывод количества свободных мест"
+                                label={t('pages.settings.outputFreePlaces')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -898,7 +902,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Впускать на парковку машины, если нет мест."
+                                label={t('pages.settings.enterCarIfNot')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -916,7 +920,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Платёжные системы
+                          {t('pages.settings.paymentSystems')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -925,7 +929,7 @@ const Settings = () => {
                                 htmlFor="yookassa_api_key"
                                 sx={labelStyle}
                               >
-                                Yookassa shop key
+                                {t('pages.settings.yookassaKey')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -945,7 +949,7 @@ const Settings = () => {
                                 htmlFor="yookassa_shop_id"
                                 sx={labelStyle}
                               >
-                                Yookassa shop id
+                                {t('pages.settings.yookassaId')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -965,7 +969,7 @@ const Settings = () => {
                                 htmlFor="terminal_payment_ttl"
                                 sx={labelStyle}
                               >
-                                Время жизни сессии оплаты терминала
+                                {t('pages.settings.terminalPaymentTtl')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -993,7 +997,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Пускать авто бесплатно если система оплаты не доступна"
+                                label={t('pages.settings.enterCarFree')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -1008,7 +1012,7 @@ const Settings = () => {
                                 htmlFor="secs_to_show_terminal_qr_code"
                                 sx={labelStyle}
                               >
-                                Время показа QR кода на терминале
+                                {t('pages.settings.timeShowQR')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1031,7 +1035,7 @@ const Settings = () => {
                                 htmlFor="payment_page_header"
                                 sx={labelStyle}
                               >
-                                Заголовок для онлайн-оплаты
+                                {t('pages.settings.paymentTitle')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1051,7 +1055,7 @@ const Settings = () => {
                                 htmlFor="vendotek_terminal_prod_id"
                                 sx={labelStyle}
                               >
-                                ID продукта (Vendotek)
+                                {t('pages.settings.vendotekId')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1072,7 +1076,7 @@ const Settings = () => {
                                 htmlFor="vendotek_terminal_prod_name"
                                 sx={labelStyle}
                               >
-                                Имя продукта (Vendotek)
+                                {t('pages.settings.vendotekName')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1094,7 +1098,7 @@ const Settings = () => {
                                 htmlFor="terminal_payment_refund_type"
                                 sx={labelStyle}
                               >
-                                Тип возврата оплат через терминал
+                                {t('pages.settings.refundTypeTerminal')}
                               </InputLabel>
                               <Select
                                 id="terminal_payment_refund_type"
@@ -1144,8 +1148,8 @@ const Settings = () => {
                                     sx={{ fontWeight: 500 }}
                                   >
                                     {selected === 0
-                                      ? 'Контактный'
-                                      : 'Бесконтактный'}
+                                      ? t('pages.settings.contacting')
+                                      : t('pages.settings.noContacting')}
                                   </Typography>
                                 )}
                               >
@@ -1162,7 +1166,7 @@ const Settings = () => {
                                     noWrap
                                     sx={{ fontWeight: 500, p: 0 }}
                                   >
-                                    Контактный
+                                    {t('pages.settings.contacting')}
                                   </Typography>
                                 </MenuItem>
                                 <MenuItem
@@ -1178,7 +1182,7 @@ const Settings = () => {
                                     noWrap
                                     sx={{ fontWeight: 500, p: 0 }}
                                   >
-                                    Бесконтактный
+                                    {t('pages.settings.noContacting')}
                                   </Typography>
                                 </MenuItem>
                               </Select>
@@ -1188,7 +1192,7 @@ const Settings = () => {
                                 htmlFor="yookassa_tax_system_code"
                                 sx={labelStyle}
                               >
-                                Система налогообложения (Юкасса)
+                                {t('pages.settings.yookassaTaxSystem')}
                               </InputLabel>
                               <Select
                                 id="yookassa_tax_system_code"
@@ -1271,7 +1275,7 @@ const Settings = () => {
                                 htmlFor="yookassa_vat_code"
                                 sx={labelStyle}
                               >
-                                Тип НДС (Юкасса)
+                                {t('pages.settings.yookassaNdsType')}
                               </InputLabel>
                               <Select
                                 id="yookassa_vat_code"
@@ -1354,7 +1358,7 @@ const Settings = () => {
                                 htmlFor="aqsi_tax_system_code"
                                 sx={labelStyle}
                               >
-                                Система налогообложения (AQSI)
+                                {t('pages.settings.aqsiTaxSystem')}
                               </InputLabel>
                               <Select
                                 id="aqsi_tax_system_code"
@@ -1437,7 +1441,7 @@ const Settings = () => {
                                 htmlFor="aqsi_vat_code"
                                 sx={labelStyle}
                               >
-                                Тип НДС (AQSI)
+                                {t('pages.settings.aqsiNdsType')}
                               </InputLabel>
                               <Select
                                 id="aqsi_vat_code"
@@ -1519,7 +1523,7 @@ const Settings = () => {
                                 htmlFor="email_for_unclaimed_checks"
                                 sx={labelStyle}
                               >
-                                Почта для невостребованных чеков
+                                {t('pages.settings.mailForCheck')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1548,7 +1552,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Требовать  email для онлайн-оплаты"
+                                label={t('pages.settings.requiredEmailForPay')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -1566,7 +1570,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Абонементы
+                          {t('pages.settings.aboniments')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -1582,7 +1586,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Возможность покупки абонемента"
+                                label={t('pages.settings.supportSubscribe')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -1597,7 +1601,7 @@ const Settings = () => {
                                 htmlFor="week_subscription_price"
                                 sx={labelStyle}
                               >
-                                Стоимость абонемента на неделю
+                                {t('pages.settings.weekSubscriptionPrice')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1618,7 +1622,7 @@ const Settings = () => {
                                 htmlFor="month_subscription_price"
                                 sx={labelStyle}
                               >
-                                Стоимость абонемента на месяц
+                                {t('pages.settings.monthSubscriptionPrice')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1639,7 +1643,7 @@ const Settings = () => {
                                 htmlFor="quarter_subscription_price"
                                 sx={labelStyle}
                               >
-                                Стоимость абонемента на квартал
+                                {t('pages.settings.quarterSubscriptionPrice')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1662,7 +1666,7 @@ const Settings = () => {
                                 htmlFor="year_subscription_price"
                                 sx={labelStyle}
                               >
-                                Стоимость абонемента на год
+                                {t('pages.settings.yearSubscriptionPrice')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1686,7 +1690,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Облачное распознавание
+                          {t('pages.settings.cloudCheck')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -1702,7 +1706,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Использовать распознование от Vizor VL"
+                                label={t('pages.settings.useCheckFromVisor')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -1717,7 +1721,7 @@ const Settings = () => {
                                 htmlFor="vision_labs_address"
                                 sx={labelStyle}
                               >
-                                Адрес сервера Vizor VL
+                                {t('pages.settings.serverAddressVisor')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1737,7 +1741,7 @@ const Settings = () => {
                                 htmlFor="vizor_vl_websocket_address"
                                 sx={labelStyle}
                               >
-                                Вебсокет-адрес
+                                {t('pages.settings.websocketAddress')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1767,7 +1771,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Бесплатный доступ для спец. авто"
+                                label={t('pages.settings.freeAccessForSpecial')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -1942,7 +1946,7 @@ const Settings = () => {
                                 htmlFor="min_width_car_vl_recognition"
                                 sx={labelStyle}
                               >
-                                Минимальная ширина машины на картинке
+                                {t('pages.settings.minCarWidth')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1965,7 +1969,7 @@ const Settings = () => {
                                 htmlFor="min_height_car_vl_recognition"
                                 sx={labelStyle}
                               >
-                                Минимальная высота машины на картинке
+                                {t('pages.settings.minCarHeight')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1988,7 +1992,7 @@ const Settings = () => {
                                 htmlFor="min_width_plate_vl_recognition"
                                 sx={labelStyle}
                               >
-                                Минимальная ширина номера на картинке
+                                {t('pages.settings.minPlateWidth')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2011,7 +2015,7 @@ const Settings = () => {
                                 htmlFor="min_height_plate_vl_recognition"
                                 sx={labelStyle}
                               >
-                                Минимальная высота номера на картинке
+                                {t('pages.settings.minPlateHeight')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2034,8 +2038,7 @@ const Settings = () => {
                                 htmlFor="number_of_bad_recognizations_for_additional_logic"
                                 sx={labelStyle}
                               >
-                                Количество событий с нераспознанным номером для
-                                дополнительной логики
+                                {t('pages.settings.numberOfBadEvents')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2058,8 +2061,7 @@ const Settings = () => {
                                 htmlFor="min_symbols_count_for_match"
                                 sx={labelStyle}
                               >
-                                Минимальное количество символов для
-                                подтверждения совпадения номеров
+                                {t('pages.settings.minSymbolsCount')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2089,7 +2091,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Дополнительное подтверждение машин по марке и модели"
+                                label={t('pages.settings.additionalConfirmation')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2107,7 +2109,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Политика сессий
+                          {t('pages.settings.sessionPolitic')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -2123,7 +2125,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Выпускать все машины без сессии без оплаты"
+                                label={t('pages.settings.releaseAllSession')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2145,7 +2147,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Впускать все машины с открытой сессией"
+                                label={t('pages.settings.enterAllCar')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2160,7 +2162,7 @@ const Settings = () => {
                                 htmlFor="release_all_sessions_not_found_with_payment_amount"
                                 sx={labelStyle}
                               >
-                                Выпускать все машины без сессии с оплатой штрафа
+                                {t('pages.settings.releaseAllCar')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2190,7 +2192,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Въезд только по заявкам"
+                                label={t('pages.settings.enterOnRequest')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2212,7 +2214,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Сохранять события с нераспознанным номером"
+                                label={t('pages.settings.saveEventsWith')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2227,7 +2229,7 @@ const Settings = () => {
                                 htmlFor="mins_to_leave_parking"
                                 sx={labelStyle}
                               >
-                                Время на выезд из парковки, мин
+                                {t('pages.settings.timeToLeave')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2248,8 +2250,7 @@ const Settings = () => {
                                 htmlFor="delay_before_checking_confirmation_events"
                                 sx={labelStyle}
                               >
-                                Время на закрытие ШГ если нет события
-                                подтверждения проезда
+                                {t('pages.settings.timeToCloseLaurent')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2272,7 +2273,7 @@ const Settings = () => {
                                 htmlFor="relay_closing_time"
                                 sx={labelStyle}
                               >
-                                Время закрытия реле
+                                {t('pages.settings.relayCloseTime')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2300,7 +2301,7 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label="Повторный проезд без бесплатного времени"
+                                label={t('pages.settings.secondEnterWithout')}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2323,7 +2324,7 @@ const Settings = () => {
                                   }
                                 ]}
                               >
-                                Время для зачёта заезда как повторного (мин)
+                                {t('pages.settings.timeToReentry')}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -2358,7 +2359,7 @@ const Settings = () => {
                           expandIcon={<ExpandIcon />}
                           sx={accordionTitleStyle}
                         >
-                          Сообщения led-табло
+                          {t('pages.settings.ledMessage')}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Stack sx={{ pt: '16px', gap: '16px' }}>
@@ -2376,7 +2377,7 @@ const Settings = () => {
                                 alt="Въезд"
                               />
                               <Typography sx={{ fontWeight: '500' }}>
-                                Въезд
+                                {t('pages.settings.input')}
                               </Typography>
                             </Stack>
                             {globalSettings?.led_board_message_texts?.in &&
@@ -2435,10 +2436,10 @@ const Settings = () => {
                                   width: '18px'
                                 }}
                                 src={eventOutIcon}
-                                alt="Выезд"
+                                alt={t('pages.settings.output')}
                               />
                               <Typography sx={{ fontWeight: '500' }}>
-                                Выезд
+                                {t('pages.settings.output')}
                               </Typography>
                             </Stack>
                             {globalSettings?.led_board_message_texts?.out &&
@@ -2491,7 +2492,7 @@ const Settings = () => {
                   )}
                   <Box sx={sectionContainerStyle}>
                     <Stack gap={'16px'}>
-                      <Typography sx={titleTextStyle}>Уведомления</Typography>
+                      <Typography sx={titleTextStyle}>{t('pages.settings.notifications')}</Typography>
                       <FormGroup>
                         <FormControlLabel
                           control={
@@ -2507,7 +2508,7 @@ const Settings = () => {
                               sx={switchInputStyle({ ...theme })}
                             />
                           }
-                          label="Звук уведомлений"
+                          label={t('pages.settings.soundNotifications')}
                           labelPlacement="end"
                           sx={{
                             m: 0,
@@ -2515,6 +2516,106 @@ const Settings = () => {
                             gap: '16px'
                           }}
                         />
+                      </FormGroup>
+                    </Stack>
+                  </Box>
+                  <Box sx={sectionContainerStyle}>
+                    <Stack gap={'16px'}>
+                      <Typography sx={titleTextStyle}>Language / Язык</Typography>
+                      <FormGroup>
+                        <InputLabel
+                          htmlFor="language"
+                          sx={labelStyle}
+                        >
+                          {t('pages.settings.chooseLanguage')}
+                        </InputLabel>
+                        <Select
+                          id="language"
+                          name="language"
+                          displayEmpty
+                          value={
+                            i18n.language
+                          }
+                          onChange={(event) => {
+                            localStorage.setItem('language', event.target.value);
+                            i18n.changeLanguage(event.target.value);
+                          }}
+                          variant="filled"
+                          IconComponent={(props) => (
+                            <IconButton
+                              disableRipple
+                              {...props}
+                              sx={{
+                                top: `${0} !important`,
+                                right: `4px !important`
+                              }}
+                            >
+                              <img
+                                style={{
+                                  width: '24px'
+                                }}
+                                src={selectIcon}
+                                alt="select"
+                              />
+                            </IconButton>
+                          )}
+                          sx={selectMenuStyle({ ...theme })}
+                          MenuProps={{
+                            PaperProps: {
+                              sx: {
+                                borderRadius: '8px',
+                                border:
+                                  '1px solid ' +
+                                  theme.colors.outline.default
+                              }
+                            },
+                            MenuListProps: {
+                              sx: { py: '4px' }
+                            }
+                          }}
+                          renderValue={(selected) => (
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {selected === 'en'
+                                ? t('pages.settings.english')
+                                : t('pages.settings.russian')}
+                            </Typography>
+                          )}
+                        >
+                          <MenuItem
+                            id="Английский"
+                            selected={
+                              i18n.language === 'en'
+                            }
+                            value={'en'}
+                          >
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500, p: 0 }}
+                            >
+                              {t('pages.settings.english')}
+                            </Typography>
+                          </MenuItem>
+                          <MenuItem
+                            id="Русский"
+                            value={'ru'}
+                            selected={
+                              i18n.language === 'ru'
+                            }
+                          >
+                            <Typography
+                              component={'h5'}
+                              noWrap
+                              sx={{ fontWeight: 500, p: 0 }}
+                            >
+                              {t('pages.settings.russian')}
+                            </Typography>
+                          </MenuItem>
+                        </Select>
                       </FormGroup>
                     </Stack>
                   </Box>
@@ -2532,16 +2633,16 @@ const Settings = () => {
                         sx={downloadInfoStyle}
                       >
                         <Typography sx={titleTextStyle}>
-                          Политика обработки персональных данных
+                          {t('pages.settings.oferta')}
                         </Typography>
-                        <img src={uploadIcon} alt="Загрузить" />
+                        <img src={uploadIcon} alt={t('pages.settings.upload')} />
                       </Stack>
                       <Stack>
                         <InputLabel
                           htmlFor="personal_info_policy"
                           sx={labelStyle}
                         >
-                          Заменить
+                          {t('pages.settings.change')}
                         </InputLabel>
                         <Stack direction={'row'}>
                           <Button
@@ -2551,7 +2652,7 @@ const Settings = () => {
                             sx={uploadButtonStyle}
                           >
                             {' '}
-                            Выберите файл
+                            {t('pages.settings.chooseFile')}
                             <Input
                               type="file"
                               id="personal_info_policy"
@@ -2562,8 +2663,8 @@ const Settings = () => {
                           <Box sx={uploadInfoStyle}>
                             <Typography>
                               {personalInfoFile
-                                ? 'Файл загружен'
-                                : 'Файл не выбран'}
+                                ? t('pages.settings.fileUploaded')
+                                : t('pages.settings.fileNoChosen')}
                             </Typography>
                           </Box>
                         </Stack>
@@ -2580,13 +2681,13 @@ const Settings = () => {
                         sx={downloadInfoStyle}
                       >
                         <Typography sx={titleTextStyle}>
-                          Политика возврата и обмена
+                          {t('pages.settings.refund')}
                         </Typography>
-                        <img src={uploadIcon} alt="Загрузить" />
+                        <img src={uploadIcon} alt={t('pages.settings.upload')} />
                       </Stack>
                       <Stack>
                         <InputLabel htmlFor="return_policy" sx={labelStyle}>
-                          Заменить
+                          {t('pages.settings.change')}
                         </InputLabel>
                         <Stack direction={'row'}>
                           <Button
@@ -2596,7 +2697,7 @@ const Settings = () => {
                             sx={uploadButtonStyle}
                           >
                             {' '}
-                            Выберите файл
+                            {t('pages.settings.chooseFile')}
                             <Input
                               type="file"
                               id="return_policy"
@@ -2607,8 +2708,8 @@ const Settings = () => {
                           <Box sx={uploadInfoStyle}>
                             <Typography>
                               {returnPolicyFile
-                                ? 'Файл загружен'
-                                : 'Файл не выбран'}
+                                ? t('pages.settings.fileUploaded')
+                                : t('pages.settings.fileNoChosen')}
                             </Typography>
                           </Box>
                         </Stack>
@@ -2625,7 +2726,7 @@ const Settings = () => {
                         sx={downloadInfoStyle}
                       >
                         <Typography sx={titleTextStyle}>
-                          Фото на странице оплаты
+                          {t('pages.settings.photoOnPaymentPage')}
                         </Typography>
                         <img src={uploadIcon} alt="Загрузить" />
                       </Stack>
@@ -2654,7 +2755,7 @@ const Settings = () => {
                             sx={uploadButtonStyle}
                           >
                             {' '}
-                            Выберите файл
+                            {t('pages.settings.chooseFile')}
                             <Input
                               type="file"
                               id="payments_page_image"
@@ -2665,8 +2766,8 @@ const Settings = () => {
                           <Box sx={uploadInfoStyle}>
                             <Typography>
                               {paymentsPageImageFile
-                                ? 'Файл загружен'
-                                : 'Файл не выбран'}
+                                ? t('pages.settings.fileUploaded')
+                                : t('pages.settings.fileNoChosen')}
                             </Typography>
                           </Box>
                         </Stack>
@@ -2676,11 +2777,11 @@ const Settings = () => {
                   <Box sx={[sectionContainerStyle, { px: '16px' }]}>
                     <Stack gap={'16px'}>
                       <Typography sx={[titleTextStyle, { px: '12px' }]}>
-                        О парковке
+                        {t('pages.settings.aboutPark')}
                       </Typography>
                       <Stack>
                         <InputLabel htmlFor="name" sx={labelStyle}>
-                          Имя
+                          {t('pages.settings.name')}
                         </InputLabel>
                         <CarNumberInput
                           fullWidth
@@ -2697,7 +2798,7 @@ const Settings = () => {
                       </Stack>
                       <Stack>
                         <InputLabel htmlFor="address" sx={labelStyle}>
-                          Имя
+                          {t('pages.settings.name')}
                         </InputLabel>
                         <CarNumberInput
                           fullWidth

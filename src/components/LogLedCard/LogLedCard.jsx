@@ -5,6 +5,7 @@ import { editModalHandler, deleteLedFetch } from 'store/led/ledSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -13,6 +14,7 @@ const titleTextStyle = {
 };
 
 export default function LogLedCard({ led }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,13 +43,13 @@ export default function LogLedCard({ led }) {
         <Typography sx={titleTextStyle}>{led.description}</Typography>
         <Stack gap={'12px'}>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>IP адрес</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logLedCard.ipAddress')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {`${led.ip_address}:${led.port}`}
             </Typography>
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>Тип табло</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logLedCard.type')}</Typography>
             <Typography sx={{ fontWeight: 500 }}>
               {led.led_board_type}
             </Typography>
@@ -61,7 +63,7 @@ export default function LogLedCard({ led }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleEditModeClick}
           >
-            Изменить
+            {t('components.logLedCard.change')}
           </Button>
           <Button
             disableRipple
@@ -70,7 +72,7 @@ export default function LogLedCard({ led }) {
             sx={secondaryButtonStyle({ ...theme })}
             onClick={handleDeleteModeClick}
           >
-            Удалить
+            {t('components.logLedCard.delete')}
           </Button>
         </Stack>
       </Stack>

@@ -38,6 +38,8 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import { formatISO } from 'date-fns';
+import i18n from '../../translation/index'
+import {useTranslation} from "react-i18next";
 
 const defaultValues = {
   vehiclePlate: ''
@@ -52,22 +54,23 @@ const labelStyle = {
 };
 
 const paymentTypeValues = [
-  { value: 'sber', name: 'Сбер' },
-  { value: 'yookassa', name: 'Yookassa' },
-  { value: 'pos_terminal', name: 'Пос терминал' }
+  { value: 'sber', name: i18n.t('components.paymentFilter.sber') },
+  { value: 'yookassa', name: i18n.t('components.paymentFilter.yookassa') },
+  { value: 'pos_terminal', name: i18n.t('components.paymentFilter.afterTerminal') }
 ];
 
 const isRefundValues = [
-  { value: 'true', name: 'С возвратом' },
-  { value: 'false', name: 'Без возврата' }
+  { value: 'true', name: i18n.t('components.paymentFilter.withRefund') },
+  { value: 'false', name: i18n.t('components.paymentFilter.withoutRefund') }
 ];
 
 const paymentForValues = [
-  { value: 'subscription', name: 'Абонемент' },
-  { value: 'session', name: 'Разовый' }
+  { value: 'subscription', name: i18n.t('components.paymentFilter.aboniment') },
+  { value: 'session', name: i18n.t('components.paymentFilter.oneTime') }
 ];
 
 export default function PaymentFilter({ openForm, setOpenForm }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
@@ -287,7 +290,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                       height: 24
                     }}
                     src={searchIcon}
-                    alt="Найти по номеру"
+                    alt={t('components.paymentFilter.searchByNumber')}
                   />
                 </InputAdornment>
               ),
@@ -304,7 +307,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                         height: 24
                       }}
                       src={searchCancelIcon}
-                      alt={'Очистить'}
+                      alt={t('components.paymentFilter.clear')}
                     />
                   </IconButton>
                 </InputAdornment>
@@ -313,7 +316,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             variant="filled"
             id="vehiclePlate"
             name="vehiclePlate"
-            placeholder="Найти по номеру"
+            placeholder={t('components.paymentFilter.searchByNumber')}
             value={formik.values.vehiclePlate}
             onChange={handleChangeField}
             onBlur={formik.handleBlur}
@@ -352,7 +355,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             gap={'8px'}
           >
             <Stack>
-              <Typography sx={labelStyle}>Дата</Typography>
+              <Typography sx={labelStyle}>{t('components.paymentFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
                 <DatePicker
                   value={fromValue}
@@ -364,7 +367,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'От'
+                      placeholder: t('components.paymentFilter.from')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -382,7 +385,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                     textField: {
                       variant: 'filled',
                       sx: DateInputStyle({ ...theme }),
-                      placeholder: 'До'
+                      placeholder: t('components.paymentFilter.to')
                     },
                     openPickerButton: { disableRipple: true }
                   }}
@@ -394,7 +397,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="payment-type-select" sx={labelStyle}>
-                Способ оплаты
+                {t('components.paymentFilter.paymentType')}
               </InputLabel>
               <Select
                 id="payment-type-select"
@@ -431,7 +434,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.paymentFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -446,7 +449,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.paymentFilter.choose')}</em>
                 </MenuItem>
                 {paymentTypeValues.map((item) => (
                   <MenuItem
@@ -468,7 +471,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="payment-for-select" sx={labelStyle}>
-                Тип оплаты
+                {t('components.paymentFilter.typePayment')}
               </InputLabel>
               <Select
                 id="payment-for-select"
@@ -505,7 +508,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.paymentFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -520,7 +523,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.paymentFilter.choose')}</em>
                 </MenuItem>
                 {paymentForValues.map((item) => (
                   <MenuItem
@@ -542,7 +545,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
             </Stack>
             <Stack>
               <InputLabel htmlFor="is-refund-select" sx={labelStyle}>
-                Возврат
+                {t('components.paymentFilter.refund')}
               </InputLabel>
               <Select
                 id="is-refund-select"
@@ -579,7 +582,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
                 renderValue={(selected) => {
                   if (selected === '') {
-                    return <em>Выбрать</em>;
+                    return <em>{t('components.paymentFilter.choose')}</em>;
                   } else {
                     return (
                       <Typography
@@ -594,7 +597,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 }}
               >
                 <MenuItem value="">
-                  <em>Выбрать</em>
+                  <em>{t('components.paymentFilter.choose')}</em>
                 </MenuItem>
                 {isRefundValues.map((item) => (
                   <MenuItem
@@ -624,7 +627,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 type="submit"
               >
-                Применить
+                {t('components.paymentFilter.submit')}
               </Button>
               <Button
                 disabled={!filters}
@@ -634,7 +637,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
                 sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
                 onClick={resetHandle}
               >
-                Сбросить
+                {t('components.paymentFilter.reset')}
               </Button>
             </Stack>
           </Stack>

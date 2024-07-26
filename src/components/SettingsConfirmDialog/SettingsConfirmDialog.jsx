@@ -10,8 +10,10 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { listStyle, secondaryButtonStyle } from '../../theme/styles';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
+import {useTranslation} from "react-i18next";
 
 export default function SettingsConfirmDialog({ show, cancel, confirm }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   return (
     <Dialog
@@ -59,12 +61,11 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
           textAlign: 'center'
         }}
       >
-        Выйти без сохранения?
+        {t('components.settingConfirmDialog.outWithoutSave')}?
       </DialogTitle>
       <DialogContent sx={{ px: '16px', py: 0, minHeight: '37px' }}>
         <Typography sx={{ textAlign: 'center' }}>
-          Изменения не будут применены, пока не будет нажата кнопка "Сохранить"
-          в верхнеи правом углу
+          {t('components.settingConfirmDialog.changeDontSave')}
         </Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center', p: '16px' }}>
@@ -75,7 +76,7 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
           sx={secondaryButtonStyle({ ...theme })}
           onClick={confirm}
         >
-          Выйти
+          {t('components.settingConfirmDialog.exit')}
         </Button>
         <Button
           disableRipple
@@ -84,7 +85,7 @@ export default function SettingsConfirmDialog({ show, cancel, confirm }) {
           sx={secondaryButtonStyle({ ...theme })}
           onClick={cancel}
         >
-          Остаться
+          {t('components.settingConfirmDialog.stay')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -4,6 +4,7 @@ import flag from './flag.jpeg';
 import flagBlank from './flag_blank.png';
 import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
+import {useTranslation} from "react-i18next";
 
 const numberTextStyle = {
   padding: '0 6px'
@@ -16,6 +17,7 @@ export const CarNumberCard = ({
   isEnterCard,
   handleClick
 }) => {
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   if (carNumber && carNumber.number !== '') {
@@ -43,7 +45,7 @@ export const CarNumberCard = ({
               navigator.clipboard
                 .writeText(carNumber.number + carNumber.region)
                 .then(() => {
-                  enqueueSnackbar('Номер скопирован');
+                  enqueueSnackbar(t('components.carNumberCard.numberIsCopy'));
                 });
             }
           }}

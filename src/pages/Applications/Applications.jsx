@@ -21,6 +21,7 @@ import LogApplicationCard from '../../components/LogApplicationCard/LogApplicati
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import AddApplicationDialog from '../../components/AddApplicationDialog/AddApplicationDialog';
+import {useTranslation} from "react-i18next";
 //import { applications } from './testApplications';
 
 const titleTextStyle = {
@@ -30,6 +31,7 @@ const titleTextStyle = {
 };
 
 export const Applications = () => {
+  const { t } = useTranslation();
   const [openForm, setOpenForm] = useState(false);
   const dispatch = useDispatch();
   const applications = useSelector((state) => state.applications.applications);
@@ -131,7 +133,7 @@ export const Applications = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>Заявки</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.applications.requests')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -144,7 +146,7 @@ export const Applications = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddApplicationClick}
               >
-                Добавить заявку
+                {t('pages.applications.addRequest')}
               </Button>
 
               <ApplicationFilter
@@ -193,7 +195,7 @@ export const Applications = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>Заявки</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.applications.requests')}</Typography>
                 <Button
                   disableRipple
                   variant="contained"
@@ -201,7 +203,7 @@ export const Applications = () => {
                   sx={primaryButtonStyle({ ...theme })}
                   onClick={handleAddApplicationClick}
                 >
-                  Добавить заявку
+                  {t('pages.applications.addRequest')}
                 </Button>
               </Stack>
               <Box
@@ -276,7 +278,7 @@ export const Applications = () => {
                   src={parkEmptyIcon}
                   alt="Нет заявок"
                 />
-                <Typography sx={titleTextStyle}>Нет заявок</Typography>
+                <Typography sx={titleTextStyle}>{t('pages.applications.noRequest')}</Typography>
               </>
             )}
           </Stack>

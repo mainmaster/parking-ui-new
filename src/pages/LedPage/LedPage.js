@@ -20,6 +20,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import AddLedDialog from '../../components/AddLedDialog/AddLedDialog';
 import LogLedCard from '../../components/LogLedCard/LogLedCard';
 import { ITEM_MIN_WIDTH, ITEM_MAX_WIDTH } from '../../constants';
+import {useTranslation} from "react-i18next";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -29,6 +30,7 @@ const titleTextStyle = {
 };
 
 const LedPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const leds = useSelector((state) => state.leds.leds);
   const isLoading = useSelector((state) => state.leds.isLoadingFetch);
@@ -111,7 +113,7 @@ const LedPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>LED Табло</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.ledPage.led')}</Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -124,7 +126,7 @@ const LedPage = () => {
                 sx={primaryButtonStyle({ ...theme })}
                 onClick={handleAddLedClick}
               >
-                Добавить LED Табло
+                {t('pages.ledPage.addLed')}
               </Button>
             </Stack>
           </Stack>
@@ -155,7 +157,7 @@ const LedPage = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>LED Табло</Typography>
+            <Typography sx={titleTextStyle}>{t('pages.ledPage.led')}</Typography>
             <Button
               disableRipple
               variant="contained"
@@ -163,7 +165,7 @@ const LedPage = () => {
               sx={primaryButtonStyle({ ...theme })}
               onClick={handleAddLedClick}
             >
-              Добавить LED Табло
+              {t('pages.ledPage.addLed')}
             </Button>
           </Stack>
         )}
@@ -209,10 +211,10 @@ const LedPage = () => {
                 <img
                   style={{ height: '40px' }}
                   src={ledEmptyIcon}
-                  alt="Нет LED Табло"
+                  alt={t('pages.ledPage.noLed')}
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  Нет LED Табло
+                  {t('pages.ledPage.noLed')}
                 </Typography>
               </>
             )}

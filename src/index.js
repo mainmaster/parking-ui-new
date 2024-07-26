@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
@@ -27,8 +26,7 @@ import vltheme from './theme/vlnormal';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import errorIcon from './assets/svg/login_error_icon.svg';
-import { colors } from './theme/colors';
-import { vlcolors } from './theme/vlcolors';
+import '../src/translation/index.js'
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -48,33 +46,35 @@ const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
 
 root.render(
   <ThemeProvider theme={currentTheme}>
-    <ApiProvider api={apiSlice}>
-      <SkeletonTheme baseColor="rgb(170, 170, 170)">
-        <Provider store={store}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <SnackbarProvider
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center'
-              }}
-              iconVariant={{
-                error: (
-                  <img
-                    style={{ width: '24px', marginRight: '8px' }}
-                    src={errorIcon}
-                    alt="Error"
-                  />
-                )
-              }}
-              Components={{
-                error: StyledMaterialDesignContent
-              }}
-            >
-              <App />
-            </SnackbarProvider>
-          </LocalizationProvider>
-        </Provider>
-      </SkeletonTheme>
-    </ApiProvider>
+    <Suspense fallback={'loading'}>
+      <ApiProvider api={apiSlice}>
+        <SkeletonTheme baseColor="rgb(170, 170, 170)">
+          <Provider store={store}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+                iconVariant={{
+                  error: (
+                    <img
+                      style={{ width: '24px', marginRight: '8px' }}
+                      src={errorIcon}
+                      alt="Error"
+                    />
+                  )
+                }}
+                Components={{
+                  error: StyledMaterialDesignContent
+                }}
+              >
+                <App />
+              </SnackbarProvider>
+            </LocalizationProvider>
+          </Provider>
+        </SkeletonTheme>
+      </ApiProvider>
+    </Suspense>
   </ThemeProvider>
 );

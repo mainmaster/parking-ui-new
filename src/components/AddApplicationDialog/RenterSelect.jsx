@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import { useRentersQuery } from '../../api/renters/renters.api';
 import { selectMenuStyle } from '../../theme/styles';
 import selectIcon from '../../assets/svg/car_filter_select_icon.svg';
+import {useTranslation} from "react-i18next";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -22,6 +23,7 @@ const labelStyle = {
 };
 
 export default function RenterSelect({ selected, handleChange, setRenter }) {
+  const { t } = useTranslation();
   const { data: renters } = useRentersQuery();
   const applicationEdit = useSelector(
     (state) => state.applications.editApplication
@@ -63,7 +65,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
       {renters && (
         <Stack>
           <InputLabel htmlFor="company-select" sx={labelStyle}>
-            Арендатор
+            {t('components.renterSelect.renter')}
           </InputLabel>
           <Select
             id="company-select"
@@ -100,7 +102,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
             }}
             renderValue={(selectedId) => {
               if (selectedId === '') {
-                return <em>Выбрать</em>;
+                return <em>{t('components.renterSelect.choose')}</em>;
               } else {
                 return (
                   <Typography component={'h5'} noWrap sx={{ fontWeight: 500 }}>
@@ -111,7 +113,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
             }}
           >
             <MenuItem disabled value="">
-              <em>Выбрать</em>
+              <em>t('components.renterSelect.choose')}</em>
             </MenuItem>
             {renters.map((r) => (
               <MenuItem

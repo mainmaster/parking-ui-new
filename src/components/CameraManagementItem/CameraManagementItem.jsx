@@ -43,6 +43,7 @@ import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { parseISO, differenceInSeconds } from 'date-fns';
+import {useTranslation} from "react-i18next";
 
 export default function CameraManagementItem({
   camera,
@@ -51,6 +52,7 @@ export default function CameraManagementItem({
   setTitlesLed,
   accessOptions
 }) {
+  const { t } = useTranslation();
   const [titlesInChange, setTitlesInChange] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [eventTimeout, setEventTimeout] = useState(0);
@@ -113,11 +115,11 @@ export default function CameraManagementItem({
     const { line2 } = values;
     if (line2) {
       postLedBoardMessage({
-        line1: 'Сообщение от админа',
+        line1: t('components.cameraManagementItem.messageFromAdmin'),
         line2: line2,
         id: camera.id
       }).then(() => {
-        enqueueSnackbar('Табло изменено', {
+        enqueueSnackbar( t('components.cameraManagementItem.tabloChange'), {
           variant: 'success'
         });
       });
@@ -293,10 +295,10 @@ export default function CameraManagementItem({
                 }}
               >
                 {camera.status === 'open'
-                  ? 'Открыт'
+                  ?  t('components.cameraManagementItem.statusOpen')
                   : camera.status === 'working_mode'
-                  ? 'Авто-режим'
-                  : 'Закрыт'}
+                  ?  t('components.cameraManagementItem.statusAuto')
+                  :  t('components.cameraManagementItem.statusClose')}
               </Typography>
             </Stack>
           </Stack>
@@ -308,7 +310,7 @@ export default function CameraManagementItem({
             sx={openButtonStyle({ ...theme })}
             onClick={openAp}
           >
-            Открыть
+            { t('components.cameraManagementItem.open')}
           </Button>
           {!isMobile && (
             <Button
@@ -322,7 +324,7 @@ export default function CameraManagementItem({
               ]}
               onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
             >
-              Ввести номер
+              {t('components.cameraManagementItem.enterNumber')}
             </Button>
           )}
         </Stack>
@@ -336,7 +338,7 @@ export default function CameraManagementItem({
               sx={[positiveButtonStyle({ ...theme }), { flexGrow: 1 }]}
               onClick={() => dispatch(changeActiveOpenApModal(camera.id))}
             >
-              Ввести номер
+              {t('components.cameraManagementItem.enterNumber')}
             </Button>
             <Button
               disableRipple
@@ -346,7 +348,7 @@ export default function CameraManagementItem({
               sx={closeButtonStyle({ ...theme })}
               onClick={closeAp}
             >
-              Закрыть
+              {t('components.cameraManagementItem.close')}
             </Button>
           </Stack>
         )}
@@ -360,7 +362,7 @@ export default function CameraManagementItem({
               sx={closeButtonStyle({ ...theme })}
               onClick={closeAp}
             >
-              Закрыть
+              {t('components.cameraManagementItem.close')}
             </Button>
           )}
           <Button
@@ -371,7 +373,7 @@ export default function CameraManagementItem({
             sx={[autoButtonStyle({ ...theme }), { minWidth: '122.5px' }]}
             onClick={normalAp}
           >
-            Авто-режим
+            {t('components.cameraManagementItem.autoMode')}
           </Button>
           <Box
             maxWidth="sm"
@@ -410,7 +412,7 @@ export default function CameraManagementItem({
               variant="filled"
               id="line2"
               name="line2"
-              placeholder="Написать"
+              placeholder={t('components.cameraManagementItem.typing')}
               value={formik.values.line2}
               onChange={handleChangeTitles}
               onBlur={formik.handleBlur}
