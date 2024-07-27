@@ -2580,8 +2580,8 @@ const Settings = () => {
                               sx={{ fontWeight: 500 }}
                             >
                               {selected === 'en'
-                                ? t('pages.settings.english')
-                                : t('pages.settings.russian')}
+                                ? `🇬🇧${t('pages.settings.english')}`
+                                : `🇷🇺${t('pages.settings.russian')}`}
                             </Typography>
                           )}
                         >
@@ -2597,7 +2597,7 @@ const Settings = () => {
                               noWrap
                               sx={{ fontWeight: 500, p: 0 }}
                             >
-                              {t('pages.settings.english')}
+                              🇬🇧{t('pages.settings.english')}
                             </Typography>
                           </MenuItem>
                           <MenuItem
@@ -2612,7 +2612,7 @@ const Settings = () => {
                               noWrap
                               sx={{ fontWeight: 500, p: 0 }}
                             >
-                              {t('pages.settings.russian')}
+                              🇷🇺{t('pages.settings.russian')}
                             </Typography>
                           </MenuItem>
                         </Select>
