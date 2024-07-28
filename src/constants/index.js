@@ -9,12 +9,12 @@ export const CARS_ON_PAGE = 50;
 export const ITEM_MIN_WIDTH = 365;
 export const ITEM_MAX_WIDTH = 466;
 
-export const passModeOptions = [
-  { name: 'Оплата по часам', value: 'pay_by_hour' },
-  { name: 'Оплата за интервал', value: 'pay_by_interval' },
-  { name: 'Оплата по дням', value: 'pay_by_day' },
-  { name: 'Оплата по первым часам', value: 'pay_by_first_hours' },
-  { name: 'Закрыто', value: 'closed' }
+export let passModeOptions = [
+  { name: i18n.t('constants.payByHour'), value: 'pay_by_hour' },
+  { name: i18n.t('constants.payByInterval'), value: 'pay_by_interval' },
+  { name: i18n.t('constants.payByDay'), value: 'pay_by_day' },
+  { name: i18n.t('constants.payByFirstHours'), value: 'pay_by_first_hours' },
+  { name: i18n.t('constants.closed'), value: 'closed' }
 ];
 
 export const directionOptions = [
@@ -464,8 +464,19 @@ const updateConst = () => {
     { name: i18n.t('constants.magnit'), value: 'magnit' },
     { name: i18n.t('constants.zapusk'), value: 'zapusk' }
   ];
+  passModeOptions = [
+    { name: i18n.t('constants.payByHour'), value: 'pay_by_hour' },
+    { name: i18n.t('constants.payByInterval'), value: 'pay_by_interval' },
+    { name: i18n.t('constants.payByDay'), value: 'pay_by_day' },
+    { name: i18n.t('constants.payByFirstHours'), value: 'pay_by_first_hours' },
+    { name: i18n.t('constants.closed'), value: 'closed' }
+  ];
 }
 
 i18n.on('loaded', () => {
-  updateConst()
+  updateConst();
+})
+
+i18n.on('languageChanged', () => {
+  updateConst();
 })

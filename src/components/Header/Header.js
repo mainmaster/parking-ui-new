@@ -61,7 +61,7 @@ const mobileMenuIconStyle = {
 };
 
 const Header = ({ title, userType, isHideMenu = false }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: parkingData } = useParkingInfoQuery();
   const operator = useSelector((state) => state.parkingInfo.operator);
   const username = useSelector((state) => state.parkingInfo.username);
@@ -112,7 +112,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         : userType === 'renter'
         ? renterRoutes
         : [],
-    [filteredOperatorRoutes]
+    [filteredOperatorRoutes, i18n.language]
   );
 
   const adminRouteList2 = useMemo(
@@ -122,7 +122,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         : userType === 'operator'
         ? filteredOperatorRoutes.slice(6, 11)
         : [],
-    [filteredOperatorRoutes]
+    [filteredOperatorRoutes, i18n.language]
   );
 
   const adminRouteList3 = useMemo(
@@ -132,7 +132,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         : userType === 'operator'
         ? filteredOperatorRoutes.slice(11)
         : [],
-    [filteredOperatorRoutes]
+    [filteredOperatorRoutes, i18n.language]
   );
 
   const mobileRouteList = useMemo(
@@ -144,7 +144,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         : userType === 'renter'
         ? renterRoutes
         : [],
-    [filteredOperatorRoutes]
+    [filteredOperatorRoutes, i18n.language]
   );
 
   const mobileRouteList2 = useMemo(
@@ -154,7 +154,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
         : userType === 'operator'
         ? filteredOperatorRoutes.slice(3)
         : [],
-    [filteredOperatorRoutes]
+    [filteredOperatorRoutes, i18n.language]
   );
 
   useEffect(() => {
@@ -174,7 +174,7 @@ const Header = ({ title, userType, isHideMenu = false }) => {
       });
       setFilteredOperatorRoutes(routes);
     }
-  }, [operator]);
+  }, [operator, i18n.language]);
 
   const handleMoreClick = () => {
     setMore(!more);

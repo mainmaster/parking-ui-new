@@ -270,8 +270,8 @@
       "quarterSubscriptionPrice": "Стоимость абонемента на квартал",
       "yearSubscriptionPrice": "Стоимость абонемента на год",
       "cloudCheck": "Облачное распознавание",
-      "useCheckFromVisor": "Использовать распознавание от Visor VL",
-      "serverAddressVisor": "Адрес сервера Visor VL",
+      "useCheckFromVisor": "Использовать распознавание от Vizor VL",
+      "serverAddressVisor": "Адрес сервера Vizor VL",
       "websocketAddress": "Вебсокет-адрес",
       "freeAccessForSpecial": "Бесплатный доступ для спец. авто",
       "minCarWidth": "Минимальная ширина машины на картинке",
@@ -858,10 +858,15 @@
     "controller": "Контроллеры",
     "access": "Доступы",
     "operator": "Операторы",
-    "renter": "Арендаторы"
+    "renter": "Арендаторы",
+    "payByHour": "Оплата по часам",
+    "payByInterval": "Оплата за интервал",
+    "payByDay": "Оплата по дням",
+    "payByFirstHours": "Оплата по первым часам",
+    "closed" : "Закрыто"
   },
   "routesTitle": {
-    "visor": "VISOR",
+    "visor": "VIZOR",
     "session": "Сессии",
     "park": "Автопарк",
     "blackList": "Черный список",

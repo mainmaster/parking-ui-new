@@ -53,21 +53,45 @@ const labelStyle = {
   pl: '12px'
 };
 
-const paymentTypeValues = [
+let paymentTypeValues = [
   { value: 'sber', name: i18n.t('components.paymentFilter.sber') },
   { value: 'yookassa', name: i18n.t('components.paymentFilter.yookassa') },
   { value: 'pos_terminal', name: i18n.t('components.paymentFilter.afterTerminal') }
 ];
 
-const isRefundValues = [
+let isRefundValues = [
   { value: 'true', name: i18n.t('components.paymentFilter.withRefund') },
   { value: 'false', name: i18n.t('components.paymentFilter.withoutRefund') }
 ];
 
-const paymentForValues = [
+let paymentForValues = [
   { value: 'subscription', name: i18n.t('components.paymentFilter.aboniment') },
   { value: 'session', name: i18n.t('components.paymentFilter.oneTime') }
 ];
+
+const changeFilter = () => {
+  paymentTypeValues = [
+    { value: 'sber', name: i18n.t('components.paymentFilter.sber') },
+    { value: 'yookassa', name: i18n.t('components.paymentFilter.yookassa') },
+    { value: 'pos_terminal', name: i18n.t('components.paymentFilter.afterTerminal') }
+  ];
+  isRefundValues = [
+    { value: 'true', name: i18n.t('components.paymentFilter.withRefund') },
+    { value: 'false', name: i18n.t('components.paymentFilter.withoutRefund') }
+  ];
+  paymentForValues = [
+    { value: 'subscription', name: i18n.t('components.paymentFilter.aboniment') },
+    { value: 'session', name: i18n.t('components.paymentFilter.oneTime') }
+  ];
+}
+
+i18n.on('loaded', () => {
+  changeFilter()
+})
+
+i18n.on('languageChanged', () => {
+  changeFilter()
+})
 
 export default function PaymentFilter({ openForm, setOpenForm }) {
   const { t } = useTranslation();

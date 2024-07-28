@@ -113,7 +113,7 @@ export default function RenterSelect({ selected, handleChange, setRenter }) {
             }}
           >
             <MenuItem disabled value="">
-              <em>t('components.renterSelect.choose')}</em>
+              <em>{t('components.renterSelect.choose')}</em>
             </MenuItem>
             {renters.map((r) => (
               <MenuItem

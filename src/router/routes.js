@@ -65,3 +65,7 @@ const uploadRouterTile = () => {
 i18n.on('loaded', () => {
   uploadRouterTile()
 })
+
+i18n.on('languageChanged', () => {
+  uploadRouterTile()
+})
