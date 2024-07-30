@@ -439,7 +439,8 @@
       "renter": "Арендатор",
       "numberOfPlaces": "Количество мест",
       "save": "Сохранить",
-      "add": "Добавить"
+      "add": "Добавить",
+      "accessToPoint": "Доступ к точкам доступа"
     },
     "addTerminalDialog": {
       "dataSave": "Данные сохранены",
@@ -793,7 +794,11 @@
       "from": "От",
       "to": "До",
       "submit": "Применить",
-      "reset": "Сбросить"
+      "reset": "Сбросить",
+      "open": "Открытые",
+      "close": "Закрытые",
+      "paid": "Оплачено",
+      "notPaid": "Не оплачено"
     },
     "settingConfirmDialog": {
       "outWithoutSave": "Выйти без сохранения",

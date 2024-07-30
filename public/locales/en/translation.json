@@ -439,7 +439,8 @@
       "renter": "Lessees",
       "numberOfPlaces": "Spots amounts",
       "save": "Save",
-      "add": "Add"
+      "add": "Add",
+      "accessToPoint": "Access to access points"
     },
     "addTerminalDialog": {
       "dataSave": "Data saved",
@@ -793,7 +794,11 @@
       "from": "From",
       "to": "To",
       "submit": "Submit",
-      "reset": "Reset"
+      "reset": "Reset",
+      "open": "Open",
+      "close": "Close",
+      "paid": "Paid",
+      "notPaid": "Not paid"
     },
     "settingConfirmDialog": {
       "outWithoutSave": "Quit without saving ",

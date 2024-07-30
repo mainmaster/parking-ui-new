@@ -1,6 +1,7 @@
 import { $api } from '.';
 import { store } from '../store';
 import { EVENTS_ON_PAGE } from '../constants';
+import i18n from '../translation/index';
 
 export const createEventRequest = async ({
   access_point_id,
@@ -43,11 +44,12 @@ export const getEventsRequest = async ({
       createDateFrom,
       eventCode,
       createTimeFrom,
-      createTimeTo
+      createTimeTo,
+      lang: i18n.language
     }
   });
 };
 
 export const getEventCodesRequest = async () => {
-  return $api.get('/events/eventCodes');
+  return $api.get('/events/eventCodes', { params: {lang: i18n.language}});
 };

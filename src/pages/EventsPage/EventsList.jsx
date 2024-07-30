@@ -257,6 +257,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
         dispatch(eventsFetch());
       }
     }
+
     return () => dispatch(changeCurrentPage(1));
   }, [accessOptions, userType]);
 

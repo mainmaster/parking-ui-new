@@ -52,18 +52,32 @@ const defaultValues = {
   vehiclePlate: ''
 };
 
-const sessionStatusValues = [
+let sessionStatusValues = [
   { value: 'open', name: 'Открытые' },
   { value: 'closed', name: 'Закрытые' }
 ];
 
-const paymentStatusValues = [
+let paymentStatusValues = [
   { value: true, name: 'Оплачено' },
   { value: false, name: 'Не оплачено' }
 ];
 
 export default function SessionsFilter({ openForm, setOpenForm }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    sessionStatusValues = [
+      { value: 'open', name: t('components.sessionsFilter.open') },
+      { value: 'closed', name: t('components.sessionsFilter.close') }
+    ];
+
+    paymentStatusValues = [
+      { value: true, name: t('components.sessionsFilter.paid') },
+      { value: false, name: t('components.sessionsFilter.notPaid') }
+    ];
+  }, [i18n.language])
+
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSessionStatus, setSelectedSessionStatus] = useState('');
   const [selectedPaymentStatus, setSelectedPaymentStatus] = useState('');

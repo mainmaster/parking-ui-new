@@ -327,7 +327,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
           </Stack>
           <Stack>
             <InputLabel htmlFor="access_points" sx={labelStyle}>
-              Доступ к точкам доступа
+              {t('components.addRenterDialog.accessToPoint')}
             </InputLabel>
             <Select
               id="access_points"
