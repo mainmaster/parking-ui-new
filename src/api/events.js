@@ -20,7 +20,11 @@ export const createEventRequest = async ({
 };
 
 export const getEvent = async (id) => {
-  return $api.get(`/events/${id}`);
+  return $api.get(`/events/${id}`, {
+    params: {
+      lang: i18n.language
+    }
+  });
 };
 
 export const getEventsRequest = async ({
