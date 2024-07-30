@@ -242,25 +242,6 @@ const EventsPage = ({ onlyLog }) => {
     }
   };
 
-  useEffect(() => {
-    if (!accessOptions.disableEvents && userType) {
-      if (userType === 'renter') {
-        dispatch(eventsOnlyFetch());
-      } else {
-        dispatch(eventsFetch());
-      }
-    }
-    return () => dispatch(changeCurrentPage(1));
-  }, [accessOptions, userType]);
-
-  useEffect(() => {
-    if (filtered.length > 0) {
-      setEventsList(filtered);
-    } else {
-      setEventsList(events);
-    }
-  }, [events, filtered]);
-
   const changeMobileModal = () => {
     setIsActiveModalMobile(!isActiveModalMobile);
   };
