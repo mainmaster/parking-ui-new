@@ -213,7 +213,7 @@ const PaymentInfoItem = ({
                      end: detail.end_hour,
                      format: 'hh:mm',
                      amount: detail.amount,
-                     description: `${t('components.paymentInfoItem.first')} ${freeTime}${t('components.paymentInfoItem.м')}`
+                     description: `${t('components.paymentInfoItem.first')} ${freeTime}${t('components.paymentInfoItem.m')}`
                    })
                  )
                }
