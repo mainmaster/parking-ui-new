@@ -207,7 +207,7 @@ const ClientPaymentPage = () => {
                         title = t('pages.clientPaymentPage.month');
                         break;
                       case 'quarterSubscriptionPrice':
-                        title = `3 ${t('pages.clientPaymentPage.monts')}`;
+                        title = `3 ${t('pages.clientPaymentPage.month')}`;
                         break;
                       case 'yearSubscriptionPrice':
                         title = `1 ${t('pages.clientPaymentPage.year')}`;
