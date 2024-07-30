@@ -55,13 +55,21 @@ const labelStyle = {
   pl: '12px'
 };
 
-const applicationStatusValues = [
+let applicationStatusValues = [
   { value: 'true', name: i18n.t('components.applicationFilter.statusUsed') },
-  { value: 'false', name: i18n.t('components.applicationFilter.statusUsed') }
+  { value: 'false', name: i18n.t('components.applicationFilter.statusNotUsed') }
 ];
 
 export default function ApplicationFilter({ openForm, setOpenForm }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    applicationStatusValues = [
+      { value: 'true', name: i18n.t('components.applicationFilter.statusUsed') },
+      { value: 'false', name: i18n.t('components.applicationFilter.statusNotUsed') }
+    ]
+  }, [i18n.language])
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [fromValue, setFromValue] = useState(null);
   const [toValue, setToValue] = useState(null);
