@@ -237,7 +237,7 @@ export const PaymentPage = () => {
                 to={`/sessions/${payment.session_id}`}
                 style={{ lineHeight: '1.125rem' }}
               >
-                Сессия №{payment.session_id}
+                {t('pages.paymentPage.session')} №{payment.session_id}
               </NavLink>
             </Stack>
             <Stack

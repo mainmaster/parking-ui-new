@@ -149,7 +149,7 @@ export default function LogAccessPointCard({ point }) {
             )}
           </Stack>
           <Stack direction={'row'} gap={'12px'}>
-            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.cameras')}"</Typography>
+            <Typography sx={labelTextStyle}>{t('components.logAccessPointCard.cameras')}</Typography>
             <Stack>
               {filteredCameras.map((camera) => (
                 <Typography key={camera.id} sx={{ fontWeight: 500 }}>

@@ -425,7 +425,7 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
-              <Typography sx={labelTextStyle}>{t('pages.sessionPage.session')}</Typography>
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.events')}</Typography>
               <Stack gap={'16px'}>
                 {session.events.map((event) => (
                   <NavLink
@@ -433,7 +433,7 @@ export const SessionPage = () => {
                     to={`/events/${event.id}`}
                     style={{ lineHeight: '1.125rem' }}
                   >
-                    {t('pages.sessionPage.session')} №{event.id}
+                    {t('pages.sessionPage.event')} №{event.id}
                   </NavLink>
                 ))}
               </Stack>

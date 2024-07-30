@@ -192,7 +192,9 @@
       "action": "Action",
       "freeDebt": "Reset debt",
       "close": "Close",
-      "payments": "Payments"
+      "payments": "Payments",
+      "events": "Events",
+      "event": "Event"
     },
     "sessionsPage": {
       "sessions": "Sessions",
@@ -745,7 +747,7 @@
     "paymentFilter": {
       "sber": "Sber",
       "yookassa": "Yookassa",
-      "afterTerminal": "Post terminal",
+      "afterTerminal": "Pos terminal",
       "withRefund": "With refund",
       "withoutRefund": "Without refund",
       "aboniment": "Membership",
@@ -833,7 +835,7 @@
       "notUsed": "Unused",
       "sber": "Sber",
       "yookassa": "Yookassa",
-      "afterTerminal": "Post terminal",
+      "afterTerminal": "Pos terminal",
       "refund": "Refund"
     }
   },
@@ -868,7 +870,10 @@
     "payByInterval": "Payment by the interval",
     "payByDay": "Payment by the day",
     "payByFirstHours": "Payment by first hours",
-    "closed" : "Closed"
+    "closed" : "Closed",
+    "in": "Entry",
+    "out": "Exit",
+    "inner": "Internal"
   },
   "routesTitle": {
     "visor": "VIZOR",

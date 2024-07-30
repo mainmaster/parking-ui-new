@@ -17,10 +17,10 @@ export let passModeOptions = [
   { name: i18n.t('constants.closed'), value: 'closed' }
 ];
 
-export const directionOptions = [
-  { name: 'Въезд', value: 'in' },
-  { name: 'Выезд', value: 'out' },
-  { name: 'Внутренняя', value: 'inner' }
+export let directionOptions = [
+  { name: i18n.t('constants.in'), value: 'in' },
+  { name: i18n.t('constants.out'), value: 'out' },
+  { name: i18n.t('constants.inner'), value: 'inner' }
 ];
 
 export let ledTypeOptions = [
@@ -82,13 +82,13 @@ export const directionName = (direction) => {
 
   switch (direction) {
     case 'in':
-      name = 'Въезд';
+      name = i18n.t('constants.in');
       break;
     case 'out':
-      name = 'Выезд';
+      name = i18n.t('constants.out');
       break;
     case 'inner':
-      name = 'Внутренняя';
+      name = i18n.t('constants.inner');
       break;
     default:
       name = '';
@@ -470,6 +470,11 @@ const updateConst = () => {
     { name: i18n.t('constants.payByDay'), value: 'pay_by_day' },
     { name: i18n.t('constants.payByFirstHours'), value: 'pay_by_first_hours' },
     { name: i18n.t('constants.closed'), value: 'closed' }
+  ];
+  directionOptions = [
+    { name: i18n.t('constants.in'), value: 'in' },
+    { name: i18n.t('constants.out'), value: 'out' },
+    { name: i18n.t('constants.inner'), value: 'inner' }
   ];
 }
 
