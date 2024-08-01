@@ -251,7 +251,7 @@
       "yookassaKey": "Yookassa shop key",
       "yookassaId": "Yookassa shop id",
       "terminalPaymentTtl": "Время жизни сессии оплаты терминала",
-      "enterCarFree": "Пусть авто бесплатно, если система оплаты недоступна",
+      "enterCarFree": "Выпускать авто бесплатно, если система оплаты недоступна",
       "timeShowQR": "Время показа QR кода на терминале",
       "paymentTitle": "Заголовок для онлайн-оплаты",
       "vendotekId": "ID продутка (Vendotek)",
