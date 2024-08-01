@@ -244,7 +244,7 @@ export default function AddCarDialog({ show, handleClose, edit }) {
           textAlign: 'center'
         }}
       >
-        {edit ? t('components.carParkAddCarDialog.edtiCar') : t('components.carParkAddCarDialog.addCar')}
+        {edit ? t('components.carParkAddCarDialog.editCar') : t('components.carParkAddCarDialog.addCar')}
       </DialogTitle>
       <DialogActions sx={{ justifyContent: 'center', p: 0 }}>
         <Box
