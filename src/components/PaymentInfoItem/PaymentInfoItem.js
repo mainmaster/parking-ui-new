@@ -60,7 +60,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
       <DialogTitle
         style={{textAlign: 'center'}}
       >
-        {t('components.paymentIntoSubmitModal.payment')}
+        {t('components.paymentInfoSubmitModal.payment')}
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -81,7 +81,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
           {(props) => (
             <form onSubmit={props.handleSubmit} id="pay-handler">
               <Input
-                label={t('components.paymentIntoSubmitModal.emailForCheck')}
+                label={t('components.paymentInfoSubmitModal.emailForCheck')}
                 name="email"
                 required
                 type="text"
@@ -91,7 +91,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
               />
 
               <Form.Check
-                label={t('components.paymentIntoSubmitModal.checkNotNeed')}
+                label={t('components.paymentInfoSubmitModal.checkNotNeed')}
                 name='no_check_needed'
                 type='checkbox'
                 className='mt-2 mb-2'
@@ -99,7 +99,7 @@ const SubmitModal = ({ show, handleClose, payHandler, sessionId}) => {
               />
 
               <Button variant="primary" className='mt-2' type='submit' style={{width: '100%'}}>
-                {t('components.paymentIntoSubmitModal.forPayment')}
+                {t('components.paymentInfoSubmitModal.forPayment')}
               </Button>
             </form>
           )}
