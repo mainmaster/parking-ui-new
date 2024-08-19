@@ -27,7 +27,8 @@ import {useTranslation} from "react-i18next";
 const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
-  fontWeight: 500
+  fontWeight: 500,
+  maxWidth: 'max-content',
 };
 
 export const Applications = () => {
@@ -133,7 +134,7 @@ export const Applications = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>{t('pages.applications.requests')}</Typography>
+            <Typography sx={{...titleTextStyle, maxWidth: 300, width: '100%'}}>{t('pages.applications.requests')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{applications.count} {t('pages.sessionsPage.all')}</span></Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -195,7 +196,7 @@ export const Applications = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>{t('pages.applications.requests')}</Typography>
+                <Typography sx={{...titleTextStyle}}>{t('pages.applications.requests')}:<br/> <span style={{fontSize: '1rem', fontWeight: 400}}>{applications.count} {t('pages.sessionsPage.all')}</span></Typography>
                 <Button
                   disableRipple
                   variant="contained"
