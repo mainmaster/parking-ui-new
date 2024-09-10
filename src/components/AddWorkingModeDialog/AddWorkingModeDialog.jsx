@@ -64,7 +64,6 @@ const validationSchemaHour = yup.object({
   free_time_min: yup
     .number()
     .min(0, 'Время должно быть положительным')
-    .max(59, 'Время должно быть меньше 60')
     .required('Введите свободное время')
 });
 
