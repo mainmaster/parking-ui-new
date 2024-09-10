@@ -194,7 +194,8 @@
       "close": "Закрыть",
       "payments": "Оплаты",
       "events": "События",
-      "event": "Событие"
+      "event": "Событие",
+      "editNumber": "Ред. номер"
     },
     "sessionsPage": {
       "sessions": "Сессии",
@@ -837,6 +838,11 @@
       "yookassa": "Yookassa",
       "afterTerminal": "Пос терминал",
       "refund": "Возврат"
+    },
+    "updateVehiclePlateModal": {
+      "title": "Ред. номер",
+      "plate": "Номер",
+      "save": "Сохранить"
     }
   },
   "constants": {

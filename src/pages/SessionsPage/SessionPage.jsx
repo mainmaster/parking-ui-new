@@ -30,6 +30,8 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EventManager from '../../components/EventManager/EventManager';
 import {useTranslation} from "react-i18next";
+import edit from 'src/assets/svg/edit.svg'
+import {UpdateVehiclePlateModal} from "../../components/UpdateVehiclePlateModal/UpdateVehiclePlateModal";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -56,6 +58,7 @@ export const SessionPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const sessionListRef = useRef(null);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+  const [isEditPlateOpen, setIsEditPlateOpen] = useState(false);
 
   const labelTextStyle = useMemo(() => {
     return {
@@ -126,16 +129,19 @@ export const SessionPage = () => {
     dispatch(statusSessionSelectFetch({ id: session.id, status: 'closed' }));
   };
 
+  const handleCloseEditPlate = () => {
+    setIsEditPlateOpen(false);
+  };
+
   useLayoutEffect(() => {
     dispatch(sessionSelectFetch(id));
     document.title = `${t('pages.sessionPage.session')} №${id}` || t('pages.sessionPage.loading');
     return () => {
       document.title = 'Parking';
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, isEditPlateOpen]);
 
   const errorContent = <h1>События с №{id} не найдено</h1>;
-
   return (
     <>
       <AppBar
@@ -302,15 +308,30 @@ export const SessionPage = () => {
               gap={isMobile ? '4px' : '16px'}
             >
               <Typography sx={labelTextStyle}>{t('pages.sessionPage.gosNumber')}</Typography>
-              {session.events[0].vehicle_plate &&
-                session.events[0].vehicle_plate.full_plate !== '' && (
-                  <Stack direction={'row'}>
-                    <CarNumberCard
-                      carNumber={session.events[0].vehicle_plate}
-                      isTable
-                    />
-                  </Stack>
-                )}
+              <Stack direction={'row'} gap={'8px'}>
+                {session.events[0].vehicle_plate &&
+                  session.events[0].vehicle_plate.full_plate !== '' && (
+                    <Stack direction={'row'}>
+                      <CarNumberCard
+                        carNumber={session.events[0].vehicle_plate}
+                        isTable
+                      />
+                    </Stack>
+                  )}
+                <Stack>
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    fullWidth
+                    sx={secondaryButtonStyle({...theme})}
+                    onClick={() => setIsEditPlateOpen(true)}
+                    startIcon={<img src={edit} alt={'edit'}/>}
+                  >
+                    {!isMobile && t('pages.sessionPage.editNumber')}
+                  </Button>
+                </Stack>
+              </Stack>
+
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
@@ -469,6 +490,7 @@ export const SessionPage = () => {
           />
         )}
       </Stack>
+      <UpdateVehiclePlateModal isOpen={isEditPlateOpen} handleClose={handleCloseEditPlate} plate={session?.events[0].vehicle_plate.full_plate} id={session?.id} />
     </>
   );
 };

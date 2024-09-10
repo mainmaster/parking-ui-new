@@ -194,7 +194,8 @@
       "close": "Close",
       "payments": "Payments",
       "events": "Events",
-      "event": "Event"
+      "event": "Event",
+      "editNumber": "Edit plate"
     },
     "sessionsPage": {
       "sessions": "Sessions",
@@ -837,6 +838,11 @@
       "yookassa": "Yookassa",
       "afterTerminal": "Pos terminal",
       "refund": "Refund"
+    },
+    "updateVehiclePlateModal": {
+      "title": "Edit plate",
+      "plate": "Plate",
+      "save": "Save"
     }
   },
   "constants": {

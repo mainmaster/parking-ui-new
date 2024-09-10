@@ -49,3 +49,7 @@ export const getSession = async (id) => {
 export const resetDebtRequest = async (carNumber) => {
   return $api.patch('/sessions/debtReset/' + carNumber, {});
 };
+
+export const updateVehiclePlate = async ({id, plate}) => {
+  return $api.patch(`/sessions/${id}`, {vehicle_plate: plate})
+}
