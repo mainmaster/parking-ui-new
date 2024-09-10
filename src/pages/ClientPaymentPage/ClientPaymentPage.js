@@ -53,6 +53,7 @@ const ABONIMENTS = [
 const ClientPaymentPage = () => {
     const { t } = useTranslation();
     let parkingID = new URLSearchParams(window.location.search).get('parkingID')
+    let onlySubscribe = new URLSearchParams(window.location.search).get('onlySubscribe') === 'true'
     const dispatch = useDispatch()
     const {enqueueSnackbar} = useSnackbar()
     const paymentInfo = useSelector((state) => state.payments.paymentInfo)
@@ -178,6 +179,8 @@ const ClientPaymentPage = () => {
     };
   }, []);
 
+  console.log(subscriptions)
+
   return (
       <div className={css.clientPaymentPageWrapper}>
         <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
@@ -227,76 +230,80 @@ const ClientPaymentPage = () => {
                 </Stack>
               </Stack>
             )}
-            <Stack direction={'column'} gap={'8px'}>
-              <Typography sx={{fontSize: '24px', fontWeight: 500}}>{t('pages.clientPaymentPage.payPark')}</Typography>
-              <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
-                <TextField
-                  value={inputText}
-                  onChange={(event) => {
-                    setInputText(event.target.value);
-                    setIsSubmit(false);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.code.toLowerCase() === 'enter' && !isSubmit) {
-                      handleSearch();
-                    }
-                  }}
-                  className={css.searchInput}
-                  placeholder={`${t('pages.clientPaymentPage.yourGosNumber')} а012аа`}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment: inputText ? (
-                      <InputAdornment
-                        position="end"
-                        onClick={() => {
-                          setInputText('')
-                        }}
-                        sx={{
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <HighlightOffIcon />
-                      </InputAdornment>
-                    ) : null
-                  }}
-                />
-                {isMobile ?<Button onClick={handleSearch} type='submit' style={{width: '200px', height: '100%', background: 'green', border: "none"}}>
-                  {t('pages.clientPaymentPage.search')}
-                </Button> : <></>}
-              </Stack>
-            </Stack>
-            <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
-              <Stack direction={'column'} gap={'4px'}>
-                <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>{t('pages.clientPaymentPage.tarif')}</Typography>
-                <Stack direction={'row'} gap={'8px'}>
-                  <div
-                    className={css.aboniment}
-                    key={freeTime}
-                  >
-                    <Typography sx={{fontWeight: 600}}>{freeTime} {t('pages.clientPaymentPage.min')}</Typography>
-                    <div className={`${css.abonimentPrice} ${css.zero}`}>0₽ <KeyboardArrowRightIcon/></div>
-                  </div>
-                  {tariffs?.tariffs?.map((item) => {
-                    const title = item.passMode === 'pay_by_hour' ? ` 1 ${t('pages.clientPaymentPage.hour')}` : `${item.interval} ${t('pages.clientPaymentPage.hours')} `
-                    return (
-                      <div
-                        className={css.aboniment}
-                        key={item.price + item.interval}
-                      >
-                        <Typography sx={{fontWeight: 600}}>{title}</Typography>
-                        <div className={css.abonimentPrice}>{item.price}₽ <KeyboardArrowRightIcon/></div>
-                      </div>
-                    )
-                  })}
+            {!onlySubscribe &&
+            <>
+              <Stack direction={'column'} gap={'8px'}>
+                <Typography sx={{fontSize: '24px', fontWeight: 500}}>{t('pages.clientPaymentPage.payPark')}</Typography>
+                <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
+                  <TextField
+                    value={inputText}
+                    onChange={(event) => {
+                      setInputText(event.target.value);
+                      setIsSubmit(false);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.code.toLowerCase() === 'enter' && !isSubmit) {
+                        handleSearch();
+                      }
+                    }}
+                    className={css.searchInput}
+                    placeholder={`${t('pages.clientPaymentPage.yourGosNumber')} а012аа`}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: inputText ? (
+                        <InputAdornment
+                          position="end"
+                          onClick={() => {
+                            setInputText('')
+                          }}
+                          sx={{
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <HighlightOffIcon />
+                        </InputAdornment>
+                      ) : null
+                    }}
+                  />
+                  {isMobile ?<Button onClick={handleSearch} type='submit' style={{width: '200px', height: '100%', background: 'green', border: "none"}}>
+                    {t('pages.clientPaymentPage.search')}
+                  </Button> : <></>}
                 </Stack>
               </Stack>
-            </Stack>
+              <Stack direction={'row'} gap={'8px'} sx={{alignItems: 'center'}}>
+                <Stack direction={'column'} gap={'4px'}>
+                  <Typography fontSize={'medium'} sx={{paddingLeft: '12px'}}>{t('pages.clientPaymentPage.tarif')}</Typography>
+                  <Stack direction={'row'} gap={'8px'}>
+                    <div
+                      className={css.aboniment}
+                      key={freeTime}
+                    >
+                      <Typography sx={{fontWeight: 600}}>{freeTime} {t('pages.clientPaymentPage.min')}</Typography>
+                      <div className={`${css.abonimentPrice} ${css.zero}`}>0₽ <KeyboardArrowRightIcon/></div>
+                    </div>
+                    {tariffs?.tariffs?.map((item) => {
+                      const title = item.passMode === 'pay_by_hour' ? ` 1 ${t('pages.clientPaymentPage.hour')}` : `${item.interval} ${t('pages.clientPaymentPage.hours')} `
+                      return (
+                        <div
+                          className={css.aboniment}
+                          key={item.price + item.interval}
+                        >
+                          <Typography sx={{fontWeight: 600}}>{title}</Typography>
+                          <div className={css.abonimentPrice}>{item.price}₽ <KeyboardArrowRightIcon/></div>
+                        </div>
+                      )
+                    })}
+                  </Stack>
+                </Stack>
+              </Stack>
+            </>
+            }
           </Stack>
-          {content}
+          {!onlySubscribe && content}
         </Stack>
 
         <div className={css.footer}>
