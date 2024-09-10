@@ -179,8 +179,6 @@ const ClientPaymentPage = () => {
     };
   }, []);
 
-  console.log(subscriptions)
-
   return (
       <div className={css.clientPaymentPageWrapper}>
         <Stack direction={'column'} sx={{width: '100%', maxWidth: '1024px', padding: '16px 16px 0 16px'}} gap={'24px'}>
