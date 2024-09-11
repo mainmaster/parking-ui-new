@@ -162,7 +162,8 @@
       "contacts": "Contacts",
       "renter": "Lessee",
       "create": "Add",
-      "renters": "Lessees"
+      "renters": "Lessees",
+      "blockCarPark": "Block car park"
     },
     "renterTableData": {
       "login": "Username",
@@ -444,7 +445,8 @@
       "numberOfPlaces": "Spots amounts",
       "save": "Save",
       "add": "Add",
-      "accessToPoint": "Access to access points"
+      "accessToPoint": "Access to access points",
+      "blockCarPark": "Block car park"
     },
     "addTerminalDialog": {
       "dataSave": "Data saved",

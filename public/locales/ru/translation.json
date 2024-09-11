@@ -162,7 +162,8 @@
       "contacts": "Контакты",
       "renter": "Арендатор",
       "create": "Создать",
-      "renters": "Арендаторы"
+      "renters": "Арендаторы",
+      "blockCarPark": "Блокировать автопарк"
     },
     "renterTableData": {
       "login": "Логин",
@@ -444,7 +445,8 @@
       "numberOfPlaces": "Количество мест",
       "save": "Сохранить",
       "add": "Добавить",
-      "accessToPoint": "Доступ к точкам доступа"
+      "accessToPoint": "Доступ к точкам доступа",
+      "blockCarPark": "Блокировать автопарк"
     },
     "addTerminalDialog": {
       "dataSave": "Данные сохранены",

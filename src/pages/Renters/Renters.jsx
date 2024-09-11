@@ -8,7 +8,7 @@ import {
   useDeactivateRenterMutation,
   useLazyRentersQuery
 } from '../../api/renters/renters.api';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import PaginationCustom from 'components/Pagination';
 import { getPageNum } from '../../utils';
@@ -153,6 +153,18 @@ export const Renters = () => {
                     company_name: e.target.value
                   })
                 }
+              />
+              <Form.Check
+                label={t('pages.renters.blockCarPark')}
+                name='no_check_needed'
+                type='checkbox'
+                className='mt-2 mb-2'
+                onChange={(e) => {
+                  setRenterFormData({
+                    ...renterFormData,
+                    car_park_disabled: e.target.checked
+                  })
+                }}
               />
               <Button type="submit">{t('pages.renters.create')}</Button>
             </Form.Group>

@@ -11,7 +11,7 @@ import {
   Typography,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem, FormControlLabel, Switch, FormGroup
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
@@ -32,7 +32,7 @@ import {
   listStyle,
   secondaryButtonStyle,
   CarNumberInput,
-  selectMenuStyle
+  selectMenuStyle, switchInputStyle
 } from '../../theme/styles';
 import _ from 'lodash';
 import {useTranslation} from "react-i18next";
@@ -73,7 +73,8 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         company_name: renterEdit.company_name,
         contacts: renterEdit.contacts,
         access_points: renterEdit.access_points.join(','),
-        number_of_places: renterEdit.number_of_places
+        number_of_places: renterEdit.number_of_places,
+        car_park_disabled: renterEdit.car_park_disabled,
       };
     } else {
       return {
@@ -83,6 +84,7 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
         contacts: '',
         access_points: accessPoints.map(({id}) => id).join(','),
         number_of_places: 100,
+        car_park_disabled: false,
       };
     }
   }, [renterEdit, show]);
@@ -451,6 +453,26 @@ export default function AddRenterDialog({ show, handleClose, edit }) {
                 error={formik.touched.number_of_places && Boolean(formik.errors.number_of_places)}
             />
           </Stack>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={Boolean(formik.values.car_park_disabled)}
+                  onChange={handleValueChange}
+                  name="car_park_disabled"
+                  sx={switchInputStyle({ ...theme })}
+                />
+              }
+              label={t('components.addRenterDialog.blockCarPark')}
+              labelPlacement="end"
+              sx={{
+                m: 0,
+                justifyContent: 'flex-start',
+                gap: '16px',
+                pl: '4px'
+              }}
+            />
+          </FormGroup>
           <Button
             disableRipple
             disabled={submited}
