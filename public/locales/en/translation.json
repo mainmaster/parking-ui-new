@@ -140,7 +140,8 @@
       "date": "Date",
       "email": "E-mail",
       "session": "Session",
-      "action": "Action"
+      "action": "Action",
+      "description": "Description"
     },
     "paymentsPage": {
       "payments": "Payments",
@@ -687,7 +688,8 @@
       "date": "Date",
       "e-mail": "E-mail",
       "refund": "Refund",
-      "open": "Open"
+      "open": "Open",
+      "description": "Description"
     },
     "logRenterCard": {
       "renter": "Lessee",

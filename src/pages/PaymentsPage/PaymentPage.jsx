@@ -228,6 +228,13 @@ export const PaymentPage = () => {
               <Typography sx={labelTextStyle}>{t('pages.paymentPage.email')}</Typography>
               <Typography>{payment.email}</Typography>
             </Stack>
+            {payment.description && <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
+              <Typography sx={labelTextStyle}>{t('pages.paymentPage.description')}</Typography>
+              <Typography>{payment.description}</Typography>
+            </Stack>}
             <Stack
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}

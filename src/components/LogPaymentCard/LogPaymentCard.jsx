@@ -92,6 +92,10 @@ export default function LogPaymentCard({ payment }) {
           <Typography sx={labelTextStyle}>{t('components.logPaymentCard.e-mail')}</Typography>
           <Typography sx={{ fontWeight: 500 }}>{payment.email}</Typography>
         </Stack>
+        {payment.description && <Stack direction={'row'} gap={'8px'}>
+          <Typography sx={labelTextStyle}>{t('components.logPaymentCard.description')}</Typography>
+          <Typography sx={{fontWeight: 500}}>{payment.description}</Typography>
+        </Stack>}
         <Stack direction={'row'} gap={'8px'}>
           <Button
             disableRipple

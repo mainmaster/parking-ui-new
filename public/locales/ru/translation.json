@@ -140,7 +140,8 @@
       "date": "Дата",
       "email": "E-mail",
       "session": "Сессия",
-      "action": "Действие"
+      "action": "Действие",
+      "description": "Описание"
     },
     "paymentsPage": {
       "payments": "Оплаты",
@@ -687,7 +688,8 @@
       "date": "Дата",
       "e-mail": "E-mail",
       "refund": "Возврват",
-      "open": "Открыть"
+      "open": "Открыть",
+      "description": "Описание"
     },
     "logRenterCard": {
       "renter": "Арендатор",
