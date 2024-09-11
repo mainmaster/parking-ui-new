@@ -195,7 +195,8 @@
       "payments": "Payments",
       "events": "Events",
       "event": "Event",
-      "editNumber": "Edit plate"
+      "editNumber": "Edit plate",
+      "renter": "Renter"
     },
     "sessionsPage": {
       "sessions": "Sessions",

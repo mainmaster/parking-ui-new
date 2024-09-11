@@ -195,7 +195,8 @@
       "payments": "Оплаты",
       "events": "События",
       "event": "Событие",
-      "editNumber": "Ред. номер"
+      "editNumber": "Ред. номер",
+      "renter": "Арендатор"
     },
     "sessionsPage": {
       "sessions": "Сессии",

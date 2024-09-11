@@ -409,6 +409,13 @@ export const SessionPage = () => {
               direction={isMobile ? 'column' : 'row'}
               gap={isMobile ? '4px' : '16px'}
             >
+              <Typography sx={labelTextStyle}>{t('pages.sessionPage.renter')}</Typography>
+              <Typography>{`${session.renter}`}</Typography>
+            </Stack>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              gap={isMobile ? '4px' : '16px'}
+            >
               <Typography sx={labelTextStyle}>{t('pages.sessionPage.action')}</Typography>
               <Stack direction={'row'}>
                 <Stack direction={'row'} gap={'8px'}>
