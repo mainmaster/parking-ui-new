@@ -9,7 +9,8 @@ export const getSessionsRequest = async ({
   isPaid,
   status,
   createDateTo,
-  createDateFrom
+  createDateFrom,
+  renterId
 }) => {
   return $api.get('/sessions/', {
     params: {
@@ -19,7 +20,8 @@ export const getSessionsRequest = async ({
       isPaid,
       status,
       createDateTo,
-      createDateFrom
+      createDateFrom,
+      renterId
     }
   });
 };

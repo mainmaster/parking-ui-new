@@ -39,6 +39,7 @@ import { formatISO } from 'date-fns';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useTranslation} from "react-i18next";
+import RenterSelect from "../ApplicationFilter/RenterSelect";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -89,6 +90,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [selectedRenter, setSelectedRenter] = useState('');
 
   useEffect(() => {
     return () => {
@@ -112,6 +114,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
     dispatch(changeCurrentPage(1));
     setSelectedSessionStatus('');
     setSelectedPaymentStatus('');
+    setSelectedRenter('');
     setFromValue(null);
     setToValue(null);
     setSubmited(true);
@@ -231,6 +234,16 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       setToValue(newValue);
       setSubmited(false);
     }
+  };
+
+  const handleRenterChange = (event) => {
+    const values = {
+      ...filters,
+      renterId: event.target.value
+    };
+    dispatch(setFilters(values));
+    setSubmited(false);
+    setSelectedRenter(event.target.value);
   };
 
   const handleClose = () => {
@@ -485,6 +498,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 ))}
               </Select>
             </Stack>
+            <RenterSelect selected={selectedRenter} handleChange={handleRenterChange}/>
             <Stack>
               <Typography sx={labelStyle}>{t('components.sessionsFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>
