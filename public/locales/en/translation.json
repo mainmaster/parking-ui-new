@@ -705,7 +705,8 @@
       "paymentTo": "Payment until",
       "dolg": "Debt",
       "freeDolg": "Clear debt",
-      "close": "Close"
+      "close": "Close",
+      "renter": "Renter"
     },
     "logTerminalCard": {
       "terminalActivated": "Terminal activated",

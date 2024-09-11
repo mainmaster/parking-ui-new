@@ -266,6 +266,10 @@ export default function LogSessionCard({
           </Stack>
         </Stack>
         <Stack direction={'row'} gap={'8px'}>
+          <Typography sx={labelTextStyle}>{t('components.logSessionCard.renter')}</Typography>
+          <Typography>{session.renter ? session.renter : '-'}</Typography>
+        </Stack>
+        <Stack direction={'row'} gap={'8px'}>
           <Typography sx={labelTextStyle}>{t('components.logSessionCard.dolg')}</Typography>
           <Typography>{`${session.payment_amount} ₽`}</Typography>
         </Stack>

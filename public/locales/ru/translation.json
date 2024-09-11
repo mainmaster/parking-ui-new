@@ -705,7 +705,8 @@
       "paymentTo": "Оплата до",
       "dolg": "Долг",
       "freeDolg": "Обнулить долг",
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "renter": "Арендатор"
     },
     "logTerminalCard": {
       "terminalActivated": "Терминал активирован",
