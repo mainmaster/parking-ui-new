@@ -87,9 +87,9 @@ export default function LogSessionCard({
   }, [theme]);
 
   useEffect(() => {
-    if (session && session.events[0] && session.events[0].car_img_path) {
+    if (session && session.car_img_path) {
       setImgUrl(
-        process.env.REACT_APP_API_URL + '/' + session.events[0].car_img_path
+        process.env.REACT_APP_API_URL + '/' + session.car_img_path
       );
     } else {
       setImgUrl(null);
