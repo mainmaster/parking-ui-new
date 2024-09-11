@@ -14,7 +14,7 @@ import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Button, AppBar, Box, Stack, Typography } from '@mui/material';
-import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
+import {listWithScrollStyle, primaryButtonStyle, secondaryButtonStyle} from '../../theme/styles';
 import PaymentFilter from '../../components/PaymentFilter/PaymentFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
 import PaymentsSpacer from './PaymentsSpacer';
@@ -25,6 +25,9 @@ import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import { format, parseISO } from 'date-fns';
 import {useTranslation} from "react-i18next";
+import add from "../../assets/svg/add.svg";
+import AddOrderDialog from "../../components/AddOrderDialog/AddOrderDialog";
+import CreatedOrderDialog from "../../components/CreatedOrderDialog/CreatedOrderDialog";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -49,6 +52,9 @@ const PaymentsPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
+  const [isOrderCreateOpen, setIsOrderCreateOpen] = useState(false);
+  const [isOrderCreatedOpen, setIsOrderCreatedOpen] = useState(false);
+  const [createdData, setCreatedData] = useState(null);
 
   const totalTextStyle = useMemo(() => {
     return {
@@ -139,6 +145,19 @@ const PaymentsPage = () => {
     });
   };
 
+  const handleCloseAddOrder = () => {
+    setIsOrderCreateOpen(false);
+  }
+
+  const handleOpenCreatedOrder = (data) => {
+    setIsOrderCreatedOpen(true);
+    setCreatedData(data);
+  }
+  
+  const handleCloseCreatedOrder = () => {
+    setIsOrderCreatedOpen(false);
+  }
+
   return (
     <>
       {!isMobile && (
@@ -177,8 +196,19 @@ const PaymentsPage = () => {
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
+              gap={'8px'}
               sx={{ width: '100%' }}
             >
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                startIcon={<img src={add} alt={'add'}/>}
+                sx={primaryButtonStyle({ ...theme })}
+                onClick={() => setIsOrderCreateOpen(true)}
+              >
+                {t('pages.paymentsPage.order')}
+              </Button>
               <Button
                 disableRipple
                 variant="contained"
@@ -242,6 +272,16 @@ const PaymentsPage = () => {
                     {totalString}
                   </Typography>
                 </Stack>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  startIcon={<img src={add} alt={'add'}/>}
+                  sx={primaryButtonStyle({ ...theme })}
+                  onClick={() => setIsOrderCreateOpen(true)}
+                >
+                  {t('pages.paymentsPage.order')}
+                </Button>
                 <Button
                   disableRipple
                   variant="contained"
@@ -329,6 +369,8 @@ const PaymentsPage = () => {
 
         <FooterSpacer />
       </Stack>
+      <AddOrderDialog handleClose={handleCloseAddOrder} isOpen={isOrderCreateOpen} setIsOrderCreatedOpen={handleOpenCreatedOrder}/>
+      <CreatedOrderDialog data={createdData} isOpen={isOrderCreatedOpen} handleClose={handleCloseCreatedOrder}/>
     </>
   );
 };

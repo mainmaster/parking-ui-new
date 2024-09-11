@@ -122,7 +122,7 @@ export const paymentsSlice = createSlice({
         isErrorRegisterOrderFetch: false,
       }
     },
-
+    paymentCreateOrder: (state, action) => {},
   },
 })
 
@@ -142,7 +142,8 @@ export const {
   getPaymentInfoSuccess,
   registerOrderFetch,
   setTotalPayment,
-  setFilters
+  setFilters,
+  paymentCreateOrder
 } = paymentsSlice.actions
 
 export default paymentsSlice.reducer

@@ -64,3 +64,7 @@ export const getPaymentsReport = async ({
     responseType: 'blob'
   });
 };
+
+export const createPaymentOrder = (data) => {
+  return $api.post('/payment/registerAnyOrder', data)
+}

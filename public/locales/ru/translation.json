@@ -146,7 +146,8 @@
     "paymentsPage": {
       "payments": "Оплаты",
       "export": "Выгрузить",
-      "noPayment": "Нет оплат"
+      "noPayment": "Нет оплат",
+      "order": "Ордер"
     },
     "editRenterModal": {
       "editRenter": "Редактировать арендатора",
@@ -850,6 +851,22 @@
       "title": "Ред. номер",
       "plate": "Номер",
       "save": "Сохранить"
+    },
+    "addOrder": {
+      "title": "Создать ордер на оплату",
+      "sum": "Сумма оплаты",
+      "email": "E-mail",
+      "description": "Описание",
+      "getUrl": "Получить ссылку"
+    },
+    "createdOrder": {
+      "title": "Новый ордер на оплату",
+      "sum": "Сумма",
+      "email": "E-mail",
+      "description": "Описание",
+      "url": "Ссылка",
+      "copyUrl": "Копировать ссылку",
+      "urlCopied": "Ссылка скопирована"
     }
   },
   "constants": {

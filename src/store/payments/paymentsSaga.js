@@ -9,7 +9,12 @@ import {
   paymentInfoFetch,
   getPaymentInfoError,
   getPaymentInfoSuccess,
-  registerOrderFetch, setTotalPayment, getPaymentSelectSuccess, getPaymentSelectError, paymentSelectFetch,
+  registerOrderFetch,
+  setTotalPayment,
+  getPaymentSelectSuccess,
+  getPaymentSelectError,
+  paymentSelectFetch,
+  paymentCreateOrder,
 } from './paymentsSlice'
 import { getPageNum } from 'utils'
 import {
@@ -18,7 +23,8 @@ import {
   registerOrderRequest,
 } from 'api/payment'
 import {store} from "../index";
-import { getPayment } from '../../api/payment';
+import {createPaymentOrder, getPayment} from '../../api/payment';
+import {createApplicationRequest} from "../../api/applications";
 
 function* workPayments({ payload }) {
   try {
@@ -87,10 +93,17 @@ function* workRegisterOrderPage({ payload }) {
 //   } catch (e) {}
 // }
 
+function* workPaymentCreateOrder({ payload }) {
+  try {
+    yield call(createPaymentOrder, payload);
+  } catch (e) {}
+}
+
 export default function* paymentsSagaWatcher() {
   yield takeEvery(paymentsFetch.type, workPayments)
   yield takeEvery(paymentsChangePageFetch.type, workPaymentsPage)
   yield takeEvery(paymentSelectFetch.type, workSelectPayment)
   yield takeEvery(paymentInfoFetch.type, workPaymentInfoPage)
   yield takeEvery(registerOrderFetch.type, workRegisterOrderPage)
+  yield takeEvery(paymentCreateOrder.type, workPaymentCreateOrder)
 }

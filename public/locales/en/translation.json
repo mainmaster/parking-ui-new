@@ -146,7 +146,8 @@
     "paymentsPage": {
       "payments": "Payments",
       "export": "Export",
-      "noPayment": "No payments"
+      "noPayment": "No payments",
+      "order": "Order"
     },
     "editRenterModal": {
       "editRenter": "Edit lessee",
@@ -850,6 +851,22 @@
       "title": "Edit plate",
       "plate": "Plate",
       "save": "Save"
+    },
+    "addOrder": {
+      "title": "Create a payment order",
+      "sum": "Order sum",
+      "email": "E-mail",
+      "description": "Description",
+      "getUrl": "Get url"
+    },
+    "createdOrder": {
+      "title": "New payment order",
+      "sum": "Amount",
+      "email": "E-mail",
+      "description": "Description",
+      "url": "Url",
+      "copyUrl": "Copy link",
+      "urlCopied": "Link copied"
     }
   },
   "constants": {
