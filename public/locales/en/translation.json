@@ -707,7 +707,8 @@
       "dolg": "Debt",
       "freeDolg": "Clear debt",
       "close": "Close",
-      "renter": "Renter"
+      "renter": "Renter",
+      "editNumber": "Edit plate"
     },
     "logTerminalCard": {
       "terminalActivated": "Terminal activated",

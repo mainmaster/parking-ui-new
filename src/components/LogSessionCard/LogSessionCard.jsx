@@ -29,10 +29,12 @@ import {
 import sessionSkeleton from '../../assets/svg/session_skeleton.svg';
 import eventMenuOpenIcon from '../../assets/svg/event_menu_open_icon.svg';
 import eventMenuCopyIcon from '../../assets/svg/event_menu_copy_icon.svg';
+import edit from '../../assets/svg/edit.svg';
 import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useTranslation} from "react-i18next";
+import {UpdateVehiclePlateModal} from "../UpdateVehiclePlateModal/UpdateVehiclePlateModal";
 
 const imageStyle = {
   objectFit: 'contain',
@@ -58,6 +60,7 @@ export default function LogSessionCard({
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [isEditPlateOpen, setIsEditPlateOpen] = useState(false);
 
   const imageContainerStyle = useMemo(() => {
     return {
@@ -120,12 +123,21 @@ export default function LogSessionCard({
     setAnchorEl(null);
   };
 
+  const handleEditClick = () => {
+    setSelectedMenuItem('edit');
+    setIsEditPlateOpen(true);
+  }
+
   const handlePaidClick = () => {
     dispatch(paidSessionFetch({ id: session.id, is_paid: true }));
   };
 
   const handleCloseClick = () => {
     dispatch(statusSessionFetch({ id: session.id, status: 'closed' }));
+  };
+
+  const handleCloseEditPlate = () => {
+    setIsEditPlateOpen(false);
   };
 
   return (
@@ -210,6 +222,22 @@ export default function LogSessionCard({
                   alt={t('components.logSessionCard.open')}
                 />
                 <Typography>{t('components.logSessionCard.open')}</Typography>
+              </MenuItem>
+              <MenuItem
+                id="session"
+                selected={selectedMenuItem === 'edit'}
+                onClick={handleEditClick}
+                sx={{ p: '8px', gap: '8px' }}
+              >
+                <img
+                  style={{
+                    width: 24,
+                    height: 24
+                  }}
+                  src={edit}
+                  alt={t('components.logSessionCard.editNumber')}
+                />
+                <Typography>{t('components.logSessionCard.editNumber')}</Typography>
               </MenuItem>
               <MenuItem
                 id="copy"
@@ -303,6 +331,7 @@ export default function LogSessionCard({
           </Stack>
         )}
       </Stack>
+      <UpdateVehiclePlateModal isOpen={isEditPlateOpen} handleClose={handleCloseEditPlate} plate={session?.events[0].vehicle_plate.full_plate} id={session?.id} />
     </Box>
   );
 }

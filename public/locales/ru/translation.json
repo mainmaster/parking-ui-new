@@ -707,7 +707,8 @@
       "dolg": "Долг",
       "freeDolg": "Обнулить долг",
       "close": "Закрыть",
-      "renter": "Арендатор"
+      "renter": "Арендатор",
+      "editNumber": "Ред. номер"
     },
     "logTerminalCard": {
       "terminalActivated": "Терминал активирован",
