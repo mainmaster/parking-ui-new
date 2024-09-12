@@ -205,7 +205,8 @@
       "sessions": "Сессии",
       "all": "всего",
       "closeSessions": "Закрыть сессии старше даты",
-      "noSessions": "Нет сессий"
+      "noSessions": "Нет сессий",
+      "create": "Создать сессию"
     },
     "successPaymentPage": {
       "manager": "Диспетчер",
@@ -867,6 +868,14 @@
       "url": "Ссылка",
       "copyUrl": "Копировать ссылку",
       "urlCopied": "Ссылка скопирована"
+    },
+    "createSession": {
+      "title": "Создать сессию",
+      "number": "Номер",
+      "numberPlaceHolder": "госномер авто",
+      "date": "Дата",
+      "datePlaceholder": "дд.мм.гггг чч:мм",
+      "create": "Создать"
     }
   },
   "constants": {

@@ -205,7 +205,8 @@
       "sessions": "Sessions",
       "all": "Total",
       "closeSessions": "Close sessions after date",
-      "noSessions": "No sessions"
+      "noSessions": "No sessions",
+      "create": "Create session"
     },
     "successPaymentPage": {
       "manager": "Manager",
@@ -867,6 +868,14 @@
       "url": "Url",
       "copyUrl": "Copy link",
       "urlCopied": "Link copied"
+    },
+    "createSession": {
+      "title": "Create session",
+      "number": "Vehicle number",
+      "numberPlaceHolder": "License plate",
+      "date": "Date",
+      "datePlaceholder": "dd.mm.yyyy HH:MM",
+      "create": "Create"
     }
   },
   "constants": {

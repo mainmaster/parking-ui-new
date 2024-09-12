@@ -55,3 +55,7 @@ export const resetDebtRequest = async (carNumber) => {
 export const updateVehiclePlate = async ({id, plate}) => {
   return $api.patch(`/sessions/${id}`, {vehicle_plate: plate})
 }
+
+export const createSession = async (data) => {
+  return $api.post(`/sessions/`, data)
+}

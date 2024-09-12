@@ -15,7 +15,7 @@ import {
   sessionSelectFetch,
   paidSessionSelectFetch,
   getSessionSelectSuccess,
-  getSessionSelectError, editVehiclePlate
+  getSessionSelectError, editVehiclePlate, createSession
 } from './sessionsSlice';
 import { getPageNum } from 'utils';
 import {
@@ -121,7 +121,14 @@ function* workSessionStatus({ payload }) {
 
 function* workEditVehiclePlate({ payload }) {
   try {
-    console.log('here')
+    yield call(updateVehiclePlate, payload);
+  } catch (e) {
+
+  }
+}
+
+function* workCreateSession({ payload }) {
+  try {
     yield call(updateVehiclePlate, payload);
   } catch (e) {
 
@@ -138,4 +145,5 @@ export default function* sessionsSagaWatcher() {
   yield takeEvery(paidSessionSelectFetch.type, workSelectSessionPaid);
   yield takeEvery(closeOlderThanDateSessionsFetch.type, workCloseOlderThanDate);
   yield takeEvery(editVehiclePlate.type, workEditVehiclePlate);
+  yield takeEvery(createSession.type, workCreateSession);
 }

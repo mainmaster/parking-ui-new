@@ -15,7 +15,7 @@ import PaginationCustom from 'components/Pagination';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
-import { listWithScrollStyle, secondaryButtonStyle } from '../../theme/styles';
+import {listWithScrollStyle, primaryButtonStyle, secondaryButtonStyle} from '../../theme/styles';
 import ParkingInfo from '../../components/ParkingInfo/ParkingInfo';
 import SessionsFilter from '../../components/SessionsFilter/SessionsFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -26,6 +26,7 @@ import LogSessionCard from '../../components/LogSessionCard/LogSessionCard';
 import EventManager from '../../components/EventManager/EventManager';
 import CloseSessionsDialog from '../../components/CloseSessionsDialog/CloseSessionsDialog';
 import {useTranslation} from "react-i18next";
+import {CreateSessionDialog} from "../../components/CreateSessionDialog/CreateSessionDialog";
 
 const titleTextStyle = {
   width: '25%',
@@ -57,6 +58,7 @@ const SessionsPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [openCloseSessionsDialog, setOpenCloseSessionsDialog] = useState(false);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+  const [isCreateSessionDialogOpen, setIsCreateSessionDialogOpen] = useState(false);
 
   useEffect(() => {
     if (userType === 'operator') {
@@ -135,6 +137,10 @@ const SessionsPage = () => {
     setOpenCloseSessionsDialog(true);
   };
 
+  const handleCloseCreateSessionDialog = () => {
+    setIsCreateSessionDialogOpen(false);
+  }
+
   return (
     <>
       {!isMobile && (
@@ -166,8 +172,15 @@ const SessionsPage = () => {
               justifyContent={'flex-end'}
               sx={{ width: '100%' }}
             >
-              <ParkingInfo />
-
+              <Button
+                disableRipple
+                variant="contained"
+                fullWidth={false}
+                sx={primaryButtonStyle({ ...theme })}
+                onClick={() => setIsCreateSessionDialogOpen(true)}
+              >
+                {t('pages.sessionsPage.create')}
+              </Button>
               <SessionsFilter openForm={openForm} setOpenForm={setOpenForm} />
             </Stack>
           </Stack>
@@ -190,7 +203,18 @@ const SessionsPage = () => {
         {isMobile && (
           <>
             <Stack direction={'column'} sx={{ p: '16px', pb: '8px', width: '100%', }}>
-              <Typography sx={{...titleTextStyle, padding: '16px', width: '100%'}}>{t('pages.sessionsPage.sessions')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} {t('pages.sessionsPage.all')}</span></Typography>
+              <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                <Typography sx={{...titleTextStyle, padding: '16px', flex: 1.5 }}>{t('pages.sessionsPage.sessions')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{pages} {t('pages.sessionsPage.all')}</span></Typography>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={{...primaryButtonStyle({ ...theme }), flex: 1 }}
+                  onClick={() => setIsCreateSessionDialogOpen(true)}
+                >
+                  {t('pages.sessionsPage.create')}
+                </Button>
+              </Stack>
               <ParkingInfo fullWidth={true} />
             </Stack>
             <Box
@@ -231,20 +255,24 @@ const SessionsPage = () => {
             )}
           </>
         )}
-        {!isMobile &&
-          (userType === 'admin' ||
-            (userType === 'operator' &&
-              accessOptions.disableCloseSessionBeforeDate === false)) && (
-            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }}>
-              <Button
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={secondaryButtonStyle({ ...theme })}
-                onClick={handleCloseSessionsClick}
-              >
-                {t('pages.sessionsPage.closeSessions')}
-              </Button>
+        {!isMobile && (
+            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }} justifyContent={'space-between'}>
+              {
+                (userType === 'admin' ||
+                  (userType === 'operator' &&
+                    accessOptions.disableCloseSessionBeforeDate === false)) ?
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    fullWidth={false}
+                    sx={secondaryButtonStyle({ ...theme })}
+                    onClick={handleCloseSessionsClick}
+                  >
+                    {t('pages.sessionsPage.closeSessions')}
+                  </Button> :
+                  <div></div>
+              }
+              <ParkingInfo />
             </Stack>
           )}
 
@@ -317,6 +345,7 @@ const SessionsPage = () => {
           }}
         />
       )}
+      <CreateSessionDialog isOpen={isCreateSessionDialogOpen} handleClose={handleCloseCreateSessionDialog} />
     </>
   );
 };

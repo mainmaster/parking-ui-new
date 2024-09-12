@@ -88,7 +88,7 @@ export default function ParkingInfo({ fullWidth }) {
 
   return (
     <>
-      <Box sx={isMobile ? mobileBoxStyle : { width: '100%' }}>
+      <Box sx={isMobile ? mobileBoxStyle : { width: 510 }}>
         <Stack
           direction={isMobile ? 'column' : 'row'}
           justifyContent={'flex-end'}
@@ -229,25 +229,25 @@ export default function ParkingInfo({ fullWidth }) {
                   </React.Fragment>
                 }
               >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    borderRadius: '8px',
-                    borderTopRightRadius: '0px',
-                    borderBottomRightRadius: '0px',
-                    border: `1px solid ${theme.colors.element.primary}`,
-                    borderRight: 'none',
-                    width: `${
-                      (parkingInfo.carsOnParking.subscribe /
-                        parkingInfo.carsOnParking.totalPlaces) *
-                      100
-                    }%`,
-                    height: '40px',
-                    backgroundColor: theme.colors.chart.subscribers
-                  }}
-                ></Box>
+                {/*<Box*/}
+                {/*  sx={{*/}
+                {/*    position: 'absolute',*/}
+                {/*    top: 0,*/}
+                {/*    left: 0,*/}
+                {/*    borderRadius: '8px',*/}
+                {/*    borderTopRightRadius: '0px',*/}
+                {/*    borderBottomRightRadius: '0px',*/}
+                {/*    border: `1px solid ${theme.colors.element.primary}`,*/}
+                {/*    borderRight: 'none',*/}
+                {/*    width: `${*/}
+                {/*      (parkingInfo.carsOnParking.subscribe /*/}
+                {/*        parkingInfo.carsOnParking.totalPlaces) **/}
+                {/*      100*/}
+                {/*    }%`,*/}
+                {/*    height: '40px',*/}
+                {/*    backgroundColor: theme.colors.chart.subscribers*/}
+                {/*  }}*/}
+                {/*></Box>*/}
               </HtmlTooltip>
             )}
             {parkingInfo?.carsOnParking?.single && (

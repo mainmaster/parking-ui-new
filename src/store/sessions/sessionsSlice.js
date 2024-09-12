@@ -172,6 +172,7 @@ export const sessionsSlice = createSlice({
       };
     },
     editVehiclePlate: (state, action) => {},
+    createSession: (state, action) => {},
   }
 });
 
@@ -199,7 +200,8 @@ export const {
   setLedTitles,
   setCreateDateTo,
   closeOlderThanDateSessionsFetch,
-  editVehiclePlate
+  editVehiclePlate,
+  createSession
 } = sessionsSlice.actions;
 
 export default sessionsSlice.reducer;
