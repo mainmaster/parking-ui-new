@@ -58,6 +58,54 @@ const initialAccessOptions = {
   disableOpenAP: false,
   disableResetDuty: false
 };
+//
+// const TreeElement = ({ propertyKey, value, isArray }) => {
+//   if (!value) {
+//     return null;
+//   }
+//
+//   if (Array.isArray(value)) {
+//     return (
+//       <>
+//         {value.map((val, index) => (
+//           <>
+//             <Typography sx={detailsTextStyle}>
+//               {propertyKey+index}:
+//             </Typography>
+//             <TreeElement
+//               key={propertyKey + '' + index}
+//               propertyKey={propertyKey}
+//               value={val}
+//               isArray
+//             />
+//           </>
+//         ))}
+//       </>
+//     );
+//   }
+//
+//   if (typeof value === 'object') {
+//     return <Tree obj={value} />;
+//   }
+//
+//   return (
+//     <Typography sx={detailsTextStyle}>
+//                {propertyKey}: {value}
+//     </Typography>
+//   );
+// };
+//
+// const Tree = ({ obj }) => {
+//   return (
+//     <>
+//       {Object.entries(obj).map(([key, value]) => (
+//         <>
+//           <TreeElement key={key} propertyKey={key} value={value}></TreeElement>
+//         </>
+//       ))}
+//     </>
+//   );
+// };
 
 export const EventPage = () => {
   const { t } = useTranslation();
@@ -79,6 +127,8 @@ export const EventPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
+  const [eventMessages, setEventMessages] = useState('');
+  const [eventMessagesCopied, setEventMessagesCopied] = useState(false);
 
   const labelTextStyle = useMemo(() => {
     return {
@@ -134,6 +184,10 @@ export const EventPage = () => {
     if (event?.scores) {
       setDetailsText(JSON.stringify(event.scores));
     }
+
+    if (event?.event_message) {
+      setEventMessages(JSON.stringify(event.event_message))
+    }
   }, [event]);
 
   const handleCopyLinkClick = () => {
@@ -144,6 +198,13 @@ export const EventPage = () => {
   const handleCopyDetailsClick = () => {
     navigator.clipboard.writeText(detailsText);
     setDetailsCopied(true);
+    setEventMessagesCopied(false);
+  };
+
+  const handleCopyEventMessageClick = () => {
+    navigator.clipboard.writeText(eventMessages);
+    setEventMessagesCopied(true);
+    setDetailsCopied(false);
   };
 
   const handleEventListScroll = () => {
@@ -544,6 +605,61 @@ export const EventPage = () => {
                         variant="contained"
                         fullWidth={false}
                         onClick={handleCopyDetailsClick}
+                        sx={[
+                          secondaryButtonStyle({ ...theme }),
+                          {
+                            minWidth: '48px',
+                            '& .MuiButton-startIcon': {
+                              margin: 0
+                            }
+                          }
+                        ]}
+                        startIcon={
+                          <img
+                            src={eventCopyIcon}
+                            alt={t('pages.eventPage.copy')}
+                            style={{ width: '24px', height: '24px' }}
+                          />
+                        }
+                      ></Button>
+                    </Tooltip>
+                  </Stack>
+                )}
+              </Stack>
+              <Stack
+                direction={isMobile ? 'column' : 'row'}
+                gap={isMobile ? '4px' : '16px'}
+              >
+                <Typography sx={labelTextStyle}>{t('pages.eventPage.eventBody')}</Typography>
+                {event.event_message && (
+                  <Stack
+                    direction={'row'}
+                    gap={'10px'}
+                    justifyContent={'space-between'}
+                    sx={{
+                      width: '100%',
+                      maxWidth: '720px',
+                      backgroundColor: theme.colors.surface.high,
+                      borderRadius: '8px',
+                      border: `1px solid ${theme.colors.outline.surface}`,
+                      p: '16px'
+                    }}
+                  >
+                    <Stack sx={{maxHeight: 500, overflow: 'auto'}}>
+                      {JSON.stringify(event.event_message, null, 2)}
+                    </Stack>
+                    <Tooltip
+                      title={
+                        eventMessagesCopied
+                          ? t('pages.eventPage.eventIsCopy')
+                          : t('pages.eventPage.eventDetail')
+                      }
+                    >
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        fullWidth={false}
+                        onClick={handleCopyEventMessageClick}
                         sx={[
                           secondaryButtonStyle({ ...theme }),
                           {

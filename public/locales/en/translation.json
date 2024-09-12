@@ -98,7 +98,10 @@
       "copyDetail": "Copy details",
       "copy": "Copy",
       "monitoring": "Monitoring",
-      "reports": "Reports"
+      "reports": "Reports",
+      "eventBody": "Event body",
+      "eventIsCopy": "Event body copied",
+      "eventDetail": "Copy event body"
     },
     "eventList": {
       "noReport": "No reports"

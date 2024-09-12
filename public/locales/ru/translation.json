@@ -98,7 +98,10 @@
       "copyDetail": "Скопировать детали",
       "copy": "Скопировать",
       "monitoring": "Наблюдение",
-      "reports": "Отчёты"
+      "reports": "Отчёты",
+      "eventBody": "Тело события",
+      "eventIsCopy": "Тело события скопировано",
+      "eventDetail": "Скопировать тело события"
     },
     "eventList": {
       "noReport": "Нет отчётов"
