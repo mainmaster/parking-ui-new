@@ -1,5 +1,6 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {enqueueSnackbar} from "notistack";
+import i18n from "i18next";
 
 const basicQuery = fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
@@ -15,8 +16,11 @@ export const baseQuery = async (args,api,extraOptions) => {
                 variant: 'error'
             })
         }
-        if (result.error?.status === 401 || result.error?.status === 403) {
+        if (result.error?.status === 401) {
             document.location.href = "/login"
+        }
+        if (result.error?.status === 403) {
+            enqueueSnackbar(i18n.t('api.noAccess'), {variant: 'error'})
         }
     }
     return result;

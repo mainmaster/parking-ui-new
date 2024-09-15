@@ -44,6 +44,13 @@ export const rentersApi = createApi({
         method: 'POST',
       }),
       invalidatesTags: ['Renters'],
+    }),
+    deleteRenter: builder.mutation({
+      query: (id) => ({
+        url: `parking/renter/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Renters'],
     })
   }),
 })
@@ -54,5 +61,6 @@ export const {
   useCreateRentersMutation,
   useUpdateRenterMutation,
   useActivateRenterMutation,
-  useDeactivateRenterMutation
+  useDeactivateRenterMutation,
+  useDeleteRenterMutation,
 } = rentersApi

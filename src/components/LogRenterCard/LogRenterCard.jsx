@@ -5,12 +5,12 @@ import { format, parseISO } from 'date-fns';
 import {
   secondaryButtonStyle,
   positiveButtonStyle,
-  cardContainerStyle
+  cardContainerStyle, primaryButtonStyle
 } from '../../theme/styles';
 import { setEditRenter } from '../../store/renters/rentersSlice';
 import {
   useActivateRenterMutation,
-  useDeactivateRenterMutation
+  useDeactivateRenterMutation, useDeleteRenterMutation
 } from '../../api/renters/renters.api';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -27,6 +27,7 @@ export default function LogRenterCard({ renter }) {
   const { t } = useTranslation();
   const [deactivateRenter] = useDeactivateRenterMutation();
   const [activateRenter] = useActivateRenterMutation();
+  const [deleteRenter] = useDeleteRenterMutation();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -49,6 +50,10 @@ export default function LogRenterCard({ renter }) {
   const handleActivateRenterClick = () => {
     activateRenter(renter.id);
   };
+
+  const handleDeleteRenterClick = () => {
+    deleteRenter(renter.id);
+  }
 
   return (
     <Box
@@ -105,6 +110,16 @@ export default function LogRenterCard({ renter }) {
             }
           >
             {renter.is_active ? t('components.logRenterCard.deactive') : t('components.logRenterCard.active')}
+          </Button>
+        </Stack>
+        <Stack>
+          <Button
+            disableRipple
+            variant="contained"
+            sx={{...primaryButtonStyle({...theme}), width: '50%'}}
+            onClick={handleDeleteRenterClick}
+          >
+            {t('components.logRenterCard.delete')}
           </Button>
         </Stack>
       </Stack>

@@ -702,7 +702,8 @@
       "numberOfPlace": "Number of spots",
       "change": "Edit",
       "deactive": "Deactivate",
-      "active": "Activate"
+      "active": "Activate",
+      "delete": "Delete"
     },
     "logSessionCard": {
       "urlIsCopy": "Link copied",
@@ -932,5 +933,8 @@
     "controllers": "Controllers",
     "access": "Access",
     "payments": "Payments"
+  },
+  "api": {
+    "noAccess": "Not enough rights for the operation"
   }
 }
