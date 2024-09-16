@@ -13,16 +13,16 @@ $api.interceptors.response.use((config)=>{
     const config = error?.config;
     if (
         config.url !== '/accounts/login/' &&
-        (error.response.status === 401)
+        (error.response.status === 401 || error.response.status === 403)
     ){
       document.location.href = "/login"
     }
 
-    if (error.response.status === 403) {
-      enqueueSnackbar(i18n.t('api.noAccess'), {
-        variant: 'error'
-      })
-    }
+    // if (error.response.status === 403) {
+    //   enqueueSnackbar(i18n.t('api.noAccess'), {
+    //     variant: 'error'
+    //   })
+    // }
 
     if(error.response.status === 400){
         enqueueSnackbar(JSON.stringify(error.response.data), {

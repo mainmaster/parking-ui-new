@@ -16,12 +16,12 @@ export const baseQuery = async (args,api,extraOptions) => {
                 variant: 'error'
             })
         }
-        if (result.error?.status === 401) {
+        if (result.error?.status === 401 || result.error?.status === 403) {
             document.location.href = "/login"
         }
-        if (result.error?.status === 403) {
-            enqueueSnackbar(i18n.t('api.noAccess'), {variant: 'error'})
-        }
+        // if (result.error?.status === 403) {
+        //     enqueueSnackbar(i18n.t('api.noAccess'), {variant: 'error'})
+        // }
     }
     return result;
 };
