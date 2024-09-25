@@ -23,7 +23,7 @@ export default function EventManager({ offset }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handlers = useSwipeable({
-    onSwipedUp: () => {
+    onSwipedDown: () => {
       setShow(false);
       setPause(true);
     },
@@ -108,10 +108,9 @@ export default function EventManager({ offset }) {
         alignItems={'flex-end'}
         sx={{
           position: 'fixed',
+          bottom: isMobile ? 72 : '',
           top: isMobile
-            ? offset
-              ? { offset }
-              : 0
+              ? ''
             : `calc(24px + ${spacers.header} + ${offset ? offset + 4 : 0}px)`,
           right: isMobile ? 0 : '24px',
           left: isMobile ? 0 : 'auto',
@@ -119,7 +118,7 @@ export default function EventManager({ offset }) {
         }}
       >
         {first && (
-          <Slide direction="down" in={show} appear={false} timeout={100}>
+          <Slide direction="up" in={show} appear={false} timeout={100}>
             <div style={{ width: isMobile ? '100%' : 'inherit' }}>
               <EventAlertCard
                 key={first.id + formatISO(Date.now()) + 1}

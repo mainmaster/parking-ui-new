@@ -116,7 +116,7 @@ export default function EventAlertCard({
     <Fade in={showFade} appear={false} timeout={100}>
       <div style={{ width: isMobile ? '100%' : 'inherit' }}>
         <Slide
-          direction={isMobile ? 'down' : 'left'}
+          direction={isMobile ? 'up' : 'left'}
           in={show}
           appear={start > 0 ? false : animate}
           timeout={250}
@@ -126,9 +126,10 @@ export default function EventAlertCard({
               border: `1px solid ${theme.colors.outline.surface}`,
               borderRadius: '16px',
               width: isMobile ? '100%' : 'inherit',
-              borderTopRightRadius: isMobile ? '0' : '16px',
-              borderTopLeftRadius: isMobile ? '0' : '16px',
-              cursor: 'pointer'
+              borderBottomRightRadius: isMobile ? '0' : '16px',
+              borderBottomLeftRadius: isMobile ? '0' : '16px',
+              cursor: 'pointer',
+              boxShadow: isMobile ? '0px -4px 16px rgba(0, 0, 0, 0.2)' : ''
             }}
             onMouseLeave={() => setStopped(false)}
             onMouseOver={() => setStopped(true)}
