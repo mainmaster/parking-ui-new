@@ -192,7 +192,9 @@ const Settings = () => {
     seconds_between_laurent_checks: 0,
     terminal_payment_ttl: 60,
     terminal_payment_refund_type: 1,
-    pass_if_no_places: false
+    pass_if_no_places: false,
+    subscription_payment_description: '',
+    parking_payment_description: ''
   });
   const [changedSettings, setChangedSettings] = useState({});
   let location = useLocation();
@@ -1562,6 +1564,50 @@ const Settings = () => {
                                 }}
                               />
                             </FormGroup>
+                            <Stack>
+                              <InputLabel
+                                htmlFor="subscription_payment_description"
+                                sx={labelStyle}
+                              >
+                                {t('pages.settings.subscriptionPaymentDescription')}
+                              </InputLabel>
+                              <CarNumberInput
+                                fullWidth
+                                InputProps={{
+                                  disableUnderline: true,
+                                  sx: { paddingLeft: '12px' }
+                                }}
+                                variant="filled"
+                                id="subscription_payment_description"
+                                name="subscription_payment_description"
+                                value={
+                                  globalSettings.subscription_payment_description
+                                }
+                                onChange={handleGlobalSettings}
+                              />
+                            </Stack>
+                            <Stack>
+                              <InputLabel
+                                htmlFor="parking_payment_description"
+                                sx={labelStyle}
+                              >
+                                {t('pages.settings.parkingPaymentDescription')}
+                              </InputLabel>
+                              <CarNumberInput
+                                fullWidth
+                                InputProps={{
+                                  disableUnderline: true,
+                                  sx: { paddingLeft: '12px' }
+                                }}
+                                variant="filled"
+                                id="parking_payment_description"
+                                name="parking_payment_description"
+                                value={
+                                  globalSettings.parking_payment_description
+                                }
+                                onChange={handleGlobalSettings}
+                              />
+                            </Stack>
                           </Stack>
                         </AccordionDetails>
                       </Accordion>

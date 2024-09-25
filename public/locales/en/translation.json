@@ -319,7 +319,9 @@
       "photoOnPaymentPage": "Payment page photo",
       "name": "Name",
       "russian": "Русский",
-      "english": "English"
+      "english": "English",
+      "subscriptionPaymentDescription": "Cheque text for a subscription",
+      "parkingPaymentDescription": "Cheque text for one-off payment"
     }
   },
   "components": {
@@ -487,7 +489,8 @@
       "timeTo": "Time until (hours and minutes)",
       "save": "Save",
       "add": "Add",
-      "requiredFields": "Fill required fields to add a mode"
+      "requiredFields": "Fill required fields to add a mode",
+      "notIncludeFreeTime": "Do not include free time in the calculation"
     },
     "app": {
       "error": "Something went wrong! Try again later"

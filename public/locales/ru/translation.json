@@ -319,7 +319,9 @@
       "photoOnPaymentPage": "Фото на страницу оплаты",
       "name": "Имя",
       "russian": "Русский",
-      "english": "English"
+      "english": "English",
+      "subscriptionPaymentDescription": "Текст чека для абонемента",
+      "parkingPaymentDescription": "Текст чека для разовой оплаты"
     }
   },
   "components": {
@@ -487,7 +489,8 @@
       "timeTo": "Время до (часов и минут)",
       "save": "Сохранить",
       "add": "Добавить",
-      "requiredFields": "Заполните поля, чтобы добавить режим"
+      "requiredFields": "Заполните поля, чтобы добавить режим",
+      "notIncludeFreeTime": "Не включать в расчет бесплатное время"
     },
     "app": {
       "error": "Что-то пошло не так! Попробуйте позже"

@@ -15,7 +15,7 @@ import {
   FormGroup,
   FormControlLabel,
   Switch,
-  styled
+  styled, Checkbox
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
@@ -43,6 +43,7 @@ import {
 import { passModeOptions } from 'constants';
 import {useTranslation} from "react-i18next";
 import i18n from '../../translation/index'
+import {CheckedIcon} from "../Icons/CheckedIcon";
 
 
 const validationSchemaHour = yup.object({
@@ -154,7 +155,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
         free_time_min: workingModeEdit.free_time_min,
         interval: workingModeEdit.interval,
         day_counts_from_mins: workingModeEdit.day_counts_from_mins,
-        number_of_first_mins: workingModeEdit.number_of_first_mins
+        number_of_first_mins: workingModeEdit.number_of_first_mins,
+        not_include_free_time_in_estimation: workingModeEdit.not_include_free_time_in_estimation,
       };
     } else {
       return {
@@ -166,7 +168,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
         free_time_min: '',
         interval: '',
         day_counts_from_mins: '',
-        number_of_first_mins: ''
+        number_of_first_mins: '',
+        not_include_free_time_in_estimation: false,
       };
     }
   }, [workingModeEdit]);
@@ -229,7 +232,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
         free_time_min,
         interval,
         day_counts_from_mins,
-        number_of_first_mins
+        number_of_first_mins,
+        not_include_free_time_in_estimation
       } = values;
       let payload = {
         description: description,
@@ -246,7 +250,8 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
             time_lte_hour: timeFrom.getHours(),
             time_lte_min: timeFrom.getMinutes(),
             time_gte_hour: timeTo.getHours(),
-            time_gte_min: timeTo.getMinutes()
+            time_gte_min: timeTo.getMinutes(),
+            not_include_free_time_in_estimation: not_include_free_time_in_estimation
           };
           break;
         case 'pay_by_day':
@@ -732,6 +737,28 @@ export default function AddWorkingModeDialog({ show, handleClose, edit }) {
               )}
             </>
           )}
+
+          {
+            passMode === 'pay_by_hour' && (
+              <Stack direction={'row'}>
+                <Box sx={{ minWidth: '8px' }} />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      disableRipple
+                      id={'not_include_free_time_in_estimation'}
+                      name={'not_include_free_time_in_estimation'}
+                      checked={formik.values.not_include_free_time_in_estimation}
+                      onChange={handleValueChange}
+                      checkedIcon={<CheckedIcon />}
+                      sx={{ p: '8px' }}
+                    />
+                  }
+                  label={t('components.addWorkingModeDialog.notIncludeFreeTime')}
+                />
+              </Stack>
+            )
+          }
 
           <Button
             disableRipple

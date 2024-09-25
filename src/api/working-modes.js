@@ -16,6 +16,7 @@ export const createWorkingModeRequest = async ({
   time_lte_hour,
   entry_fee,
   interval,
+  not_include_free_time_in_estimation,
 }) => {
   return $api.post('/workingModes/', {
     time_lte_hour,
@@ -29,6 +30,7 @@ export const createWorkingModeRequest = async ({
     description,
     entry_fee,
     interval,
+    not_include_free_time_in_estimation
   })
 }
 
