@@ -764,7 +764,7 @@
     "paymentFilter": {
       "sber": "Sber",
       "yookassa": "Yookassa",
-      "afterTerminal": "Pos terminal",
+      "afterTerminal": "Pos-terminal",
       "withRefund": "With refund",
       "withoutRefund": "Without refund",
       "aboniment": "Membership",
@@ -852,7 +852,7 @@
       "notUsed": "Unused",
       "sber": "Sber",
       "yookassa": "Yookassa",
-      "afterTerminal": "Pos terminal",
+      "afterTerminal": "Pos-terminal",
       "refund": "Refund"
     },
     "updateVehiclePlateModal": {

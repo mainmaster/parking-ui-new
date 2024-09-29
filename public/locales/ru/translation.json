@@ -695,7 +695,7 @@
       "amount": "Сумма",
       "date": "Дата",
       "e-mail": "E-mail",
-      "refund": "Возврват",
+      "refund": "Возврат",
       "open": "Открыть",
       "description": "Описание"
     },
@@ -764,7 +764,7 @@
     "paymentFilter": {
       "sber": "Сбер",
       "yookassa": "Yookassa",
-      "afterTerminal": "Пос терминал",
+      "afterTerminal": "POS-терминал",
       "withRefund": "С возвратом",
       "withoutRefund": "Без возврата",
       "aboniment": "Абонемент",
@@ -852,7 +852,7 @@
       "notUsed": "Не использована",
       "sber": "Сбер",
       "yookassa": "Yookassa",
-      "afterTerminal": "Пос терминал",
+      "afterTerminal": "POS-терминал",
       "refund": "Возврат"
     },
     "updateVehiclePlateModal": {

@@ -91,6 +91,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedRenter, setSelectedRenter] = useState('');
+  const userType = useSelector((state) => state.parkingInfo.userType);
 
   useEffect(() => {
     return () => {
@@ -498,7 +499,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
                 ))}
               </Select>
             </Stack>
-            <RenterSelect selected={selectedRenter} handleChange={handleRenterChange}/>
+            {userType !== 'renter' && <RenterSelect selected={selectedRenter} handleChange={handleRenterChange}/>}
             <Stack>
               <Typography sx={labelStyle}>{t('components.sessionsFilter.date')}</Typography>
               <Stack direction={'row'} gap={'8px'}>

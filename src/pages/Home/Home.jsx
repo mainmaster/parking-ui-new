@@ -5,7 +5,7 @@ import { useParkingInfoQuery } from '../../api/settings/settings';
 import { useEffect, useRef, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import soundNotification from '../EventsPage/notofication.mp3';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { putEvent, changeDataModal } from 'store/events/eventsSlice';
 import {
   setParkingUserType,
@@ -20,7 +20,10 @@ import {getStatusesAccessPointsFetch} from "../../store/events/eventsSlice";
 import {useTranslation} from "react-i18next";
 
 export const Home = () => {
-  const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery();
+  const userType = useSelector((state) => state?.parkingInfo?.userType);
+  const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery('parkingInfo', {
+    skip: !userType,
+  });
   const { t, i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
   const [disableEvents, setDisableEvents] = useState(false);
