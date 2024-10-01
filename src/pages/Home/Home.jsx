@@ -21,9 +21,7 @@ import {useTranslation} from "react-i18next";
 
 export const Home = () => {
   const userType = useSelector((state) => state?.parkingInfo?.userType);
-  const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery('parkingInfo', {
-    skip: !userType,
-  });
+  const { data: parkingData, error: parkingInfoError } = useParkingInfoQuery();
   const { t, i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
   const [disableEvents, setDisableEvents] = useState(false);
@@ -37,6 +35,10 @@ export const Home = () => {
   let fourNumbersInRow = useRef([]);
 
   useEffect(() => {
+    if (!userType) {
+      return;
+    }
+
     getUserData()
       .then((res) => {
         setUserData(res.data);
@@ -50,7 +52,7 @@ export const Home = () => {
         console.log(e);
         enqueueSnackbar('Ошибка подключения');
       });
-  }, []);
+  }, [userType]);
 
   useEffect(() => {
     if (parkingData) {
