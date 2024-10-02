@@ -11,21 +11,24 @@ import _ from 'lodash';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParkingInfoQuery } from '../../api/settings/settings';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import detailsIcon from '../../assets/svg/parkinfo_details_open_icon.svg';
-import {useDispatch, useSelector} from "react-redux";
-import {setIsNeedFetch} from "../../store/parkingInfo/parkingInfo";
-import {useTranslation} from "react-i18next";
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsNeedFetch } from '../../store/parkingInfo/parkingInfo';
+import { useTranslation } from 'react-i18next';
 
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
+    display: 'block',
     backgroundColor: theme.colors.chart.free,
-    maxWidth: '120px',
     border: `1px solid ${theme.colors.outline.default}`,
     borderRadius: '8px',
-    p: '8px 12px'
+    maxWidth: '100vw',
+    p: '8px 12px',
+    maxHeight: 'calc(100vh - 60px)',
+    overflow: 'hidden'
   }
 }));
 
@@ -44,8 +47,9 @@ const detailSquareStyle = {
 
 export default function ParkingInfo({ fullWidth }) {
   const { t, i18n } = useTranslation();
-  const { data: parkingInfo, refetch: refetchParkingData } = useParkingInfoQuery();
-  const isNeedFetch = useSelector((state) => state.parkingInfo.isNeedFetch)
+  const { data: parkingInfo, refetch: refetchParkingData } =
+    useParkingInfoQuery();
+  const isNeedFetch = useSelector((state) => state.parkingInfo.isNeedFetch);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [details, setDetails] = useState(false);
@@ -60,13 +64,13 @@ export default function ParkingInfo({ fullWidth }) {
 
     return () => {
       clearInterval(interval.current);
-    }
+    };
   }, []);
 
   useEffect(() => {
     if (isNeedFetch) {
       refetchParkingData();
-      dispatch(setIsNeedFetch(false))
+      dispatch(setIsNeedFetch(false));
     }
   }, [isNeedFetch]);
 
@@ -104,7 +108,9 @@ export default function ParkingInfo({ fullWidth }) {
               <Typography
                 sx={{ fontWeight: 500 }}
               >{`${parkingInfo?.carsOnParking.totalPlaces}`}</Typography>
-              <Typography sx={{ fontWeight: 500 }}>{t('components.parkingInfo.sits').toLowerCase()}:</Typography>
+              <Typography sx={{ fontWeight: 500 }}>
+                {t('components.parkingInfo.sits').toLowerCase()}:
+              </Typography>
             </Stack>
             {isMobile && (
               <Stack direction={'row'} gap={'5px'}>
@@ -114,7 +120,9 @@ export default function ParkingInfo({ fullWidth }) {
                     color: theme.colors.element.secondary
                   }}
                 >
-                  {details ? t('components.parkingInfo.collapseButton') : t('components.parkingInfo.expandButton')}
+                  {details
+                    ? t('components.parkingInfo.collapseButton')
+                    : t('components.parkingInfo.expandButton')}
                 </Typography>
                 <IconButton
                   sx={{ padding: 0 }}
@@ -148,7 +156,15 @@ export default function ParkingInfo({ fullWidth }) {
           >
             <HtmlTooltip
               title={
-                <React.Fragment>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexWrap: 'wrap',
+                    overflow: 'hidden',
+                    maxHeight: 'calc(100vh - 60px)'
+                  }}
+                >
                   <Typography
                     color={theme.colors.element.primary}
                     sx={{
@@ -157,7 +173,9 @@ export default function ParkingInfo({ fullWidth }) {
                       lineHeight: '1.75rem'
                     }}
                   >
-                    {`${renters} ${t('components.parkingInfo.sits').toLowerCase()}`}
+                    {`${renters} ${t(
+                      'components.parkingInfo.sits'
+                    ).toLowerCase()}`}
                   </Typography>
                   <Typography
                     color={theme.colors.element.secondary}
@@ -170,14 +188,20 @@ export default function ParkingInfo({ fullWidth }) {
                       parkingInfo.carsOnParking.renters_places_detail
                     ).map((key) => {
                       return (
-                        <Box sx={{ p: '8px' }}>
+                        <Box sx={{ p: '8px', width: 'max-content' }}>
                           <Typography
                             color={theme.colors.element.primary}
                             sx={{
                               fontWeight: 500
                             }}
                           >
-                            {`${parkingInfo.carsOnParking.renters_places_detail[key]} ${t('components.parkingInfo.sits').toLowerCase()}`}
+                            {`${
+                              parkingInfo.carsOnParking.renters_places_detail[
+                                key
+                              ]
+                            } ${t(
+                              'components.parkingInfo.sits'
+                            ).toLowerCase()}`}
                           </Typography>
                           <Typography
                             color={theme.colors.element.secondary}
@@ -188,7 +212,7 @@ export default function ParkingInfo({ fullWidth }) {
                         </Box>
                       );
                     })}
-                </React.Fragment>
+                </div>
               }
             >
               <Box
@@ -209,7 +233,15 @@ export default function ParkingInfo({ fullWidth }) {
             {parkingInfo?.carsOnParking?.subscribe && (
               <HtmlTooltip
                 title={
-                  <React.Fragment>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flexWrap: 'wrap',
+                      overflow: 'hidden',
+                      maxHeight: 'calc(100vh - 60px)'
+                    }}
+                  >
                     <Typography
                       color={theme.colors.element.primary}
                       sx={{
@@ -218,7 +250,9 @@ export default function ParkingInfo({ fullWidth }) {
                         lineHeight: '1.75rem'
                       }}
                     >
-                      {`${parkingInfo?.carsOnParking?.subscribe} ${t('components.parkingInfo.sits').toLowerCase()}`}
+                      {`${parkingInfo?.carsOnParking?.subscribe} ${t(
+                        'components.parkingInfo.sits'
+                      ).toLowerCase()}`}
                     </Typography>
                     <Typography
                       color={theme.colors.element.secondary}
@@ -226,7 +260,7 @@ export default function ParkingInfo({ fullWidth }) {
                     >
                       {t('components.parkingInfo.renters')}
                     </Typography>
-                  </React.Fragment>
+                  </div>
                 }
               >
                 {/*<Box*/}
@@ -253,7 +287,15 @@ export default function ParkingInfo({ fullWidth }) {
             {parkingInfo?.carsOnParking?.single && (
               <HtmlTooltip
                 title={
-                  <React.Fragment>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flexWrap: 'wrap',
+                      overflow: 'hidden',
+                      maxHeight: 'calc(100vh - 60px)'
+                    }}
+                  >
                     <Typography
                       color={theme.colors.element.primary}
                       sx={{
@@ -262,15 +304,17 @@ export default function ParkingInfo({ fullWidth }) {
                         lineHeight: '1.75rem'
                       }}
                     >
-                      {`${parkingInfo?.carsOnParking?.single} ${t('components.parkingInfo.sits').toLowerCase()}`}
+                      {`${parkingInfo?.carsOnParking?.single} ${t(
+                        'components.parkingInfo.sits'
+                      ).toLowerCase()}`}
                     </Typography>
                     <Typography
                       color={theme.colors.element.secondary}
-                      sx={{ fontWeight: 500 }}
+                      sx={{fontWeight: 500}}
                     >
                       {t('components.parkingInfo.oneTime')}
                     </Typography>
-                  </React.Fragment>
+                  </div>
                 }
               >
                 <Box
@@ -315,7 +359,9 @@ export default function ParkingInfo({ fullWidth }) {
                 fontWeight: 500,
                 pointerEvents: 'none'
               }}
-            >{`${parkingInfo?.carsOnParking.freePlaces} ${t('components.parkingInfo.free').toLowerCase()}`}</Typography>
+            >{`${parkingInfo?.carsOnParking.freePlaces} ${t(
+              'components.parkingInfo.free'
+            ).toLowerCase()}`}</Typography>
           </Stack>
         </Stack>
       </Box>
@@ -347,7 +393,8 @@ export default function ParkingInfo({ fullWidth }) {
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
               <Typography sx={{ fontWeight: 500 }}>
-                {parkingInfo?.carsOnParking?.freePlaces} {t('components.parkingInfo.sits').toLowerCase()}
+                {parkingInfo?.carsOnParking?.freePlaces}{' '}
+                {t('components.parkingInfo.sits').toLowerCase()}
               </Typography>
             </Stack>
           </Stack>
@@ -395,7 +442,8 @@ export default function ParkingInfo({ fullWidth }) {
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
               <Typography sx={{ fontWeight: 500 }}>
-                {parkingInfo?.carsOnParking?.subscribe} {t('components.parkingInfo.sits').toLowerCase()}
+                {parkingInfo?.carsOnParking?.subscribe}{' '}
+                {t('components.parkingInfo.sits').toLowerCase()}
               </Typography>
             </Stack>
           </Stack>
@@ -435,7 +483,9 @@ export default function ParkingInfo({ fullWidth }) {
                 )}
             </Stack>
             <Stack direction={'row'} gap={'4px'}>
-              <Typography sx={{ fontWeight: 500 }}>{renters} {t('components.parkingInfo.sits').toLowerCase()}</Typography>
+              <Typography sx={{ fontWeight: 500 }}>
+                {renters} {t('components.parkingInfo.sits').toLowerCase()}
+              </Typography>
             </Stack>
           </Stack>
           {parkingInfo?.carsOnParking?.renters_places_detail &&
@@ -463,9 +513,11 @@ export default function ParkingInfo({ fullWidth }) {
                       <Typography>{`Арендатор ${key}`}</Typography>
                     </Stack>
                     <Stack direction={'row'} gap={'4px'}>
-                      <Typography
-                        sx={{ fontWeight: 500 }}
-                      >{`${parkingInfo.carsOnParking.renters_places_detail[key]} ${t('components.parkingInfo.sits').toLowerCase()}`}</Typography>
+                      <Typography sx={{ fontWeight: 500 }}>{`${
+                        parkingInfo.carsOnParking.renters_places_detail[key]
+                      } ${t(
+                        'components.parkingInfo.sits'
+                      ).toLowerCase()}`}</Typography>
                     </Stack>
                   </Stack>
                 );
