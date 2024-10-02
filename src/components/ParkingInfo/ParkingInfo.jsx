@@ -90,6 +90,9 @@ export default function ParkingInfo({ fullWidth }) {
     [parkingInfo]
   );
 
+  console.log({
+    test: parkingInfo?.carsOnParking,
+  })
   return (
     <>
       <Box sx={isMobile ? mobileBoxStyle : { width: 510 }}>
@@ -230,7 +233,7 @@ export default function ParkingInfo({ fullWidth }) {
                 }}
               ></Box>
             </HtmlTooltip>
-            {parkingInfo?.carsOnParking?.subscribe && (
+            {parkingInfo?.carsOnParking?.subscribe ? (
               <HtmlTooltip
                 title={
                   <div
@@ -283,8 +286,8 @@ export default function ParkingInfo({ fullWidth }) {
                 {/*  }}*/}
                 {/*></Box>*/}
               </HtmlTooltip>
-            )}
-            {parkingInfo?.carsOnParking?.single && (
+            ) : <></>}
+            {parkingInfo?.carsOnParking?.single ? (
               <HtmlTooltip
                 title={
                   <div
@@ -337,7 +340,7 @@ export default function ParkingInfo({ fullWidth }) {
                   }}
                 ></Box>
               </HtmlTooltip>
-            )}
+            ) : <></>}
             <Typography
               sx={{
                 position: 'absolute',
