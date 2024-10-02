@@ -29,6 +29,7 @@ function* workBlackList({payload}) {
       status: document.location.href.split('/')[document.location.href.split('/').length - 1],
       ...payload,
     })
+    yield put(changePages(data.count))
     yield put(getBlackListSuccess(data))
   } catch (e) {
     yield put(getBlackListError())
