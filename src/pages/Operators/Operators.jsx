@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLazyRentersQuery } from '../../api/renters/renters.api';
 import { useLazyOperatorsQuery } from '../../api/operator/operator.api';
@@ -21,9 +21,12 @@ import {
   Typography,
   Button,
   Tabs,
-  Tab
+  Tab,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
 import {
+  CarNumberInput,
   listWithScrollStyle,
   primaryButtonStyle,
   tabStyle
@@ -39,7 +42,9 @@ import EventManager from '../../components/EventManager/EventManager';
 import AddRenterDialog from '../../components/AddRenterDialog/AddRenterDialog';
 import AddOperatorDialog from '../../components/AddOperatorDialog/AddOperatorDialog';
 import { accessPointsOnlyFetch } from '../../store/accessPoints/accessPointsSlice';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import searchIcon from '../../assets/svg/log_event_search_icon.svg';
+import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -72,6 +77,7 @@ export const Operators = () => {
   const [itemsInRow, setItemsInRow] = useState(0);
   const [disableOperators, setDisableOperators] = useState(false);
   const [disableRenters, setDisableRenters] = useState(false);
+  const [renterName, setRenterName] = useState('');
 
   useEffect(() => {
     dispatch(accessPointsOnlyFetch());
@@ -139,6 +145,12 @@ export const Operators = () => {
     }
   }, [urlStatus]);
 
+  useEffect(() => {
+    if (urlStatus['*'] === 'renters') {
+      getRenters({query: renterName});
+    }
+  }, [renterName]);
+
   const handleUsersListScroll = () => {
     if (usersListRef.current) {
       const { scrollTop } = usersListRef.current;
@@ -196,11 +208,13 @@ export const Operators = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>{t('pages.operators.access')}</Typography>
+            <Typography sx={titleTextStyle}>
+              {t('pages.operators.access')}
+            </Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
-              sx={{ width: '100%' }}
+              sx={{ width: '100%', alignItems:'center' }}
             >
               <Button
                 disableRipple
@@ -217,6 +231,63 @@ export const Operators = () => {
                   ? t('pages.operators.addOperator')
                   : t('pages.operators.addRenter')}
               </Button>
+              {currentTab === 1 && <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                gap={'8px'}
+                sx={{ px: '16px' }}
+              >
+                <CarNumberInput
+                  fullWidth={false}
+                  InputProps={{
+                    disableUnderline: true,
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        sx={{
+                          height: '100%',
+                          mt: '0 !important',
+                          mr: '4px'
+                        }}
+                      >
+                        <img
+                          style={{
+                            height: 24
+                          }}
+                          src={searchIcon}
+                          alt={t('pages.operators.searchByRenter')}
+                        />
+                      </InputAdornment>
+                    ),
+                    endAdornment: renterName && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          disableRipple
+                          aria-label="cancel"
+                          sx={{ p: 0 }}
+                          onClick={() => setRenterName('')}
+                        >
+                          <img
+                            style={{
+                              height: 24
+                            }}
+                            src={searchCancelIcon}
+                            alt={t('pages.operators.clear')}
+                          />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                  variant="filled"
+                  id="vehiclePlate"
+                  name="vehiclePlate"
+                  placeholder={t('pages.operators.searchByRenter')}
+                  value={renterName}
+                  onChange={(event) => setRenterName(event.target.value)}
+                />
+              </Stack>}
+
             </Stack>
           </Stack>
           <Stack direction={'row'}>
@@ -286,7 +357,9 @@ export const Operators = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={titleTextStyle}>{t('pages.operators.access')}</Typography>
+                <Typography sx={titleTextStyle}>
+                  {t('pages.operators.access')}
+                </Typography>
                 <Button
                   disableRipple
                   variant="contained"
@@ -303,6 +376,62 @@ export const Operators = () => {
                     : t('pages.operators.addRenter')}
                 </Button>
               </Stack>
+              {currentTab === 1 && <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                gap={'8px'}
+                sx={{width: '100%', px: '16px' }}
+              >
+                <CarNumberInput
+                  fullWidth={false}
+                  InputProps={{
+                    disableUnderline: true,
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        sx={{
+                          height: '100%',
+                          mt: '0 !important',
+                          mr: '4px'
+                        }}
+                      >
+                        <img
+                          style={{
+                            height: 24
+                          }}
+                          src={searchIcon}
+                          alt={t('pages.operators.searchByRenter')}
+                        />
+                      </InputAdornment>
+                    ),
+                    endAdornment: renterName && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          disableRipple
+                          aria-label="cancel"
+                          sx={{ p: 0 }}
+                          onClick={() => setRenterName('')}
+                        >
+                          <img
+                            style={{
+                              height: 24
+                            }}
+                            src={searchCancelIcon}
+                            alt={t('pages.operators.clear')}
+                          />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                  variant="filled"
+                  id="vehiclePlate"
+                  name="vehiclePlate"
+                  placeholder={t('pages.operators.searchByRenter')}
+                  value={renterName}
+                  onChange={(event) => setRenterName(event.target.value)}
+                />
+              </Stack>}
               <Stack direction={'row'}>
                 <Tabs
                   value={currentTab}
@@ -379,10 +508,16 @@ export const Operators = () => {
                 <img
                   style={{ height: '40px' }}
                   src={usersEmptyIcon}
-                  alt={currentTab === 0 ? t('pages.operators.noOperator') : t('pages.operators.noRenter')}
+                  alt={
+                    currentTab === 0
+                      ? t('pages.operators.noOperator')
+                      : t('pages.operators.noRenter')
+                  }
                 />
                 <Typography sx={[titleTextStyle, { whiteSpace: 'wrap' }]}>
-                  {currentTab === 0 ? t('pages.operators.noOperator') : t('pages.operators.noRenter')}
+                  {currentTab === 0
+                    ? t('pages.operators.noOperator')
+                    : t('pages.operators.noRenter')}
                 </Typography>
               </>
             )}

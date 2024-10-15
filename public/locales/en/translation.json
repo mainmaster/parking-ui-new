@@ -125,7 +125,9 @@
       "operators": "Operators",
       "renters": "Lessees",
       "noOperator": "No operators",
-      "noRenter": "No lessees"
+      "noRenter": "No lessees",
+      "searchByRenter": "Search by name",
+      "clear": "Clear"
     },
     "paymentPage": {
       "refundBy": "Refund by",

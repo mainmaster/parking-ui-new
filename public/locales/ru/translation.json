@@ -125,7 +125,9 @@
       "operators": "Операторы",
       "renters": "Арендаторы",
       "noOperator": "Нет операторов",
-      "noRenter": "Нет арендаторов"
+      "noRenter": "Нет арендаторов",
+      "searchByRenter": "Поиск по имени",
+      "clear": "Очистить"
     },
     "paymentPage": {
       "refundBy": "Возврат по",
