@@ -634,11 +634,11 @@
       "session": "Сессия",
       "change": "Изменить",
       "delete": "Удалить",
-      "banTo": "Бан до"
+      "banTo": "Блокировка до"
     },
     "logBlackListCard": {
       "description": "Описание",
-      "banTo": "Бан до",
+      "banTo": "Блокировка до",
       "change": "Изменить",
       "delete": "Удалить"
     },
