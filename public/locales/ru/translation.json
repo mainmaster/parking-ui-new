@@ -13,7 +13,7 @@
     },
     "editApplicationModal": {
       "editRequest": "Редактировать заявку",
-      "vehiclePlate": "Номер машины",
+      "vehiclePlate": "Номер автомобиля",
       "date": "Дата",
       "edit": "Редактировать"
     },
@@ -30,8 +30,8 @@
       "addToBlackList": "Добавить в ЧС",
       "active": "Активные",
       "noActive": "Неактивные",
-      "noCarInBlackList": "Нет машин в чёрном списке",
-      "noCarWithAccess": "Нет машин с истёкшим запретом на доступ"
+      "noCarInBlackList": "Нет автомобилей в чёрном списке",
+      "noCarWithAccess": "Нет автомобилей с истёкшим запретом на доступ"
     },
     "camerasPage": {
       "cameras": "Камеры",
@@ -43,11 +43,11 @@
       "carPark": "Автопарк",
       "import": "Импорт",
       "export": "Экспорт",
-      "addCar": "Добавить машину",
+      "addCar": "Добавить автомобиль",
       "active": "Активные",
       "noActive": "Неактивные",
       "aboniment": "Абонемент",
-      "noActiveCarInPark": "Нет активных машин в автопарке",
+      "noActiveCarInPark": "Нет активных автомобилей в автопарке",
       "noAboniment": "нет абонемента"
     },
     "clientPaymentPage": {
@@ -255,7 +255,7 @@
       "countFreePlaces": "Количество свободных мест",
       "totalPlacesForCar": "Общее количество мест на парковке",
       "outputFreePlaces": "Вывод количества свободных мест",
-      "enterCarIfNot": "Впускать на парковку машины, если нет мест",
+      "enterCarIfNot": "Впускать на парковку автомобиль, если нет мест",
       "paymentSystems": "Платёжные системы",
       "yookassaKey": "Yookassa shop key",
       "yookassaId": "Yookassa shop id",
@@ -285,17 +285,17 @@
       "serverAddressVisor": "Адрес сервера Vizor VL",
       "websocketAddress": "Вебсокет-адрес",
       "freeAccessForSpecial": "Бесплатный доступ для спец. авто",
-      "minCarWidth": "Минимальная ширина машины на картинке",
-      "minCarHeight": "Минимальная высота машины на картинке",
+      "minCarWidth": "Минимальная ширина автомобиля на картинке",
+      "minCarHeight": "Минимальная высота автомобиля на картинке",
       "minPlateWidth": "Минимальная ширана номера на картинке",
       "minPlateHeight": "Минимальная высота номера на картинке",
       "numberOfBadEvents": "Количество событий с нераспознанным номером для дополнительной логики",
       "minSymbolsCount": "Минимальное количество символовов для подтверждения совпадения номеров",
-      "additionalConfirmation": "Дополнительное подтверждение машин по марке и модели",
+      "additionalConfirmation": "Дополнительное подтверждение автомобиля по марке и модели",
       "sessionPolitic": "Политика сессий",
-      "releaseAllSession": "Выпускать все машины без сессии без оплаты",
-      "enterAllCar": "Впускать все машины с открытой сессией",
-      "releaseAllCar": "Выпускать все машины без сессии с оплатой штрафа",
+      "releaseAllSession": "Выпускать все автомобили без сессии без оплаты",
+      "enterAllCar": "Впускать все автомобили с открытой сессией",
+      "releaseAllCar": "Выпускать все автомобили без сессии с оплатой штрафа",
       "enterOnRequest": "Въезд только по заявкам",
       "saveEventsWith": "Сохранять события с нераспознанным номером",
       "timeToLeave": "Время на выезд из парковки, мин",
@@ -384,7 +384,7 @@
     "addApplicationDialog": {
       "updateRequest": "Редактировать заявку",
       "addRequest": "Добавить заявку",
-      "vehiclePlate": "Номер машины",
+      "vehiclePlate": "Номер автомобиля",
       "date": "Дата",
       "save": "Сохранить",
       "add": "Добавить"
@@ -509,12 +509,12 @@
       "reset": "Сбросить"
     },
     "blackListAddCarDialog": {
-      "editCar": "Редактировать машину",
+      "editCar": "Редактировать автомобиль",
       "addBlackList": "Добавить в ЧС",
       "accessDeniedTo": "Доступ запрещен до",
       "date": "Дата",
       "description": "Описание",
-      "vehiclePlate": "Номер машины",
+      "vehiclePlate": "Номер автомобиля",
       "save": "Сохранить",
       "add": "Добавить"
     },
@@ -555,12 +555,12 @@
       "reset": "Сбросить"
     },
     "carParkAddCarDialog": {
-      "editCar": "Редактировать машину",
-      "addCar": "Добавить машину",
+      "editCar": "Редактировать автомобиль",
+      "addCar": "Добавить автомобиль",
       "permitActiveTo": "Пропуск активен до",
       "date": "Дата",
       "description": "Описание",
-      "vehiclePlate": "Номер машины",
+      "vehiclePlate": "Номер автомобиля",
       "renter": "Арендатор",
       "accessPoints": "Доступ к точкам доступа",
       "save": "Сохранить",
@@ -801,7 +801,7 @@
       "urlForSession": "Ссылка на сессию",
       "description": "Описание",
       "time": "Время",
-      "chooseCar": "Выберите машину"
+      "chooseCar": "Выберите автомобиль"
     },
     "sessionsFilter": {
       "searchByNumber": "Найти по номеру",
