@@ -22,7 +22,7 @@ const labelStyle = {
   pl: '12px'
 };
 
-export default function RenterSelect({ selected, handleChange }) {
+export default function RenterSelect({ selected, handleChange, isNeedAllRenter }) {
   const { t } = useTranslation();
   const { data: renters } = useRentersQuery();
   const theme = useTheme();
@@ -90,7 +90,7 @@ export default function RenterSelect({ selected, handleChange }) {
                 key={r.id}
                 id={r.id}
                 selected={r.id === selected}
-                value={r.id}
+                value={Boolean(isNeedAllRenter) ? r : r.id}
               >
                 <Typography
                   component={'h5'}

@@ -12,9 +12,10 @@ import {
   DialogTitle,
   IconButton,
   InputLabel,
-  Stack
+  Stack, Typography
 } from '@mui/material';
 import closeIcon from '../../assets/svg/car_number_dialog_close_icon.svg';
+import addBlack from '../../assets/svg/add_black.svg';
 import React, { useCallback, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,9 @@ import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { enqueueSnackbar } from 'notistack';
 import { createPaymentOrder } from '../../api/payment';
+import RenterSelect from "../ApplicationFilter/RenterSelect";
+import VehiclePlate from "./VehiclePlate";
+import {formatISO, format} from "date-fns";
 
 const labelStyle = {
   pb: '4px',
@@ -48,6 +52,9 @@ export default function AddOrderDialog({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [vehiclePlates, setVehiclePlates] = useState([]);
+  const [companyName, setCompanyName] = useState('');
 
   const defaultValues = {
     amount: 0,
@@ -60,14 +67,21 @@ export default function AddOrderDialog({
     validationSchema: validationSchema,
     onSubmit: (values) => {
       let payload = {
-        ...values
+        ...values,
+        renter: selectedCompany,
+        vehicle_plates: vehiclePlates.filter(plate => !!plate.vehicle_plate && !!plate.valid_until).map(plate => {
+          return {
+            ...plate,
+            valid_until: format(plate.valid_until, 'yyyy-MM-dd')
+          }
+        })
       };
       setIsLoading(true);
       createPaymentOrder(payload).then((result) => {
-        setIsOrderCreatedOpen({...payload, url: result?.data?.redirectURL});
-      }).finally(() => {
+        setIsOrderCreatedOpen({...payload, url: result?.data?.redirectURL, companyName});
         formik.resetForm();
-        handleClose();
+        close();
+      }).finally(() => {
         setIsLoading(false);
       });
     }
@@ -92,10 +106,22 @@ export default function AddOrderDialog({
     formik.handleSubmit(event);
   };
 
+  const handleCompanyChange = (event) => {
+    setCompanyName(event.target.value.company_name);
+    setSelectedCompany(event.target.value.id);
+  };
+
+  const close =() => {
+    setSelectedCompany('');
+    setVehiclePlates([]);
+    handleClose();
+    setCompanyName('');
+  }
+
   return (
     <Dialog
       open={isOpen}
-      onClose={handleClose}
+      onClose={close}
       scroll="body"
       sx={{
         '& .MuiDialog-container': {
@@ -115,7 +141,7 @@ export default function AddOrderDialog({
     >
       <IconButton
         disableRipple
-        onClick={handleClose}
+        onClick={close}
         sx={[
           secondaryButtonStyle({ ...theme }),
           {
@@ -217,6 +243,41 @@ export default function AddOrderDialog({
                 formik.touched.description && Boolean(formik.errors.description)
               }
             />
+          </Stack>
+          <RenterSelect
+            selected={selectedCompany}
+            handleChange={handleCompanyChange}
+            isNeedAllRenter
+          />
+          <Stack>
+            <Typography>
+              {t('components.addOrder.plateAndDate')}
+            </Typography>
+            <Stack display={'flex'} flexDirection={'row'} gap={2}>
+              <IconButton
+                sx={[
+                  secondaryButtonStyle({ ...theme }),
+                  {
+                    width: 48,
+                    height: 40,
+                  }
+                ]}
+                onClick={() => setVehiclePlates(prevState => [...prevState, {}])}
+              >
+                <img style={{ width: 13.5 }} src={addBlack} alt="Add" />
+              </IconButton>
+              {
+                vehiclePlates.length ? (
+                  <Stack display={'flex'} gap={2}>
+                    {
+                      vehiclePlates.map((vehicle, index) => (
+                        <VehiclePlate key={index} index={index} vehicle={vehicle} setVehiclePlates={setVehiclePlates}/>
+                      ))
+                    }
+                  </Stack>
+                ) : <></>
+              }
+            </Stack>
           </Stack>
           <Button
             disabled={isLoading}

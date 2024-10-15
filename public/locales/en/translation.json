@@ -867,7 +867,8 @@
       "sum": "Order sum",
       "email": "E-mail",
       "description": "Description",
-      "getUrl": "Get url"
+      "getUrl": "Get url",
+      "plateAndDate": "Plate and Date of validity to"
     },
     "createdOrder": {
       "title": "New payment order",
@@ -876,7 +877,10 @@
       "description": "Description",
       "url": "Url",
       "copyUrl": "Copy link",
-      "urlCopied": "Link copied"
+      "urlCopied": "Link copied",
+      "plate": "Plate",
+      "to": "to",
+      "renter": "Renter"
     },
     "createSession": {
       "title": "Create session",
@@ -885,6 +889,10 @@
       "date": "Date",
       "datePlaceholder": "dd.mm.yyyy HH:MM",
       "create": "Create"
+    },
+    "vehiclePlate": {
+      "date": "31.12.2024",
+      "example": "Example a111aa11"
     }
   },
   "constants": {

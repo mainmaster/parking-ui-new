@@ -109,6 +109,26 @@ export default function CreatedOrderDialog({ isOpen, handleClose, data }) {
                 </Typography>
                 <Typography sx={{ flex: 3 }}>{data.description}</Typography>
               </Stack>
+              {data.renter && (
+                <Stack direction="row" gap={'8px'}>
+                  <Typography sx={{ flex: 1, color: '#7F7A84' }}>
+                    {t('components.createdOrder.renter')}
+                  </Typography>
+                  <Typography sx={{ flex: 3 }}>{data.companyName}</Typography>
+                </Stack>
+              )}
+              {data.vehicle_plates && data.vehicle_plates.length ? (
+                <Stack direction="row" gap={'8px'}>
+                  <Typography sx={{ flex: 1, color: '#7F7A84' }}>
+                    {t('components.createdOrder.plate')}
+                  </Typography>
+                  <Stack sx={{flex: 3}}>
+                    {data.vehicle_plates.map((vehicle) => (
+                      <Typography>{vehicle.vehicle_plate} {t('components.createdOrder.to')} {vehicle.valid_until}</Typography>
+                    ))}
+                  </Stack>
+                </Stack>
+              ) : <></>}
               <Stack direction="row" gap={'8px'}>
                 <Typography sx={{ flex: 1, color: '#7F7A84' }}>
                   {t('components.createdOrder.url')}

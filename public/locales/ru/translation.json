@@ -867,7 +867,8 @@
       "sum": "Сумма оплаты",
       "email": "E-mail",
       "description": "Описание",
-      "getUrl": "Получить ссылку"
+      "getUrl": "Получить ссылку",
+      "plateAndDate": "Номер и Дата действия до"
     },
     "createdOrder": {
       "title": "Новый ордер на оплату",
@@ -876,7 +877,10 @@
       "description": "Описание",
       "url": "Ссылка",
       "copyUrl": "Копировать ссылку",
-      "urlCopied": "Ссылка скопирована"
+      "urlCopied": "Ссылка скопирована",
+      "plate": "Номер",
+      "to": "до",
+      "renter": "Арендатор"
     },
     "createSession": {
       "title": "Создать сессию",
@@ -885,6 +889,10 @@
       "date": "Дата",
       "datePlaceholder": "дд.мм.гггг чч:мм",
       "create": "Создать"
+    },
+    "vehiclePlate": {
+      "date": "31.12.2024",
+      "example": "Например a111aa11"
     }
   },
   "constants": {
