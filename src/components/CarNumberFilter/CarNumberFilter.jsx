@@ -20,7 +20,11 @@ import {
   styled
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import {DatePicker, renderTimeViewClock, TimePicker} from '@mui/x-date-pickers';
+import {
+  DatePicker,
+  renderTimeViewClock,
+  TimePicker
+} from '@mui/x-date-pickers';
 import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
@@ -38,8 +42,9 @@ import { getAccessPointsRequest } from '../../api/access-points';
 import { getEventCodesRequest } from '../../api/events';
 import { formatISO } from 'date-fns';
 import _ from 'lodash';
-import moment from "moment";
-import {useTranslation} from "react-i18next";
+import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+import { EventFormFilter } from '../EventFormFilter/EventFormFilter';
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -186,7 +191,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   };
 
   const handleFromDateChanged = (newValue) => {
-    const parseValue = newValue.toISOString().split('T')[0]
+    const parseValue = newValue.toISOString().split('T')[0];
     if (parseValue) {
       const values = {
         ...filters,
@@ -199,12 +204,12 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   };
 
   const handleToDateChanged = (newValue) => {
-    const parseValue = newValue.toISOString().split('T')[0]
+    const parseValue = newValue.toISOString().split('T')[0];
     if (parseValue) {
       const values = {
         ...filters,
         createDateTo: parseValue
-      }; 
+      };
       dispatch(setFilters(values));
       setToValue(parseValue);
       setSubmited(false);
@@ -222,7 +227,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       setTimeFromValue(newValue);
       setSubmited(false);
     }
-  }
+  };
 
   const handleTimeToChanged = (newValue) => {
     const parseValue = newValue.toISOString().split('T')[1].split('.')[0];
@@ -235,7 +240,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       setTimeToValue(newValue);
       setSubmited(false);
     }
-  }
+  };
 
   const handleAccessPointChange = (event) => {
     const accessPoint = accessPoints.find(
@@ -349,261 +354,26 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
           </IconButton>
         </Stack>
         {openForm && (
-          <Stack
-            sx={{
-              p: '16px',
-              pt: '8px',
-              borderBottom: `1px solid ${theme.colors.outline.surface}`
-            }}
-            gap={'8px'}
-          >
-            <Stack>
-              <InputLabel htmlFor="eventcode-select" sx={labelStyle}>
-                {t('components.carNumberFilter.eventType')}
-              </InputLabel>
-              <Select
-                id="eventcode-select"
-                displayEmpty
-                value={selectedEventCode}
-                onChange={handleEventCodeChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle({ ...theme })}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + theme.colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>{t('components.carNumberFilter.choose')}</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem value="">
-                  <em>{t('components.carNumberFilter.choose')}</em>
-                </MenuItem>
-                {_.sortBy(eventCodes, ['name']).map((code) => (
-                  <MenuItem
-                    key={code.value}
-                    id={code.name}
-                    selected={code.name === selectedEventCode}
-                    value={code.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {code.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack>
-              <Typography sx={labelStyle}>{t('components.carNumberFilter.date')}</Typography>
-              <Stack direction={'row'} gap={'8px'}>
-                <DatePicker
-                  value={fromValue}
-                  format={'dd.MM.yyyy'}
-                  disableFuture
-                  maxDate={toValue ? toValue : undefined}
-                  onChange={handleFromDateChanged}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle({ ...theme }),
-                      placeholder: t('components.carNumberFilter.from')
-                    },
-                    openPickerButton: { disableRipple: true }
-                  }}
-                  slots={{
-                    openPickerIcon: DateIcon
-                  }}
-                  views={['day', 'month', 'year']}
-                />
-                <DatePicker
-                  value={toValue}
-                  format={'dd.MM.yyyy'}
-                  disableFuture
-                  minDate={fromValue ? fromValue : undefined}
-                  onChange={handleToDateChanged}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle({ ...theme }),
-                      placeholder: t('components.carNumberFilter.to')
-                    },
-                    openPickerButton: { disableRipple: true }
-                  }}
-                  slots={{
-                    openPickerIcon: DateIcon
-                  }}
-                />
-              </Stack>
-            </Stack>
-            <Stack>
-              <Typography sx={labelStyle}>{t('components.carNumberFilter.time')}</Typography>
-              <Stack direction={'row'} gap={'8px'}>
-                <TimePicker
-                    value={timeFromValue}
-                    ampm={false}
-                    views={['hours', 'minutes']}
-                    maxTime={timeToValue ?? null}
-                    onChange={handleTimeFromChanged}
-                    slotProps={{
-                      textField: {
-                        variant: 'filled',
-                        sx: DateInputStyle({ ...theme }),
-                        placeholder: t('components.carNumberFilter.from')
-                      },
-                    }}
-                />
-                <TimePicker
-                    value={timeToValue}
-                    ampm={false}
-                    views={['hours', 'minutes']}
-                    minTime={timeFromValue ?? null}
-                    onChange={handleTimeToChanged}
-                    slotProps={{
-                      textField: {
-                        variant: 'filled',
-                        sx: DateInputStyle({ ...theme }),
-                        placeholder: t('components.carNumberFilter.to')
-                      },
-                      openPickerButton: { disableRipple: true }
-                    }}
-                />
-              </Stack>
-            </Stack>
-            <Stack>
-              <InputLabel htmlFor="accesspoint-select" sx={labelStyle}>
-                {t('components.carNumberFilter.accessPoint')}
-              </InputLabel>
-              <Select
-                id="accesspoint-select"
-                displayEmpty
-                value={selectedAccessPoint}
-                onChange={handleAccessPointChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle({ ...theme })}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + theme.colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>{t('components.carNumberFilter.choose')}</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem value="">
-                  <em>{t('components.carNumberFilter.choose')}</em>
-                </MenuItem>
-                {accessPoints.map((apoint) => (
-                  <MenuItem
-                    key={apoint.value}
-                    id={apoint.name}
-                    selected={apoint.name === selectedAccessPoint}
-                    value={apoint.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {apoint.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack direction={'row'} gap={'8px'} sx={{ pt: '8px' }}>
-              <Button
-                disabled={submited}
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
-                type="submit"
-              >
-                {t('components.carNumberFilter.submit')}
-              </Button>
-              <Button
-                disabled={!filters}
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
-                onClick={resetHandle}
-              >
-                {t('components.carNumberFilter.reset')}
-              </Button>
-            </Stack>
-          </Stack>
+          <EventFormFilter
+            selectedEventCode={selectedEventCode}
+            handleEventCodeChange={handleEventCodeChange}
+            fromValue={fromValue}
+            eventCodes={eventCodes}
+            toValue={toValue}
+            handleFromDateChanged={handleFromDateChanged}
+            handleToDateChanged={handleToDateChanged}
+            timeFromValue={timeFromValue}
+            timeToValue={timeToValue}
+            handleTimeFromChanged={handleTimeFromChanged}
+            handleTimeToChanged={handleTimeToChanged}
+            selectedAccessPoint={selectedAccessPoint}
+            handleAccessPointChange={handleAccessPointChange}
+            accessPoints={accessPoints}
+            submited={submited}
+            filters={filters}
+            resetHandle={resetHandle}
+            isNeedBorderBottom
+          />
         )}
       </Box>
     </>

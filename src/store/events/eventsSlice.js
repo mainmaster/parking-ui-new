@@ -12,7 +12,8 @@ export const eventsSlice = createSlice({
     isLoadingFetch: true,
     isAccessPointsFetched: false,
     isChangedStatus: false,
-    selectedEventId: null
+    selectedEventId: null,
+    reportFilters: {}
   },
   reducers: {
     eventsFetch: (state, action) => {
@@ -63,6 +64,19 @@ export const eventsSlice = createSlice({
         return {
           ...state,
           filters: action.payload
+        };
+      }
+    },
+    setReportFilters: (state, action) => {
+      if (!action.payload) {
+        return {
+          ...state,
+          reportFilters: action.payload,
+        };
+      } else {
+        return {
+          ...state,
+          reportFilters: action.payload
         };
       }
     },
@@ -140,7 +154,8 @@ export const {
   changeAccessPointsLoading,
   changeAccessPointsStatus,
   setFilters,
-  setSelectedEventId
+  setSelectedEventId,
+  setReportFilters
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

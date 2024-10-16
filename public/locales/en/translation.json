@@ -893,6 +893,10 @@
     "vehiclePlate": {
       "date": "31.12.2024",
       "example": "Example a111aa11"
+    },
+    "generateEventReport": {
+      "title": "Filters to unload",
+      "confirm": "Unload"
     }
   },
   "constants": {

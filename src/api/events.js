@@ -57,3 +57,7 @@ export const getEventsRequest = async ({
 export const getEventCodesRequest = async () => {
   return $api.get('/events/eventCodes', { params: {lang: i18n.language}});
 };
+
+export const getEventReport = async (params) => {
+  return $api.get('/events/report', { params });
+}

@@ -20,9 +20,9 @@ import React from 'react';
 import { formatISO } from 'date-fns';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Typography, Box, Drawer, Stack } from '@mui/material';
+import {AppBar, Typography, Box, Drawer, Stack, Button} from '@mui/material';
 import LogEventCard from '../../components/LogEventCard/LogEventCard';
-import { listWithScrollStyle } from '../../theme/styles';
+import {listWithScrollStyle, primaryButtonStyle, secondaryButtonStyle} from '../../theme/styles';
 import CarNumberFilter from '../../components/CarNumberFilter/CarNumberFilter';
 import CarNumberFilterSpacer from '../../components/CarNumberFilter/CarNumberFilterSpacer';
 import { changeActiveOpenApModal } from '../../store/cameras/camerasSlice';
@@ -35,6 +35,8 @@ import { EVENTS_ON_PAGE } from '../../constants';
 import logEventEmptyIcon from '../../assets/svg/log_event_empty_icon.svg';
 import { element } from 'prop-types';
 import {useTranslation} from "react-i18next";
+import download from "../../assets/svg/download_file.svg";
+import GenerateEventReport from "../../components/GenerateEventReport/GenerateEventReport";
 
 const mobileMenuItemStyle = {
   width: '100%',
@@ -87,27 +89,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
-
-  const mobileHeaderStyle = useMemo(() => {
-    return {
-      backgroundColor: theme.colors.surface.high,
-      borderBottom: `1px solid ${theme.colors.outline.surface}`,
-      boxShadow: 'none',
-      justifyContent: 'space-around',
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: '16px',
-      px: '16px',
-      width: '100%',
-      height: spacers.header
-    };
-  }, [theme]);
-
-  const mobileMenuItemTextStyle = useMemo(() => {
-    return {
-      color: theme.colors.element.secondary
-    };
-  }, [theme]);
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   useEffect(() => {
     if (userType === 'operator') {
@@ -225,29 +207,6 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
     });
 
   };
-  const handleImageButtonHover = (src) => {
-
-    if (src) {
-      setImageModal({
-        src: src,
-        isOpen: true
-      });
-    } else {
-      setImageModal({
-        src: '',
-        isOpen: false
-      });
-    }
-  };
-
-  const changeModal = (item) => {
-    dispatch(changeDataModal(item));
-
-    if (window.innerWidth < BREAKPOINT_SM) {
-      changeMobileModal();
-      setIsActiveModal(true);
-    }
-  };
 
   useEffect(() => {
     if (!accessOptions.disableEvents && userType) {
@@ -269,10 +228,6 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
     }
   }, [events, filtered]);
 
-  const changeMobileModal = () => {
-    setIsActiveModalMobile(!isActiveModalMobile);
-  };
-
   const changePage = (event, value) => {
     dispatch(eventsChangePageFetch(value));
     if (eventsListRef.current) {
@@ -284,8 +239,6 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
       setEventsListScrolled(false);
     }
   };
-
-
 
   const handleEventsListScroll = () => {
     if (eventsListRef.current) {
@@ -308,6 +261,10 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
       }
     }
   };
+
+  const handleCloseReportDialog = () => {
+    setIsReportOpen(false);
+  }
   return (
     <>
       {!isMobile && !accessOptions.disableEvents && (
@@ -328,7 +285,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
           <AppBar
             sx={{
               width: spacers.events,
-              position: 'absolute',
+              position: 'sticky',
               top: 0,
               right: 0,
               backgroundColor: theme.colors.surface.high,
@@ -349,7 +306,15 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
             ]}
             onScroll={handleEventsListScroll}
           >
-            <CarNumberFilterSpacer openForm={openForm} />
+            <Button
+              disableRipple
+              variant="contained"
+              onClick={() => setIsReportOpen(true)}
+              sx={[secondaryButtonStyle({ ...theme }), {margin: '0 16px'}]}
+              endIcon={<img src={download} alt={'add'} />}
+            >
+              Выгрузить
+            </Button>
             {eventsList.length > 0 ? (
               <>
                 {eventsList.map((item, index) => (
@@ -387,7 +352,9 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
                   src={logEventEmptyIcon}
                   alt="нет отчётов"
                 />
-                <Typography sx={titleTextStyle}>{t('pages.eventList.noReport')}</Typography>
+                <Typography sx={titleTextStyle}>
+                  {t('pages.eventList.noReport')}
+                </Typography>
               </Stack>
             )}
 
@@ -447,7 +414,15 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
         >
           {!onlyLog && <HeaderSpacer />}
           <CarNumberFilter openForm={openForm} setOpenForm={setOpenForm} />
-
+          <Button
+            disableRipple
+            variant="contained"
+            onClick={() => setIsReportOpen(true)}
+            sx={[secondaryButtonStyle({ ...theme }), {margin: '0 16px'}]}
+            endIcon={<img src={download} alt={'add'} />}
+          >
+            Выгрузить
+          </Button>
           {eventsList.length > 0 ? (
             <>
               {eventsList.map((item, index) => (
@@ -488,7 +463,9 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
                     src={logEventEmptyIcon}
                     alt={t('pages.eventList.noReport')}
                   />
-                  <Typography sx={titleTextStyle}>{t('pages.eventList.noReport')}</Typography>
+                  <Typography sx={titleTextStyle}>
+                    {t('pages.eventList.noReport')}
+                  </Typography>
                 </>
               )}
             </Stack>
@@ -505,6 +482,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
           )}
         </Stack>
       )}
+      <GenerateEventReport isOpen={isReportOpen} handleClose={handleCloseReportDialog}/>
     </>
   );
 });

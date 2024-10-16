@@ -90,9 +90,6 @@ export default function ParkingInfo({ fullWidth }) {
     [parkingInfo]
   );
 
-  console.log({
-    test: parkingInfo?.carsOnParking,
-  })
   return (
     <>
       <Box sx={isMobile ? mobileBoxStyle : { width: 510 }}>
