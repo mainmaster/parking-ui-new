@@ -35,7 +35,7 @@ export const deleteApplicationRequest = async(data) =>{
 }
 
 export const unloadApplication = async (data) => {
-  return $api.get(`/requests/reports`, {
+  return $api.get(`/requests/report`, {
     params: data
   })
 }
