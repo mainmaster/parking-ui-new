@@ -16,6 +16,7 @@ export const paymentsSlice = createSlice({
     paymentInfo: [],
     isLoadingRegisterOrderFetch: false,
     isErrorRegisterOrderFetch: false,
+    unloadFilters: {},
   },
   reducers: {
     setSelectPayment: (state, action) =>{
@@ -65,6 +66,12 @@ export const paymentsSlice = createSlice({
       return{
         ...state,
         filters: action.payload
+      }
+    },
+    setUnloadFilters: (state, action)=>{
+      return{
+        ...state,
+        unloadFilters: action.payload
       }
     },
     paymentInfoFetch: (state) => {
@@ -143,7 +150,8 @@ export const {
   registerOrderFetch,
   setTotalPayment,
   setFilters,
-  paymentCreateOrder
+  paymentCreateOrder,
+  setUnloadFilters
 } = paymentsSlice.actions
 
 export default paymentsSlice.reducer

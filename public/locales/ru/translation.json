@@ -902,6 +902,10 @@
     "unloadApplicationDialog": {
       "title": "Фильтры к выгрузке",
       "confirm": "Выгрузить"
+    },
+    "unloadPaymentDialog": {
+      "title": "Фильтры к выгрузке",
+      "confirm": "Выгрузить"
     }
   },
   "constants": {

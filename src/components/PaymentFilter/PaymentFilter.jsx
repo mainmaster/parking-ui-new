@@ -38,25 +38,21 @@ import searchIcon from '../../assets/svg/log_event_search_icon.svg';
 import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg';
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import { formatISO } from 'date-fns';
-import i18n from '../../translation/index'
-import {useTranslation} from "react-i18next";
+import i18n from '../../translation/index';
+import { useTranslation } from 'react-i18next';
+import { PaymentFilterForm } from '../PaymentFilterForm/PaymentFilterForm';
 
 const defaultValues = {
   vehiclePlate: ''
 };
 
-const labelStyle = {
-  fontSize: '0.75rem',
-  fontWeight: 500,
-  lineHeight: '0.875rem',
-  pb: '4px',
-  pl: '12px'
-};
-
 let paymentTypeValues = [
   { value: 'sber', name: i18n.t('components.paymentFilter.sber') },
   { value: 'yookassa', name: i18n.t('components.paymentFilter.yookassa') },
-  { value: 'pos_terminal', name: i18n.t('components.paymentFilter.afterTerminal') }
+  {
+    value: 'pos_terminal',
+    name: i18n.t('components.paymentFilter.afterTerminal')
+  }
 ];
 
 let isRefundValues = [
@@ -73,25 +69,31 @@ const changeFilter = () => {
   paymentTypeValues = [
     { value: 'sber', name: i18n.t('components.paymentFilter.sber') },
     { value: 'yookassa', name: i18n.t('components.paymentFilter.yookassa') },
-    { value: 'pos_terminal', name: i18n.t('components.paymentFilter.afterTerminal') }
+    {
+      value: 'pos_terminal',
+      name: i18n.t('components.paymentFilter.afterTerminal')
+    }
   ];
   isRefundValues = [
     { value: 'true', name: i18n.t('components.paymentFilter.withRefund') },
     { value: 'false', name: i18n.t('components.paymentFilter.withoutRefund') }
   ];
   paymentForValues = [
-    { value: 'subscription', name: i18n.t('components.paymentFilter.aboniment') },
+    {
+      value: 'subscription',
+      name: i18n.t('components.paymentFilter.aboniment')
+    },
     { value: 'session', name: i18n.t('components.paymentFilter.oneTime') }
   ];
-}
+};
 
 i18n.on('loaded', () => {
-  changeFilter()
-})
+  changeFilter();
+});
 
 i18n.on('languageChanged', () => {
-  changeFilter()
-})
+  changeFilter();
+});
 
 export default function PaymentFilter({ openForm, setOpenForm }) {
   const { t } = useTranslation();
@@ -370,301 +372,30 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
           </IconButton>
         </Stack>
         {openForm && (
-          <Stack
-            sx={
+          <PaymentFilterForm
+            fromValue={fromValue}
+            toValue={toValue}
+            handleFromDateChanged={handleFromDateChanged}
+            handleToDateChanged={handleToDateChanged}
+            paymentType={paymentType}
+            handlePaymentTypeChange={handlePaymentTypeChange}
+            paymentTypeValues={paymentTypeValues}
+            paymentFor={paymentFor}
+            handlePaymentForChange={handlePaymentForChange}
+            paymentForValues={paymentForValues}
+            isRefund={isRefund}
+            handleIsRefundChange={handleIsRefundChange}
+            isRefundValues={isRefundValues}
+            submited={submited}
+            filters={filters}
+            resetHandle={resetHandle}
+            styles={
               isMobile
                 ? mobileMenuStyle({ ...theme, border: true })
                 : desktopMenuStyle({ ...theme })
             }
-            gap={'8px'}
-          >
-            <Stack>
-              <Typography sx={labelStyle}>{t('components.paymentFilter.date')}</Typography>
-              <Stack direction={'row'} gap={'8px'}>
-                <DatePicker
-                  value={fromValue}
-                  format={'dd.MM.yyyy'}
-                  disableFuture
-                  maxDate={toValue ? toValue : undefined}
-                  onChange={handleFromDateChanged}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle({ ...theme }),
-                      placeholder: t('components.paymentFilter.from')
-                    },
-                    openPickerButton: { disableRipple: true }
-                  }}
-                  slots={{
-                    openPickerIcon: DateIcon
-                  }}
-                />
-                <DatePicker
-                  value={toValue}
-                  format={'dd.MM.yyyy'}
-                  disableFuture
-                  minDate={fromValue ? fromValue : undefined}
-                  onChange={handleToDateChanged}
-                  slotProps={{
-                    textField: {
-                      variant: 'filled',
-                      sx: DateInputStyle({ ...theme }),
-                      placeholder: t('components.paymentFilter.to')
-                    },
-                    openPickerButton: { disableRipple: true }
-                  }}
-                  slots={{
-                    openPickerIcon: DateIcon
-                  }}
-                />
-              </Stack>
-            </Stack>
-            <Stack>
-              <InputLabel htmlFor="payment-type-select" sx={labelStyle}>
-                {t('components.paymentFilter.paymentType')}
-              </InputLabel>
-              <Select
-                id="payment-type-select"
-                displayEmpty
-                value={paymentType}
-                onChange={handlePaymentTypeChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle({ ...theme })}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + theme.colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>{t('components.paymentFilter.choose')}</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem value="">
-                  <em>{t('components.paymentFilter.choose')}</em>
-                </MenuItem>
-                {paymentTypeValues.map((item) => (
-                  <MenuItem
-                    key={item.value}
-                    id={item.value}
-                    selected={item.name === paymentType}
-                    value={item.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {item.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack>
-              <InputLabel htmlFor="payment-for-select" sx={labelStyle}>
-                {t('components.paymentFilter.typePayment')}
-              </InputLabel>
-              <Select
-                id="payment-for-select"
-                displayEmpty
-                value={paymentFor}
-                onChange={handlePaymentForChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle({ ...theme })}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + theme.colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>{t('components.paymentFilter.choose')}</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem value="">
-                  <em>{t('components.paymentFilter.choose')}</em>
-                </MenuItem>
-                {paymentForValues.map((item) => (
-                  <MenuItem
-                    key={item.value}
-                    id={item.value}
-                    selected={item.name === paymentFor}
-                    value={item.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {item.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-            <Stack>
-              <InputLabel htmlFor="is-refund-select" sx={labelStyle}>
-                {t('components.paymentFilter.refund')}
-              </InputLabel>
-              <Select
-                id="is-refund-select"
-                displayEmpty
-                value={isRefund}
-                onChange={handleIsRefundChange}
-                variant="filled"
-                IconComponent={(props) => (
-                  <IconButton
-                    disableRipple
-                    {...props}
-                    sx={{ top: `${0} !important`, right: `4px !important` }}
-                  >
-                    <img
-                      style={{
-                        width: '24px'
-                      }}
-                      src={selectIcon}
-                      alt="select"
-                    />
-                  </IconButton>
-                )}
-                sx={selectMenuStyle({ ...theme })}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      borderRadius: '8px',
-                      border: '1px solid ' + theme.colors.outline.default
-                    }
-                  },
-                  MenuListProps: {
-                    sx: { py: '4px' }
-                  }
-                }}
-                renderValue={(selected) => {
-                  if (selected === '') {
-                    return <em>{t('components.paymentFilter.choose')}</em>;
-                  } else {
-                    return (
-                      <Typography
-                        component={'h5'}
-                        noWrap
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {selected}
-                      </Typography>
-                    );
-                  }
-                }}
-              >
-                <MenuItem value="">
-                  <em>{t('components.paymentFilter.choose')}</em>
-                </MenuItem>
-                {isRefundValues.map((item) => (
-                  <MenuItem
-                    key={item.value}
-                    id={item.value}
-                    selected={item.name === isRefund}
-                    value={item.name}
-                  >
-                    <Typography
-                      component={'h5'}
-                      noWrap
-                      sx={{ fontWeight: 500, p: 0 }}
-                    >
-                      {item.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </Stack>
-
-            <Stack direction={'row'} gap={'8px'} sx={{ pt: '8px' }}>
-              <Button
-                disabled={submited}
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={[primaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
-                type="submit"
-              >
-                {t('components.paymentFilter.submit')}
-              </Button>
-              <Button
-                disabled={!filters}
-                disableRipple
-                variant="contained"
-                fullWidth={false}
-                sx={[secondaryButtonStyle({ ...theme }), { flexGrow: 1 }]}
-                onClick={resetHandle}
-              >
-                {t('components.paymentFilter.reset')}
-              </Button>
-            </Stack>
-          </Stack>
+            confirmText={t('components.paymentFilter.submit')}
+          />
         )}
       </Box>
     </>

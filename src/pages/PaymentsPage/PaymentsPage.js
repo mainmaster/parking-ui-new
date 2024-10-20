@@ -28,6 +28,7 @@ import {useTranslation} from "react-i18next";
 import add from "../../assets/svg/add.svg";
 import AddOrderDialog from "../../components/AddOrderDialog/AddOrderDialog";
 import CreatedOrderDialog from "../../components/CreatedOrderDialog/CreatedOrderDialog";
+import UnloadPaymentDialog from "../../components/UnloadPaymentDialog/UnloadPaymentDialog";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -55,6 +56,11 @@ const PaymentsPage = () => {
   const [isOrderCreateOpen, setIsOrderCreateOpen] = useState(false);
   const [isOrderCreatedOpen, setIsOrderCreatedOpen] = useState(false);
   const [createdData, setCreatedData] = useState(null);
+  const [isUnloadOpen, setIsUnloadOpen] = useState(false);
+
+  const handleUnloadClose = () => {
+    setIsUnloadOpen(false);
+  }
 
   const totalTextStyle = useMemo(() => {
     return {
@@ -214,7 +220,7 @@ const PaymentsPage = () => {
                 variant="contained"
                 fullWidth={false}
                 sx={primaryButtonStyle({ ...theme })}
-                onClick={handleGetPaymentsReport}
+                onClick={() => setIsUnloadOpen(true)}
               >
                 {t('pages.paymentsPage.export')}
               </Button>
@@ -287,7 +293,7 @@ const PaymentsPage = () => {
                   variant="contained"
                   fullWidth={false}
                   sx={primaryButtonStyle({ ...theme })}
-                  onClick={handleGetPaymentsReport}
+                  onClick={() => setIsUnloadOpen(true)}
                 >
                   {t('pages.paymentsPage.export')}
                 </Button>
@@ -371,6 +377,7 @@ const PaymentsPage = () => {
       </Stack>
       <AddOrderDialog handleClose={handleCloseAddOrder} isOpen={isOrderCreateOpen} setIsOrderCreatedOpen={handleOpenCreatedOrder}/>
       <CreatedOrderDialog data={createdData} isOpen={isOrderCreatedOpen} handleClose={handleCloseCreatedOrder}/>
+      <UnloadPaymentDialog isOpen={isUnloadOpen} handleClose={handleUnloadClose}/>
     </>
   );
 };

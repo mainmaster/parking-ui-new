@@ -902,6 +902,10 @@
     "unloadApplicationDialog": {
       "title": "Filters to unload",
       "confirm": "Unload"
+    },
+    "unloadPaymentDialog": {
+      "title": "Filters to unload",
+      "confirm": "Unload"
     }
   },
   "constants": {

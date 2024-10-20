@@ -66,5 +66,11 @@ export const getPaymentsReport = async ({
 };
 
 export const createPaymentOrder = (data) => {
-  return $api.post('/payment/registerAnyOrder', data)
-}
+  return $api.post('/payment/registerAnyOrder', data);
+};
+
+export const unloadPayment = (data) => {
+  return $api.get('/payment/report', {
+    params: data
+  });
+};
