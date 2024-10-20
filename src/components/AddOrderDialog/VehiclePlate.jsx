@@ -66,7 +66,6 @@ export default function VehiclePlate({ setVehiclePlates, vehicle, index }) {
         <DatePicker
           value={date}
           format={'dd.MM.yyyy'}
-          disableFuture
           onChange={handleFromDateChanged}
           slotProps={{
             textField: {
