@@ -410,7 +410,7 @@ export const SessionPage = () => {
               gap={isMobile ? '4px' : '16px'}
             >
               <Typography sx={labelTextStyle}>{t('pages.sessionPage.renter')}</Typography>
-              <Typography>{`${session.renter}`}</Typography>
+              <Typography>{`${session.renter ?? '-'}`}</Typography>
             </Stack>
             <Stack
               direction={isMobile ? 'column' : 'row'}
