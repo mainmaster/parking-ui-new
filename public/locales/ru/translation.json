@@ -938,7 +938,8 @@
     "closed" : "Закрыто",
     "in": "Въезд",
     "out": "Выезд",
-    "inner": "Внутренняя"
+    "inner": "Внутренняя",
+    "report": "Отчёты"
   },
   "routesTitle": {
     "visor": "VIZOR",

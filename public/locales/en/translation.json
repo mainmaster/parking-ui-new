@@ -938,7 +938,8 @@
     "closed" : "Closed",
     "in": "Entry",
     "out": "Exit",
-    "inner": "Internal"
+    "inner": "Internal",
+    "report": "Reports"
   },
   "routesTitle": {
     "visor": "VIZOR",

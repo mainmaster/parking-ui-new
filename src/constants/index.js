@@ -293,6 +293,12 @@ export let operatorAccessOptions = [
     value: 'access_to_renters',
     child: true,
     parent: 'access_to_operators, access_to_renters'
+  },
+  {
+    name: i18n.t('constants.report'),
+    route: '/reports',
+    value: 'access_to_reports',
+    child: false,
   }
   //{ name: 'Логи поиска', value: 'access_to_search_logs' }
 ];
@@ -457,6 +463,12 @@ const updateConst = () => {
       value: 'access_to_renters',
       child: true,
       parent: 'access_to_operators, access_to_renters'
+    },
+    {
+      name: i18n.t('constants.report'),
+      route: '/reports',
+      value: 'access_to_reports',
+      child: false,
     }
     //{ name: 'Логи поиска', value: 'access_to_search_logs' }
   ];
