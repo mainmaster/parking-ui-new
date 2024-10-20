@@ -313,7 +313,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
               sx={[secondaryButtonStyle({ ...theme }), {margin: '0 16px'}]}
               endIcon={<img src={download} alt={'add'} />}
             >
-              Выгрузить
+              {t('pages.eventList.unload')}
             </Button>
             {eventsList.length > 0 ? (
               <>
@@ -421,7 +421,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
             sx={[secondaryButtonStyle({ ...theme }), {margin: '0 16px'}]}
             endIcon={<img src={download} alt={'add'} />}
           >
-            Выгрузить
+            {t('pages.eventList.unload')}
           </Button>
           {eventsList.length > 0 ? (
             <>

@@ -11,7 +11,7 @@ export const applicationsSlice = createSlice({
     currentPage: 1,
     isLoadingFetch: false,
     isErrorFetch: false,
-
+    unloadFilters: {},
     editApplication:{
       edit: false,
       application: null
@@ -44,6 +44,12 @@ export const applicationsSlice = createSlice({
       return{
         ...state,
         filters: action.payload
+      }
+    },
+    setUnloadFilter: (state, action)=>{
+      return {
+        ...state,
+        unloadFilters: action.payload
       }
     },
     applicationsChangePageFetch: (state, action) => {},
@@ -81,7 +87,8 @@ export const {
   deleteApplicationFetch,
   editApplicationFetch,
   createApplicationsFetch,
-  setFilters
+  setFilters,
+  setUnloadFilter,
 } = applicationsSlice.actions
 
 export default applicationsSlice.reducer

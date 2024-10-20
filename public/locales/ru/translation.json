@@ -104,7 +104,8 @@
       "eventDetail": "Скопировать тело события"
     },
     "eventList": {
-      "noReport": "Нет отчётов"
+      "noReport": "Нет отчётов",
+      "unload": "Выгрузить"
     },
     "ledPage": {
       "led": "LED табло",
@@ -895,6 +896,10 @@
       "example": "Например a111aa11"
     },
     "generateEventReport": {
+      "title": "Фильтры к выгрузке",
+      "confirm": "Выгрузить"
+    },
+    "unloadApplicationDialog": {
       "title": "Фильтры к выгрузке",
       "confirm": "Выгрузить"
     }

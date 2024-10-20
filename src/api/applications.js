@@ -33,3 +33,9 @@ export const createApplicationRequest = async(data)=>{
 export const deleteApplicationRequest = async(data) =>{
   return $api.delete(`/requests/${data}`, data)
 }
+
+export const unloadApplication = async (data) => {
+  return $api.get(`/requests/reports`, {
+    params: data
+  })
+}

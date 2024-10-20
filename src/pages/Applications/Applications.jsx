@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import PaginationCustom from 'components/Pagination';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,14 @@ import {
 } from '../../store/applications/applicationSlice';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Box, Stack, Typography, Button } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Stack,
+  Typography,
+  Button,
+  IconButton
+} from '@mui/material';
 import { listWithScrollStyle, primaryButtonStyle } from '../../theme/styles';
 import ApplicationFilter from '../../components/ApplicationFilter/ApplicationFilter';
 import FooterSpacer from '../../components/Header/FooterSpacer';
@@ -21,14 +28,15 @@ import LogApplicationCard from '../../components/LogApplicationCard/LogApplicati
 import EventManager from '../../components/EventManager/EventManager';
 import OpenFormSpacer from './OpenformSpacer';
 import AddApplicationDialog from '../../components/AddApplicationDialog/AddApplicationDialog';
-import {useTranslation} from "react-i18next";
-//import { applications } from './testApplications';
+import { useTranslation } from 'react-i18next';
+import download from '../../assets/svg/unload_white.svg';
+import {UnloadApplicationDialog} from "../../components/UnloadApplicationDialog/UnloadApplicationDialog";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
   fontWeight: 500,
-  maxWidth: 'max-content',
+  maxWidth: 'max-content'
 };
 
 export const Applications = () => {
@@ -51,6 +59,7 @@ export const Applications = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
+  const [isUnloadOpen, setIsUnloadOpen] = useState(false);
 
   const handleResize = useCallback(() => {
     if (containerRef?.current) {
@@ -108,6 +117,10 @@ export const Applications = () => {
     );
   };
 
+  const handleIsUnloadClose = () => {
+    setIsUnloadOpen(false);
+  }
+
   return (
     <>
       {!isMobile && (
@@ -134,11 +147,24 @@ export const Applications = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={{...titleTextStyle, maxWidth: 300, width: '100%'}}>{t('pages.applications.requests')}: <span style={{fontSize: '1rem', fontWeight: 400}}>{applications.count} {t('pages.sessionsPage.all')}</span></Typography>
+            <Typography
+              sx={{ ...titleTextStyle, maxWidth: 300, width: '100%' }}
+            >
+              {t('pages.applications.requests')}:{' '}
+              <span
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 400
+                }}
+              >
+                {applications.count} {t('pages.sessionsPage.all')}
+              </span>
+            </Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
               sx={{ width: '100%' }}
+              gap={1}
             >
               <Button
                 disableRipple
@@ -149,7 +175,19 @@ export const Applications = () => {
               >
                 {t('pages.applications.addRequest')}
               </Button>
-
+              <IconButton
+                onClick={() => setIsUnloadOpen(true)}
+                disableRipple
+                sx={primaryButtonStyle({ ...theme })}
+              >
+                <img
+                  src={download}
+                  alt={'details'}
+                  style={{
+                    width: '15px'
+                  }}
+                />
+              </IconButton>
               <ApplicationFilter
                 openForm={openForm}
                 setOpenForm={setOpenForm}
@@ -196,16 +234,36 @@ export const Applications = () => {
                   pb: '8px'
                 }}
               >
-                <Typography sx={{...titleTextStyle}}>{t('pages.applications.requests')}:<br/> <span style={{fontSize: '1rem', fontWeight: 400}}>{applications.count} {t('pages.sessionsPage.all')}</span></Typography>
-                <Button
-                  disableRipple
-                  variant="contained"
-                  fullWidth={false}
-                  sx={primaryButtonStyle({ ...theme })}
-                  onClick={handleAddApplicationClick}
-                >
-                  {t('pages.applications.addRequest')}
-                </Button>
+                <Typography sx={{ ...titleTextStyle }}>
+                  {t('pages.applications.requests')}:<br />{' '}
+                  <span style={{ fontSize: '1rem', fontWeight: 400 }}>
+                    {applications.count} {t('pages.sessionsPage.all')}
+                  </span>
+                </Typography>
+                <Stack direction={'row'} gap={'16px'}>
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    fullWidth={false}
+                    sx={primaryButtonStyle({ ...theme })}
+                    onClick={handleAddApplicationClick}
+                  >
+                    {t('pages.applications.addRequest')}
+                  </Button>
+                  <IconButton
+                    onClick={() => setIsUnloadOpen(true)}
+                    disableRipple
+                    sx={primaryButtonStyle({ ...theme })}
+                  >
+                    <img
+                      src={download}
+                      alt={'details'}
+                      style={{
+                        width: '15px'
+                      }}
+                    />
+                  </IconButton>
+                </Stack>
               </Stack>
               <Box
                 sx={{
@@ -279,7 +337,9 @@ export const Applications = () => {
                   src={parkEmptyIcon}
                   alt="Нет заявок"
                 />
-                <Typography sx={titleTextStyle}>{t('pages.applications.noRequest')}</Typography>
+                <Typography sx={titleTextStyle}>
+                  {t('pages.applications.noRequest')}
+                </Typography>
               </>
             )}
           </Stack>
@@ -296,6 +356,10 @@ export const Applications = () => {
         handleClose={handleCloseEditApplicationClick}
         edit={true}
       />
+      <UnloadApplicationDialog
+        isOpen={isUnloadOpen}
+        handleClose={handleIsUnloadClose}
+        />
     </>
   );
 };

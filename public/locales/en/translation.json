@@ -104,7 +104,8 @@
       "eventDetail": "Copy event body"
     },
     "eventList": {
-      "noReport": "No reports"
+      "noReport": "No reports",
+      "unload": "Unload"
     },
     "ledPage": {
       "led": "LED-display",
@@ -895,6 +896,10 @@
       "example": "Example a111aa11"
     },
     "generateEventReport": {
+      "title": "Filters to unload",
+      "confirm": "Unload"
+    },
+    "unloadApplicationDialog": {
       "title": "Filters to unload",
       "confirm": "Unload"
     }
