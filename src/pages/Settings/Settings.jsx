@@ -2653,7 +2653,8 @@ const Settings = () => {
                                     htmlFor={`${key}_in_line`}
                                     sx={labelStyle}
                                   >
-                                    {key}
+                                    {globalSettings.led_board_message_texts
+                                      .in[key].name ?? key}
                                   </InputLabel>
                                   <Stack display={'flex'} id={`${key}_in_line`} direction={'column'} gap={2}>
                                     <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>
@@ -2905,7 +2906,8 @@ const Settings = () => {
                                     htmlFor={`${key}_out_line`}
                                     sx={labelStyle}
                                   >
-                                    {key}
+                                    {globalSettings.led_board_message_texts
+                                      .out[key].name ?? key}
                                   </InputLabel>
                                   <Stack display={'flex'} id={`${key}_out_line`} direction={'column'} gap={2}>
                                     <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>

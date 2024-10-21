@@ -86,24 +86,6 @@ const ReportsPage = (props) => {
           </Stack>
         </AppBar>
       )}
-      {isMobile && (
-        <Stack
-          direction={'row'}
-          gap={'16px'}
-          justifyContent={'space-between'}
-          sx={{
-            height: '64px',
-            width: '100%',
-            p: '16px',
-            pb: '8px'
-          }}
-        >
-          <Typography sx={titleTextStyle}>
-            {t('pages.reports.title')}
-          </Typography>
-        </Stack>
-      )}
-
       <Stack
         ref={sessionsListRef}
         sx={[
@@ -115,6 +97,23 @@ const ReportsPage = (props) => {
         ]}
         onScroll={handleSessionsListScroll}
       >
+        {isMobile && (
+          <Stack
+            direction={'row'}
+            gap={'16px'}
+            justifyContent={'space-between'}
+            sx={{
+              height: '64px',
+              width: '100%',
+              p: '16px',
+              pb: '8px'
+            }}
+          >
+            <Typography sx={titleTextStyle}>
+              {t('pages.reports.title')}
+            </Typography>
+          </Stack>
+        )}
         <EventManager />
         <TerminalSpacer />
         {reports.length > 0 ? (

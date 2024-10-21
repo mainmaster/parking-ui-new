@@ -17,7 +17,8 @@ import { format } from 'date-fns';
 const titleTextStyle = {
   fontSize: '1.5rem',
   lineHeight: '1.75rem',
-  fontWeight: 500
+  fontWeight: 500,
+  wordBreak: 'break-word',
 };
 
 export function ReportCard({ report }) {
