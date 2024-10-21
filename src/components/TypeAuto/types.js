@@ -86,6 +86,16 @@ export const typeText = ({ colors }) => {
       label: i18n.t('components.typeAutoType.oneTime'),
       color: colors.payment_type.session,
       textColor: colors.element.light
+    },
+    reportReady: {
+      label: i18n.t('components.typeAutoType.reportReady'),
+      color: colors.report.bg.ready,
+      textColor: colors.report.text.white,
+    },
+    reportNotReady: {
+      label: i18n.t('components.typeAutoType.reportNotReady'),
+      color: colors.report.bg.notReady,
+      textColor: colors.report.text.black
     }
   };
 };

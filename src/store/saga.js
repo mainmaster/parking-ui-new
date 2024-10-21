@@ -12,6 +12,7 @@ import ledsSagaWatcher from './led/ledSaga'
 import paymentsSagaWatcher from './payments/paymentsSaga'
 import applicationsSagaWatcher from './applications/applicationSaga'
 import searchLogsSagaWatcher from '../pages/SearchLogs/searchLogs.saga'
+import reportsSagaWatcher from "./reports/reportsSaga";
 
 export function* rootWatcher() {
   yield all([
@@ -26,6 +27,7 @@ export function* rootWatcher() {
     blackListSagaWatcher(),
     ledsSagaWatcher(),
     paymentsSagaWatcher(),
-    searchLogsSagaWatcher()
+    searchLogsSagaWatcher(),
+    reportsSagaWatcher(),
   ])
 }

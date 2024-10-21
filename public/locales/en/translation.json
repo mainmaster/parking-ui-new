@@ -325,6 +325,10 @@
       "english": "English",
       "subscriptionPaymentDescription": "Cheque text for a subscription",
       "parkingPaymentDescription": "Cheque text for one-off payment"
+    },
+    "reports": {
+      "title": "Reports",
+      "noItem": "No reports"
     }
   },
   "components": {
@@ -856,7 +860,9 @@
       "sber": "Sber",
       "yookassa": "Yookassa",
       "afterTerminal": "Pos-terminal",
-      "refund": "Refund"
+      "refund": "Refund",
+      "c": "Ready",
+      "reportNotReady": "Preparation"
     },
     "updateVehiclePlateModal": {
       "title": "Edit plate",
@@ -906,6 +912,20 @@
     "unloadPaymentDialog": {
       "title": "Filters to unload",
       "confirm": "Unload"
+    },
+    "reportCard": {
+      "payment": "Payment",
+      "events": "Event",
+      "request": "Request",
+      "date": "Date",
+      "type": "Report type",
+      "download": "Download",
+      "delete": "Yes, delete"
+    },
+    "renameReportDialog": {
+      "title": "Rename report",
+      "name": "Name",
+      "save": "Save"
     }
   },
   "constants": {

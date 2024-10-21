@@ -26,6 +26,7 @@ import rentersSlice from './renters/rentersSlice';
 import terminalsSlice from './terminals/terminalsSlice';
 import operatorSlice from './operator/operatorSlice';
 import searchLogsSlice from '../pages/SearchLogs/searchLogs.slice';
+import reportsSlice from "./reports/reportsSlice";
 
 const saga = createSagaMiddleware();
 
@@ -52,7 +53,8 @@ export const store = configureStore({
     blackList: blackListSlice,
     leds: ledSlice,
     payments: paymentsSlice,
-    parkingInfo: parkingInfo
+    parkingInfo: parkingInfo,
+    reports: reportsSlice,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({

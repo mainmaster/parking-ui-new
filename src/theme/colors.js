@@ -153,5 +153,15 @@ export const colors = {
         active: '#169C4C'
       }
     }
+  },
+  report: {
+    bg: {
+      ready: '#138641',
+      notReady: '#CCCACE'
+    },
+    text: {
+      black: '#000000',
+      white: '#FFFFFF'
+    }
   }
 };

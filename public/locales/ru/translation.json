@@ -325,6 +325,10 @@
       "english": "English",
       "subscriptionPaymentDescription": "Текст чека для абонемента",
       "parkingPaymentDescription": "Текст чека для разовой оплаты"
+    },
+    "reports": {
+      "title": "Отчёты",
+      "noItem": "Нет отчётов"
     }
   },
   "components": {
@@ -856,7 +860,9 @@
       "sber": "Сбер",
       "yookassa": "Yookassa",
       "afterTerminal": "POS-терминал",
-      "refund": "Возврат"
+      "refund": "Возврат",
+      "reportReady": "Готов",
+      "reportNotReady": "Подготовка"
     },
     "updateVehiclePlateModal": {
       "title": "Ред. номер",
@@ -906,6 +912,20 @@
     "unloadPaymentDialog": {
       "title": "Фильтры к выгрузке",
       "confirm": "Выгрузить"
+    },
+    "reportCard": {
+      "payment": "Оплаты",
+      "events": "События",
+      "request": "Заявки",
+      "date": "Дата",
+      "type": "Тип отчёта",
+      "download": "Скачать",
+      "delete": "Да, удалить"
+    },
+    "renameReportDialog": {
+      "title": "Переименовать отчёт",
+      "name": "Название",
+      "save": "Сохранить"
     }
   },
   "constants": {
