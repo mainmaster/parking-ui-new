@@ -83,6 +83,15 @@ const accordionTitleStyle = {
   whiteSpace: 'nowrap'
 };
 
+const settingsTitleStyle = {
+  pb: '4px',
+  pl: '12px',
+  whiteSpace: 'wrap',
+  fontSize: '1.25rem',
+  lineHeight: '1.5rem',
+  fontWeight: 500,
+}
+
 const Settings = () => {
   const { t, i18n } = useTranslation();
 
@@ -2651,7 +2660,7 @@ const Settings = () => {
                                 ).length ?  {borderBottom: '1px solid black', paddingBottom: '12px'} : {}}>
                                   <InputLabel
                                     htmlFor={`${key}_in_line`}
-                                    sx={labelStyle}
+                                    sx={settingsTitleStyle}
                                   >
                                     {globalSettings.led_board_message_texts
                                       .in[key].name ?? key}
@@ -2904,7 +2913,7 @@ const Settings = () => {
                                 ).length ?  {borderBottom: '1px solid black', paddingBottom: '12px'} : {}}>
                                   <InputLabel
                                     htmlFor={`${key}_out_line`}
-                                    sx={labelStyle}
+                                    sx={settingsTitleStyle}
                                   >
                                     {globalSettings.led_board_message_texts
                                       .out[key].name ?? key}
