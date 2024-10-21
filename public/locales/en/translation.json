@@ -986,7 +986,8 @@
     "modes": "Modes",
     "controllers": "Controllers",
     "access": "Access",
-    "payments": "Payments"
+    "payments": "Payments",
+    "reports": "Reports"
   },
   "api": {
     "noAccess": "Not enough rights for the operation"

@@ -7,6 +7,7 @@ export let operatorRoutes = [
   { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
   { eventKey: '/requests', title: i18n.t('routesTitle.request') },
   { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
+  { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
 ];
 export let renterRoutes = [
   { eventKey: '/events-logs', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
@@ -27,7 +28,8 @@ export let adminRoutes = [
   { eventKey: '/working-modes', title: i18n.t('routesTitle.modes') },
   { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
   { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
-  { eventKey: '/users/operators', title: i18n.t('routesTitle.access') }
+  { eventKey: '/users/operators', title: i18n.t('routesTitle.access') },
+  { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
 ];
 
 const uploadRouterTile = () => {
@@ -45,7 +47,8 @@ const uploadRouterTile = () => {
     { eventKey: '/working-modes', title: i18n.t('routesTitle.modes') },
     { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
     { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
-    { eventKey: '/users/operators', title: i18n.t('routesTitle.access') }
+    { eventKey: '/users/operators', title: i18n.t('routesTitle.access') },
+    { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
   ];
   renterRoutes = [
     { eventKey: '/events-logs', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },
@@ -59,6 +62,7 @@ const uploadRouterTile = () => {
     { eventKey: '/black-list/active', title: i18n.t('routesTitle.blackList')},
     { eventKey: '/requests', title: i18n.t('routesTitle.request') },
     { eventKey: '/settings', title: i18n.t('routesTitle.setting') },
+    { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
   ];
 }
 

@@ -2645,8 +2645,10 @@ const Settings = () => {
                             {globalSettings?.led_board_message_texts?.in &&
                               Object.keys(
                                 globalSettings.led_board_message_texts.in
-                              ).map((key) => (
-                                <Stack gap={'4px'} key={`${key}_in`}>
+                              ).map((key, index) => (
+                                <Stack gap={'4px'} key={`${key}_in`} sx={index + 1 !== Object.keys(
+                                  globalSettings.led_board_message_texts.in
+                                ).length ?  {borderBottom: '1px solid black', paddingBottom: '12px'} : {}}>
                                   <InputLabel
                                     htmlFor={`${key}_in_line`}
                                     sx={labelStyle}
@@ -2895,8 +2897,10 @@ const Settings = () => {
                             {globalSettings?.led_board_message_texts?.out &&
                               Object.keys(
                                 globalSettings.led_board_message_texts.out
-                              ).map((key) => (
-                                <Stack gap={'4px'} key={`${key}_out`}>
+                              ).map((key, index) => (
+                                <Stack gap={'4px'} key={`${key}_out`} sx={index + 1 !== Object.keys(
+                                  globalSettings.led_board_message_texts.out
+                                ).length ?  {borderBottom: '1px solid black', paddingBottom: '12px'} : {}}>
                                   <InputLabel
                                     htmlFor={`${key}_out_line`}
                                     sx={labelStyle}

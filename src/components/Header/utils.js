@@ -71,6 +71,8 @@ import MoreWifiIcon from '../../assets/svg/more_wifi_icon.svg';
 import MoreIdIcon from '../../assets/svg/more_id_icon.svg';
 import MoreUsersIcon from '../../assets/svg/more_users_icon.svg';
 import MoreCardIcon from '../../assets/svg/more_card_icon.svg';
+import ReportIcon from '../../assets/svg/report_menu.svg';
+import ReportSelectIcon from '../../assets/svg/report_select.svg';
 
 export const links = [
   { id: 1, name: 'События', to: '/', icon: <BarChart /> },
@@ -195,7 +197,14 @@ export const icons = [
     selected: CardIconSelected,
     height: 21,
     more: MoreCardIcon
-  }
+  },
+  {
+    route: '/reports',
+    icon: ReportIcon,
+    selected: ReportSelectIcon,
+    height: 30,
+    more: MoreCardIcon
+  },
 ];
 
 export const vlicons = [
