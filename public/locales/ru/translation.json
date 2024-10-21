@@ -324,7 +324,15 @@
       "russian": "Русский",
       "english": "English",
       "subscriptionPaymentDescription": "Текст чека для абонемента",
-      "parkingPaymentDescription": "Текст чека для разовой оплаты"
+      "parkingPaymentDescription": "Текст чека для разовой оплаты",
+      "ledWhite": "Белый",
+      "ledTurquoise": "Бирюзовый",
+      "ledBlue": "Синий",
+      "ledPurple": "Фиолетовый",
+      "ledRed": "Красный",
+      "ledYellow": "Желтый",
+      "ledGreen": "Зеленый",
+      "color": "Цвет"
     },
     "reports": {
       "title": "Отчёты",

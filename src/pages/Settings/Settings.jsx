@@ -1,6 +1,6 @@
 import InputMask from 'react-input-mask';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
-import { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useBlocker, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import {
@@ -85,6 +85,16 @@ const accordionTitleStyle = {
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
+
+  const ledColors= [
+    {value: 1, name: t('pages.settings.ledWhite')},
+    {value: 2, name: t('pages.settings.ledTurquoise')},
+    {value: 3, name: t('pages.settings.ledBlue')},
+    {value: 4, name: t('pages.settings.ledPurple')},
+    {value: 5, name: t('pages.settings.ledRed')},
+    {value: 6, name: t('pages.settings.ledYellow')},
+    {value: 7, name: t('pages.settings.ledGreen')},
+  ]
 
   const yookassaTaxSystemCodeValues = [
     { value: 1, name: t('pages.settings.generalOsn')},
@@ -353,6 +363,7 @@ const Settings = () => {
     setSubmited(false);
   };
 
+
   const handleGlobalInLine1 = (e) => {
     setGlobalSettings({
       ...globalSettings,
@@ -360,10 +371,13 @@ const Settings = () => {
         in: {
           ...globalSettings.led_board_message_texts.in,
           [e.target.name]: {
-            line1: e.target.value,
+            line1: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line1,
+              text: e.target.value
+            },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              ''
+              {}
           }
         },
         out: {
@@ -377,10 +391,13 @@ const Settings = () => {
         in: {
           ...(changedSettings.led_board_message_texts?.in || {}),
           [e.target.name]: {
-            line1: e.target.value,
+            line1: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line1,
+              text: e.target.value
+            },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              ''
+              {}
           }
         },
         out: {
@@ -398,10 +415,13 @@ const Settings = () => {
         in: {
           ...globalSettings.led_board_message_texts.in,
           [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line2,
+              text: e.target.value
+            },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              '',
-            line2: e.target.value
+              {}
           }
         },
         out: {
@@ -415,10 +435,101 @@ const Settings = () => {
         in: {
           ...(changedSettings.led_board_message_texts?.in || {}),
           [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line2,
+              text: e.target.value
+            },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              '',
-            line2: e.target.value
+              {}
+          }
+        },
+        out: {
+          ...(changedSettings.led_board_message_texts?.out || {})
+        }
+      }
+    });
+    setSubmited(false);
+  };
+
+  const handleGlobalInLine1Color = (e) => {
+    setGlobalSettings({
+      ...globalSettings,
+      led_board_message_texts: {
+        in: {
+          ...globalSettings.led_board_message_texts.in,
+          [e.target.name]: {
+            line1: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line1,
+              color: e.target.value
+            },
+            line2:
+              globalSettings.led_board_message_texts.in[e.target.name].line2 ||
+              {}
+          }
+        },
+        out: {
+          ...globalSettings.led_board_message_texts.out
+        }
+      }
+    });
+    setChangedSettings({
+      ...changedSettings,
+      led_board_message_texts: {
+        in: {
+          ...(changedSettings.led_board_message_texts?.in || {}),
+          [e.target.name]: {
+            line1: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line1,
+              color: e.target.value
+            },
+            line2:
+              globalSettings.led_board_message_texts.in[e.target.name].line2 ||
+              {}
+          }
+        },
+        out: {
+          ...(changedSettings.led_board_message_texts?.out || {})
+        }
+      }
+    });
+    setSubmited(false);
+  };
+
+  const handleGlobalInLine2Color = (e) => {
+    setGlobalSettings({
+      ...globalSettings,
+      led_board_message_texts: {
+        in: {
+          ...globalSettings.led_board_message_texts.in,
+          [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line2,
+              color: e.target.value
+            },
+            line1:
+              globalSettings.led_board_message_texts.in[e.target.name].line1 ||
+              {}
+          }
+        },
+        out: {
+          ...globalSettings.led_board_message_texts.out
+        }
+      }
+    });
+    setChangedSettings({
+      ...changedSettings,
+      led_board_message_texts: {
+        in: {
+          ...(changedSettings.led_board_message_texts?.in || {}),
+          [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.in[e.target.name].line2,
+              color: e.target.value
+            },
+            line1:
+              globalSettings.led_board_message_texts.in[e.target.name].line1 ||
+              {}
           }
         },
         out: {
@@ -439,10 +550,13 @@ const Settings = () => {
         out: {
           ...globalSettings.led_board_message_texts.out,
           [e.target.name]: {
-            line1: e.target.value,
+            line1: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line1,
+              text:  e.target.value
+            },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              ''
+              {}
           }
         }
       }
@@ -456,10 +570,13 @@ const Settings = () => {
         out: {
           ...(changedSettings.led_board_message_texts?.out || {}),
           [e.target.name]: {
-            line1: e.target.value,
+            line1: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line1,
+              text:  e.target.value
+            },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              ''
+              {}
           }
         }
       }
@@ -477,10 +594,13 @@ const Settings = () => {
         out: {
           ...globalSettings.led_board_message_texts.out,
           [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line2,
+              text:  e.target.value
+            },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              '',
-            line2: e.target.value
+              {}
           }
         }
       }
@@ -494,10 +614,13 @@ const Settings = () => {
         out: {
           ...(changedSettings.led_board_message_texts?.out || {}),
           [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line2,
+              text:  e.target.value
+            },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              '',
-            line2: e.target.value
+              {}
           }
         }
       }
@@ -505,6 +628,93 @@ const Settings = () => {
     setSubmited(false);
   };
 
+  const handleChangeLedOutLine1Color = (e) => {
+    setGlobalSettings({
+      ...globalSettings,
+      led_board_message_texts: {
+        in: {
+          ...globalSettings.led_board_message_texts.in
+        },
+        out: {
+          ...globalSettings.led_board_message_texts.out,
+          [e.target.name]: {
+            line1: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line1,
+              color:  e.target.value
+            },
+            line2:
+              globalSettings.led_board_message_texts.out[e.target.name].line2 ||
+              {}
+          }
+        }
+      }
+    });
+    setChangedSettings({
+      ...changedSettings,
+      led_board_message_texts: {
+        in: {
+          ...(changedSettings.led_board_message_texts?.in || {})
+        },
+        out: {
+          ...(changedSettings.led_board_message_texts?.out || {}),
+          [e.target.name]: {
+            line1: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line1,
+              color:  e.target.value
+            },
+            line2:
+              globalSettings.led_board_message_texts.out[e.target.name].line2 ||
+              {}
+          }
+        }
+      }
+    });
+    setSubmited(false);
+  }
+
+  const handleChangeLedOutLine2Color = (e) => {
+    setGlobalSettings({
+      ...globalSettings,
+      led_board_message_texts: {
+        in: {
+          ...globalSettings.led_board_message_texts.in
+        },
+        out: {
+          ...globalSettings.led_board_message_texts.out,
+          [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line2,
+              color:  e.target.value
+            },
+            line1:
+              globalSettings.led_board_message_texts.out[e.target.name].line1 ||
+              {}
+          }
+        }
+      }
+    });
+    setChangedSettings({
+      ...changedSettings,
+      led_board_message_texts: {
+        in: {
+          ...(changedSettings.led_board_message_texts?.in || {})
+        },
+        out: {
+          ...(changedSettings.led_board_message_texts?.out || {}),
+          [e.target.name]: {
+            line2: {
+              ...globalSettings.led_board_message_texts.out[e.target.name].line2,
+              color:  e.target.value
+            },
+            line1:
+              globalSettings.led_board_message_texts.out[e.target.name].line1 ||
+              {}
+          }
+        }
+      }
+    });
+    setSubmited(false);
+  }
   const handlePaymentsPageImage = (e) => {
     setPaymentsPageImageFile(e.target.files[0]);
   };
@@ -661,7 +871,9 @@ const Settings = () => {
               pb: '8px'
             }}
           >
-            <Typography sx={titleTextStyle}>{t('pages.settings.settings')}</Typography>
+            <Typography sx={titleTextStyle}>
+              {t('pages.settings.settings')}
+            </Typography>
             <Stack
               direction={'row'}
               justifyContent={'flex-end'}
@@ -1569,7 +1781,9 @@ const Settings = () => {
                                 htmlFor="subscription_payment_description"
                                 sx={labelStyle}
                               >
-                                {t('pages.settings.subscriptionPaymentDescription')}
+                                {t(
+                                  'pages.settings.subscriptionPaymentDescription'
+                                )}
                               </InputLabel>
                               <CarNumberInput
                                 fullWidth
@@ -1894,7 +2108,7 @@ const Settings = () => {
                                 onChange={handleGlobalSettings}
                               />
                             </Stack>
-                     
+
                             <Stack>
                               <InputLabel
                                 htmlFor="regno_score_vl_recognition"
@@ -2137,7 +2351,9 @@ const Settings = () => {
                                     sx={switchInputStyle({ ...theme })}
                                   />
                                 }
-                                label={t('pages.settings.additionalConfirmation')}
+                                label={t(
+                                  'pages.settings.additionalConfirmation'
+                                )}
                                 labelPlacement="end"
                                 sx={{
                                   m: 0,
@@ -2432,43 +2648,231 @@ const Settings = () => {
                               ).map((key) => (
                                 <Stack gap={'4px'} key={`${key}_in`}>
                                   <InputLabel
-                                    htmlFor={`${key}_in_line1`}
+                                    htmlFor={`${key}_in_line`}
                                     sx={labelStyle}
                                   >
                                     {key}
                                   </InputLabel>
-                                  <CarNumberInput
-                                    fullWidth
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      sx: { paddingLeft: '12px' }
-                                    }}
-                                    variant="filled"
-                                    id={`${key}_in_line1`}
-                                    name={key}
-                                    value={
-                                      globalSettings.led_board_message_texts.in[
-                                        key
-                                      ].line1 ?? ''
-                                    }
-                                    onChange={handleGlobalInLine1}
-                                  />
-                                  <CarNumberInput
-                                    fullWidth
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      sx: { paddingLeft: '12px' }
-                                    }}
-                                    variant="filled"
-                                    id={`${key}_in_line2`}
-                                    name={key}
-                                    value={
-                                      globalSettings.led_board_message_texts.in[
-                                        key
-                                      ].line2 ?? ''
-                                    }
-                                    onChange={handleGlobalInLine2}
-                                  />
+                                  <Stack display={'flex'} id={`${key}_in_line`} direction={'column'} gap={2}>
+                                    <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_input_in_line1`}
+                                          sx={labelStyle}
+                                        >
+                                          Line 1
+                                        </InputLabel>
+                                        <CarNumberInput
+                                          id={`${key}_input_in_line1`}
+                                          InputProps={{
+                                            disableUnderline: true,
+                                            sx: { paddingLeft: '12px'}
+                                          }}
+                                          variant="filled"
+                                          name={key}
+                                          value={
+                                            globalSettings.led_board_message_texts
+                                              .in[key].line1?.text ?? ''
+                                          }
+                                          onChange={handleGlobalInLine1}
+                                        />
+                                      </Stack>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_select_in_line1`}
+                                          sx={labelStyle}
+                                        >
+                                          {t('pages.settings.color')}
+                                        </InputLabel>
+                                        <Select
+                                          id={`${key}_select_in_line1`}
+                                          name={`${key}`}
+                                          displayEmpty
+                                          value={globalSettings.led_board_message_texts
+                                            .in[key].line1?.color}
+                                          onChange={handleGlobalInLine1Color}
+                                          variant="filled"
+                                          IconComponent={(props) => (
+                                            <IconButton
+                                              disableRipple
+                                              {...props}
+                                              sx={{
+                                                top: `${0} !important`,
+                                                right: `4px !important`
+                                              }}
+                                            >
+                                              <img
+                                                style={{
+                                                  width: '24px'
+                                                }}
+                                                src={selectIcon}
+                                                alt="select"
+                                              />
+                                            </IconButton>
+                                          )}
+                                          sx={selectMenuStyle({ ...theme })}
+                                          MenuProps={{
+                                            PaperProps: {
+                                              sx: {
+                                                borderRadius: '8px',
+                                                border:
+                                                  '1px solid ' +
+                                                  theme.colors.outline.default
+                                              }
+                                            },
+                                            MenuListProps: {
+                                              sx: { py: '4px' }
+                                            }
+                                          }}
+                                          renderValue={(selected) => {
+                                            const selectedName =
+                                              ledColors.find(
+                                                (item) => item.value === selected
+                                              );
+                                            return (
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500 }}
+                                              >
+                                                {selectedName?.name}
+                                              </Typography>
+                                            );
+                                          }}
+                                        >
+                                          {ledColors.map((item) => (
+                                            <MenuItem
+                                              key={item.name}
+                                              id={item.name}
+                                              selected={
+                                                globalSettings.led_board_message_texts
+                                                  .in[key].line1?.color ===
+                                                item.value
+                                              }
+                                              value={item.value}
+                                            >
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500, p: 0 }}
+                                              >
+                                                {item.name}
+                                              </Typography>
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </Stack>
+                                    </Stack>
+                                    <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_input_in_line2`}
+                                          sx={labelStyle}
+                                        >
+                                          Line 2
+                                        </InputLabel>
+                                        <CarNumberInput
+                                          id={`${key}_input_in_line2`}
+                                          InputProps={{
+                                            disableUnderline: true,
+                                            sx: { paddingLeft: '12px' }
+                                          }}
+                                          variant="filled"
+                                          name={key}
+                                          value={
+                                            globalSettings.led_board_message_texts
+                                              .in[key].line2?.text ?? ''
+                                          }
+                                          onChange={handleGlobalInLine2}
+                                        />
+                                      </Stack>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_select_in_line2`}
+                                          sx={labelStyle}
+                                        >
+                                          {t('pages.settings.color')}
+                                        </InputLabel>
+                                        <Select
+                                          id={`${key}_select_in_line2`}
+                                          name={`${key}`}
+                                          displayEmpty
+                                          value={globalSettings.led_board_message_texts
+                                            .in[key].line2?.color}
+                                          onChange={handleGlobalInLine2Color}
+                                          variant="filled"
+                                          IconComponent={(props) => (
+                                            <IconButton
+                                              disableRipple
+                                              {...props}
+                                              sx={{
+                                                top: `${0} !important`,
+                                                right: `4px !important`
+                                              }}
+                                            >
+                                              <img
+                                                style={{
+                                                  width: '24px'
+                                                }}
+                                                src={selectIcon}
+                                                alt="select"
+                                              />
+                                            </IconButton>
+                                          )}
+                                          sx={selectMenuStyle({ ...theme })}
+                                          MenuProps={{
+                                            PaperProps: {
+                                              sx: {
+                                                borderRadius: '8px',
+                                                border:
+                                                  '1px solid ' +
+                                                  theme.colors.outline.default
+                                              }
+                                            },
+                                            MenuListProps: {
+                                              sx: { py: '4px' }
+                                            }
+                                          }}
+                                          renderValue={(selected) => {
+                                            const selectedName =
+                                              ledColors.find(
+                                                (item) => item.value === selected
+                                              );
+                                            return (
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500 }}
+                                              >
+                                                {selectedName?.name}
+                                              </Typography>
+                                            );
+                                          }}
+                                        >
+                                          {ledColors.map((item) => (
+                                            <MenuItem
+                                              key={item.name}
+                                              id={item.name}
+                                              selected={
+                                                globalSettings.led_board_message_texts
+                                                  .in[key].line2?.color ===
+                                                item.value
+                                              }
+                                              value={item.value}
+                                            >
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500, p: 0 }}
+                                              >
+                                                {item.name}
+                                              </Typography>
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </Stack>
+                                    </Stack>
+                                  </Stack>
                                 </Stack>
                               ))}
                             <Stack
@@ -2494,41 +2898,231 @@ const Settings = () => {
                               ).map((key) => (
                                 <Stack gap={'4px'} key={`${key}_out`}>
                                   <InputLabel
-                                    htmlFor={`${key}_out_line1`}
+                                    htmlFor={`${key}_out_line`}
                                     sx={labelStyle}
                                   >
                                     {key}
                                   </InputLabel>
-                                  <CarNumberInput
-                                    fullWidth
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      sx: { paddingLeft: '12px' }
-                                    }}
-                                    variant="filled"
-                                    id={`${key}_out_line1`}
-                                    name={key}
-                                    value={
-                                      globalSettings.led_board_message_texts
-                                        .out[key].line1 ?? ''
-                                    }
-                                    onChange={handleGlobalOutLine1}
-                                  />
-                                  <CarNumberInput
-                                    fullWidth
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      sx: { paddingLeft: '12px' }
-                                    }}
-                                    variant="filled"
-                                    id={`${key}_out_line2`}
-                                    name={key}
-                                    value={
-                                      globalSettings.led_board_message_texts
-                                        .out[key].line2 ?? ''
-                                    }
-                                    onChange={handleGlobalOutLine2}
-                                  />
+                                  <Stack display={'flex'} id={`${key}_out_line`} direction={'column'} gap={2}>
+                                    <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_input_out_line1`}
+                                          sx={labelStyle}
+                                        >
+                                          Line 1
+                                        </InputLabel>
+                                        <CarNumberInput
+                                          id={`${key}_input_out_line1`}
+                                          InputProps={{
+                                            disableUnderline: true,
+                                            sx: { paddingLeft: '12px'}
+                                          }}
+                                          variant="filled"
+                                          name={key}
+                                          value={
+                                            globalSettings.led_board_message_texts
+                                              .out[key].line1?.text ?? ''
+                                          }
+                                          onChange={handleGlobalOutLine1}
+                                        />
+                                      </Stack>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_select_out_line1`}
+                                          sx={labelStyle}
+                                        >
+                                          {t('pages.settings.color')}
+                                        </InputLabel>
+                                        <Select
+                                          id={`${key}_select_out_line1`}
+                                          name={`${key}`}
+                                          displayEmpty
+                                          value={globalSettings.led_board_message_texts
+                                            .out[key].line1?.color}
+                                          onChange={handleChangeLedOutLine1Color}
+                                          variant="filled"
+                                          IconComponent={(props) => (
+                                            <IconButton
+                                              disableRipple
+                                              {...props}
+                                              sx={{
+                                                top: `${0} !important`,
+                                                right: `4px !important`
+                                              }}
+                                            >
+                                              <img
+                                                style={{
+                                                  width: '24px'
+                                                }}
+                                                src={selectIcon}
+                                                alt="select"
+                                              />
+                                            </IconButton>
+                                          )}
+                                          sx={selectMenuStyle({ ...theme })}
+                                          MenuProps={{
+                                            PaperProps: {
+                                              sx: {
+                                                borderRadius: '8px',
+                                                border:
+                                                  '1px solid ' +
+                                                  theme.colors.outline.default
+                                              }
+                                            },
+                                            MenuListProps: {
+                                              sx: { py: '4px' }
+                                            }
+                                          }}
+                                          renderValue={(selected) => {
+                                            const selectedName =
+                                              ledColors.find(
+                                                (item) => item.value === selected
+                                              );
+                                            return (
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500 }}
+                                              >
+                                                {selectedName?.name}
+                                              </Typography>
+                                            );
+                                          }}
+                                        >
+                                          {ledColors.map((item) => (
+                                            <MenuItem
+                                              key={item.name}
+                                              id={item.name}
+                                              selected={
+                                                globalSettings.led_board_message_texts
+                                                  .out[key].line1?.color ===
+                                                item.value
+                                              }
+                                              value={item.value}
+                                            >
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500, p: 0 }}
+                                              >
+                                                {item.name}
+                                              </Typography>
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </Stack>
+                                    </Stack>
+                                    <Stack display={'flex'} direction={'row'} gap={2} alignItems={'center'}>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_input_out_line2`}
+                                          sx={labelStyle}
+                                        >
+                                          Line 2
+                                        </InputLabel>
+                                        <CarNumberInput
+                                          id={`${key}_input_out_line2`}
+                                          InputProps={{
+                                            disableUnderline: true,
+                                            sx: { paddingLeft: '12px' }
+                                          }}
+                                          variant="filled"
+                                          name={key}
+                                          value={
+                                            globalSettings.led_board_message_texts
+                                              .out[key].line2?.text ?? ''
+                                          }
+                                          onChange={handleGlobalOutLine2}
+                                        />
+                                      </Stack>
+                                      <Stack sx={{width: '50%'}}>
+                                        <InputLabel
+                                          htmlFor={`${key}_select_out_line2`}
+                                          sx={labelStyle}
+                                        >
+                                          {t('pages.settings.color')}
+                                        </InputLabel>
+                                        <Select
+                                          id={`${key}_select_out_line2`}
+                                          name={`${key}`}
+                                          displayEmpty
+                                          value={globalSettings.led_board_message_texts
+                                            .out[key].line2?.color}
+                                          onChange={handleChangeLedOutLine2Color}
+                                          variant="filled"
+                                          IconComponent={(props) => (
+                                            <IconButton
+                                              disableRipple
+                                              {...props}
+                                              sx={{
+                                                top: `${0} !important`,
+                                                right: `4px !important`
+                                              }}
+                                            >
+                                              <img
+                                                style={{
+                                                  width: '24px'
+                                                }}
+                                                src={selectIcon}
+                                                alt="select"
+                                              />
+                                            </IconButton>
+                                          )}
+                                          sx={selectMenuStyle({ ...theme })}
+                                          MenuProps={{
+                                            PaperProps: {
+                                              sx: {
+                                                borderRadius: '8px',
+                                                border:
+                                                  '1px solid ' +
+                                                  theme.colors.outline.default
+                                              }
+                                            },
+                                            MenuListProps: {
+                                              sx: { py: '4px' }
+                                            }
+                                          }}
+                                          renderValue={(selected) => {
+                                            const selectedName =
+                                              ledColors.find(
+                                                (item) => item.value === selected
+                                              );
+                                            return (
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500 }}
+                                              >
+                                                {selectedName?.name}
+                                              </Typography>
+                                            );
+                                          }}
+                                        >
+                                          {ledColors.map((item) => (
+                                            <MenuItem
+                                              key={item.name}
+                                              id={item.name}
+                                              selected={
+                                                globalSettings.led_board_message_texts
+                                                  .out[key].line2?.color ===
+                                                item.value
+                                              }
+                                              value={item.value}
+                                            >
+                                              <Typography
+                                                component={'h5'}
+                                                noWrap
+                                                sx={{ fontWeight: 500, p: 0 }}
+                                              >
+                                                {item.name}
+                                              </Typography>
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </Stack>
+                                    </Stack>
+                                  </Stack>
                                 </Stack>
                               ))}
                           </Stack>
@@ -2538,7 +3132,9 @@ const Settings = () => {
                   )}
                   <Box sx={sectionContainerStyle}>
                     <Stack gap={'16px'}>
-                      <Typography sx={titleTextStyle}>{t('pages.settings.notifications')}</Typography>
+                      <Typography sx={titleTextStyle}>
+                        {t('pages.settings.notifications')}
+                      </Typography>
                       <FormGroup>
                         <FormControlLabel
                           control={
@@ -2567,23 +3163,23 @@ const Settings = () => {
                   </Box>
                   <Box sx={sectionContainerStyle}>
                     <Stack gap={'16px'}>
-                      <Typography sx={titleTextStyle}>Language / Язык</Typography>
+                      <Typography sx={titleTextStyle}>
+                        Language / Язык
+                      </Typography>
                       <FormGroup>
-                        <InputLabel
-                          htmlFor="language"
-                          sx={labelStyle}
-                        >
+                        <InputLabel htmlFor="language" sx={labelStyle}>
                           {t('pages.settings.chooseLanguage')}
                         </InputLabel>
                         <Select
                           id="language"
                           name="language"
                           displayEmpty
-                          value={
-                            i18n.language
-                          }
+                          value={i18n.language}
                           onChange={(event) => {
-                            localStorage.setItem('language', event.target.value);
+                            localStorage.setItem(
+                              'language',
+                              event.target.value
+                            );
                             i18n.changeLanguage(event.target.value);
                           }}
                           variant="filled"
@@ -2611,8 +3207,7 @@ const Settings = () => {
                               sx: {
                                 borderRadius: '8px',
                                 border:
-                                  '1px solid ' +
-                                  theme.colors.outline.default
+                                  '1px solid ' + theme.colors.outline.default
                               }
                             },
                             MenuListProps: {
@@ -2633,9 +3228,7 @@ const Settings = () => {
                         >
                           <MenuItem
                             id="Английский"
-                            selected={
-                              i18n.language === 'en'
-                            }
+                            selected={i18n.language === 'en'}
                             value={'en'}
                           >
                             <Typography
@@ -2649,9 +3242,7 @@ const Settings = () => {
                           <MenuItem
                             id="Русский"
                             value={'ru'}
-                            selected={
-                              i18n.language === 'ru'
-                            }
+                            selected={i18n.language === 'ru'}
                           >
                             <Typography
                               component={'h5'}
@@ -2681,7 +3272,10 @@ const Settings = () => {
                         <Typography sx={titleTextStyle}>
                           {t('pages.settings.oferta')}
                         </Typography>
-                        <img src={uploadIcon} alt={t('pages.settings.upload')} />
+                        <img
+                          src={uploadIcon}
+                          alt={t('pages.settings.upload')}
+                        />
                       </Stack>
                       <Stack>
                         <InputLabel
@@ -2729,7 +3323,10 @@ const Settings = () => {
                         <Typography sx={titleTextStyle}>
                           {t('pages.settings.refund')}
                         </Typography>
-                        <img src={uploadIcon} alt={t('pages.settings.upload')} />
+                        <img
+                          src={uploadIcon}
+                          alt={t('pages.settings.upload')}
+                        />
                       </Stack>
                       <Stack>
                         <InputLabel htmlFor="return_policy" sx={labelStyle}>

@@ -324,7 +324,14 @@
       "russian": "Русский",
       "english": "English",
       "subscriptionPaymentDescription": "Cheque text for a subscription",
-      "parkingPaymentDescription": "Cheque text for one-off payment"
+      "parkingPaymentDescription": "Cheque text for one-off payment",
+      "ledWhite": "White",
+      "ledTurquoise": "Turquoise",
+      "ledBlue": "Blue",
+      "ledPurple": "Purple",
+      "ledRed": "Red",
+      "ledYellow": "Yellow",
+      "ledGreen": "Green"
     },
     "reports": {
       "title": "Reports",
