@@ -332,7 +332,8 @@
       "ledRed": "Красный",
       "ledYellow": "Желтый",
       "ledGreen": "Зеленый",
-      "color": "Цвет"
+      "color": "Цвет",
+      "enableTrackId": "Отслеживать авто по Track ID"
     },
     "reports": {
       "title": "Отчёты",

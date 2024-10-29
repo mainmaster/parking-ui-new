@@ -2372,6 +2372,31 @@ const Settings = () => {
                                 }}
                               />
                             </FormGroup>
+
+                            <FormGroup>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={Boolean(
+                                      globalSettings.enable_vehicle_track_id
+                                    )}
+                                    onChange={handleGlobalSettings}
+                                    name="enable_vehicle_track_id"
+                                    sx={switchInputStyle({ ...theme })}
+                                  />
+                                }
+                                label={t(
+                                  'pages.settings.enableTrackId'
+                                )}
+                                labelPlacement="end"
+                                sx={{
+                                  m: 0,
+                                  justifyContent: 'flex-start',
+                                  gap: '16px',
+                                  pl: '12px'
+                                }}
+                              />
+                            </FormGroup>
                           </Stack>
                         </AccordionDetails>
                       </Accordion>

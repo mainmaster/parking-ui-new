@@ -331,7 +331,9 @@
       "ledPurple": "Purple",
       "ledRed": "Red",
       "ledYellow": "Yellow",
-      "ledGreen": "Green"
+      "ledGreen": "Green",
+      "color": "Color",
+      "enableTrackId": "Track cars by Track ID"
     },
     "reports": {
       "title": "Reports",
