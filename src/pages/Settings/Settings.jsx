@@ -386,7 +386,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -406,7 +407,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -430,7 +432,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -450,7 +453,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -474,7 +478,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -494,7 +499,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.in[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -518,7 +524,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -538,7 +545,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.in[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.in[e.target.name].name
           }
         },
         out: {
@@ -565,7 +573,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -585,7 +594,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -609,7 +619,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -629,7 +640,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -653,7 +665,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -673,7 +686,8 @@ const Settings = () => {
             },
             line2:
               globalSettings.led_board_message_texts.out[e.target.name].line2 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -697,7 +711,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
@@ -717,7 +732,8 @@ const Settings = () => {
             },
             line1:
               globalSettings.led_board_message_texts.out[e.target.name].line1 ||
-              {}
+              {},
+            name: globalSettings.led_board_message_texts.out[e.target.name].name
           }
         }
       }
