@@ -112,7 +112,7 @@ const CarParkPage = () => {
   useEffect(() => {
     dispatch(carParkFetch());
     dispatch(accessPointsOnlyFetch());
-  }, [urlStatus, params]);
+  }, []);
 
   // const changePage = (index) => {
   //   dispatch(sessionsChangePageFetch(index));
@@ -490,16 +490,16 @@ const CarParkPage = () => {
                     currentTab === 0
                       ? t('pages.carParkPage.noActiveCarInPark')
                       : currentTab === 1
-                      ? t('pages.carParkPage.noActiveCarInPark')
-                      : t('pages.carParkPage.noAboniment')
+                        ? t('pages.carParkPage.noActiveCarInPark')
+                        : t('pages.carParkPage.noAboniment')
                   }
                 />
                 <Typography sx={titleTextStyle}>
                   {currentTab === 0
                     ? t('pages.carParkPage.noActiveCarInPark')
                     : currentTab === 1
-                    ? t('pages.carParkPage.noActiveCarInPark')
-                    : t('pages.carParkPage.noAboniment')}
+                      ? t('pages.carParkPage.noActiveCarInPark')
+                      : t('pages.carParkPage.noAboniment')}
                 </Typography>
               </>
             )}

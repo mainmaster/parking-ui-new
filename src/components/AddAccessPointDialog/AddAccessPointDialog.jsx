@@ -52,8 +52,8 @@ import {useTranslation} from "react-i18next";
 const validationSchema = yup.object({
   description: yup.string().required('Введите название'),
   direction: yup.string().required('Выберите направление'),
-  cam_id: yup.array().required('Выберите камеру'),
-  laurent_id: yup.number().required('Выберите контроллер'),
+  cam_id: yup.array().nullable().optional(),
+  laurent_id: yup.number().nullable().optional(),
   led_board_id: yup.number().required('Выберите LED табло'),
   open_relay_number: yup.number().required('Выберите реле для открытия'),
   close_relay_number: yup.number().required('Выберите реле для закрытия'),
@@ -72,7 +72,7 @@ const validationSchema = yup.object({
   laurent_checks_amount: yup
     .number()
     .required('Введите количество проверок статуса шлагбаума'),
-  terminal_id: yup.number(),
+  terminal_id: yup.number().nullable().optional(),
   is_reverse_access_point: yup.boolean(),
   working_modes: yup.string(),
   consider_renter_number_of_places: yup.boolean(),
@@ -196,56 +196,35 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
         confirmation_scenario_id,
         consider_renter_number_of_places
       } = values;
+
+      const payload = {
+        description: description,
+        direction: direction,
+        cameras: cam_id || [],
+        laurent_id: laurent_id || null,
+        led_board_id: led_board_id,
+        open_relay_number: open_relay_number,
+        close_relay_number: close_relay_number,
+        status_contact_number: status_contact_number,
+        seconds_before_close_laurent: seconds_before_close_laurent,
+        seconds_between_laurent_checks: seconds_between_laurent_checks,
+        seconds_before_laurent_checks: seconds_before_laurent_checks,
+        laurent_checks_amount: laurent_checks_amount,
+        is_reverse_access_point: is_reverse_access_point,
+        terminal_id: terminal_id || null,
+        working_modes: working_modes
+          .split(',')
+          .map((i) => parseInt(i, 10))
+          .filter((i) => !isNaN(i)),
+        confirmation_scenario_id: confirmation_scenario_id,
+        recognition_scenario_id: recognition_scenario_id,
+        consider_renter_number_of_places: consider_renter_number_of_places
+      };
+
       if (edit) {
-        const payload = {
-          description: description,
-          direction: direction,
-          cameras: cam_id,
-          laurent_id: laurent_id,
-          led_board_id: led_board_id,
-          open_relay_number: open_relay_number,
-          close_relay_number: close_relay_number,
-          status_contact_number: status_contact_number,
-          confirmation_scenario_id: confirmation_scenario_id,
-          recognition_scenario_id: recognition_scenario_id,
-          seconds_before_close_laurent: seconds_before_close_laurent,
-          seconds_between_laurent_checks: seconds_between_laurent_checks,
-          seconds_before_laurent_checks: seconds_before_laurent_checks,
-          laurent_checks_amount: laurent_checks_amount,
-          terminal_id: terminal_id,
-          is_reverse_access_point: is_reverse_access_point,
-          working_modes: working_modes
-            .split(',')
-            .map((i) => parseInt(i, 10))
-            .filter((i) => !isNaN(i)),
-          id: accessPointEdit.id,
-          consider_renter_number_of_places: consider_renter_number_of_places
-        };
+        payload.id = accessPointEdit.id;
         dispatch(editAccessPointFetch(payload));
       } else {
-        const payload = {
-          description: description,
-          direction: direction,
-          cameras: cam_id,
-          laurent_id: laurent_id,
-          led_board_id: led_board_id,
-          open_relay_number: open_relay_number,
-          close_relay_number: close_relay_number,
-          status_contact_number: status_contact_number,
-          seconds_before_close_laurent: seconds_before_close_laurent,
-          confirmation_scenario_id: confirmation_scenario_id,
-          recognition_scenario_id: recognition_scenario_id,
-          seconds_between_laurent_checks: seconds_between_laurent_checks,
-          seconds_before_laurent_checks: seconds_before_laurent_checks,
-          laurent_checks_amount: laurent_checks_amount,
-          is_reverse_access_point: is_reverse_access_point,
-          terminal_id: terminal_id,
-          working_modes: working_modes
-            .split(',')
-            .map((i) => parseInt(i, 10))
-            .filter((i) => !isNaN(i)),
-          consider_renter_number_of_places: consider_renter_number_of_places
-        };
         dispatch(createAccessPointFetch(payload));
       }
     }
@@ -377,7 +356,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               }
             />
           </Stack>
-   
+
           <Stack>
             <InputLabel htmlFor="direction" sx={labelStyle}>
               {t('components.addAccessPointDialog.direction')}
@@ -461,7 +440,7 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
               name="cam_id"
               displayEmpty
               multiple
-              value={formik.values.cam_id}
+              value={formik.values.cam_id || []}
               onChange={handleValueChange}
               onBlur={formik.handleBlur}
               variant="filled"
@@ -1228,22 +1207,22 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
           </Stack>
           <FormGroup>
             <FormControlLabel
-                control={
-                  <Switch
-                      checked={Boolean(formik.values.consider_renter_number_of_places)}
-                      onChange={handleValueChange}
-                      name="consider_renter_number_of_places"
-                      sx={switchInputStyle({ ...theme })}
-                  />
-                }
-                label={t('components.addAccessPointDialog.considerRenterNumberOfPlaces')}
-                labelPlacement="end"
-                sx={{
-                  m: 0,
-                  justifyContent: 'flex-start',
-                  gap: '16px',
-                  pl: '12px'
-                }}
+              control={
+                <Switch
+                  checked={Boolean(formik.values.consider_renter_number_of_places)}
+                  onChange={handleValueChange}
+                  name="consider_renter_number_of_places"
+                  sx={switchInputStyle({ ...theme })}
+                />
+              }
+              label={t('components.addAccessPointDialog.considerRenterNumberOfPlaces')}
+              labelPlacement="end"
+              sx={{
+                m: 0,
+                justifyContent: 'flex-start',
+                gap: '16px',
+                pl: '12px'
+              }}
             />
           </FormGroup>
           <Button

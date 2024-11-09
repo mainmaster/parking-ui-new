@@ -36,6 +36,7 @@ import { format } from 'date-fns';
 import i18n from '../../translation/index';
 import { useTranslation } from 'react-i18next';
 import ApplicationFilterForm from '../ApplicationFilterForm/ApplicationFilterForm';
+import {useLocation, useNavigate} from "react-router-dom";
 
 const defaultValues = {
   vehiclePlate: '',
@@ -75,13 +76,26 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
 
   const userType = useSelector((state) => state.parkingInfo.userType);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    return () => {
-      dispatch(setFilters(null));
+    const params = new URLSearchParams(location.search);
+    const initialFilters = {
+      companyID: params.get('companyID') || '',
+      statusUsed: params.get('statusUsed') || '',
+      validForDateFrom: params.get('validForDateFrom') || '',
+      validForDateTo: params.get('validForDateTo') || ''
     };
+
+    setFilterParams(initialFilters);
+
+    dispatch(setFilters(initialFilters));
+    dispatch(applicationsFetch(initialFilters));
+    dispatch(changeCurrentPage(1));
+    setSubmited(true);
   }, []);
 
   const formik = useFormik({
@@ -93,8 +107,38 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     }
   });
 
+  const setFilterParams = (initialFilters) => {
+    const statusUsed = initialFilters.status ? applicationStatusValues.find(status => status.value === initialFilters.statusUsed) : null;
+
+    if (statusUsed) { setSelectedApplicationStatus(statusUsed.name); }
+    if (initialFilters.companyID) { setSelectedCompany(Number(initialFilters.companyID)); }
+
+    if (initialFilters.validForDateFrom) { setFromValue(parseDateString(initialFilters.validForDateFrom)); }
+    if (initialFilters.validForDateTo) { setToValue(parseDateString(initialFilters.validForDateTo)); }
+  }
+
+  const updateURL = (newFilters) => {
+    const params = new URLSearchParams();
+
+    Object.keys(newFilters).forEach((key) => {
+      params.set(key, newFilters[key] !== undefined && newFilters[key] !== null ? newFilters[key] : '');
+    });
+
+    navigate({ search: params.toString() });
+  };
+
+  const parseDateString = (dateString) => {
+    const dateParts = dateString.split('-');
+    const year = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1;
+    const day = parseInt(dateParts[2], 10);
+
+    return new Date(year, month, day);
+  };
+
   const resetHandle = () => {
     formik.resetForm();
+    updateURL({});
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     dispatch(applicationsFetch());
@@ -160,6 +204,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         validForDateFrom: format(newValue, 'yyyy-MM-dd')
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setFromValue(newValue);
       setSubmited(false);
     }
@@ -172,6 +217,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         validForDateTo: format(newValue, 'yyyy-MM-dd')
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setToValue(newValue);
       setSubmited(false);
     }
@@ -183,6 +229,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
       companyID: event.target.value
     };
     dispatch(setFilters(values));
+    updateURL(values);
     setSubmited(false);
     setSelectedCompany(event.target.value);
   };
@@ -197,6 +244,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         isUsed: status.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -204,6 +252,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         isUsed: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setSelectedApplicationStatus(event.target.value);

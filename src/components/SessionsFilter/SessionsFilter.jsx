@@ -40,6 +40,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useTranslation} from "react-i18next";
 import RenterSelect from "../ApplicationFilter/RenterSelect";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -50,7 +51,12 @@ const labelStyle = {
 };
 
 const defaultValues = {
-  vehiclePlate: ''
+  vehiclePlate: '',
+  isPaid: '',
+  status: '',
+  renterId: '',
+  createDateFrom: '',
+  createDateTo: ''
 };
 
 let sessionStatusValues = [
@@ -88,15 +94,30 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.sessions.filters);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedRenter, setSelectedRenter] = useState('');
   const userType = useSelector((state) => state.parkingInfo.userType);
 
   useEffect(() => {
-    return () => {
-      dispatch(setFilters(null));
+    const params = new URLSearchParams(location.search);
+    const initialFilters = {
+      vehiclePlate: params.get('vehiclePlate') || '',
+      isPaid: params.get('isPaid') === 'true' || params.get('isPaid') === 'false' ? params.get('isPaid') === 'true' : '',
+      status: params.get('status') || '',
+      renterId: params.get('renterId') || '',
+      createDateFrom: params.get('createDateFrom') || '',
+      createDateTo: params.get('createDateTo') || ''
     };
+
+    setFilterParams(initialFilters);
+
+    dispatch(setFilters(initialFilters));
+    dispatch(sessionsFetch(initialFilters));
+    dispatch(changeCurrentPage(1));
+    setSubmited(true);
   }, []);
 
   const formik = useFormik({
@@ -108,8 +129,30 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
     }
   });
 
+  const setFilterParams = (initialFilters) => {
+    const foundStatus = initialFilters.status ? sessionStatusValues.find(status => status.value === initialFilters.status) : null;
+    const foundPayment = initialFilters.isPaid !== '' ? paymentStatusValues.find(payment => payment.value === initialFilters.isPaid) : null;
+
+    if (foundStatus) { setSelectedSessionStatus(foundStatus.name); }
+    if (foundPayment) { setSelectedPaymentStatus(foundPayment.name); }
+    if (initialFilters.renterId) { setSelectedRenter(Number(initialFilters.renterId)); }
+    if (initialFilters.createDateFrom) { setFromValue(new Date(initialFilters.createDateFrom)); }
+    if (initialFilters.createDateTo) { setToValue(new Date(initialFilters.createDateTo)); }
+  }
+
+  const updateURL = (newFilters) => {
+    const params = new URLSearchParams();
+
+    Object.keys(newFilters).forEach((key) => {
+      params.set(key, newFilters[key] !== undefined && newFilters[key] !== null ? newFilters[key] : '');
+    });
+
+    navigate({ search: params.toString() });
+  };
+
   const resetHandle = () => {
     formik.resetForm();
+    updateURL({});
     dispatch(sessionsFetch());
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
@@ -127,6 +170,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(sessionsFetch(values));
+      updateURL(values);
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
     } else if (openForm) {
@@ -135,6 +179,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     if (e.target.value === '') {
@@ -164,6 +209,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         vehiclePlate: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setNumberInChange(false);
@@ -179,6 +225,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         status: status.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -186,6 +233,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         status: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setSelectedSessionStatus(event.target.value);
@@ -201,6 +249,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         isPaid: status.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -208,6 +257,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         isPaid: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setSelectedPaymentStatus(event.target.value);
@@ -220,6 +270,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         createDateFrom: formatISO(newValue)
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setFromValue(newValue);
       setSubmited(false);
     }
@@ -232,6 +283,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
         createDateTo: formatISO(newValue)
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setToValue(newValue);
       setSubmited(false);
     }
@@ -243,6 +295,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       renterId: event.target.value
     };
     dispatch(setFilters(values));
+    updateURL(values);
     setSubmited(false);
     setSelectedRenter(event.target.value);
   };

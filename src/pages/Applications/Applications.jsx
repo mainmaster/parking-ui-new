@@ -81,7 +81,6 @@ export const Applications = () => {
   }, [containerRef, handleResize]);
 
   useEffect(() => {
-    dispatch(applicationsFetch());
     return () => dispatch(changeCurrentPage(1));
   }, [dispatch]);
 
@@ -359,7 +358,7 @@ export const Applications = () => {
       <UnloadApplicationDialog
         isOpen={isUnloadOpen}
         handleClose={handleIsUnloadClose}
-        />
+      />
     </>
   );
 };

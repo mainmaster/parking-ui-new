@@ -105,7 +105,6 @@ const PaymentsPage = () => {
   const totalString = `${RURuble.format(totalPayment)} всего`;
 
   useEffect(() => {
-    dispatch(paymentsFetch());
     return () => dispatch(changeCurrentPage(1));
   }, [dispatch]);
 
@@ -159,7 +158,7 @@ const PaymentsPage = () => {
     setIsOrderCreatedOpen(true);
     setCreatedData(data);
   }
-  
+
   const handleCloseCreatedOrder = () => {
     setIsOrderCreatedOpen(false);
   }

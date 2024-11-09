@@ -106,7 +106,6 @@ const SessionsPage = () => {
     });
 
   useEffect(() => {
-    dispatch(sessionsFetch());
     return () => dispatch(changeCurrentPage(1));
   }, [dispatch]);
 
@@ -256,25 +255,25 @@ const SessionsPage = () => {
           </>
         )}
         {!isMobile && (
-            <Stack direction={'row'} sx={{ width: '100%', px: '16px' }} justifyContent={'space-between'}>
-              {
-                (userType === 'admin' ||
-                  (userType === 'operator' &&
-                    accessOptions.disableCloseSessionBeforeDate === false)) ?
-                  <Button
-                    disableRipple
-                    variant="contained"
-                    fullWidth={false}
-                    sx={secondaryButtonStyle({ ...theme })}
-                    onClick={handleCloseSessionsClick}
-                  >
-                    {t('pages.sessionsPage.closeSessions')}
-                  </Button> :
-                  <div></div>
-              }
-              <ParkingInfo />
-            </Stack>
-          )}
+          <Stack direction={'row'} sx={{ width: '100%', px: '16px' }} justifyContent={'space-between'}>
+            {
+              (userType === 'admin' ||
+                (userType === 'operator' &&
+                  accessOptions.disableCloseSessionBeforeDate === false)) ?
+                <Button
+                  disableRipple
+                  variant="contained"
+                  fullWidth={false}
+                  sx={secondaryButtonStyle({ ...theme })}
+                  onClick={handleCloseSessionsClick}
+                >
+                  {t('pages.sessionsPage.closeSessions')}
+                </Button> :
+                <div></div>
+            }
+            <ParkingInfo />
+          </Stack>
+        )}
 
         {sessions.length > 0 ? (
           <>

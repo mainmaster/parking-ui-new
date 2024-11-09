@@ -37,6 +37,8 @@ import searchCancelIcon from '../../assets/svg/log_event_search_cancel_icon.svg'
 import eventTuneIcon from '../../assets/svg/log_event_tune_icon.svg';
 import _ from 'lodash';
 import {useTranslation} from "react-i18next";
+import {useLocation, useNavigate} from "react-router-dom";
+import {accessPointsOnlyFetch} from "../../store/accessPoints/accessPointsSlice";
 
 const defaultValues = {
   vehiclePlate: '',
@@ -60,13 +62,24 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
   const filters = useSelector((state) => state.carPark.filters);
   const { data: renters } = useRentersQuery();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    return () => {
-      dispatch(setFilters(null));
+    const params = new URLSearchParams(location.search);
+    const initialFilters = {
+      companyName: params.get('companyName') || '',
     };
+
+    if (initialFilters.companyName) { setSelectedCompany(initialFilters.companyName); }
+
+    dispatch(setFilters(initialFilters));
+    dispatch(carParkFetch(initialFilters));
+    dispatch(accessPointsOnlyFetch(initialFilters));
+    dispatch(changeCurrentPage(1));
+    setSubmited(true);
   }, []);
 
   const formik = useFormik({
@@ -78,8 +91,19 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
     }
   });
 
+  const updateURL = (newFilters) => {
+    const params = new URLSearchParams();
+
+    Object.keys(newFilters).forEach((key) => {
+      params.set(key, newFilters[key] !== undefined && newFilters[key] !== null ? newFilters[key] : '');
+    });
+
+    navigate({ search: params.toString() });
+  };
+
   const resetHandle = () => {
     formik.resetForm();
+    updateURL({})
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     dispatch(carParkFetch());
@@ -141,6 +165,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
       companyName: event.target.value
     };
     dispatch(setFilters(values));
+    updateURL(values);
     setSubmited(false);
     setSelectedCompany(event.target.value);
   };

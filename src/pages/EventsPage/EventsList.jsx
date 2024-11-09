@@ -174,7 +174,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
       eventRef.current.push(node);
     }
   };
-  
+
   useEffect(() => {
     if (selectedEventId) {
       const id = selectedEventId;
@@ -218,7 +218,7 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
     }
 
     return () => dispatch(changeCurrentPage(1));
-  }, [accessOptions, userType]);
+  }, []);
 
   useEffect(() => {
     if (filtered.length > 0) {

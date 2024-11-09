@@ -41,6 +41,7 @@ import { formatISO } from 'date-fns';
 import i18n from '../../translation/index';
 import { useTranslation } from 'react-i18next';
 import { PaymentFilterForm } from '../PaymentFilterForm/PaymentFilterForm';
+import {useLocation, useNavigate} from "react-router-dom";
 
 const defaultValues = {
   vehiclePlate: ''
@@ -107,13 +108,27 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
   const [numberInChange, setNumberInChange] = useState(false);
   const filters = useSelector((state) => state.payments.filters);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    return () => {
-      dispatch(setFilters(null));
+    const params = new URLSearchParams(location.search);
+    const initialFilters = {
+      paymentType: params.get('paymentType') || '',
+      isRefund: params.get('isRefund') || '',
+      paymentFor: params.get('paymentFor') || '',
+      createDateFrom: params.get('createDateFrom') || '',
+      createDateTo: params.get('createDateTo') || ''
     };
+
+    setFilterParams(initialFilters);
+
+    dispatch(setFilters(initialFilters));
+    dispatch(paymentsFetch(initialFilters));
+    dispatch(changeCurrentPage(1));
+    setSubmited(true);
   }, []);
 
   const formik = useFormik({
@@ -125,8 +140,31 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
     }
   });
 
+  const setFilterParams = (initialFilters) => {
+    const paymentType = initialFilters.paymentType ? paymentTypeValues.find(type => type.value === initialFilters.paymentType) : null;
+    const isRefund = initialFilters.isRefund !== '' ? isRefundValues.find(refund => refund.value === initialFilters.isRefund) : null;
+    const paymentFor = initialFilters.paymentFor ? paymentForValues.find(type => type.value === initialFilters.paymentFor) : null;
+    console.log(isRefund)
+    if (paymentType) { setPaymentType(paymentType.name); }
+    if (isRefund) { setIsRefund(isRefund.name); }
+    if (paymentFor) { setPaymentFor(paymentFor.name); }
+    if (initialFilters.createDateFrom) { setFromValue(new Date(initialFilters.createDateFrom)); }
+    if (initialFilters.createDateTo) { setToValue(new Date(initialFilters.createDateTo)); }
+  }
+
+  const updateURL = (newFilters) => {
+    const params = new URLSearchParams();
+
+    Object.keys(newFilters).forEach((key) => {
+      params.set(key, newFilters[key] !== undefined && newFilters[key] !== null ? newFilters[key] : '');
+    });
+
+    navigate({ search: params.toString() });
+  };
+
   const resetHandle = () => {
     formik.resetForm();
+    updateURL({});
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
     dispatch(paymentsFetch());
@@ -193,6 +231,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         createDateFrom: formatISO(newValue)
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setFromValue(newValue);
       setSubmited(false);
     }
@@ -205,6 +244,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         createDateTo: formatISO(newValue)
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setToValue(newValue);
       setSubmited(false);
     }
@@ -220,6 +260,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         paymentType: item.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -227,6 +268,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         paymentType: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setPaymentType(event.target.value);
@@ -242,6 +284,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         isRefund: item.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -249,6 +292,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         isRefund: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setIsRefund(event.target.value);
@@ -264,6 +308,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         paymentFor: item.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     } else if (event.target.value === '') {
       const values = {
@@ -271,6 +316,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         paymentFor: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setPaymentFor(event.target.value);
