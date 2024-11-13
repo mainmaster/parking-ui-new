@@ -154,6 +154,7 @@ export default function ParkingInfo({ fullWidth }) {
               position: 'relative'
             }}
           >
+
             <HtmlTooltip
               title={
                 <div
@@ -173,13 +174,32 @@ export default function ParkingInfo({ fullWidth }) {
                       lineHeight: '1.75rem'
                     }}
                   >
+                    {`${parkingInfo?.carsOnParking?.single} ${t(
+                      'components.parkingInfo.sits'
+                    ).toLowerCase()}`}
+                  </Typography>
+                  <Typography
+                    color={theme.colors.element.secondary}
+                    sx={{fontWeight: 500}}
+                  >
+                    {t('components.parkingInfo.oneTime')}
+                  </Typography>
+                  <br></br>
+                  <Typography
+                    color={theme.colors.element.primary}
+                    sx={{
+                      fontWeight: 500,
+                      fontSize: '1.5rem',
+                      lineHeight: '1.75rem'
+                    }}
+                  >
                     {`${renters} ${t(
                       'components.parkingInfo.sits'
                     ).toLowerCase()}`}
                   </Typography>
                   <Typography
                     color={theme.colors.element.secondary}
-                    sx={{ fontWeight: 500 }}
+                    sx={{fontWeight: 500}}
                   >
                     {t('components.parkingInfo.renters')}
                   </Typography>
@@ -188,7 +208,7 @@ export default function ParkingInfo({ fullWidth }) {
                       parkingInfo.carsOnParking.renters_places_detail
                     ).map((key) => {
                       return (
-                        <Box sx={{ p: '8px', width: 'max-content' }}>
+                        <Box sx={{p: '8px', width: 'max-content'}}>
                           <Typography
                             color={theme.colors.element.primary}
                             sx={{
@@ -198,14 +218,14 @@ export default function ParkingInfo({ fullWidth }) {
                             {`${
                               parkingInfo.carsOnParking.renters_places_detail[
                                 key
-                              ]
+                                ]
                             } ${t(
                               'components.parkingInfo.sits'
                             ).toLowerCase()}`}
                           </Typography>
                           <Typography
                             color={theme.colors.element.secondary}
-                            sx={{ fontWeight: 500 }}
+                            sx={{fontWeight: 500}}
                           >
                             {key}
                           </Typography>{' '}
@@ -215,176 +235,88 @@ export default function ParkingInfo({ fullWidth }) {
                 </div>
               }
             >
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.colors.element.primary}`,
-                  width: `${
-                    (ocupied / parkingInfo?.carsOnParking.totalPlaces) * 100
-                  }%`,
-                  height: '40px',
-                  backgroundColor: theme.colors.chart.tenants
-                }}
-              ></Box>
-            </HtmlTooltip>
-            {parkingInfo?.carsOnParking?.subscribe ? (
-              <HtmlTooltip
-                title={
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flexWrap: 'wrap',
-                      overflow: 'hidden',
-                      maxHeight: 'calc(100vh - 60px)'
-                    }}
-                  >
-                    <Typography
-                      color={theme.colors.element.primary}
-                      sx={{
-                        fontWeight: 500,
-                        fontSize: '1.5rem',
-                        lineHeight: '1.75rem'
-                      }}
-                    >
-                      {`${parkingInfo?.carsOnParking?.subscribe} ${t(
-                        'components.parkingInfo.sits'
-                      ).toLowerCase()}`}
-                    </Typography>
-                    <Typography
-                      color={theme.colors.element.secondary}
-                      sx={{ fontWeight: 500 }}
-                    >
-                      {t('components.parkingInfo.renters')}
-                    </Typography>
-                  </div>
-                }
-              >
-                {/*<Box*/}
-                {/*  sx={{*/}
-                {/*    position: 'absolute',*/}
-                {/*    top: 0,*/}
-                {/*    left: 0,*/}
-                {/*    borderRadius: '8px',*/}
-                {/*    borderTopRightRadius: '0px',*/}
-                {/*    borderBottomRightRadius: '0px',*/}
-                {/*    border: `1px solid ${theme.colors.element.primary}`,*/}
-                {/*    borderRight: 'none',*/}
-                {/*    width: `${*/}
-                {/*      (parkingInfo.carsOnParking.subscribe /*/}
-                {/*        parkingInfo.carsOnParking.totalPlaces) **/}
-                {/*      100*/}
-                {/*    }%`,*/}
-                {/*    height: '40px',*/}
-                {/*    backgroundColor: theme.colors.chart.subscribers*/}
-                {/*  }}*/}
-                {/*></Box>*/}
-              </HtmlTooltip>
-            ) : <></>}
-            {parkingInfo?.carsOnParking?.single ? (
-              <HtmlTooltip
-                title={
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flexWrap: 'wrap',
-                      overflow: 'hidden',
-                      maxHeight: 'calc(100vh - 60px)'
-                    }}
-                  >
-                    <Typography
-                      color={theme.colors.element.primary}
-                      sx={{
-                        fontWeight: 500,
-                        fontSize: '1.5rem',
-                        lineHeight: '1.75rem'
-                      }}
-                    >
-                      {`${parkingInfo?.carsOnParking?.single} ${t(
-                        'components.parkingInfo.sits'
-                      ).toLowerCase()}`}
-                    </Typography>
-                    <Typography
-                      color={theme.colors.element.secondary}
-                      sx={{fontWeight: 500}}
-                    >
-                      {t('components.parkingInfo.oneTime')}
-                    </Typography>
-                  </div>
-                }
-              >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    borderRadius: '8px',
-                    borderTopRightRadius: '0px',
-                    borderBottomRightRadius: '0px',
-                    border: `1px solid ${theme.colors.element.primary}`,
-                    borderRight: 'none',
-                    width: `${
-                      (parkingInfo.carsOnParking.single /
-                        parkingInfo.carsOnParking.totalPlaces) *
-                      100
-                    }%`,
-                    height: '40px',
-                    backgroundColor: theme.colors.chart.one_time
-                  }}
-                ></Box>
-              </HtmlTooltip>
-            ) : <></>}
-            <Typography
+            <Box
               sx={{
                 position: 'absolute',
-                top: '11px',
-                left: '8px',
-                fontWeight: 500,
-                whiteSpace: 'nowrap',
-                pointerEvents: 'none'
+                top: 0,
+                left: 0,
+                borderRadius: '8px',
+                border: `1px solid ${theme.colors.element.primary}`,
+                width: `${
+                  (ocupied / parkingInfo?.carsOnParking.totalPlaces) * 100
+                }%`,
+                height: '40px',
+                backgroundColor: theme.colors.chart.tenants
               }}
-            >{`${
-              parkingInfo?.carsOnParking.totalPlaces -
-              parkingInfo?.carsOnParking.freePlaces
-            } ${t('components.parkingInfo.busy').toLowerCase()}`}</Typography>
-            <Typography
+            ></Box>
+            <Box
               sx={{
                 position: 'absolute',
-                top: '11px',
-                right: '8px',
-                fontWeight: 500,
-                pointerEvents: 'none'
+                top: 0,
+                left: 0,
+                borderRadius: '8px',
+                borderTopRightRadius: '0px',
+                borderBottomRightRadius: '0px',
+                border: `1px solid ${theme.colors.element.primary}`,
+                borderRight: 'none',
+                width: `${
+                  (parkingInfo.carsOnParking.single /
+                    parkingInfo.carsOnParking.totalPlaces) *
+                  100
+                }%`,
+                height: '40px',
+                backgroundColor: theme.colors.chart.one_time
               }}
-            >{`${parkingInfo?.carsOnParking.freePlaces} ${t(
-              'components.parkingInfo.free'
-            ).toLowerCase()}`}</Typography>
-          </Stack>
+            ></Box>
+          </HtmlTooltip>
+          <Typography
+            sx={{
+              position: 'absolute',
+              top: '11px',
+              left: '8px',
+              fontWeight: 500,
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none'
+            }}
+          >{`${
+            parkingInfo?.carsOnParking.totalPlaces -
+            parkingInfo?.carsOnParking.freePlaces
+          } ${t('components.parkingInfo.busy').toLowerCase()}`}</Typography>
+          <Typography
+            sx={{
+              position: 'absolute',
+              top: '11px',
+              right: '8px',
+              fontWeight: 500,
+              pointerEvents: 'none'
+            }}
+          >{`${parkingInfo?.carsOnParking.freePlaces} ${t(
+            'components.parkingInfo.free'
+          ).toLowerCase()}`}</Typography>
         </Stack>
-      </Box>
-      {isMobile && details && (
-        <Stack
-          gap={'4px'}
-          sx={{
-            pb: '8px',
-            borderBottom: `1px solid ${theme.colors.outline.surface}`
-          }}
-        >
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            gap={'4px'}
-            sx={{ p: '8px 16px' }}
-          >
-            <Stack direction={'row'} gap={'4px'}>
-              <Box
-                sx={[
-                  detailSquareStyle,
-                  {
-                    border: `1px solid ${theme.colors.element.primary}`,
+      </Stack>
+    </Box>
+{
+  isMobile && details && (
+    <Stack
+      gap={'4px'}
+      sx={{
+        pb: '8px',
+        borderBottom: `1px solid ${theme.colors.outline.surface}`
+      }}
+    >
+      <Stack
+        direction={'row'}
+        justifyContent={'space-between'}
+        gap={'4px'}
+        sx={{p: '8px 16px'}}
+      >
+        <Stack direction={'row'} gap={'4px'}>
+          <Box
+            sx={[
+              detailSquareStyle,
+              {
+                border: `1px solid ${theme.colors.element.primary}`,
                     backgroundColor: theme.colors.element.light
                   }
                 ]}
