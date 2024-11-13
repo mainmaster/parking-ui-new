@@ -41,6 +41,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import {useTranslation} from "react-i18next";
 import RenterSelect from "../ApplicationFilter/RenterSelect";
 import {useLocation, useNavigate} from "react-router-dom";
+import {sessionsChangePageFetch} from "../../store/sessions/sessionsSlice";
 
 const labelStyle = {
   fontSize: '0.75rem',
@@ -109,14 +110,17 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
       status: params.get('status') || '',
       renterId: params.get('renterId') || '',
       createDateFrom: params.get('createDateFrom') || '',
-      createDateTo: params.get('createDateTo') || ''
+      createDateTo: params.get('createDateTo') || '',
+      page: params.get('page')
     };
 
+    const pageNumber = initialFilters.page ? Number(initialFilters.page) : 1;
     setFilterParams(initialFilters);
 
     dispatch(setFilters(initialFilters));
+    dispatch(sessionsChangePageFetch(pageNumber));
     dispatch(sessionsFetch(initialFilters));
-    dispatch(changeCurrentPage(1));
+    dispatch(changeCurrentPage(pageNumber));
     setSubmited(true);
   }, []);
 
@@ -135,6 +139,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
 
     if (foundStatus) { setSelectedSessionStatus(foundStatus.name); }
     if (foundPayment) { setSelectedPaymentStatus(foundPayment.name); }
+    if (initialFilters.vehiclePlate) { formik.values.vehiclePlate = initialFilters.vehiclePlate; }
     if (initialFilters.renterId) { setSelectedRenter(Number(initialFilters.renterId)); }
     if (initialFilters.createDateFrom) { setFromValue(new Date(initialFilters.createDateFrom)); }
     if (initialFilters.createDateTo) { setToValue(new Date(initialFilters.createDateTo)); }
@@ -152,6 +157,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
+    formik.values.vehiclePlate = '';
     updateURL({});
     dispatch(sessionsFetch());
     dispatch(setFilters(null));
@@ -201,6 +207,7 @@ export default function SessionsFilter({ openForm, setOpenForm }) {
     formik.values.vehiclePlate = '';
     if (!openForm) {
       dispatch(sessionsFetch());
+      updateURL({});
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
     } else if (openForm) {

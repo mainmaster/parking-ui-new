@@ -27,6 +27,7 @@ import EventManager from '../../components/EventManager/EventManager';
 import CloseSessionsDialog from '../../components/CloseSessionsDialog/CloseSessionsDialog';
 import {useTranslation} from "react-i18next";
 import {CreateSessionDialog} from "../../components/CreateSessionDialog/CreateSessionDialog";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const titleTextStyle = {
   width: '25%',
@@ -55,6 +56,8 @@ const SessionsPage = () => {
   const [sessionsListScrolled, setSessionsListScrolled] = useState(false);
   const sessionsListRef = useRef(null);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [openCloseSessionsDialog, setOpenCloseSessionsDialog] = useState(false);
   const [accessOptions, setAccessOptions] = useState(initialAccessOptions);
@@ -113,8 +116,29 @@ const SessionsPage = () => {
   //   dispatch(sessionsChangePageFetch(index));
   // };
 
+  const updateURL = (newFilters) => {
+    const currentParams = new URLSearchParams(location.search);
+
+    Object.keys(newFilters).forEach((key) => {
+      const value = newFilters[key];
+      if (value !== undefined && value !== null) {
+        currentParams.set(key, value);
+      } else {
+        currentParams.delete(key);
+      }
+    });
+
+    currentParams.set('page', newFilters.page || 1);
+
+    navigate({ search: currentParams.toString() });
+  };
+
   const changePage = (event, value) => {
     dispatch(sessionsChangePageFetch(value));
+    const values = {
+      page: value
+    };
+    updateURL(values);
     if (sessionsListRef.current) {
       sessionsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setSessionsListScrolled(false);

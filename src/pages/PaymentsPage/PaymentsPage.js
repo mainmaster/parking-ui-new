@@ -29,6 +29,7 @@ import add from "../../assets/svg/add.svg";
 import AddOrderDialog from "../../components/AddOrderDialog/AddOrderDialog";
 import CreatedOrderDialog from "../../components/CreatedOrderDialog/CreatedOrderDialog";
 import UnloadPaymentDialog from "../../components/UnloadPaymentDialog/UnloadPaymentDialog";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -50,6 +51,8 @@ const PaymentsPage = () => {
   const [paymentsListScrolled, setPaymentsListScrolled] = useState(false);
   const paymentsListRef = useRef(null);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
@@ -110,10 +113,31 @@ const PaymentsPage = () => {
 
   const changePage = (event, value) => {
     dispatch(paymentsChangePageFetch(value));
+    const values = {
+      page: value
+    };
+    updateURL(values);
     if (paymentsListRef.current) {
       paymentsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setPaymentsListScrolled(false);
     }
+  };
+
+  const updateURL = (newFilters) => {
+    const currentParams = new URLSearchParams(location.search);
+
+    Object.keys(newFilters).forEach((key) => {
+      const value = newFilters[key];
+      if (value !== undefined && value !== null) {
+        currentParams.set(key, value);
+      } else {
+        currentParams.delete(key);
+      }
+    });
+
+    currentParams.set('page', newFilters.page || 1);
+
+    navigate({ search: currentParams.toString() });
   };
 
   const handlePaymentsListScroll = () => {

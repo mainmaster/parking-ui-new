@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import {
+  applicationsChangePageFetch,
   applicationsFetch,
   changeCurrentPage,
   setFilters
@@ -84,33 +85,38 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const initialFilters = {
+      vehiclePlate: params.get('vehiclePlate'),
       companyID: params.get('companyID') || '',
-      statusUsed: params.get('statusUsed') || '',
+      statusUsed: params.get('isUsed') || '',
       validForDateFrom: params.get('validForDateFrom') || '',
-      validForDateTo: params.get('validForDateTo') || ''
+      validForDateTo: params.get('validForDateTo') || '',
+      page: params.get('page')
     };
 
+    const pageNumber = initialFilters.page ? Number(initialFilters.page) : 1;
     setFilterParams(initialFilters);
 
     dispatch(setFilters(initialFilters));
+    dispatch(applicationsChangePageFetch(pageNumber));
     dispatch(applicationsFetch(initialFilters));
-    dispatch(changeCurrentPage(1));
+    dispatch(changeCurrentPage(pageNumber));
     setSubmited(true);
   }, []);
 
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(changeCurrentPage(1));
       dispatch(applicationsFetch(filters));
+      dispatch(changeCurrentPage(1));
       setSubmited(true);
     }
   });
 
   const setFilterParams = (initialFilters) => {
-    const statusUsed = initialFilters.status ? applicationStatusValues.find(status => status.value === initialFilters.statusUsed) : null;
+    const statusUsed = initialFilters.statusUsed !== '' ? applicationStatusValues.find(status => status.value === initialFilters.statusUsed) : null;
 
     if (statusUsed) { setSelectedApplicationStatus(statusUsed.name); }
+    if (initialFilters.vehiclePlate) { formik.values.vehiclePlate = initialFilters.vehiclePlate; }
     if (initialFilters.companyID) { setSelectedCompany(Number(initialFilters.companyID)); }
 
     if (initialFilters.validForDateFrom) { setFromValue(parseDateString(initialFilters.validForDateFrom)); }
@@ -138,6 +144,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
+    formik.values.vehiclePlate = '';
     updateURL({});
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
@@ -155,6 +162,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       dispatch(changeCurrentPage(1));
       dispatch(applicationsFetch(values));
     } else if (openForm) {
@@ -163,6 +171,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     if (e.target.value === '') {
@@ -184,6 +193,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
     formik.values.vehiclePlate = '';
     if (!openForm) {
       dispatch(setFilters(null));
+      updateURL({});
       dispatch(changeCurrentPage(1));
       dispatch(applicationsFetch());
     } else if (openForm) {
@@ -192,6 +202,7 @@ export default function ApplicationFilter({ openForm, setOpenForm }) {
         vehiclePlate: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setNumberInChange(false);

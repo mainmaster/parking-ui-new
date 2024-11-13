@@ -18,7 +18,8 @@ import { DatePicker } from '@mui/x-date-pickers';
 import {
   paymentsFetch,
   changeCurrentPage,
-  setFilters
+  setFilters,
+  paymentsChangePageFetch
 } from '../../store/payments/paymentsSlice';
 import { useFormik } from 'formik';
 import { useTheme } from '@mui/material/styles';
@@ -116,26 +117,30 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const initialFilters = {
+      vehiclePlate: params.get('vehiclePlate') || '',
       paymentType: params.get('paymentType') || '',
       isRefund: params.get('isRefund') || '',
       paymentFor: params.get('paymentFor') || '',
       createDateFrom: params.get('createDateFrom') || '',
-      createDateTo: params.get('createDateTo') || ''
+      createDateTo: params.get('createDateTo') || '',
+      page: params.get('page')
     };
 
+    const pageNumber = initialFilters.page ? Number(initialFilters.page) : 1;
     setFilterParams(initialFilters);
 
     dispatch(setFilters(initialFilters));
     dispatch(paymentsFetch(initialFilters));
-    dispatch(changeCurrentPage(1));
+    dispatch(paymentsChangePageFetch(pageNumber));
+    dispatch(changeCurrentPage(pageNumber));
     setSubmited(true);
   }, []);
 
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(changeCurrentPage(1));
       dispatch(paymentsFetch(filters));
+      dispatch(changeCurrentPage(1));
       setSubmited(true);
     }
   });
@@ -144,8 +149,9 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
     const paymentType = initialFilters.paymentType ? paymentTypeValues.find(type => type.value === initialFilters.paymentType) : null;
     const isRefund = initialFilters.isRefund !== '' ? isRefundValues.find(refund => refund.value === initialFilters.isRefund) : null;
     const paymentFor = initialFilters.paymentFor ? paymentForValues.find(type => type.value === initialFilters.paymentFor) : null;
-    console.log(isRefund)
+
     if (paymentType) { setPaymentType(paymentType.name); }
+    if (initialFilters.vehiclePlate) { formik.values.vehiclePlate = initialFilters.vehiclePlate; }
     if (isRefund) { setIsRefund(isRefund.name); }
     if (paymentFor) { setPaymentFor(paymentFor.name); }
     if (initialFilters.createDateFrom) { setFromValue(new Date(initialFilters.createDateFrom)); }
@@ -164,6 +170,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
+    formik.values.vehiclePlate = '';
     updateURL({});
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
@@ -182,6 +189,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       dispatch(changeCurrentPage(1));
       dispatch(paymentsFetch(values));
     } else if (openForm) {
@@ -190,6 +198,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     if (e.target.value === '') {
@@ -211,6 +220,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
     formik.values.vehiclePlate = '';
     if (!openForm) {
       dispatch(setFilters(null));
+      updateURL({});
       dispatch(changeCurrentPage(1));
       dispatch(paymentsFetch());
     } else if (openForm) {
@@ -219,6 +229,7 @@ export default function PaymentFilter({ openForm, setOpenForm }) {
         vehiclePlate: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setNumberInChange(false);

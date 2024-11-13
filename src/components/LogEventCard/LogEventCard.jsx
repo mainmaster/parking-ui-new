@@ -78,8 +78,9 @@ export default forwardRef(function LogEventCard(
 
   const handleCopyLinkClick = () => {
     setSelectedMenuItem('copy');
+    const url = window.location.href.split('?')[0];
     navigator.clipboard
-      .writeText(window.location.href + '/' + event.id)
+      .writeText(url + '/' + event.id)
       .then(() => {
         enqueueSnackbar(t('components.logEventCard.irlIsCopy'));
       });
@@ -106,7 +107,8 @@ export default forwardRef(function LogEventCard(
 
   const handleEventClick = () => {
     setSelectedMenuItem('event');
-    window.open(`${window.location.href}/${event.id}`, '_blank', 'noreferrer');
+    const url = window.location.href.split('?')[0]
+    window.open(`${url}/${event.id}`, '_blank', 'noreferrer');
     setAnchorEl(null);
   };
 

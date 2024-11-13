@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {useLocation, useNavigate, useParams, useSearchParams} from 'react-router-dom';
 import { format } from 'date-fns';
 import SpinerLogo from '../../components/SpinerLogo/SpinerLogo';
 // Store
@@ -81,6 +81,7 @@ const CarParkPage = () => {
   const [parkListScrolled, setParkListScrolled] = useState(false);
   const parkListRef = useRef(null);
   const theme = useTheme();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const urlStatus = useParams();
   const [params] = useSearchParams();
@@ -120,10 +121,31 @@ const CarParkPage = () => {
 
   const changePage = (event, value) => {
     dispatch(carParkChangePageFetch(value));
+    const values = {
+      page: value
+    };
+    updateURL(values);
     if (parkListRef.current) {
       parkListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setParkListScrolled(false);
     }
+  };
+
+  const updateURL = (newFilters) => {
+    const currentParams = new URLSearchParams(location.search);
+
+    Object.keys(newFilters).forEach((key) => {
+      const value = newFilters[key];
+      if (value !== undefined && value !== null) {
+        currentParams.set(key, value);
+      } else {
+        currentParams.delete(key);
+      }
+    });
+
+    currentParams.set('page', newFilters.page || 1);
+
+    navigate({ search: currentParams.toString() });
   };
 
   const handleParkListScroll = () => {

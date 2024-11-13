@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeCurrentPage,
+  eventsChangePageFetch,
   eventsFetch,
   eventsOnlyFetch,
   setFilters
@@ -104,19 +105,23 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     if (accessPoints.length > 0 && eventCodes.length > 0 && !hasInitializedFilters) {
       const params = new URLSearchParams(location.search);
       const initialFilters = {
+        vehiclePlate: params.get('vehiclePlate'),
         eventCode: params.get('eventCode') || '',
         createDateFrom: params.get('createDateFrom') || '',
         createDateTo: params.get('createDateTo') || '',
         createTimeFrom: params.get('createTimeFrom') || '',
         createTimeTo: params.get('createTimeTo') || '',
-        accessPoint: params.get('accessPoint') || ''
+        accessPoint: params.get('accessPoint') || '',
+        page: params.get('page')
       };
 
+      const pageNumber = initialFilters.page ? Number(initialFilters.page) : 1;
       setFilterParams(initialFilters);
       dispatch(setFilters(initialFilters));
       dispatch(eventsFetch(initialFilters));
       dispatch(eventsOnlyFetch(initialFilters));
-      dispatch(changeCurrentPage(1));
+      dispatch(eventsChangePageFetch(pageNumber))
+      dispatch(changeCurrentPage(pageNumber));
       setSubmited(true);
       setHasInitializedFilters(true);
     }
@@ -125,8 +130,8 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(changeCurrentPage(1));
       dispatch(eventsOnlyFetch(filters));
+      dispatch(changeCurrentPage(1));
       setSubmited(true);
     }
   });
@@ -135,6 +140,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     const eventCode = initialFilters.eventCode ? eventCodes.find(code => code.value === initialFilters.eventCode) : null;
     const accessPoint = initialFilters.accessPoint ? accessPoints.find(code => code.value === Number(initialFilters.accessPoint)) : null;
 
+    if (initialFilters.vehiclePlate) { formik.values.vehiclePlate = initialFilters.vehiclePlate }
     if (eventCode) { setSelectedEventCode(eventCode.name);}
     if (initialFilters.createDateFrom) { setFromValue(new Date(initialFilters.createDateFrom)); }
     if (initialFilters.createDateTo) { setToValue(new Date(initialFilters.createDateTo)); }
@@ -165,6 +171,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
+    formik.values.vehiclePlate = '';
     updateURL({});
     setSelectedEventCode('');
     setSelectedAccessPoint('');
@@ -183,6 +190,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
       const values = {
         vehiclePlate: e.target.value
       };
+      updateURL(values);
       dispatch(eventsOnlyFetch(values));
       dispatch(setFilters(values));
       dispatch(changeCurrentPage(1));
@@ -192,6 +200,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     if (e.target.value === '') {
@@ -210,6 +219,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
     formik.values.vehiclePlate = '';
     if (!openForm) {
       dispatch(eventsOnlyFetch());
+      updateURL({});
       dispatch(setFilters(null));
       dispatch(changeCurrentPage(1));
     } else if (openForm) {
@@ -218,6 +228,7 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         vehiclePlate: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setNumberInChange(false);
@@ -291,7 +302,6 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
 
   const handleTimeToChanged = (newValue) => {
     const parseValue = newValue.toISOString().split('T')[1].split('.')[0];
-    console.log(parseValue)
     if (parseValue) {
       const values = {
         ...filters,
@@ -322,7 +332,6 @@ export default function CarNumberFilter({ openForm, setOpenForm }) {
         accessPoint: ''
       };
       dispatch(setFilters(values));
-      console.log(accessPoint.value)
       updateURL(values);
       setSubmited(false);
     }

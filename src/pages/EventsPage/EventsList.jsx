@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import {useLocation, useNavigate, useSearchParams} from 'react-router-dom';
 import Lightbox from 'react-18-image-lightbox';
 // Components
 import Cameras from 'components/Cameras';
@@ -85,6 +85,8 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
   const eventsListRef = useRef(null);
   const mobileEventsListRef = useRef(null);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
@@ -230,6 +232,10 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
 
   const changePage = (event, value) => {
     dispatch(eventsChangePageFetch(value));
+    const values = {
+      page: value
+    };
+    updateURL(values);
     if (eventsListRef.current) {
       eventsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setEventsListScrolled(false);
@@ -238,6 +244,23 @@ const EventsList = memo(({ onlyLog, mobileCameras }) => {
       mobileEventsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setEventsListScrolled(false);
     }
+  };
+
+  const updateURL = (newFilters) => {
+    const currentParams = new URLSearchParams(location.search);
+
+    Object.keys(newFilters).forEach((key) => {
+      const value = newFilters[key];
+      if (value !== undefined && value !== null) {
+        currentParams.set(key, value);
+      } else {
+        currentParams.delete(key);
+      }
+    });
+
+    currentParams.set('page', newFilters.page || 1);
+
+    navigate({ search: currentParams.toString() });
   };
 
   const handleEventsListScroll = () => {

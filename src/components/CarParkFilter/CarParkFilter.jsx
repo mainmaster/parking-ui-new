@@ -15,6 +15,7 @@ import {
   styled
 } from '@mui/material';
 import {
+  carParkChangePageFetch,
   carParkFetch,
   changeCurrentPage,
   setFilters
@@ -71,22 +72,27 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
     const params = new URLSearchParams(location.search);
     const initialFilters = {
       companyName: params.get('companyName') || '',
+      vehiclePlate: params.get('vehiclePlate'),
+      page: params.get('page') || ''
     };
 
+    const pageNumber = initialFilters.page ? Number(initialFilters.page) : 1;
     if (initialFilters.companyName) { setSelectedCompany(initialFilters.companyName); }
+    if (initialFilters.vehiclePlate) { formik.values.vehiclePlate = initialFilters.vehiclePlate; }
 
     dispatch(setFilters(initialFilters));
     dispatch(carParkFetch(initialFilters));
     dispatch(accessPointsOnlyFetch(initialFilters));
-    dispatch(changeCurrentPage(1));
+    dispatch(carParkChangePageFetch(pageNumber));
+    dispatch(changeCurrentPage(pageNumber));
     setSubmited(true);
   }, []);
 
   const formik = useFormik({
     initialValues: defaultValues,
     onSubmit: (values) => {
-      dispatch(changeCurrentPage(1));
       dispatch(carParkFetch(filters));
+      dispatch(changeCurrentPage(1));
       setSubmited(true);
     }
   });
@@ -103,6 +109,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
 
   const resetHandle = () => {
     formik.resetForm();
+    formik.values.vehiclePlate = '';
     updateURL({})
     dispatch(setFilters(null));
     dispatch(changeCurrentPage(1));
@@ -117,6 +124,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
         vehiclePlate: e.target.value
       };
       dispatch(setFilters(values));
+      updateURL(values);
       dispatch(changeCurrentPage(1));
       dispatch(carParkFetch(values));
     } else if (openForm) {
@@ -124,6 +132,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
         ...filters,
         vehiclePlate: e.target.value
       };
+      updateURL(values);
       dispatch(setFilters(values));
       setSubmited(false);
     }
@@ -146,6 +155,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
     formik.values.vehiclePlate = '';
     if (!openForm) {
       dispatch(setFilters(null));
+      updateURL({});
       dispatch(changeCurrentPage(1));
       dispatch(carParkFetch());
     } else if (openForm) {
@@ -154,6 +164,7 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
         vehiclePlate: ''
       };
       dispatch(setFilters(values));
+      updateURL(values);
       setSubmited(false);
     }
     setNumberInChange(false);

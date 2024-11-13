@@ -31,6 +31,7 @@ import AddApplicationDialog from '../../components/AddApplicationDialog/AddAppli
 import { useTranslation } from 'react-i18next';
 import download from '../../assets/svg/unload_white.svg';
 import {UnloadApplicationDialog} from "../../components/UnloadApplicationDialog/UnloadApplicationDialog";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const titleTextStyle = {
   fontSize: '1.5rem',
@@ -56,6 +57,8 @@ export const Applications = () => {
     useState(false);
   const applicationsListRef = useRef(null);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const containerRef = useRef(null);
   const [itemsInRow, setItemsInRow] = useState(0);
@@ -86,10 +89,31 @@ export const Applications = () => {
 
   const changePage = (event, value) => {
     dispatch(applicationsChangePageFetch(value));
+    const values = {
+      page: value
+    };
+    updateURL(values);
     if (applicationsListRef.current) {
       applicationsListRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       setApplicationsListScrolled(false);
     }
+  };
+
+  const updateURL = (newFilters) => {
+    const currentParams = new URLSearchParams(location.search);
+
+    Object.keys(newFilters).forEach((key) => {
+      const value = newFilters[key];
+      if (value !== undefined && value !== null) {
+        currentParams.set(key, value);
+      } else {
+        currentParams.delete(key);
+      }
+    });
+
+    currentParams.set('page', newFilters.page || 1);
+
+    navigate({ search: currentParams.toString() });
   };
 
   const handleApplicationsListScroll = () => {

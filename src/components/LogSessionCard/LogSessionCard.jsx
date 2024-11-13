@@ -105,8 +105,9 @@ export default function LogSessionCard({
 
   const handleCopyLinkClick = () => {
     setSelectedMenuItem('copy');
+    const url = window.location.href.split('?')[0]
     navigator.clipboard
-      .writeText(window.location.href + '/' + session.id)
+      .writeText(url + '/' + session.id)
       .then(() => {
         enqueueSnackbar(t('components.logSessionCard.urlIsCopy'));
       });
@@ -115,8 +116,9 @@ export default function LogSessionCard({
 
   const handleSessionClick = () => {
     setSelectedMenuItem('session');
+    const url = window.location.href.split('?')[0]
     window.open(
-      `${window.location.href}/${session.id}`,
+      `${url}/${session.id}`,
       '_blank',
       'noreferrer'
     );
