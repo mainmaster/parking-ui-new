@@ -53,7 +53,7 @@ function* workEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
-    if (!_.isEmpty(store.getState().events.filters)) {
+    if (Object.entries(store.getState().events.filters).filter(([key, val]) => Boolean(val)).length !== 0) {
       yield put(setFilteredEvents(data.events));
     } else {
       yield put(setFilteredEvents([]));
@@ -71,7 +71,7 @@ function* workOnlyEvents({ payload }) {
     yield put(changePages(data.count));
     yield put(changeDataModal(data.events[0]));
     yield put(getEventsSuccess(data.events));
-    if (!_.isEmpty(store.getState().events.filters)) {
+    if (Object.entries(store.getState().events.filters).filter(([key, val]) => Boolean(val)).length !== 0) {
       yield put(setFilteredEvents(data.events));
     } else {
       yield put(setFilteredEvents([]));
@@ -89,7 +89,7 @@ function* workEventsPage({ payload }) {
     yield put(getEventsSuccess(data.events));
     yield put(changePages(data.count));
     yield put(changeCurrentPage(payload));
-    if (!_.isEmpty(store.getState().events.filters)) {
+    if (Object.entries(store.getState().events.filters).filter(([key, val]) => Boolean(val)).length !== 0) {
       yield put(setFilteredEvents(data.events));
     } else {
       yield put(setFilteredEvents([]));
