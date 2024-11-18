@@ -54,7 +54,7 @@ const labelStyle = {
   pl: '12px'
 };
 
-export default function CarParkFilter({ openForm, setOpenForm }) {
+export default function CarParkFilter({ openForm, setOpenForm, currentTab }) {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState('');
@@ -87,6 +87,12 @@ export default function CarParkFilter({ openForm, setOpenForm }) {
     dispatch(changeCurrentPage(pageNumber));
     setSubmited(true);
   }, []);
+
+  useEffect(() => {
+    dispatch(carParkFetch(filters));
+    dispatch(changeCurrentPage(1));
+    setSubmited(true);
+  }, [currentTab]);
 
   const formik = useFormik({
     initialValues: defaultValues,

@@ -293,7 +293,7 @@ const CarParkPage = () => {
                 {t('pages.carParkPage.addCar')}
               </Button>
 
-              <CarParkFilter openForm={openForm} setOpenForm={setOpenForm} />
+              <CarParkFilter openForm={openForm} setOpenForm={setOpenForm} currentTab={currentTab} />
             </Stack>
           </Stack>
           <Stack direction={'row'}>
@@ -413,7 +413,7 @@ const CarParkPage = () => {
                   py: '8px'
                 }}
               >
-                <CarParkFilter openForm={openForm} setOpenForm={setOpenForm} />
+                <CarParkFilter openForm={openForm} setOpenForm={setOpenForm} currentTab={currentTab}/>
               </Box>
               <Stack direction={'row'}>
                 <Tabs
