@@ -23,29 +23,25 @@ import { getPageNum } from 'utils';
 import { store } from '../index';
 
 const urlPath = () => {
-  if (
-    document.location.href.split('/')[
-      document.location.href.split('/').length - 1
-    ] == 'subscribe'
-  ) {
+  const href = document.location.href;
+
+  if (href.includes('subscribe')) {
     return {
       isSubscribe: 'True',
       status: 'active'
     };
-  } else if (
-    document.location.href.split('/')[
-      document.location.href.split('/').length - 1
-    ] == 'active'
-  ) {
-    return {
-      isSubscribe: 'False',
-      status: 'active'
-    };
-  } else {
+  }
+
+  if (href.includes('inactive')) {
     return {
       status: 'inactive'
     };
   }
+
+  return {
+    isSubscribe: 'False',
+    status: 'active'
+  };
 };
 
 function* workCarParks({ payload }) {
