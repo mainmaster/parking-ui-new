@@ -340,7 +340,7 @@
       "noItem": "No reports"
     },
     "actionLogs": {
-      "title": "No actions logs",
+      "title": "Actions logs",
       "noItem": "No logs"
     }
   },
