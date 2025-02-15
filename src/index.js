@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { SkeletonTheme } from 'react-loading-skeleton';
@@ -26,7 +26,8 @@ import vltheme from './theme/vlnormal';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import errorIcon from './assets/svg/login_error_icon.svg';
-import '../src/translation/index.js'
+import '../src/translation/index.js';
+import { ru, enUS } from 'date-fns/locale';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -50,7 +51,10 @@ root.render(
       <ApiProvider api={apiSlice}>
         <SkeletonTheme baseColor="rgb(170, 170, 170)">
           <Provider store={store}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={ru}
+            >
               <SnackbarProvider
                 anchorOrigin={{
                   vertical: 'top',

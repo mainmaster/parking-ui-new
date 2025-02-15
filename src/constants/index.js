@@ -9,6 +9,7 @@ export const CARS_ON_PAGE = 50;
 export const ITEM_MIN_WIDTH = 365;
 export const ITEM_MAX_WIDTH = 466;
 export const REPORTS_ON_PAGE = 50;
+export const ACTION_LOGS_ON_PAGE = 50;
 
 export let passModeOptions = [
   { name: i18n.t('constants.payByHour'), value: 'pay_by_hour' },

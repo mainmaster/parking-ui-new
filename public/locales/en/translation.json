@@ -338,6 +338,10 @@
     "reports": {
       "title": "Reports",
       "noItem": "No reports"
+    },
+    "actionLogs": {
+      "title": "No actions logs",
+      "noItem": "No logs"
     }
   },
   "components": {
@@ -935,6 +939,46 @@
       "title": "Rename report",
       "name": "Name",
       "save": "Save"
+    },
+    "actionLogCard": {
+      "action": "Action",
+      "section": "Section",
+      "date": "Date",
+      "more": "More details",
+      "entity": "Entity",
+      "before": "Before",
+      "after": "After"
+    },
+    "actionLogFilter": {
+      "accessPoint": "Access point",
+      "blackList": "Black list",
+      "camera": "Camera",
+      "laurent": "Laurent",
+      "ledBoard": "LED board",
+      "report": "Report",
+      "request": "Request",
+      "settings": "Settings",
+      "terminal": "Terminal",
+      "workingMode": "Working mode",
+      "operator": "Operator",
+      "renter": "Renter",
+      "update": "Update",
+      "delete": "Delete",
+      "create": "Create"
+    },
+    "actionLogFilterForm": {
+      "user": "Find by user",
+      "section": "Section",
+      "action": "Action",
+      "dateFrom": "Date and time from",
+      "dateTo": "Date and time to",
+      "number": "Enter number",
+      "submit": "Submit",
+      "cancel": "Reset",
+      "choose": "Choose",
+      "to": "to",
+      "from": "from",
+      "numberLabel": "Number"
     }
   },
   "constants": {
@@ -989,7 +1033,8 @@
     "controllers": "Controllers",
     "access": "Access",
     "payments": "Payments",
-    "reports": "Reports"
+    "reports": "Reports",
+    "actionLogs": "Actions logs"
   },
   "api": {
     "noAccess": "Not enough rights for the operation"

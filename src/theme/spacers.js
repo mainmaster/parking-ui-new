@@ -16,5 +16,7 @@ export const spacers = {
   payments_mobile: '122px',
   events: '361px',
   filter: '64px',
-  filterOpen: '334px'
+  filterOpen: '334px',
+  actionLogs: '64px',
+  actionLogsMobile: '122px',
 };

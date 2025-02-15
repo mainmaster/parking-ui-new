@@ -29,7 +29,8 @@ export let adminRoutes = [
   { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
   { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
   { eventKey: '/users/operators', title: i18n.t('routesTitle.access') },
-  { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
+  { eventKey: '/reports', title: i18n.t('routesTitle.reports') },
+  { eventKey: '/action-logs', title: i18n.t('routesTitle.actionLogs') },
 ];
 
 const uploadRouterTile = () => {
@@ -48,7 +49,8 @@ const uploadRouterTile = () => {
     { eventKey: '/payments', title: i18n.t('routesTitle.payments') },
     { eventKey: '/controllers', title: i18n.t('routesTitle.controllers') },
     { eventKey: '/users/operators', title: i18n.t('routesTitle.access') },
-    { eventKey: '/reports', title: i18n.t('routesTitle.reports') }
+    { eventKey: '/reports', title: i18n.t('routesTitle.reports') },
+    { eventKey: '/action-logs', title: i18n.t('routesTitle.actionLogs') },
   ];
   renterRoutes = [
     { eventKey: '/events-logs', title: i18n.t('routesTitle.visor'), vltitle: 'Vision Labs' },

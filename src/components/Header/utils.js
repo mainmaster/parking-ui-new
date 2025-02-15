@@ -73,6 +73,8 @@ import MoreUsersIcon from '../../assets/svg/more_users_icon.svg';
 import MoreCardIcon from '../../assets/svg/more_card_icon.svg';
 import ReportIcon from '../../assets/svg/report_menu.svg';
 import ReportSelectIcon from '../../assets/svg/report_select.svg';
+import ActionLogsIcon from '../../assets/svg/theme/action_logs_icon.svg';
+import ActionLogsSelectedIcon from '../../assets/svg/theme/action_logs_icon_selected.svg';
 
 export const links = [
   { id: 1, name: 'События', to: '/', icon: <BarChart /> },
@@ -205,6 +207,11 @@ export const icons = [
     height: 30,
     more: MoreCardIcon
   },
+  {
+    route: '/action-logs',
+    icon: ActionLogsIcon,
+    selected: ActionLogsSelectedIcon
+  },
 ];
 
 export const vlicons = [
@@ -316,5 +323,11 @@ export const vlicons = [
     selected: VlCardIconSelected,
     height: 21,
     more: MoreCardIcon
-  }
+  },
+  {
+    route: '/action-logs',
+    icon: ActionLogsIcon,
+    selected: ActionLogsSelectedIcon,
+    height: 32,
+  },
 ];

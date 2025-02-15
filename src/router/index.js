@@ -27,8 +27,8 @@ import { Terminals } from 'pages/Terminals/Terminals';
 import { EventPage } from 'pages/EventsPage/EventPage';
 import { SessionPage } from 'pages/SessionsPage/SessionPage';
 import { PaymentPage } from 'pages/PaymentsPage/PaymentPage';
-import { SearchLogsPage } from 'pages/SearchLogs/SearchLogs';
 import ReportsPage from "pages/ReportsPage/ReportsPage";
+import ActionLogsPage from "pages/ActionLogsPage/ActionLogsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -67,6 +67,7 @@ const router = createBrowserRouter(
         <Route path="users/*" element={<Operators />} />
         <Route path="terminals" element={<Terminals />} />
         <Route path="reports" element={<ReportsPage/>}/>
+        <Route path="action-logs" element={<ActionLogsPage />}/>
       </Route>
     </>
   )

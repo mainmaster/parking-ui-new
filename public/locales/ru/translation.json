@@ -338,6 +338,10 @@
     "reports": {
       "title": "Отчёты",
       "noItem": "Нет отчётов"
+    },
+    "actionLogs": {
+      "title": "Логи действий",
+      "noItem": "Нет логов"
     }
   },
   "components": {
@@ -935,6 +939,46 @@
       "title": "Переименовать отчёт",
       "name": "Название",
       "save": "Сохранить"
+    },
+    "actionLogCard": {
+      "action": "Действие",
+      "section": "Раздел",
+      "date": "Дата",
+      "more": "Подробнее",
+      "entity": "Сущность",
+      "before": "Было",
+      "after": "Стало"
+    },
+    "actionLogFilter": {
+      "accessPoint": "Точки доступа",
+      "blackList": "Черный список",
+      "camera": "Камеры",
+      "laurent": "Контроллер",
+      "ledBoard": "LED табло",
+      "report": "Отчеты",
+      "request": "Запросы",
+      "settings": "Настройки",
+      "terminal": "Терминал",
+      "workingMode": "Режим",
+      "operator": "Оператор",
+      "renter": "Арендатор",
+      "update": "Обновление",
+      "delete": "Удаление",
+      "create": "Создание"
+    },
+    "actionLogFilterForm": {
+      "user": "Найти по пользователю",
+      "section": "Раздел",
+      "action": "Действие",
+      "dateFrom": "Дата и время от",
+      "dateTo": "Дата и время до",
+      "number": "Ввведите номер",
+      "submit": "Применить",
+      "cancel": "Сбросить",
+      "choose": "Выбрать",
+      "to": "До",
+      "from": "От",
+      "numberLabel": "Номер"
     }
   },
   "constants": {
@@ -968,7 +1012,7 @@
     "payByInterval": "Оплата за интервал",
     "payByDay": "Оплата по дням",
     "payByFirstHours": "Оплата по первым часам",
-    "closed" : "Закрыто",
+    "closed": "Закрыто",
     "in": "Въезд",
     "out": "Выезд",
     "inner": "Внутренняя",
@@ -989,7 +1033,8 @@
     "controllers": "Контроллеры",
     "access": "Доступы",
     "payments": "Оплаты",
-    "reports": "Отчёты"
+    "reports": "Отчёты",
+    "actionLogs": "Логи действий"
   },
   "api": {
     "noAccess": "Недостаточно прав для операции"
