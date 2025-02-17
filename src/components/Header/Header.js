@@ -444,6 +444,15 @@ const Header = ({ title, userType, isHideMenu = false }) => {
                 )}
                 <Stack>
                   {mobileRouteList2.map((route) => {
+                    if (route.eventKey === '/action-logs') {
+                      const icon = theme.icons.find(
+                        (icon) => icon.route === route.eventKey
+                      );
+
+                      console.log({
+                        icon
+                      })
+                    }
                     const icon = theme.icons.find(
                       (icon) => icon.route === route.eventKey
                     );

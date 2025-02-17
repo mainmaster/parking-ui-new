@@ -75,6 +75,7 @@ import ReportIcon from '../../assets/svg/report_menu.svg';
 import ReportSelectIcon from '../../assets/svg/report_select.svg';
 import ActionLogsIcon from '../../assets/svg/theme/action_logs_icon.svg';
 import ActionLogsSelectedIcon from '../../assets/svg/theme/action_logs_icon_selected.svg';
+import MoreActionLogsSelectedIcon from '../../assets/svg/more_action_logs_icon.svg';
 
 export const links = [
   { id: 1, name: 'События', to: '/', icon: <BarChart /> },
@@ -210,7 +211,8 @@ export const icons = [
   {
     route: '/action-logs',
     icon: ActionLogsIcon,
-    selected: ActionLogsSelectedIcon
+    selected: ActionLogsSelectedIcon,
+    more: MoreActionLogsSelectedIcon,
   },
 ];
 
@@ -329,5 +331,6 @@ export const vlicons = [
     icon: ActionLogsIcon,
     selected: ActionLogsSelectedIcon,
     height: 32,
+    more: MoreActionLogsSelectedIcon,
   },
 ];
