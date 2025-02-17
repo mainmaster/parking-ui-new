@@ -964,7 +964,8 @@
       "renter": "Renter",
       "update": "Update",
       "delete": "Delete",
-      "create": "Create"
+      "create": "Create",
+      "carPark": "Car park"
     },
     "actionLogFilterForm": {
       "user": "Find by user",

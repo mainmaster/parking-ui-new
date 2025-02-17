@@ -43,6 +43,7 @@ let actionLogSection = [
   { value: 'working_mode', name: i18n.t('components.actionLogFilter.workingMode') },
   { value: 'operator', name: i18n.t('components.actionLogFilter.operator') },
   { value: 'renter', name: i18n.t('components.actionLogFilter.renter') },
+  { value: 'car_park', name: i18n.t('components.actionLogFilter.carPark') },
 ]
 
 let actionLogAction = [
@@ -65,6 +66,8 @@ const changeFilter = () => {
     { value: 'working_mode', name: i18n.t('components.actionLogFilter.workingMode') },
     { value: 'operator', name: i18n.t('components.actionLogFilter.operator') },
     { value: 'renter', name: i18n.t('components.actionLogFilter.renter') },
+    { value: 'car_park', name: i18n.t('components.actionLogFilter.carPark') },
+
   ];
 
   actionLogAction = [

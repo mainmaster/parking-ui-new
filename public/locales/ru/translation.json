@@ -964,7 +964,8 @@
       "renter": "Арендатор",
       "update": "Обновление",
       "delete": "Удаление",
-      "create": "Создание"
+      "create": "Создание",
+      "carPark": "Автопарк"
     },
     "actionLogFilterForm": {
       "user": "Найти по пользователю",
