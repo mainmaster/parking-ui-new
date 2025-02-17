@@ -301,6 +301,12 @@ export let operatorAccessOptions = [
     route: '/reports',
     value: 'access_to_reports',
     child: false,
+  },
+  {
+    name: i18n.t('constants.accessLogs'),
+    route: '/action-logs',
+    value: 'access_to_logs',
+    child: false,
   }
   //{ name: 'Логи поиска', value: 'access_to_search_logs' }
 ];
@@ -470,6 +476,12 @@ const updateConst = () => {
       name: i18n.t('constants.report'),
       route: '/reports',
       value: 'access_to_reports',
+      child: false,
+    },
+    {
+      name: i18n.t('constants.accessLogs'),
+      route: '/action-logs',
+      value: 'access_to_logs',
       child: false,
     }
     //{ name: 'Логи поиска', value: 'access_to_search_logs' }

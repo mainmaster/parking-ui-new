@@ -1016,7 +1016,8 @@
     "in": "Въезд",
     "out": "Выезд",
     "inner": "Внутренняя",
-    "report": "Отчёты"
+    "report": "Отчёты",
+    "accessLogs": "Логи действий"
   },
   "routesTitle": {
     "visor": "VIZOR",

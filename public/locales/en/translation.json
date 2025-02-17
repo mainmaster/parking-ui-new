@@ -1016,7 +1016,8 @@
     "in": "Entry",
     "out": "Exit",
     "inner": "Internal",
-    "report": "Reports"
+    "report": "Reports",
+    "accessLogs": "Action logs"
   },
   "routesTitle": {
     "visor": "VIZOR",
