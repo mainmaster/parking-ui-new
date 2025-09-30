@@ -1046,6 +1046,20 @@ export default function AddAccessPointDialog({ show, handleClose, edit }) {
                     </Typography>
                   </MenuItem>
                 ))}
+              <MenuItem
+                key={'Clear'}
+                id={'Clear'}
+                selected={false}
+                value={null}
+              >
+                <Typography
+                  component={'h5'}
+                  noWrap
+                  sx={{ fontWeight: 500, p: 0 }}
+                >
+                  <br/>
+                </Typography>
+              </MenuItem>
             </Select>
           </Stack>
           <FormGroup>

@@ -16,7 +16,7 @@ export default function VehiclePlate({ setVehiclePlates, vehicle, index }) {
   const [date, setDate] = useState(vehicle.valid_until);
   const { t } = useTranslation();
   const handleFromDateChanged = (newValue) => {
-    if (newValue) {
+    if (newValue && newValue instanceof Date && !isNaN(newValue)) {
       setVehiclePlates((prevState) =>
         prevState.map((item, i) => {
           if (index !== i) {

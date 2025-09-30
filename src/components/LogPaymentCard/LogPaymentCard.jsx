@@ -40,7 +40,7 @@ export default function LogPaymentCard({ payment }) {
 
   const handlePaymentClick = () => {
     window.open(
-      `${window.location.href}/${payment.id}`,
+      `${window.location.origin}${window.location.pathname}/${payment.id}`,
       '_blank',
       'noreferrer'
     );

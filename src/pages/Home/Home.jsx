@@ -69,7 +69,7 @@ export const Home = () => {
         if (
           userData.operator &&
           eventsOption.value in userData.operator &&
-          userData.operator[eventsOption] === true
+          userData.operator[eventsOption.value] === true
         ) {
           setDisableEvents(false);
         } else {

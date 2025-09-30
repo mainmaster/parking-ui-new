@@ -393,6 +393,7 @@
       "secondsBeforeLaurentChecks": "Задержка перед проверкой статуса шлагбаума (секунд)",
       "laurentChecksAmount": "Кол-во проверок статуса шлагбаума",
       "terminalId": "Терминал",
+      "terminalIdValue": "Очистить",
       "enableRevers": "Включить реверс",
       "recognitionScript": "Сценарий распознавания",
       "confirmationScript": "Сценарий подтверждения",

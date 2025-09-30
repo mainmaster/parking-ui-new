@@ -393,6 +393,7 @@
       "secondsBeforeLaurentChecks": "Delay before barrier gates check (seconds)",
       "laurentChecksAmount": "Amount of barrier gates status checks",
       "terminalId": "Terminal",
+      "terminalIdValue": "Clear",
       "enableRevers": "Enable reverse",
       "recognitionScript": "Recognition scenario",
       "confirmationScript": "Confirmation scenario",
